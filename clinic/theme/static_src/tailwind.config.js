@@ -49,6 +49,8 @@ module.exports = {
             borderRadius: {
                     '4xl': '2rem',
                     '6xl': '3rem', 
+      },fontSize: {
+        '2xs': '0.65rem', // Customizing text-xs to 0.85rem (adjust as needed)
       },
         },
     },
