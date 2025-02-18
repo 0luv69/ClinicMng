@@ -87,29 +87,55 @@
             <button class="w-1.5 h-1.5 rounded-full bg-gray-200" aria-label="Slide 4"></button>
             <button class="w-1.5 h-1.5 rounded-full bg-gray-200" aria-label="Slide 5"></button>
         </div>
+        <!-- Tailwind CSS with custom animation -->
+        <div class="absolute  right-36">
+            <i class="ripple animate-scale delay-[300ms]"></i>
+        </div>
+
+        <div class="absolute  left-36 top-32">
+            <i class="ripple animate-scale delay-[500ms]"></i>
+            <i class="ripple animate-scale delay-[600ms]"></i>
+        </div>
+        <div class="absolute  left-52 top-40">
+            <i class="ripple animate-scale delay-[500ms]"></i>
+            <i class="ripple animate-scale delay-[600ms]"></i>
+        </div>
+
 
         <!-- Cards Section -->
-        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto bg-red-200 h-60">
+        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
 
 
 
 
             <!-- Earnings Card -->
-            <div class="bg-white  rounded-6xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-fit">
-                <h3 class="text-gray-500 text-sm mb-2 bg-slate-200 rounded-md inline-block py-1 px-2">Your earnings</h3>
-                <div class="mb-4">
-                    <span class="text-5xl font-normal text-gray-900">$30.00</span>
-                </div>
-                <div class="text-sm text-gray-500 mb-6">
-                    Next payout in<br>10,550 pts
-                </div>
-                <div class=" relative">
+            <div class="bg-white relative rounded-6xl py-8 px-14  h-60 ">
 
+
+
+                <div>
+                    <h3 class="text-gray-500 text-sm mb-2 bg-slate-200 rounded-xl inline-block py-1 px-2">Your earnings
+                    </h3>
+
+                    <div class="mb-4">
+                        <span class="text-5xl  text-gray-900">$30.00</span>
+                    </div>
+                    <div class="text-sm text-gray-500 mb-6">
+                        Next payout in<br>10,550 pts
+                    </div>
+                    <div class=" relative">
+
+                    </div>
                 </div>
+                <div class="absolute inset-2 rounded-4xl shadow-sm pointer-events-none"></div>
+                <div class="absolute inset-4 rounded-4xl shadow-sm pointer-events-none"></div>
+                <div class="absolute inset-6 rounded-4xl shadow-sm pointer-events-none"></div>
+                <div class="absolute inset-8 rounded-4xl shadow-md pointer-events-none"></div>
+
             </div>
 
             <!-- Connect Sources Card -->
-            <div class="bg-white rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-fit">
+            <div class="bg-white rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-80">
                 <h2 class="text-2xl text-gray-900 font-normal mb-12">Connect sources</h2>
                 <div class="relative ">
                     <!-- Circular arrangement of icons -->
@@ -119,36 +145,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-8">
+                <!-- <div class="mt-8">
                     <button
-                        class="w-full py-3 px-6 bg-black/90 text-white rounded-full hover:bg-black/80 transition-colors flex items-center justify-center space-x-2">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="white">
-                            <path
-                                d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-1-13v6l5 3-1 1.5-6-3.5V7h2z" />
-                        </svg>
-                        <span>Download on the App Store</span>
+                        class="w-fit py-2 px-8 bg-black/90 text-white rounded-full hover:bg-black/80 transition-colors flex items-center justify-center space-x-2">
+
+                        <span class=""> <span class="font-serif text-2xs">Download on the</span> <br>App Store</span>
                     </button>
-                </div>
+                </div> -->
             </div>
 
             <!-- Learn More Card -->
-            <div class="bg-white rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-svh">
+            <div class="bg-white rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-60 relative">
+                <div class="absolute  left-36 top-32">
+                    <i class="ripple animate-scale delay-[500ms]"></i>
+                    <i class="ripple animate-scale delay-[600ms]"></i>
+                </div>
+                <div class="absolute  left-52 top-40">
+                    <i class="ripple animate-scale delay-[300ms]"></i>
+                    <i class="ripple animate-scale delay-[200ms]"></i>
+                    <i class="ripple animate-scale delay-[100ms]"></i>
+                </div>
                 <div class="space-y-4 mb-8">
                     <p class="text-gray-600">Any products I should be interested in?</p>
                     <p class="text-gray-600">Where do I mostly shop during winter season?</p>
                     <p class="text-gray-600">How much money saved on discounts?</p>
                 </div>
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl text-gray-900">
-                        Learn more from your data and make better decisions
-                    </h3>
-                    <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
+
             </div>
         </div>
 
