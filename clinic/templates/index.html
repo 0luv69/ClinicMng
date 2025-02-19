@@ -102,10 +102,10 @@
     <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent">
         <!-- image-->
         <img id="bumpImage" src="{% static 'doc-1.png' %}"
-            class="animate-kid cursor-pointer absolute lg:right-20 right-1 sm:h-60 lg:h-96 h-64 lg:top-40 sm:right-8 top-80 sm:top-23rem md:top-80"
+            class="animate-kid cursor-pointer absolute lg:right-20 right-1 sm:h-60 lg:h-96 h-64 lg:top-32 sm:right-8 top-80 sm:top-23rem md:top-80"
             alt="Thinking Iamge" />
-        <img id="bumpImage" src="{% static 'doc-2.png' %}"
-            class="animate-kid cursor-pointer absolute lg:left-20 left-1 sm:h-60 lg:h-96 h-64 lg:top-40 sm:left-8 top-80 sm:top-23rem md:top-80"
+        <img id="bumpImage2" src="{% static 'doc-2.png' %}"
+            class="animate-kid cursor-pointer absolute lg:left-32 left-1 sm:h-60 lg:h-72 h-64 lg:top-44 sm:left-8 top-80 sm:top-23rem md:top-80"
             alt="Thinking Iamge" />
 
 
@@ -140,17 +140,15 @@
         <div class="flex gap-8 max-w-6xl mx-auto">
             <!-- Earnings Card -->
             <div
-                class="group bg-white relative rounded-3xl py-8 px-6 h-60 shadow-2xl hover:shadow-md transition-all duration-300 hover:-translate-y-1 transform">
-                <h2 class="text-2xl text-gray-900 font-normal mb-3">Billing and Invoice System</h2>
-
-                <span
-                    class="text-gray-500 text-sm mb-2 bg-gray-100 rounded-xl inline-block py-1 px-3 hover:bg-gray-200 transition-colors duration-200">Your
-                    Expences</span>
-                <div class="mb-4">
-                    <span class="text-xl  font-semibold text-gray-900">₹.9****</span>
-                </div>
-                <div class="text-sm text-gray-500 mb-6">
-                    Next payout in<br> 29th
+                class="group border border-1 border-slate-300 bg-white relative rounded-3xl py-8 px-6 h-60 shadow-2xl hover:shadow-md transition-all duration-300 hover:-translate-y-1 transform">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-medium text-gray-800 mb-2 text-nowrap">Billing and Invoice System</h2>
+                        <span
+                            class="inline-flex items-center px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors duration-200">
+                            Your Expenses
+                        </span>
+                    </div>
                 </div>
 
                 <div class=" pointer-events-none h-full">
@@ -174,8 +172,17 @@
 
             <!-- Online Appointment Scheduling Sources Card -->
             <div
-                class=" bg-white rounded-3xl p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-80 relative overflow-hidden">
-                <h2 class="text-2xl text-gray-900 font-normal">Online Appointment Scheduling</h2>
+                class=" bg-white rounded-3xl border border-1 border-slate-300 p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-80 relative overflow-hidden">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-medium text-gray-800 mb-2">Online Appointment</h2>
+                        <span
+                            class="inline-flex items-center px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors duration-200">
+                            Schedule Now
+                        </span>
+                    </div>
+                    <i data-lucide="calendar" class="text-gray-400 w-6 h-6"></i>
+                </div>
 
                 <div class="w-96 bg-white ">
                     <img src='{% static "appoiment-1.png" %}' alt="  Doctor Image one" srcset="">
@@ -196,7 +203,7 @@
 
             <!-- video consultations and chat Card -->
             <div
-                class="bg-white rounded-3xl p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-60 relative overflow-x-hidden overflow-y-hidden">
+                class="bg-white border border-1 border-slate-300 rounded-3xl p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-60 relative overflow-x-hidden overflow-y-hidden">
                 <div class="absolute right-5 top-10">
                     <i class="ripple animate-scale" style="animation-delay: 300ms;"></i>
                     <i class="ripple animate-scale" style="animation-delay: 200ms;"></i>

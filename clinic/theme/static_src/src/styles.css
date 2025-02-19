@@ -26,4 +26,20 @@
     .animate-scale {
         animation: scale 3s linear infinite;
     }
+
+
+    @keyframes kid_bump {
+  0% {
+    transform: scale(1) translateY(100px); /* Initial scale */
+  }
+  50% {
+    transform: scale(1.2); /* Scale up */
+  }
+  100% {
+    transform: scale(1) translateY(0); /* Scale down to original size */
+  }
+}
+.animate-kid {
+  animation: kid_bump 0.5s ease-out forwards;
+}
 }
