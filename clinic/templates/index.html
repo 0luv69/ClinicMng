@@ -9,10 +9,32 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
 </head>
+<!-- <div class="absolute w-screen max-w-full h-lvh top-0 pointer-events-none overflow-hidden -z-10">
+            <style>
+                #svg_wave {
+                    filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.5));
+                }
+            </style>
+            <svg viewBox="0 0 2093 1555" fill="none" xmlns="http://www.w3.org/2000/svg" id="svg_wave">
+                <defs>
+                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feDropShadow dx="5" dy="5" stdDeviation="5" flood-color="black" flood-opacity="0.5" />
+                    </filter>
+                </defs>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M4 1C4 1 118.699 68.8418 211.868 197.348C337.622 370.797 337.687 617.706 337.75 853.708C337.826 1139.86 337.897 1409.97 562.002 1513.67C708.226 1581.33 938.701 1548.09 1046.5 1526.8C1154.3 1548.09 1384.77 1581.33 1531 1513.67C1755.1 1409.97 1755.18 1139.86 1755.26 853.708C1755.31 617.706 1755.38 370.797 1881.13 197.348C1974.3 68.8418 2089 1 2089 1H1105.78H987.222H4Z"
+                    stroke="black" stroke-width="2" />
+            </svg>
+    
+        </div> -->
 
-<body class="min-h-screen bg-gradient-to-r from-gray-50 via-white to-gray-50 font-sans">
+<body class="min-h-screen bg-gradient-to-r from-rose-50 via-white to-rose-50 font-sans">
+
+
+
+
     <!-- Header -->
-    <header class="container mx-auto px-6 py-6">
+    <header class="container mx-auto px-6 py-6 text-black">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <svg id='Heart_Health_24' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
@@ -75,10 +97,20 @@
         </div>
     </header>
 
+
     <!-- Hero Section -->
-    <section class="container mx-auto px-6 py-12 md:py-16">
+    <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent">
+        <!-- image-->
+        <img id="bumpImage" src="{% static 'doc-1.png' %}"
+            class="animate-kid cursor-pointer absolute lg:right-20 right-1 sm:h-60 lg:h-96 h-64 lg:top-40 sm:right-8 top-80 sm:top-23rem md:top-80"
+            alt="Thinking Iamge" />
+        <img id="bumpImage" src="{% static 'doc-2.png' %}"
+            class="animate-kid cursor-pointer absolute lg:left-20 left-1 sm:h-60 lg:h-96 h-64 lg:top-40 sm:left-8 top-80 sm:top-23rem md:top-80"
+            alt="Thinking Iamge" />
+
+
         <!-- Text Area -->
-        <div class="text-center mt-3 mb-12">
+        <div class="text-center mb-12">
             <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight">Nepal's Care</h1>
             <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Clinic For Powering
                 Healthcare, optimizing Experiences</p>
@@ -105,30 +137,49 @@
         </div>
 
         <!-- Cards Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+        <div class="flex gap-8 max-w-6xl mx-auto">
             <!-- Earnings Card -->
             <div
-                class="bg-white relative rounded-3xl py-8 px-6 h-60 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 transform">
+                class="group bg-white relative rounded-3xl py-8 px-6 h-60 shadow-2xl hover:shadow-md transition-all duration-300 hover:-translate-y-1 transform">
+                <h2 class="text-2xl text-gray-900 font-normal mb-3">Billing and Invoice System</h2>
+
                 <span
                     class="text-gray-500 text-sm mb-2 bg-gray-100 rounded-xl inline-block py-1 px-3 hover:bg-gray-200 transition-colors duration-200">Your
-                    earnings</span>
+                    Expences</span>
                 <div class="mb-4">
-                    <span class="text-4xl md:text-5xl font-semibold text-gray-900">$30.00</span>
+                    <span class="text-xl  font-semibold text-gray-900">₹.9****</span>
                 </div>
                 <div class="text-sm text-gray-500 mb-6">
-                    Next payout in<br>10,550 pts
+                    Next payout in<br> 29th
                 </div>
 
+                <div class=" pointer-events-none h-full">
+                    <img alt="Invoice" loading="lazy" width="96" height="96" decoding="async" data-nimg="1"
+                        class="absolute top-24 right-14 rotate-12" src='{% static "/invoice-1.png" %}'>
+                    <img alt="Coin" loading="lazy" width="64" height="64" decoding="async" data-nimg="1"
+                        class="absolute top-24 right-4 -rotate-12" src='{% static "/coin-1.png" %}'>
+
+                    <img alt="Credit Card" loading="lazy" width="96" height="96" decoding="async" data-nimg="1"
+                        class="absolute top-36 right-0" src='{% static "/creditCard-1.png" %}'>
+                </div>
+
+
                 <!-- Shadow Layers -->
-                <div class="absolute inset-2 rounded-2xl shadow-sm pointer-events-none"></div>
-                <div class="absolute inset-4 rounded-2xl shadow-sm pointer-events-none"></div>
-                <div class="absolute inset-6 rounded-2xl shadow-sm pointer-events-none"></div>
+                <div class="hidden group-hover:block">
+                    <div class=" absolute inset-2 rounded-2xl shadow-sm pointer-events-none"></div>
+                    <div class="absolute inset-4 rounded-2xl shadow-sm pointer-events-none"></div>
+                    <div class="absolute inset-6 rounded-2xl shadow-sm pointer-events-none"></div>
+                </div>
             </div>
 
-            <!-- Connect Sources Card -->
+            <!-- Online Appointment Scheduling Sources Card -->
             <div
-                class=" bg-white rounded-3xl p-8 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-80 relative overflow-hidden">
-                <h2 class="text-2xl text-gray-900 font-normal mb-12">Connect sources</h2>
+                class=" bg-white rounded-3xl p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-80 relative overflow-hidden">
+                <h2 class="text-2xl text-gray-900 font-normal">Online Appointment Scheduling</h2>
+
+                <div class="w-96 bg-white ">
+                    <img src='{% static "appoiment-1.png" %}' alt="  Doctor Image one" srcset="">
+                </div>
 
                 <!-- Circular Effects -->
                 <div
@@ -140,33 +191,31 @@
                 <div
                     class="absolute ml-32 mt-14 w-80 h-full rounded-full bg-gradient-to-r from-transparent to-gray-100 rotate-90 shadow-inner pointer-events-none">
                 </div>
-                <div
-                    class="absolute ml-32 mt-24 w-80 h-full rounded-full bg-gradient-to-r from-transparent to-gray-100 rotate-90 shadow-inner pointer-events-none">
-                </div>
+
             </div>
 
-            <!-- Learn More Card -->
+            <!-- video consultations and chat Card -->
             <div
-                class="bg-white rounded-3xl p-8 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-60 relative overflow-x-hidden overflow-y-hidden">
+                class="bg-white rounded-3xl p-8 shadow-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform h-60 relative overflow-x-hidden overflow-y-hidden">
                 <div class="absolute right-5 top-10">
                     <i class="ripple animate-scale" style="animation-delay: 300ms;"></i>
                     <i class="ripple animate-scale" style="animation-delay: 200ms;"></i>
                     <i class="ripple animate-scale" style="animation-delay: 100ms;"></i>
                 </div>
-                <div class="space-y-4 mb-8">
-                    <p
-                        class="text-gray-600 bg-gray-50 p-3 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:translate-x-1 transform">
-                        Any products I should be interested in?</p>
-                    <p
-                        class="text-gray-600 bg-gray-50 p-3 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:translate-x-1 transform">
-                        Where do I mostly shop during winter season?</p>
-                    <p
-                        class="text-gray-600 bg-gray-50 p-3 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:translate-x-1 transform">
-                        How much money saved on discounts?</p>
+                <h2 class="text-2xl text-gray-900 font-normal">Video consultations and chats</h2>
+                <div class="elemets relative">
+                    <img src='{% static "videoCall-1.png" %}' alt="" srcset=""
+                        class="w-32 h-32 rotate-12 right-7 absolute">
+                    <img src='{% static "videoCall-2.png" %}' alt="" srcset=""
+                        class="w-32 h-32 -rotate-12 left-7 absolute">
+
                 </div>
             </div>
         </div>
     </section>
+
+
+
 </body>
 
 </html>
