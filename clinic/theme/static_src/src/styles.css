@@ -40,6 +40,11 @@
   }
 }
 .animate-kid {
-  animation: kid_bump 0.5s ease-out forwards;
+  animation: kid_bump .5s ease-out forwards;
+}
+
+
+.drop-shadow-down {
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.5)); /* Adjust values as needed */
 }
 }
