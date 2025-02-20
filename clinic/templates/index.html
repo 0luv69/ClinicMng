@@ -201,10 +201,10 @@
                             </div> -->
 
                             <!-- image  -->
-                            <div class="mt-auto absolute bottom-0 right-0 group-hover:rotate-0 rotate-6 transition-all duration-300 w-48"
+                            <div class="mt-auto absolute bottom-0 right-0  group-hover:rotate-0 rotate-6 transition-all duration-300"
                                 id="leftCrd-img">
                                 <img src='{% static "invoice-1.png" %}' alt="Appointment"
-                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 ">
+                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 w-48 ">
                             </div>
                         </div>
                     </div>
@@ -573,10 +573,10 @@
                             </div>
 
                             <!-- image  -->
-                            <div class="mt-auto  absolute bottom-5 right-2 rotate-6 group-hover:rotate-0 transition-transform duration-300 w-44"
+                            <div class="mt-auto  absolute bottom-5 right-2 rotate-6 group-hover:rotate-0 transition-transform duration-300 "
                                 id="centerCrd-img">
                                 <img src='{% static "appoiment-1.png" %}' alt="Appointment"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300  drop-shadow-down">
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300  drop-shadow-down w-44">
                             </div>
 
 
@@ -635,10 +635,10 @@
                             </div> -->
 
                             <!-- image  -->
-                            <div class="mt-auto absolute bottom-0 right-0 rotate-12 group-hover:rotate-0 transition-transform duration-300 w-40"
+                            <div class="mt-auto absolute bottom-0 right-0 rotate-12 group-hover:rotate-0 transition-transform duration-300 "
                                 id="rightCrd-img">
                                 <img src='{% static "videoCall-3.png" %}' alt="Video CALL"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 ">
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 w-40">
                             </div>
                         </div>
                     </div>
@@ -646,6 +646,8 @@
             </div>
         </div>
 
+        <!-- unused class name, but used in js so calling it here -->
+        <div class="hidden right-4 bottom-8"></div>
 
         <script>
 
@@ -704,7 +706,7 @@
                                             d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4zm2 0v16h14V4H5zM7 6h10v2H7V6zm0 4h10v2H7v-2zm0 4h7v2H7v-2z" />
                                     </svg>`,
                     "img": `<img src='{% static "invoice-1.png" %}' alt="Bill & Invoice"
-                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 ">`
+                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 w-48">`
                 },
                 two:
                 {
@@ -1029,7 +1031,7 @@
                                         </g>
                                     </svg>`,
                     "img": `<img src='{% static "appoiment-1.png" %}' alt="Appointment Booking"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 drop-shadow-down">`
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 drop-shadow-down w-44">`
 
 
 
@@ -1048,7 +1050,7 @@
                                                 d="M21 8V7l-3 3-3-3v1l3 3 3-3zm-1 1H4v10h16V9zM4 5h16v2H4V5zm2 6h12v2H6v-2z" />
                                         </svg>`,
                     "img": `<img src='{% static "videoCall-3.png" %}' alt="Video CALL & Chat"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 ">`
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 w-40">`
                 }
             }
 
@@ -1057,42 +1059,58 @@
             // function to switch between cards 
 
             function rotateContent() {
-                // change left card content
-                document.getElementById("leftCrd-title").innerHTML = Data[RightCrd_has].title;
-                document.getElementById("leftCrd-sub-title").innerHTML = Data[RightCrd_has].sub_title;
-                document.getElementById("leftCrd-svg1").innerHTML = Data[RightCrd_has].svg1;
-                document.getElementById("leftCrd-svg2").innerHTML = Data[RightCrd_has].svg2;
-                document.getElementById("leftCrd-img").innerHTML = Data[RightCrd_has].img;
-
-
-                // change center card content
-                document.getElementById("centerCrd-title").innerHTML = Data[LeftCrd_has].title;
-                // document.getElementById("centerCrd-sub-title").innerHTML = Data[LeftCrd_has].sub_title;
-                document.getElementById("centerCrd-cta").innerHTML = Data[LeftCrd_has].cta_text;
-                document.getElementById("centerCrd-svg1").innerHTML = Data[LeftCrd_has].svg1;
-                document.getElementById("centerCrd-svg2").innerHTML = Data[LeftCrd_has].svg2;
-                document.getElementById("centerCrd-img").innerHTML = Data[LeftCrd_has].img;
-
-                // change right card content
-                document.getElementById("rightCrd-title").innerHTML = Data[CenterCrd_has].title;
-                document.getElementById("rightCrd-sub-title").innerHTML = Data[CenterCrd_has].sub_title;
-                document.getElementById("rightCrd-svg1").innerHTML = Data[CenterCrd_has].svg1;
-                document.getElementById("rightCrd-svg2").innerHTML = Data[CenterCrd_has].svg2;
-                document.getElementById("rightCrd-img").innerHTML = Data[CenterCrd_has].img;
-
-
                 // change the card index
                 let temp = LeftCrd_has;
                 LeftCrd_has = RightCrd_has;
                 RightCrd_has = CenterCrd_has;
                 CenterCrd_has = temp;
 
+
+                // change left card content
+                document.getElementById("leftCrd-title").innerHTML = Data[LeftCrd_has].title;
+                document.getElementById("leftCrd-sub-title").innerHTML = Data[LeftCrd_has].sub_title;
+                document.getElementById("leftCrd-svg1").innerHTML = Data[LeftCrd_has].svg1;
+                document.getElementById("leftCrd-svg2").innerHTML = Data[LeftCrd_has].svg2;
+                document.getElementById("leftCrd-img").innerHTML = Data[LeftCrd_has].img;
+                if (LeftCrd_has === "two") {
+                    console.log("two inner")
+                    document.getElementById("leftCrd-img").querySelector("img").classList.add("w-28")
+                    document.getElementById("leftCrd-img").classList.add("right-4", "bottom-8")
+                } else {
+                    document.getElementById("leftCrd-img").classList.remove("right-4", "bottom-8")
+                }
+
+
+
+                // change center card content
+                document.getElementById("centerCrd-title").innerHTML = Data[CenterCrd_has].title;
+                // document.getElementById("centerCrd-sub-title").innerHTML = Data[CenterCrd_has].sub_title;
+                document.getElementById("centerCrd-cta").innerHTML = Data[CenterCrd_has].cta_text;
+                document.getElementById("centerCrd-svg1").innerHTML = Data[CenterCrd_has].svg1;
+                document.getElementById("centerCrd-svg2").innerHTML = Data[CenterCrd_has].svg2;
+                document.getElementById("centerCrd-img").innerHTML = Data[CenterCrd_has].img;
+
+
+                // change right card content
+                document.getElementById("rightCrd-title").innerHTML = Data[RightCrd_has].title;
+                document.getElementById("rightCrd-sub-title").innerHTML = Data[RightCrd_has].sub_title;
+                document.getElementById("rightCrd-svg1").innerHTML = Data[RightCrd_has].svg1;
+                document.getElementById("rightCrd-svg2").innerHTML = Data[RightCrd_has].svg2;
+                document.getElementById("rightCrd-img").innerHTML = Data[RightCrd_has].img;
+
+
+
+                if (RightCrd_has === "two") {
+                    document.getElementById("rightCrd-img").querySelector("img").classList.add("w-28")
+                    document.getElementById("rightCrd-img").classList.add("right-4", "bottom-8")
+                } else {
+                    document.getElementById("rightCrd-img").classList.remove("right-4", "bottom-8")
+                }
+
             }
 
-
-
             // setTimeout(rotateContent, 3000);
-            // setInterval(rotateContent, 10000);
+            setInterval(rotateContent, 10000);
 
         </script>
 
