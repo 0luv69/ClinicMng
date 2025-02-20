@@ -2,18 +2,41 @@
 <html>
 
 <head>
-    <link href="./css/main.css" rel="stylesheet" />
     <title>Document</title>
 </head>
 
 <body style="background-color: aqua;">
-    <div data-svg-wrapper>
-        <svg width="2093" height="1555" viewBox="0 0 2093 1555" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M4 1C4 1 118.699 68.8418 211.868 197.348C337.622 370.797 337.687 617.706 337.75 853.708C337.826 1139.86 337.897 1409.97 562.002 1513.67C708.226 1581.33 938.701 1548.09 1046.5 1526.8C1154.3 1548.09 1384.77 1581.33 1531 1513.67C1755.1 1409.97 1755.18 1139.86 1755.26 853.708C1755.31 617.706 1755.38 370.797 1881.13 197.348C1974.3 68.8418 2089 1 2089 1H1105.78H987.222H4Z"
-                stroke="black" stroke-width="2" />
-        </svg>
+    <div class="container">
+        <div class="header">
+            <h1 id="1">Header</h1>
+        </div>
+        <div class="content">
+            <h1 id="2">Content</h1>
+        </div>
+        <div class="footer">
+            <h1 id="3">Footer</h1>
+        </div>
     </div>
+    <script>
+        // Function to rotate the content of the h1 elements
+        function rotateContent() {
+            // Get the h1 elements by their IDs
+            const h1_1 = document.getElementById('1');
+            const h1_2 = document.getElementById('2');
+            const h1_3 = document.getElementById('3');
+
+            // Store their current text content
+            const tempText = h1_1.textContent;
+
+            // Rotate the content
+            h1_1.textContent = h1_3.textContent; // Move content of 3 to 1
+            h1_3.textContent = h1_2.textContent; // Move content of 2 to 3
+            h1_2.textContent = tempText;        // Move content of 1 to 2
+        }
+
+        // Set an interval to rotate the content every 3 seconds (3000 milliseconds)
+        setInterval(rotateContent, 3000);
+    </script>
 </body>
 
 </html>
