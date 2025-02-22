@@ -807,6 +807,10 @@ select {
   right: -1.5rem;
 }
 
+.-top-64 {
+  top: -16rem;
+}
+
 .-top-72 {
   top: -18rem;
 }
@@ -841,6 +845,18 @@ select {
 
 .right-4 {
   right: 1rem;
+}
+
+.-top-80 {
+  top: -20rem;
+}
+
+.right-14 {
+  right: 3.5rem;
+}
+
+.right-8 {
+  right: 2rem;
 }
 
 .mx-auto {
@@ -946,10 +962,6 @@ select {
 
 .w-2 {
   width: 0.5rem;
-}
-
-.w-28 {
-  width: 7rem;
 }
 
 .w-40 {
@@ -1615,6 +1627,14 @@ select {
 }
 
 @media (min-width: 768px) {
+  .md\:-top-80 {
+    top: -20rem;
+  }
+
+  .md\:-top-64 {
+    top: -16rem;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -1654,5 +1674,29 @@ select {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:-top-80 {
+    top: -20rem;
+  }
+
+  .lg\:-top-64 {
+    top: -16rem;
+  }
+
+  .lg\:-top-52 {
+    top: -13rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:-top-80 {
+    top: -20rem;
+  }
+
+  .xl\:-top-72 {
+    top: -18rem;
   }
 }
