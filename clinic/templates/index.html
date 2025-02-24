@@ -81,20 +81,22 @@
     <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent overflow-x-hidden">
 
         <img id="bumpImage2" src="{% static 'doc-2.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block md:hidden  left-2 top-72  w-28 h-28   sm:left-8 sm:top-64  sm:w-40 sm:h-40 "
+            class="drop-shadow-down animate-doc cursor-pointer absolute block md:hidden  left-4 top-80  w-28 h-28   sm:left-8 sm:top-64  sm:w-40 sm:h-40 "
             alt="Girl Doctor Homepage" />
 
         <img id="bumpImage" src="{% static 'doc-1.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block md:hidden  right-0 top-[270px]  w-32 h-32   sm:right-8 sm:top-56  sm:w-48 sm:h-48   "
+            class="drop-shadow-down animate-doc cursor-pointer absolute block md:hidden  right-3 top-[300px]  w-32 h-32   sm:right-8 sm:top-56  sm:w-48 sm:h-48   "
             alt="Boy Doctor HomePage" />
+
 
 
 
         <!-- Text Area -->
         <div class="text-center mb-12">
             <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight">Nepal's Care</h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Clinic For Powering
-                Healthcare, optimizing Experiences</p>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Clinic For Powering Healthcare, Optimizing Experiences
+            </p>
             <div class="mt-8">
                 <button
                     class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 transform">
@@ -118,12 +120,12 @@
         </div>
 
         <!-- 3 cards section  -->
-        <div class="min-h-screen   pb-20 px-4 ">
-            <div id="cardContainer"
-                class="relative flex flex-col md:flex-row items-center justify-center gap-10 max-w-7xl mx-auto">
+        <div class="min-h-screen   relative  pb-20 px-4 ">
+            <div id=" cardContainer"
+                class="  md:relative flex flex-col md:flex-row items-center justify-center gap-10 max-w-7xl mx-auto">
                 <!-- Left Card -->
                 <div id="leftCrd"
-                    class=" relative group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
+                    class="relative group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
                     <!-- Doctor image-->
                     <img id="bumpImage2" src="{% static 'doc-2.png' %}"
                         class="drop-shadow-down animate-doc cursor-pointer absolute hidden md:block right-8 md:-top-40 lg:-top-52 xl:-top-72 "
@@ -213,7 +215,7 @@
 
                 <!-- Center Card (Featured) -->
                 <div id="centerCrd"
-                    class=" relative  group  w-full md:w-96 h-80 transition-all duration-500 scale-100 md:scale-110">
+                    class="relative  group  w-full md:w-96 h-80 transition-all duration-500 scale-100 md:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-br from-slate-200 to-rose-50 rounded-[2.5rem] shadow-2xl 
                                 hover:shadow-3xl transition-all duration-300 hover:-translate-y-3 p-8 
                                 ">
@@ -588,7 +590,7 @@
 
                 <!-- Right Card -->
                 <div id="rightCrd"
-                    class=" relative  group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
+                    class="relative  group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
                     <img id="bumpImage" src="{% static 'doc-1.png' %}"
                         class="drop-shadow-down animate-doc cursor-pointer absolute hidden md:block right-2 md:-top-44 lg:-top-64 xl:-top-80  "
                         alt="Boy Doctor HomePage" />
@@ -645,6 +647,7 @@
 
 
     </section>
+
 
 
 

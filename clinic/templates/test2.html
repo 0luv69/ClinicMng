@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+    <!-- !-- Hero Section  -->
+    <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent overflow-x-hidden">
+        <!-- Text Area -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight">Nepal's Care</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Clinic For Powering
+                Healthcare,
+                optimizing Experiences</p>
+            <div class="mt-8">
+                <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 transform">
+                    Get Started
+                </button>
+            </div>
+        </div>
+
+        <!-- 3 cards section with parallax scroll effect -->
+        <div class="main-container">
+            <div class="sticky-section">
+                <!-- Left Card -->
+                <div id="leftCard" class="card-container">
+                    <div
+                        class="w-full h-full bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-xl border border-white/20 backdrop-blur-sm p-6">
+                        <div class="flex flex-col h-full">
+                            <div class="flex-1">
+                                <h3 class="md:text-lg lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
+                                    id="leftCrd-title">
+                                    Auto Billing System
+                                </h3>
+                                <p class="text-gray-600 mt-2 md:text-xs lg:text-sm" id="leftCrd-sub-title">Manage
+                                    invoices
+                                    and transactions with smart automation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center Card (Featured) -->
+                <div id="centerCard" class="card-container">
+                    <div
+                        class="w-full h-full bg-gradient-to-br from-slate-200 to-rose-50 rounded-[2.5rem] shadow-2xl p-8">
+                        <div class="flex flex-col h-full text-black">
+                            <div class="flex-1 flex justify-between items-start">
+                                <div>
+                                    <h3 class="md:text-lg lg:text-3xl font-bold mb-2" id="centerCrd-title">Appointments
+                                    </h3>
+                                    <span
+                                        class="inline-flex items-center px-4 py-1.5 bg-slate-400 backdrop-blur-sm border border-1 border-slate-500 rounded-full text-2xs lg:text-sm font-medium cursor-pointer hover:bg-slate-300 transition-colors duration-200"
+                                        id="centerCrd-cta">
+                                        Schedule Now
+                                    </span>
+                                </div>
+                                <div
+                                    class="w-7 h-7 xl:w-12 xl:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card -->
+                <div id="rightCard" class="card-container">
+                    <div
+                        class="w-full h-full bg-gradient-to-br from-white to-purple-50 rounded-3xl shadow-xl border border-white/20 backdrop-blur-sm p-6">
+                        <div class="flex flex-col h-full relative">
+                            <div class="flex-1">
+                                <h3 class="md:text-lg lg:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent"
+                                    id="rightCrd-title">
+                                    Video & Chat Consult
+                                </h3>
+                                <p class="text-gray-600 mt-2 text-xs lg:text-sm" id="rightCrd-sub-title">Instant
+                                    connection
+                                    with healthcare professionals</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .main-container {
+            height: 200vh;
+            /* Increased height for smoother scroll effect */
+            position: relative;
+            width: 100%;
+        }
+
+        .sticky-section {
+            height: 28rem;
+            /* Slightly taller for better visibility */
+            position: sticky;
+            top: 20%;
+            /* Adjusted to start higher on the screen */
+            width: 100%;
+            max-width: 90rem;
+            /* Wider max-width for better spacing */
+            margin: 0 auto;
+        }
+
+        .card-container {
+            position: absolute;
+            inset: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out, scale 0.8s ease-out;
+            /* Smoother transitions */
+            will-change: transform, opacity, scale;
+            /* Performance optimization */
+        }
+    </style>
+
+    <script>
+        const container = document.querySelector('.main-container');
+        const leftCard = document.getElementById('leftCard');
+        const centerCard = document.getElementById('centerCard');
+        const rightCard = document.getElementById('rightCard');
+
+        // Initial states
+        leftCard.style.transform = 'translateY(0%)';
+        leftCard.style.opacity = '1';
+        leftCard.style.scale = '1';
+        centerCard.style.transform = 'translateY(120%)';
+        centerCard.style.opacity = '0';
+        centerCard.style.scale = '0.9';
+        rightCard.style.transform = 'translateY(120%)';
+        rightCard.style.opacity = '0';
+        rightCard.style.scale = '0.9';
+
+        function mapRange(value, fromMin, fromMax, toMin, toMax) {
+            const fromRange = fromMax - fromMin;
+            const toRange = toMax - toMin;
+            const scaledValue = (value - fromMin) / fromRange;
+            return toMin + (scaledValue * toRange);
+        }
+
+        function updateCards() {
+            const containerRect = container.getBoundingClientRect();
+            const containerHeight = container.offsetHeight;
+            const windowHeight = window.innerHeight;
+
+            // Scroll progress (0 to 1)
+            const start = -containerRect.top;
+            const end = containerHeight - windowHeight;
+            const scrollProgress = Math.max(0, Math.min(1, start / end));
+
+            // Left Card (Reveal: 0–0.4, Fade out: 0.4–0.7)
+            if (scrollProgress <= 0.7) {
+                const y1 = scrollProgress <= 0.4
+                    ? 0
+                    : mapRange(scrollProgress, 0.4, 0.7, 0, -50);
+                const opacity1 = scrollProgress <= 0.1
+                    ? 1
+                    : mapRange(scrollProgress, 1, 1, 1, 1);
+                const scale1 = scrollProgress <= 0.4
+                    ? 1
+                    : mapRange(scrollProgress, 0.4, 0.7, 1, 0.9);
+
+                leftCard.style.transform = `translateY(${y1}%)`;
+                leftCard.style.opacity = opacity1;
+                leftCard.style.scale = scale1;
+            }
+
+            // Center Card (Reveal: 0.3–0.7, Fade out: 0.7–1.0)
+            if (scrollProgress >= 0.4) {
+                const y2 = scrollProgress <= 0.7
+                    ? mapRange(scrollProgress, 0.3, 0.7, 120, 0)
+                    : mapRange(scrollProgress, 0.7, 1.0, 0, -50);
+                const opacity2 = scrollProgress <= 0.4
+                    ? mapRange(scrollProgress, 0.3, 0.7, 0, 1)
+                    : mapRange(scrollProgress, 0.7, 1.0, 1, 0);
+                const scale2 = scrollProgress <= 0.7
+                    ? mapRange(scrollProgress, 0.3, 0.7, 0.9, 1)
+                    : mapRange(scrollProgress, 0.7, 1.0, 1, 0.9);
+
+                centerCard.style.transform = `translateY(${y2}%)`;
+                centerCard.style.opacity = opacity2;
+                centerCard.style.scale = scale2;
+            }
+
+            // Right Card (Reveal: 0.6–1.0)
+            if (scrollProgress >= 0.6) {
+                const y3 = mapRange(scrollProgress, 0.6, 1.0, 120, 0);
+                const opacity3 = mapRange(scrollProgress, 0.6, .2, 1, 1);
+                const scale3 = mapRange(scrollProgress, 0.6, 1.0, 0.9, 1);
+
+                rightCard.style.transform = `translateY(${y3}%)`;
+                rightCard.style.opacity = opacity3;
+                rightCard.style.scale = scale3;
+            }
+        }
+
+        // Throttle scroll event for better performance
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateCards();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Initial update
+        updateCards();
+    </script>
+</body>
+
+</html>
