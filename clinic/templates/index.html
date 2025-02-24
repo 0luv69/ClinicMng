@@ -118,11 +118,12 @@
         </div>
 
         <!-- 3 cards section  -->
-        <div class="min-h-screen pb-20 px-4">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-10 max-w-7xl mx-auto">
+        <div class="min-h-screen   pb-20 px-4 ">
+            <div id="cardContainer"
+                class="relative flex flex-col md:flex-row items-center justify-center gap-10 max-w-7xl mx-auto">
                 <!-- Left Card -->
-                <div class="group relative w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10"
-                    id="leftCrd">
+                <div id="leftCrd"
+                    class=" relative group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
                     <!-- Doctor image-->
                     <img id="bumpImage2" src="{% static 'doc-2.png' %}"
                         class="drop-shadow-down animate-doc cursor-pointer absolute hidden md:block right-8 md:-top-40 lg:-top-52 xl:-top-72 "
@@ -148,10 +149,10 @@
 
                             <!-- svg  -->
                             <div
-                                class="hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
-                                <div class="lg:w-9 lg:h-9    xl:w-14 xl:h-14 bg-gradient-to-br from-blue-100 to-white rounded-xl shadow-sm 
+                                class="flex md:hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
+                                <div class="w-9 h-9    xl:w-14 xl:h-14 bg-gradient-to-br from-blue-100 to-white rounded-xl shadow-sm 
                                             flex items-center justify-center" id="leftCrd-svg1">
-                                    <svg class=" lg:w-7 lg:h-7   xl:w-12  xl:h-12" id="Layer_1" data-name="Layer 1"
+                                    <svg class=" w-7 h-7   xl:w-12  xl:h-12" id="Layer_1" data-name="Layer 1"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88">
                                         <defs>
                                             <style>
@@ -190,9 +191,9 @@
                                             d="M39.67,55.86l3.78-8.51H57.7a5.38,5.38,0,0,0-.94-1.78,6.56,6.56,0,0,0-1.67-1.51,8.93,8.93,0,0,0-2.2-1,8.14,8.14,0,0,0-2.58-.39H39.67l3.78-8.52h40.8l-3.78,8.52H70.61a6.65,6.65,0,0,1,1.09,1,9,9,0,0,1,.89,1.23,12.59,12.59,0,0,1,.64,1.27,6,6,0,0,1,.34,1.18H84.25l-3.78,8.51H72.74A14.24,14.24,0,0,1,70.21,60a20.48,20.48,0,0,1-3.91,3.48A24.76,24.76,0,0,1,61.45,66a23.51,23.51,0,0,1-5.3,1.42L77.59,89.53h-17l-19.12-21V60.74H50a7.37,7.37,0,0,0,2.4-.4,9.33,9.33,0,0,0,2.19-1.09,8.11,8.11,0,0,0,1.74-1.55,5.42,5.42,0,0,0,1-1.84Z" />
                                     </svg>
                                 </div>
-                                <div class="lg:w-9 lg:h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-cyan-100 to-white rounded-xl shadow-sm 
+                                <div class="w-9 h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-cyan-100 to-white rounded-xl shadow-sm 
                                             flex items-center justify-center" id="leftCrd-svg2">
-                                    <svg class=" lg:w-7 lg:h-7     xl:w-12 xl:h-12 text-cyan-600" fill="currentColor"
+                                    <svg class=" w-7 h-7     xl:w-12 xl:h-12 text-cyan-600" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4zm2 0v16h14V4H5zM7 6h10v2H7V6zm0 4h10v2H7v-2zm0 4h7v2H7v-2z" />
@@ -201,18 +202,18 @@
                             </div>
 
                             <!-- image  -->
-                            <div class="mt-auto absolute -bottom-5 lg:bottom-0 right-0 hidden md:block  group-hover:rotate-0 rotate-6 transition-all duration-300"
+                            <div class="mt-auto absolute  -bottom-5 lg:bottom-0 right-0 group-hover:rotate-0 rotate-6 transition-all duration-300"
                                 id="leftCrd-img">
                                 <img src='{% static "invoice-1.png" %}' alt="Appointment"
-                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 lg:w-32 xl:w-48 ">
+                                    class="ml-auto transform hover:scale-105 transition-transform duration-300 w-40 md:w-48 xl:w-48 ">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Center Card (Featured) -->
-                <div class="group relative w-full md:w-96 h-80 transition-all duration-500 scale-100 md:scale-110"
-                    id="centerCrd">
+                <div id="centerCrd"
+                    class=" relative  group  w-full md:w-96 h-80 transition-all duration-500 scale-100 md:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-br from-slate-200 to-rose-50 rounded-[2.5rem] shadow-2xl 
                                 hover:shadow-3xl transition-all duration-300 hover:-translate-y-3 p-8 
                                 ">
@@ -229,7 +230,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    class="lg:w-7 lg:h-7   xl:w-12  xl:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    class="w-7 h-7   xl:w-12  xl:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -238,11 +239,11 @@
                             </div>
                             <!-- svg  -->
                             <div
-                                class="hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
-                                <div class="lg:w-9 lg:h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-blue-100 to-white rounded-xl shadow-sm 
+                                class="flex md:hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
+                                <div class="w-9 h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-blue-100 to-white rounded-xl shadow-sm 
                                                                         flex items-center justify-center"
                                     id="centerCrd-svg1">
-                                    <svg id='Calendar_24' class="lg:w-7 lg:h-7   xl:w-12  xl:h-12" viewBox='0 0 24 24'
+                                    <svg id='Calendar_24' class="w-7 h-7   xl:w-12  xl:h-12" viewBox='0 0 24 24'
                                         xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                                         <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
 
@@ -473,11 +474,11 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="lg:w-9 lg:h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-cyan-100 to-white rounded-xl shadow-sm 
+                                <div class="w-9 h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-cyan-100 to-white rounded-xl shadow-sm 
                                                                         flex items-center justify-center"
                                     id="centerCrd-svg2">
-                                    <svg class="lg:w-7 lg:h-7   xl:w-12  xl:h-12" id='Medical_Room_Clock_Woman_24'
-                                        width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
+                                    <svg class="w-7 h-7   xl:w-12  xl:h-12" id='Medical_Room_Clock_Woman_24' width='24'
+                                        height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
                                         xmlns:xlink='http://www.w3.org/1999/xlink'>
                                         <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
 
@@ -574,10 +575,10 @@
                             </div>
 
                             <!-- image  -->
-                            <div class="mt-auto  absolute bottom-6 right-8 lg:bottom-5 lg:right-1 rotate-6 group-hover:rotate-0 transition-transform duration-300 "
+                            <div class="mt-auto  absolute bottom-12 right-4 md:bottom-6 md:right-8 lg:bottom-5 lg:right-1 rotate-6 group-hover:rotate-0 transition-transform duration-300 "
                                 id="centerCrd-img">
                                 <img src='{% static "appoiment-1.png" %}' alt="Appointment"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300  drop-shadow-down md:w-40 lg:w-36 xl:w-44">
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300  drop-shadow-down w-36 md:w-40 lg:w-36 xl:w-44">
                             </div>
 
 
@@ -586,8 +587,8 @@
                 </div>
 
                 <!-- Right Card -->
-                <div class="group relative w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10"
-                    id="rightCrd">
+                <div id="rightCrd"
+                    class=" relative  group  w-full md:w-80 h-64 transition-all duration-500 hover:scale-105 hover:z-10">
                     <img id="bumpImage" src="{% static 'doc-1.png' %}"
                         class="drop-shadow-down animate-doc cursor-pointer absolute hidden md:block right-2 md:-top-44 lg:-top-64 xl:-top-80  "
                         alt="Boy Doctor HomePage" />
@@ -608,19 +609,19 @@
                             </div>
                             <!-- svg  -->
                             <div
-                                class="hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
-                                <div class="lg:w-9 lg:h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-pink-100 to-white rounded-xl shadow-sm 
+                                class="flex md:hidden lg:flex space-x-4 opacity-80 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300">
+                                <div class="   w-9 h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-pink-100 to-white rounded-xl shadow-sm 
                                                                                     flex items-center justify-center"
                                     id="rightCrd-svg1">
-                                    <svg class="lg:w-7 lg:h-7   xl:w-12  xl:h-12 text-pink-600" fill="currentColor"
+                                    <svg class="  w-7 h-7   xl:w-12  xl:h-12 text-pink-600" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
                                     </svg>
                                 </div>
-                                <div class="lg:w-9 lg:h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-purple-100 to-white rounded-xl shadow-sm 
+                                <div class=" w-9 h-9     xl:w-14  xl:h-14 bg-gradient-to-br from-purple-100 to-white rounded-xl shadow-sm 
                                                 flex items-center justify-center" id="rightCrd-svg2">
-                                    <svg class="lg:w-7 lg:h-7   xl:w-12  xl:h-12 text-purple-600" fill="currentColor"
+                                    <svg class=" w-7 h-7   xl:w-12  xl:h-12 text-purple-600" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="M21 8V7l-3 3-3-3v1l3 3 3-3zm-1 1H4v10h16V9zM4 5h16v2H4V5zm2 6h12v2H6v-2z" />
@@ -633,7 +634,7 @@
                             <div class="mt-auto absolute -bottom-8 lg:-bottom-4 -right-5 rotate-12 group-hover:rotate-0 transition-all duration-300 "
                                 id="rightCrd-img">
                                 <img src='{% static "videoCall-3.png" %}' alt="Video CALL"
-                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 lg:w-32 xl:w-40">
+                                    class="ml-auto transform  hover:scale-105 transition-transform duration-300 w-36 md:w-40 lg:w-32 xl:w-40">
                             </div>
                         </div>
                     </div>
@@ -641,12 +642,12 @@
             </div>
         </div>
 
-        <!-- unused class name, but used in js so calling it here -->
-        <div class="hidden right-4 bottom-8"></div>
-
 
 
     </section>
+
+
+
 
 
 
