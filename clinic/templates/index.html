@@ -14,14 +14,14 @@
 <body class="min-h-screen bg-gradient-to-r from-blue-50 via-white to-blue-50 font-sans">
 
     <!-- Header -->
-    <header class="container mx-auto px-6 py-6 text-black">
+    <header class="container mx-auto px-6 py-6 text-black  ">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <svg id='Heart_Health_24' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
                     xmlns:xlink='http://www.w3.org/1999/xlink'>
                     <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
                     <g transform="matrix(0.25 0 0 0.25 12 12)">
-                        <g style="">
+                        <g>
                             <g transform="matrix(1 0 0 1 0 -0.06)">
                                 <path
                                     style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(247,143,143); fill-rule: nonzero; opacity: 1;"
@@ -648,12 +648,749 @@
 
     </section>
 
+    <!-- work flow  -->
+
+    <section class="py-12 overflow-hidden bg-sky-50 -mt-0 md:-mt-80"> <!-- -280px -->
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <span
+                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-4 inline-block">Workflow</span>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Look at a glance how our system works</h1>
+            </div>
+
+            <div class="parallax-container relative mb-6">
+                <div class="workflow-cards-container grid md:grid-cols-3 gap-8 md:gap-6">
+                    <!-- Card 1 -->
+                    <div class="workflow-card bg-white rounded-xl p-8 text-center transform transition-all"
+                        data-speed="0.95">
+                        <div class="workflow-img bg-gray-100 mb-6">
+                            <img src="https://doxe.originlabsoft.com/assets/front/img/plan.svg" alt="Create Account"
+                                class="w-20 h-20 mx-auto">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Create Account and Set Up Prescription Settings
+                        </h3>
+                        <p class="text-gray-600">Sign up quickly, configure your prescription preferences, and start
+                            managing digital prescriptions seamlessly.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="workflow-card bg-white rounded-xl p-8 text-center shadow-lg transform transition-all"
+                        data-speed="1">
+                        <div class="workflow-img bg-gray-100 mb-6">
+                            <img src="https://doxe.originlabsoft.com/assets/front/img/work.svg" alt="Accept Bookings"
+                                class="w-20 h-20 mx-auto">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Accept Bookings and Manage Your Schedule</h3>
+                        <p class="text-gray-600">Share your profile link for easy patient bookings, manage appointments,
+                            and
+                            offer video consultations.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="workflow-card bg-white rounded-xl p-8 text-center transform transition-all"
+                        data-speed="1.05">
+                        <div class="workflow-img bg-gray-100 mb-6">
+                            <img src="https://doxe.originlabsoft.com/assets/front/img/payment.svg"
+                                alt="Automate Payments" class="w-20 h-20 mx-auto">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Automate Payments and Manage Your Practice</h3>
+                        <p class="text-gray-600">Accept online and offline payments, track transactions, and use
+                            analytics
+                            to optimize your practice and grow your chamber.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- our features show case  -->
+    <style>
+        .department-card {
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-container {
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover .icon-container {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center">
+                <div class="lg:w-2/3 text-center">
+                    <h4 class="text-green-500 font-semibold text-lg">Our Department</h4>
+                    <h1 class="text-4xl font-bold mt-3">We have all <span class="text-blue-500">Department</span>
+                    </h1>
+                    <p class="text-gray-600 mt-3 max-w-2xl mx-auto">
+                        Dermatologists Have problems with your skin, hair, nails? ·
+                        Endocrinologists These are experts on hormones and metabolism.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-12">
+                <!-- Crutches -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.1s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-human-wheelchair text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Crutches</h5>
+                    </a>
+                </div>
+
+                <!-- X-ray -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.2s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-radiology-box text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">X-ray</h5>
+                    </a>
+                </div>
+
+                <!-- Pulmonary -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.3s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-heart-pulse text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Pulmonary</h5>
+                    </a>
+                </div>
+
+                <!-- Cardiology -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.4s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-lungs text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Cardiology</h5>
+                    </a>
+                </div>
+
+                <!-- Dental Care -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.5s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-tooth text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Dental Care</h5>
+                    </a>
+                </div>
+
+                <!-- Neurology -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.6s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-brain text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Neurology</h5>
+                    </a>
+                </div>
+
+                <!-- Medical -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.7s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-needle text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Medical</h5>
+                    </a>
+                </div>
+
+                <!-- Orthopadic -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.8s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-bone text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Orthopadic</h5>
+                    </a>
+                </div>
+
+                <!-- Blood Bank -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 0.9s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-water text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Blood Bank</h5>
+                    </a>
+                </div>
+
+                <!-- Surgical -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 1s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-wheelchair-accessibility text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Surgical</h5>
+                    </a>
+                </div>
+
+                <!-- Nursing -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 1.1s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-mother-nurse text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Nursing</h5>
+                    </a>
+                </div>
+
+                <!-- Psychiatry -->
+                <div class="department-card bg-white rounded-lg shadow p-6 text-center animate-fade-in"
+                    style="animation-delay: 1.2s">
+                    <a href="#!" class="block">
+                        <div
+                            class="icon-container bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                            <i class="mdi mdi-head-snowflake text-blue-500 text-3xl"></i>
+                        </div>
+                        <h5 class="mt-4 font-medium text-gray-800">Psychiatry</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 
 
 
+    <!-- doctor show case  -->
+    <style>
+        .doctor-card {
+            transition: all 0.3s ease;
+        }
 
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .pagination-dot {
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            width: 2rem;
+        }
+    </style>
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Header Section -->
+            <div class="flex justify-center">
+                <div class="lg:w-2/3 text-center">
+                    <h4 class="text-green-500 font-semibold text-lg">Our Doctor</h4>
+                    <h1 class="text-4xl font-bold mt-3 text-gray-700">We Have Best <span
+                            class="text-blue-500">Doctor</span>
+                    </h1>
+                    <p class="text-gray-600 mt-3 max-w-2xl mx-auto">
+                        TeamDoctor provides organisations with an essential video-based online training course
+                        for all employees which gives a baseline of knowledge.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Carousel Section -->
+            <div class="mt-12">
+                <div class="relative">
+                    <!-- Doctor Cards Container -->
+                    <div id="doctorCarousel" class="flex overflow-hidden">
+                        <!-- Doctor cards will be dynamically loaded here -->
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button id="prevBtn"
+                        class="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md text-blue-500 hover:text-blue-700 focus:outline-none hidden md:block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="nextBtn"
+                        class="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md text-blue-500 hover:text-blue-700 focus:outline-none hidden md:block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Pagination Dots -->
+                <div class="flex justify-center space-x-2 mt-8" id="paginationDots">
+                    <!-- Pagination dots will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Doctor Data
+        const doctors = [
+            {
+                name: "Dr. Morak jhon",
+                specialty: "Anesthesiologists",
+                image: "/api/placeholder/400/500" // Using placeholder as we can't load external images
+            },
+            {
+                name: "Dr. Aenna backer",
+                specialty: "Cardiologist",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Morish Jemsh",
+                specialty: "Dermatologists",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Olivia Nebar",
+                specialty: "Endocrinologists",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Hory Mant",
+                specialty: "Anesthesiologists",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Vrutki vahut",
+                specialty: "Cardiologist",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Krish Bardan",
+                specialty: "Dermatologists",
+                image: "/api/placeholder/400/500"
+            },
+            {
+                name: "Dr. Teri Hrio",
+                specialty: "Endocrinologists",
+                image: "/api/placeholder/400/500"
+            }
+        ];
+
+        // Variables
+        let currentIndex = 0;
+        const cardsToShow = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+
+        // DOM Elements
+        const carousel = document.getElementById('doctorCarousel');
+        const paginationContainer = document.getElementById('paginationDots');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Initialize the carousel
+        function initCarousel() {
+            // Clear the carousel
+            carousel.innerHTML = '';
+
+            // Create all doctor cards but only show the current ones
+            doctors.forEach((doctor, index) => {
+                const isVisible = index >= currentIndex && index < currentIndex + cardsToShow;
+
+                const card = document.createElement('div');
+                card.className = `doctor-card bg-white p-4 rounded-lg shadow-md mx-2 flex-shrink-0 ${isVisible ? 'fade-in' : 'hidden'}`;
+                card.style.width = `calc(${100 / cardsToShow}% - 1rem)`;
+                card.style.animationDelay = `${(index - currentIndex) * 0.1}s`;
+
+                card.innerHTML = `
+                        <div class="overflow-hidden rounded-lg">
+                            <img src="${doctor.image}" alt="${doctor.name}" class="w-full object-cover aspect-[3/4] hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="text-center mt-4">
+                            <h3 class="text-xl font-semibold text-gray-800">${doctor.name}</h3>
+                            <p class="text-blue-500">${doctor.specialty}</p>
+                        </div>
+                    `;
+
+                carousel.appendChild(card);
+            });
+
+            // Update pagination dots
+            updatePagination();
+        }
+
+        // Update pagination dots
+        function updatePagination() {
+            paginationContainer.innerHTML = '';
+
+            const totalDots = Math.ceil((doctors.length - cardsToShow + 1) / 1);
+
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('button');
+                dot.className = `pagination-dot h-2 rounded-full bg-gray-300 transition-all ${currentIndex === i ? 'w-8 bg-blue-500 active' : 'w-2'}`;
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', () => {
+                    currentIndex = i;
+                    initCarousel();
+                });
+
+                paginationContainer.appendChild(dot);
+            }
+        }
+
+        // Event listeners for navigation buttons
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                initCarousel();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < doctors.length - cardsToShow) {
+                currentIndex++;
+                initCarousel();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const newCardsToShow = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+
+            if (newCardsToShow !== cardsToShow) {
+                cardsToShow = newCardsToShow;
+                // Adjust currentIndex if necessary
+                if (currentIndex > doctors.length - cardsToShow) {
+                    currentIndex = doctors.length - cardsToShow;
+                }
+                initCarousel();
+            }
+        });
+
+        // Auto-switch functionality
+        let autoplayInterval;
+
+        function startAutoplay() {
+            autoplayInterval = setInterval(() => {
+                if (currentIndex < doctors.length - cardsToShow) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                initCarousel();
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+        }
+
+        // Pause autoplay on hover
+        carousel.addEventListener('mouseenter', stopAutoplay);
+        carousel.addEventListener('mouseleave', startAutoplay);
+
+        // Initialize the carousel and start autoplay
+        initCarousel();
+        startAutoplay();
+    </script>
+
+
+
+    <!-- testmonials / feed back  -->
+    <style>
+        .testimonial-slide {
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .star-animation {
+            animation: starPulse 1.5s infinite alternate;
+        }
+
+        @keyframes starPulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.2);
+            }
+        }
+
+        .pagination-dot {
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot:hover {
+            transform: scale(1.2);
+        }
+    </style>
+    <section class="py-16 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <!-- Header Section -->
+            <div class="text-center max-w-2xl mx-auto fade-in">
+                <h4 class="text-green-500 font-medium text-lg">Testimonial</h4>
+                <h1 class="text-4xl font-bold mt-3">Patient's <span class="text-blue-500">Feedback</span></h1>
+                <p class="text-gray-600 mt-3">
+                    This review shows that incorporating patient feedback of their experience into
+                    research on quality patient-centred care
+                </p>
+            </div>
+
+            <!-- Testimonial Slider -->
+            <div class="mt-12 relative" id="testimonial-container">
+                <div class="flex overflow-hidden" id="testimonial-wrapper">
+                    <!-- Testimonial Slides -->
+                    <div class="testimonial-slide min-w-full md:min-w-0 md:w-1/3 px-4 opacity-100">
+                        <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                            <div class="flex flex-col items-center">
+                                <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
+                                    <img src="/api/placeholder/100/100" alt="Jeky Jodh"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <h3 class="text-blue-500 text-xl font-semibold">Jeky Jodh</h3>
+                                <div class="flex mt-2 mb-3 star-animation">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                </div>
+                                <p class="text-center text-gray-600">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit, error!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide min-w-full md:min-w-0 md:w-1/3 px-4 hidden md:block">
+                        <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                            <div class="flex flex-col items-center">
+                                <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
+                                    <img src="/api/placeholder/100/100" alt="Nesri Mratin"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <h3 class="text-blue-500 text-xl font-semibold">Nesri Mratin</h3>
+                                <div class="flex mt-2 mb-3 star-animation">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                </div>
+                                <p class="text-center text-gray-600">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit, error!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide min-w-full md:min-w-0 md:w-1/3 px-4 hidden md:block">
+                        <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                            <div class="flex flex-col items-center">
+                                <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
+                                    <img src="/api/placeholder/100/100" alt="Jhon Gaurg"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <h3 class="text-blue-500 text-xl font-semibold">Jhon Gaurg</h3>
+                                <div class="flex mt-2 mb-3 star-animation">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                </div>
+                                <p class="text-center text-gray-600">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit, error!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button
+                    class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hidden md:block hover:bg-gray-100 transition-all"
+                    id="prev-btn">
+                    <i class="fas fa-chevron-left text-blue-500"></i>
+                </button>
+                <button
+                    class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hidden md:block hover:bg-gray-100 transition-all"
+                    id="next-btn">
+                    <i class="fas fa-chevron-right text-blue-500"></i>
+                </button>
+
+                <!-- Pagination Dots -->
+                <div class="flex justify-center mt-8">
+                    <span class="pagination-dot h-2 w-8 bg-gray-300 rounded-full mx-1 cursor-pointer"
+                        data-index="0"></span>
+                    <span class="pagination-dot h-2 w-8 bg-gray-300 rounded-full mx-1 cursor-pointer"
+                        data-index="1"></span>
+                    <span class="pagination-dot h-2 w-8 bg-gray-300 rounded-full mx-1 cursor-pointer"
+                        data-index="2"></span>
+                    <span class="pagination-dot h-2 w-8 bg-blue-500 rounded-full mx-1 cursor-pointer"
+                        data-index="3"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slides = document.querySelectorAll('.testimonial-slide');
+            const dots = document.querySelectorAll('.pagination-dot');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            // Show active pagination dot
+            function updateDots() {
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('bg-blue-500');
+                    dot.classList.add('bg-gray-300');
+                    if (index === currentSlide) {
+                        dot.classList.remove('bg-gray-300');
+                        dot.classList.add('bg-blue-500');
+                    }
+                });
+            }
+
+            // Handle pagination dot clicks
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlider();
+                });
+            });
+
+            // Handle next button click
+            nextBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            });
+
+            // Handle previous button click
+            prevBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            });
+
+            // Auto slide every 5 seconds
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000);
+
+            // Update slider position and active dot
+            function updateSlider() {
+                // For mobile, just show the current slide
+                if (window.innerWidth < 768) {
+                    slides.forEach((slide, index) => {
+                        if (index === currentSlide) {
+                            slide.classList.remove('hidden');
+                            slide.classList.add('block');
+                        } else {
+                            slide.classList.add('hidden');
+                            slide.classList.remove('block');
+                        }
+                    });
+                } else {
+                    // For desktop, show 3 slides at once with proper animation
+                    const offset = currentSlide % totalSlides;
+                    const wrapper = document.getElementById('testimonial-wrapper');
+                    wrapper.style.transition = 'transform 0.5s ease-in-out';
+                    wrapper.style.transform = `translateX(-${offset * 33.333}%)`;
+                }
+                updateDots();
+            }
+
+            // Initialize slider
+            updateSlider();
+
+            // Animate stars
+            const starContainers = document.querySelectorAll('.star-animation');
+            starContainers.forEach(container => {
+                const stars = container.querySelectorAll('i');
+                stars.forEach((star, index) => {
+                    star.style.animationDelay = `${index * 0.1}s`;
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
