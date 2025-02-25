@@ -81,43 +81,97 @@
     <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent overflow-x-hidden min-h-screen">
 
         <img id="bumpImage2" src="{% static 'doc-2.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block  left-4 top-80  w-28 h-28   sm:left-8 sm:top-64  sm:w-40 sm:h-40 md:top-72  md:w-64 md:h-64 xl:w-96 xl:h-96"
+            class="drop-shadow-down animate-doc cursor-pointer absolute block  left-4 top-80  w-28 h-28   sm:left-8 sm:top-64  sm:w-40 sm:h-40 md:top-72  md:w-64 md:h-64 lg:-left-2 xl:w-96 xl:h-96"
             alt="Girl Doctor Homepage" />
 
         <img id="bumpImage" src="{% static 'doc-1.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block  right-3 top-[300px]  w-32 h-32   sm:right-8 sm:top-56  sm:w-48 sm:h-48  md:top-64 md:w-72 md:h-72  xl:w-[26rem] xl:h-[26rem]"
+            class="drop-shadow-down animate-doc cursor-pointer absolute block  right-3 top-[300px]  w-32 h-32   sm:right-8 sm:top-56  sm:w-48 sm:h-48  md:top-64 md:w-72 md:h-72 lg:-right-2 xl:w-[26rem] xl:h-[26rem]"
             alt="Boy Doctor HomePage" />
 
 
-
-
         <!-- Text Area -->
-        <div class="text-center mb-12">
-            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight">Nepal's Care</h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Clinic For Powering Healthcare, Optimizing Experiences
-            </p>
-            <div class="mt-8">
-                <button
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 transform">
-                    Get Started
-                </button>
+        <div class="relative container mx-auto px-6">
+            <!-- Text Area with Animations -->
+            <div class="text-center space-y-6">
+                <!-- Main Heading with Split Text Animation Effect -->
+                <h1
+                    class="inline-block text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-800 mb-2 tracking-tight animate-fade-in">
+                    Nepal's Care
+                </h1>
+
+                <!-- Tagline with Staggered Reveal Animation -->
+                <p
+                    class="text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto leading-relaxed font-light animate-slide-up">
+                    <span class="block">Clinic For Powering Healthcare,</span>
+                    <span class="block mt-1 text-indigo-600 font-medium">Optimizing Experiences</span>
+                </p>
+
+                <!-- Call-to-action Button with Pulse Animation -->
+                <div class="mt-10 animate-fade-in-delay">
+                    <button
+                        class="group relative bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 transform">
+                        <span class="relative z-10">Get Started</span>
+                        <span
+                            class="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+                        <span
+                            class="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 animate-pulse bg-blue-400/30 blur-sm transition-opacity duration-300"></span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Dot Navigation -->
-        <div class="flex justify-center space-x-3 mb-12">
-            <button class="w-2 h-2 rounded-full bg-gray-200 hover:bg-gray-400 transition-colors duration-200"
-                aria-label="Slide 1"></button>
-            <button class="w-2 h-2 rounded-full bg-gray-200 hover:bg-gray-400 transition-colors duration-200"
-                aria-label="Slide 2"></button>
-            <button class="w-2 h-2 rounded-full bg-gray-400 scale-110 transition-transform duration-200"
-                aria-label="Slide 3"></button>
-            <button class="w-2 h-2 rounded-full bg-gray-200 hover:bg-gray-400 transition-colors duration-200"
-                aria-label="Slide 4"></button>
-            <button class="w-2 h-2 rounded-full bg-gray-200 hover:bg-gray-400 transition-colors duration-200"
-                aria-label="Slide 5"></button>
-        </div>
+        <!-- Add these custom animations to your CSS or in a style tag -->
+        <style>
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideUp {
+                from {
+                    transform: translateY(20px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeInDelay {
+                0% {
+                    opacity: 0;
+                }
+
+                30% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            .animate-fade-in {
+                animation: fadeIn 1s ease-out forwards;
+            }
+
+            .animate-slide-up {
+                animation: slideUp 1.2s ease-out forwards;
+            }
+
+            .animate-fade-in-delay {
+                animation: fadeInDelay 1.5s ease-out forwards;
+            }
+        </style>
+
+
 
 
         <div
