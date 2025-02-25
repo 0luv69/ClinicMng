@@ -63,3 +63,121 @@
             justify-content: center;
             margin: 0 auto;
         }
+
+
+
+/* Features of department list  */
+     .department-card {
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-container {
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover .icon-container {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+
+
+/* Doctor Paginations  */
+    .doctor-card {
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .pagination-dot {
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            width: 2rem;
+        }
+
+
+
+
+
+/* testomonials feedbacks  */
+.testimonial-slide {
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .star-animation {
+            animation: starPulse 1.5s infinite alternate;
+        }
+
+        @keyframes starPulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.2);
+            }
+        }
+
+        .pagination-dot {
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot:hover {
+            transform: scale(1.2);
+        }
