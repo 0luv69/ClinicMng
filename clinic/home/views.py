@@ -8,3 +8,7 @@ def home_page(request):
 
 def home_page2(request):
     return render(request, 'index.html')
+
+
+def appoinment(request):
+    return render(request, 'appoinment.html')
