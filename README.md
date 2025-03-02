@@ -12,3 +12,9 @@ Key Features:
 ✅ Enterprise-Level Security – Ensuring data privacy & compliance.
 
 By automating workflows and integrating telemedicine, NepalsCare empowers healthcare professionals to provide better patient care while saving time & resources.
+
+
+
+
+
+..
