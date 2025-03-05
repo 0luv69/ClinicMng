@@ -82,11 +82,11 @@
     <section class="container mx-auto px-6 py-12 md:py-16 bg-transparent overflow-x-hidden min-h-screen">
         <!-- Doctor Images - Keeping original positioning -->
         <img id="bumpImage2" src="{% static 'doc-2.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block left-4 top-80 w-28 h-28 sm:left-8 sm:top-56 sm:w-40 sm:h-40 md:top-64 md:-left-8 md:w-64 md:h-64 lg:-left-2 xl:w-96 xl:h-96"
+            class="overflow-x-hidden drop-shadow-down animate-doc cursor-pointer absolute block left-4 top-80 w-28 h-28 sm:left-8 sm:top-56 sm:w-40 sm:h-40 md:top-64 md:-left-8 md:w-64 md:h-64 lg:-left-2 xl:w-96 xl:h-96"
             alt="Girl Doctor Homepage" />
 
         <img id="bumpImage" src="{% static 'doc-1.png' %}"
-            class="drop-shadow-down animate-doc cursor-pointer absolute block right-3 top-[300px] w-32 h-32 sm:right-8 sm:top-48 sm:w-48 sm:h-48 md:top-52 md:-right-10 md:w-72 md:h-72 lg:-right-2 xl:w-[26rem] xl:h-[26rem]"
+            class="overflow-x-hidden drop-shadow-down animate-doc cursor-pointer absolute block right-3 top-[300px] w-32 h-32 sm:right-8 sm:top-48 sm:w-48 sm:h-48 md:top-52 md:-right-10 md:w-72 md:h-72 lg:-right-2 xl:w-[26rem] xl:h-[26rem]"
             alt="Boy Doctor HomePage" />
 
         <!-- Text Area - Keeping your original text and styling -->
@@ -227,7 +227,13 @@
     </section>
 
 
-
+    <style>
+        .workflow-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+    </style>
     <!-- work flow  -->
     <section class="py-12 overflow-hidden bg-sky-50 "> <!-- -280px -->
         <div class="container mx-auto px-4">
@@ -237,7 +243,7 @@
                 <h1 class="text-4xl font-bold text-gray-800 mb-2">Look at a glance how our system works</h1>
             </div>
 
-            <div class="parallax-container relative mb-6">
+            <div class=" relative mb-6">
                 <div class="workflow-cards-container grid md:grid-cols-3 gap-8 md:gap-6">
                     <!-- Card 1 -->
                     <div class="workflow-card bg-white rounded-xl p-8 text-center transform transition-all"
@@ -280,6 +286,25 @@
                 </div>
             </div>
         </div>
+        <script>
+            const observer1 = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Select all workflow cards inside the observed container
+                        document.querySelectorAll('.workflow-card').forEach((card, index) => {
+                            card.style.transitionDelay = `${index * 0.2}s`; // Delay animation for staggered effect
+                            card.classList.add('opacity-100', 'translate-y-0'); // Add animation classes
+                        });
+
+                        observer1.unobserve(entry.target); // Stop observing after animation triggers
+                    }
+                });
+            }, {
+                threshold: 0.5 // Trigger when 50% of the container is visible
+            });
+
+            observer1.observe(document.querySelector('.workflow-cards-container'));
+        </script>
     </section>
 
 
@@ -518,14 +543,14 @@
 
 
         <script>
-            const observer = new IntersectionObserver((entries) => {
+            const observer2 = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const departmentCards = document.querySelectorAll('.department-card');
                         departmentCards.forEach((card, index) => {
                             card.classList.add('animate-fade-in');
                         });
-                        observer.unobserve(entry.target); // Stop observing once animation is triggered
+                        observer2.unobserve(entry.target); // Stop observing once animation is triggered
                     }
                 });
             }, {
@@ -534,7 +559,7 @@
 
             // Start observing the department-list section
             const departmentList = document.getElementById('department-list');
-            observer.observe(departmentList);
+            observer2.observe(departmentList);
 
         </script>
     </section>
