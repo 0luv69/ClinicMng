@@ -920,10 +920,6 @@ select {
   top: 300px;
 }
 
-.top-72 {
-  top: 18rem;
-}
-
 .z-10 {
   z-index: 10;
 }
@@ -1148,6 +1144,10 @@ select {
   height: 1.25rem;
 }
 
+.h-52 {
+  height: 13rem;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -1178,14 +1178,6 @@ select {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-48 {
-  height: 12rem;
-}
-
-.h-52 {
-  height: 13rem;
 }
 
 .min-h-\[80px\] {
@@ -1322,11 +1314,6 @@ select {
 
 .-translate-y-1\/2 {
   --tw-translate-y: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-0 {
-  --tw-translate-y: 0px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1967,12 +1954,12 @@ select {
   padding-top: 0.75rem;
 }
 
-.pt-5 {
-  padding-top: 1.25rem;
-}
-
 .pt-4 {
   padding-top: 1rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
 }
 
 .text-center {
@@ -2299,6 +2286,15 @@ select {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 
+.ripple {
+  position: absolute;
+  display: block;
+  height: 50px;
+  width: 50px;
+  border-radius: 9999px;
+  opacity: 0;
+}
+
 @keyframes scale {
   0% {
     transform: scale(2);
@@ -2319,7 +2315,11 @@ select {
   }
 }
 
-@keyframes kid_bump {
+.animate-scale {
+  animation: scale 3s linear infinite;
+}
+
+@keyframes doc_bump {
   0% {
     transform: scale(1) translateY(100px);
     /* Initial scale */
@@ -2337,16 +2337,37 @@ select {
 }
 
 .animate-doc {
-  animation: kid_bump .5s ease-out forwards;
+  animation: doc_bump .5s ease-out forwards;
 }
 
 .drop-shadow-down {
   filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.5));
-  /* Adjust values as needed */
+  /* Doc image down black part */
 }
 
+/* Work flow */
+
 .workflow-card {
-  transition: transform 0.5s ease-in-out;
+  --tw-translate-y: 1.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  cursor: pointer;
+  border-radius: 0.75rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  padding: 2rem;
+  text-align: center;
+  opacity: 0;
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  transition-property: all;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-workflow-card {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .workflow-img {
@@ -2357,6 +2378,20 @@ select {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+}
+
+.workflow-card:hover {
+  --tw-translate-y: -0.75rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  transition-duration: 100ms;
+}
+
+.workflow-card:hover .workflow-img{
+  transition: transform 0.4s ease-in-out;
+  transform: scale(1.05) translateY(-5px);
 }
 
 /* Features of department list  */
@@ -2404,22 +2439,6 @@ select {
   transform: translateY(-5px);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
 .pagination-dot {
   transition: all 0.3s ease;
 }
@@ -2432,22 +2451,6 @@ select {
 
 .testimonial-slide {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-
-.fade-in {
-  animation: fadeIn 0.8s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .star-animation {
@@ -2730,6 +2733,10 @@ select {
     right: 2rem;
   }
 
+  .sm\:top-48 {
+    top: 12rem;
+  }
+
   .sm\:top-56 {
     top: 14rem;
   }
@@ -2738,24 +2745,8 @@ select {
     top: 16rem;
   }
 
-  .sm\:top-60 {
-    top: 15rem;
-  }
-
-  .sm\:top-52 {
-    top: 13rem;
-  }
-
-  .sm\:top-48 {
-    top: 12rem;
-  }
-
   .sm\:mb-2 {
     margin-bottom: 0.5rem;
-  }
-
-  .sm\:block {
-    display: block;
   }
 
   .sm\:inline {
@@ -2814,6 +2805,14 @@ select {
     position: relative;
   }
 
+  .md\:-left-8 {
+    left: -2rem;
+  }
+
+  .md\:-right-10 {
+    right: -2.5rem;
+  }
+
   .md\:-top-40 {
     top: -10rem;
   }
@@ -2830,56 +2829,12 @@ select {
     right: 2rem;
   }
 
-  .md\:top-64 {
-    top: 16rem;
-  }
-
-  .md\:top-72 {
-    top: 18rem;
-  }
-
-  .md\:right-0 {
-    right: 0px;
-  }
-
-  .md\:right-24 {
-    right: 6rem;
-  }
-
-  .md\:-right-4 {
-    right: -1rem;
-  }
-
-  .md\:-right-6 {
-    right: -1.5rem;
-  }
-
-  .md\:-right-8 {
-    right: -2rem;
-  }
-
-  .md\:-right-10 {
-    right: -2.5rem;
-  }
-
-  .md\:top-60 {
-    top: 15rem;
-  }
-
-  .md\:top-56 {
-    top: 14rem;
-  }
-
   .md\:top-52 {
     top: 13rem;
   }
 
-  .md\:-left-5 {
-    left: -1.25rem;
-  }
-
-  .md\:-left-8 {
-    left: -2rem;
+  .md\:top-64 {
+    top: 16rem;
   }
 
   .md\:col-span-1 {
@@ -2954,20 +2909,16 @@ select {
     height: 12rem;
   }
 
+  .md\:h-56 {
+    height: 14rem;
+  }
+
   .md\:h-64 {
     height: 16rem;
   }
 
   .md\:h-72 {
     height: 18rem;
-  }
-
-  .md\:h-52 {
-    height: 13rem;
-  }
-
-  .md\:h-56 {
-    height: 14rem;
   }
 
   .md\:w-24 {
@@ -3242,3 +3193,5 @@ select {
     width: 26rem;
   }
 }
+
+
