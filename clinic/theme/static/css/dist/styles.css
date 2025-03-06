@@ -2426,7 +2426,7 @@ select {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 6s ease-out forwards;
 }
 
 /* Doctor Paginations  */
