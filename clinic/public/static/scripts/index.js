@@ -101,7 +101,7 @@ function updatePagination() {
         dot.addEventListener('click', () => {
             currentIndex = i;
             initCarousel();
-        });
+        }); 
 
         paginationContainer.appendChild(dot);
     }
