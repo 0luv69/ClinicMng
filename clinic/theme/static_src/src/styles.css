@@ -119,6 +119,21 @@
 
 
 
+.animate-left_movement {
+    animation: leftMovement .4s ease-out forwards;
+}
+
+@keyframes leftMovement {
+    from {
+        transform: translateX(-20%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+
 /* Doctor Paginations  */
 .doctor-card {
     transition: all 0.3s ease;

@@ -1,215 +1,629 @@
-<!DOCTYPE html>
-<html lang="en">
+<div id="step-1" class="space-y-6">
+    <div>
+        <h3 class="mb-4 text-xl font-medium">
+            Select a Doctor
+        </h3>
+        <div class="mb-4">
+            <div id="doc-category" class="inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1">
+                <!-- Doctor Category Tabs button will be added here dynamically -->
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes countUp {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .animate-count {
-            animation: countUp 1s ease-out forwards;
-        }
-
-        .animate-fade {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        .stat-box {
-            transition: all 0.3s ease;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .scroll-top {
-            transition: all 0.3s ease;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-        }
-    </style>
-</head>
-
-<body class="bg-gray-50">
-    <section class="py-16 md:py-24">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col-reverse lg:flex-row items-stretch">
-                <!-- Stats Section -->
-                <div class="lg:w-1/2 mt-10 lg:mt-0">
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Patients Beds -->
-                        <div class="col-span-2 md:col-span-1 md:col-start-1 md:col-end-2 md:row-start-1 md:row-end-2">
-                            <div class="stat-box bg-green-50 rounded-lg p-6 h-full flex items-center justify-center text-center animate-count"
-                                style="animation-delay: 0.1s">
-                                <div>
-                                    <h3 class="text-green-500 text-5xl font-bold mb-2">101</h3>
-                                    <h4 class="text-gray-700 text-lg font-normal">Patients Beds</h4>
-                                </div>
+        </div>
+        <div class="tab-content" id="all-tab">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Doctor Card 1 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-smith" data-name="Dr. Emily Smith" data-specialty="General Medicine">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Emily Smith"
+                                    class="object-cover w-full h-full">
                             </div>
-                        </div>
-
-                        <!-- Doctors & Nurses -->
-                        <div class="col-span-2 md:col-span-1 md:col-start-2 md:col-end-3 md:row-start-1 md:row-end-2">
-                            <div class="stat-box bg-red-50 rounded-lg p-6 h-full flex items-center justify-center text-center animate-count"
-                                style="animation-delay: 0.3s">
-                                <div>
-                                    <h3 class="text-red-400 text-5xl font-bold mb-2">195</h3>
-                                    <h4 class="text-gray-700 text-lg font-normal">Doctors & Nurses</h4>
-                                </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Emily Smith</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                General Medicine
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.9</span>
+                                <span class="text-sm text-muted-foreground">(124 reviews)</span>
                             </div>
-                        </div>
-
-                        <!-- Happy Patients -->
-                        <div class="col-span-2 md:col-span-1 md:col-start-1 md:col-end-2 md:row-start-2 md:row-end-3">
-                            <div class="stat-box bg-gray-100 rounded-lg p-6 h-full flex items-center justify-center text-center animate-count"
-                                style="animation-delay: 0.5s">
-                                <div>
-                                    <h3 class="text-orange-400 text-5xl font-bold mb-2">427</h3>
-                                    <h4 class="text-gray-700 text-lg font-normal">Happy Patients</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Years Experience -->
-                        <div class="col-span-2 md:col-span-1 md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3">
-                            <div class="stat-box bg-red-50 rounded-lg p-6 h-full flex items-center justify-center text-center animate-count"
-                                style="animation-delay: 0.7s">
-                                <div>
-                                    <h3 class="text-blue-500 text-5xl font-bold mb-2">10</h3>
-                                    <h4 class="text-gray-700 text-lg font-normal">Years Experience</h4>
-                                </div>
+                            <p class="text-sm text-muted-foreground">
+                                12 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- About Section -->
-                <div class="lg:w-1/2 lg:pl-12 animate-fade">
-                    <div class="text-center lg:text-left pb-5 pt-5">
-                        <h2 class="text-3xl md:text-4xl font-bold text-indigo-900 mb-6">
-                            About For HMS
-                        </h2>
-                        <p class="text-gray-600 mb-8 leading-relaxed">
-                            HMS will teach physicians and nurses from around the world the principles of blood
-                            management, as well as how to manage their own blood conservation programs. The
-                            hospital was chosen based on the reputation its bloodless program has established in the
-                            medical community and because of its nationally recognized results.
-                            <br><br>
-                            We are a group of creative nerds making awesome stuff for Web and Mobile. We just
-                            love to contribute to open source technologies. We always try to build something which
-                            helps developers to save their time. so they can spend a bit more time with their friends
-                            And family.
-                        </p>
-                        <a href="#book-appointment"
-                            class="inline-block px-6 py-3 bg-orange-400 hover:bg-orange-500 text-white font-medium rounded-md transition-all duration-300 transform hover:scale-105">
-                            Book Appointment
-                        </a>
+                <!-- Doctor Card 2 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-johnson" data-name="Dr. Michael Johnson" data-specialty="Cardiology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Michael Johnson"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Michael Johnson</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Cardiology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.8</span>
+                                <span class="text-sm text-muted-foreground">(98 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                15 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 3 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-patel" data-name="Dr. Priya Patel" data-specialty="Neurology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Priya Patel"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Priya Patel</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Neurology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.7</span>
+                                <span class="text-sm text-muted-foreground">(87 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                10 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 4 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-williams" data-name="Dr. James Williams" data-specialty="Pediatrics">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. James Williams"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. James Williams</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Pediatrics
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.9</span>
+                                <span class="text-sm text-muted-foreground">(142 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                14 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 5 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-chen" data-name="Dr. Lisa Chen" data-specialty="General Medicine">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Lisa Chen"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Lisa Chen</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                General Medicine
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.6</span>
+                                <span class="text-sm text-muted-foreground">(76 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                8 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 6 -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-rodriguez" data-name="Dr. Carlos Rodriguez" data-specialty="Cardiology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Carlos Rodriguez"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Carlos Rodriguez</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Cardiology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.8</span>
+                                <span class="text-sm text-muted-foreground">(112 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                11 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                doctors = [
+                    {
+                        id: "dr-smith",
+                        name: "Dr. Emily Smith",
+                        specialty: "General Medicine",
+                        experience: 12,
+                        rating: 4.9,
+                        reviews: 124,
+                        fees: 150,
+                        image: "https://placehold.co/300x300",
+                        availability: {
+                            days: ["2025-03-07", "2025-03-08", "2025-03-10"],
+                            times: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM"]
+                        }
+                    },
+                    {
+                        "id": "dr-smith",
+                        "name": "Dr. Emily Smith",
+                        "specialty": "General Medicine",
+                        "experience": 12,
+                        "rating": 4.9,
+                        "reviews": 124,
+                        "fees": 150,
+                        "image": "https://placehold.co/300x300",
+                        "availability": {
+                            "days": ["2025-03-07", "2025-03-08", "2025-03-10"],
+                            "times": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM"]
+                        }
+                    },
+                    {
+                        "id": "dr-johnson",
+                        "name": "Dr. Michael Johnson",
+                        "specialty": "Cardiology",
+                        "experience": 15,
+                        "rating": 4.8,
+                        "reviews": 98,
+                        "fees": 200,
+                        "image": "https://placehold.co/300x300",
+                        "availability": {
+                            "days": ["2025-03-07", "2025-03-09", "2025-03-11"],
+                            "times": ["09:30 AM", "10:30 AM", "11:30 AM", "02:30 PM", "03:30 PM"]
+                        }
+                    }
+                ]
+                // Function to generate doctor card
+                function generateDoctorCard(doctor) {
+                    return `
+                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-gray-300 rounded-lg"
+                        data-id="${doctor.id}" 
+                        data-name="${doctor.name}" 
+                        data-specialty="${doctor.specialty}"
+                        data-fees="${doctor.fees}">
+                        <div class="p-4">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                    <img src="${doctor.image}" alt="${doctor.name}" class="object-cover w-full h-full">
+                                </div>
+                                <h4 class="mb-1 text-lg font-semibold">${doctor.name}</h4>
+                                <span class="inline-flex items-center rounded-full border border-gray-300 px-2.5 py-0.5 text-xs font-semibold bg-gray-200 text-gray-800 mb-2">
+                                    ${doctor.specialty}
+                                </span>
+                                <div class="flex items-center mb-2 space-x-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span class="text-sm font-medium">${doctor.rating}</span>
+                                    <span class="text-sm text-gray-600">(${doctor.reviews} reviews)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">${doctor.experience} years experience</p>
+                                <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                    <span class="inline-flex items-center rounded-full border border-gray-300 px-2.5 py-0.5 text-xs font-semibold bg-gray-200 text-gray-800">
+                                        Available Today
+                                    </span>
+                                    <span class="inline-flex items-center rounded-full border border-gray-300 px-2.5 py-0.5 text-xs font-semibold bg-gray-200 text-gray-800">
+                                        Online Consult
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                }
+
+
+            </script>
+
+
+        </div>
+
+        <!-- General Tab Content -->
+        <div class="tab-content hidden" id="general-tab">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Dr. Emily Smith -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-smith" data-name="Dr. Emily Smith" data-specialty="General Medicine">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Emily Smith"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Emily Smith</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                General Medicine
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.9</span>
+                                <span class="text-sm text-muted-foreground">(124 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                12 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dr. Lisa Chen -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-chen" data-name="Dr. Lisa Chen" data-specialty="General Medicine">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Lisa Chen"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Lisa Chen</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                General Medicine
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.6</span>
+                                <span class="text-sm text-muted-foreground">(76 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                8 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Scroll to top button -->
-    <div class="fixed bottom-6 right-6">
-        <button id="scrollTop"
-            class="scroll-top bg-indigo-900 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-            </svg>
-        </button>
+        <!-- Cardiology Tab Content -->
+        <div class="tab-content hidden" id="cardiology-tab">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Dr. Michael Johnson -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-johnson" data-name="Dr. Michael Johnson" data-specialty="Cardiology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Michael Johnson"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Michael Johnson</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Cardiology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.8</span>
+                                <span class="text-sm text-muted-foreground">(98 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                15 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dr. Carlos Rodriguez -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-rodriguez" data-name="Dr. Carlos Rodriguez" data-specialty="Cardiology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Carlos Rodriguez"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Carlos Rodriguez</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Cardiology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.8</span>
+                                <span class="text-sm text-muted-foreground">(112 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                11 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neurology Tab Content -->
+        <div class="tab-content hidden" id="neurology-tab">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Dr. Priya Patel -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-patel" data-name="Dr. Priya Patel" data-specialty="Neurology">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. Priya Patel"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. Priya Patel</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Neurology
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.7</span>
+                                <span class="text-sm text-muted-foreground">(87 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                10 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pediatrics Tab Content -->
+        <div class="tab-content hidden" id="pediatrics-tab">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Dr. James Williams -->
+                <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+                    data-id="dr-williams" data-name="Dr. James Williams" data-specialty="Pediatrics">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                                <img src="https://placehold.co/300x300" alt="Dr. James Williams"
+                                    class="object-cover w-full h-full">
+                            </div>
+                            <h4 class="mb-1 text-lg font-semibold">Dr. James Williams</h4>
+                            <span
+                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                                Pediatrics
+                            </span>
+                            <div class="flex items-center mb-2 space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                                <span class="text-sm font-medium">4.9</span>
+                                <span class="text-sm text-muted-foreground">(142 reviews)</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                14 years experience
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-1 mt-3">
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Available Today
+                                </span>
+                                <span
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    Online Consult
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Counter animation
-            const countElements = document.querySelectorAll('.animate-count h3');
-
-            function animateCounters() {
-                countElements.forEach(el => {
-                    const target = parseInt(el.textContent);
-                    const duration = 2000; // 2 seconds
-                    const step = Math.ceil(target / (duration / 20)); // Update every 20ms
-                    let current = 0;
-
-                    const timer = setInterval(() => {
-                        current += step;
-                        if (current >= target) {
-                            el.textContent = target;
-                            clearInterval(timer);
-                        } else {
-                            el.textContent = current;
-                        }
-                    }, 20);
-                });
-            }
-
-            // Intersection Observer for animation triggers
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateCounters();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            // Observe the stats section
-            const statsSection = document.querySelector('.lg:w-1/2');
-            if (statsSection) {
-                observer.observe(statsSection);
-            }
-
-            // Scroll to top functionality
-            const scrollTopBtn = document.getElementById('scrollTop');
-
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    scrollTopBtn.classList.remove('opacity-0', 'invisible');
-                    scrollTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    scrollTopBtn.classList.add('opacity-0', 'invisible');
-                    scrollTopBtn.classList.remove('opacity-100', 'visible');
-                }
-            });
-
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-
-</html>
+</div>

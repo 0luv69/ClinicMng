@@ -52,7 +52,25 @@ module.exports = {
       },fontSize: {
         '2xs': '0.65rem', // Customizing text-xs to 0.85rem (adjust as needed)
       },
-      
+      colors: {
+                        primary: {
+                            DEFAULT: '#0056b3',
+                            foreground: '#f8fafc',
+                        },
+                        secondary: {
+                            DEFAULT: '#e2e8f0',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        accent: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#1e293b',
+                        },
+                        border: '#e2e8f0',
+                    },
         },
     },
     plugins: [

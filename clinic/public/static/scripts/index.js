@@ -68,7 +68,7 @@ function initCarousel() {
         const isVisible = index >= currentIndex && index < currentIndex + cardsToShow;
 
         const card = document.createElement('div');
-        card.className = `doctor-card bg-white p-4 rounded-lg shadow-md mx-2 flex-shrink-0 ${isVisible ? 'animate-fade-in' : 'hidden'}`;
+        card.className = `doctor-card bg-white p-4 rounded-lg shadow-md mx-2 flex-shrink-0 ${isVisible ? 'animate-left_movement' : 'hidden'}`;
         card.style.width = `calc(${100 / cardsToShow}% - 1rem)`;
         card.style.animationDelay = `${(index - currentIndex) * 0.1}s`;
 
@@ -96,7 +96,7 @@ function updatePagination() {
 
     for (let i = 0; i < totalDots; i++) {
         const dot = document.createElement('button');
-        dot.className = `pagination-dot h-2 rounded-full bg-gray-300 transition-all ${currentIndex === i ? 'w-8 bg-blue-500 active' : 'w-2'}`;
+        dot.className = `pagination-dot h-2 rounded-full  transition-all ${currentIndex === i ? 'w-8 bg-blue-500 active' : 'w-2 bg-gray-300'}`;
         dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
         dot.addEventListener('click', () => { 
             currentIndex = i;

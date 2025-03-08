@@ -11,57 +11,25 @@
 
 
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            DEFAULT: '#0056b3',
-                            foreground: '#f8fafc',
-                        },
-                        secondary: {
-                            DEFAULT: '#e2e8f0',
-                            foreground: '#1e293b',
-                        },
-                        muted: {
-                            DEFAULT: '#f1f5f9',
-                            foreground: '#64748b',
-                        },
-                        accent: {
-                            DEFAULT: '#f1f5f9',
-                            foreground: '#1e293b',
-                        },
-                        border: '#e2e8f0',
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        .calendar-container .flatpickr-calendar {
-            box-shadow: none;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            width: 100%;
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        .calendar-container .flatpickr-day.selected {
+    <style>
+        .flatpickr-calendar .flatpickr-day.selected {
             background: #0056b3;
             border-color: #0056b3;
         }
 
-        .calendar-container .flatpickr-day.today {
+        .flatpickr-calendar .flatpickr-day.today {
             border-color: #0056b3;
         }
 
-        .calendar-container .flatpickr-day:hover {
-            background: #e2e8f0;
+        .flatpickr-calendar .flatpickr-day:hover {
+            background: rgb(50, 87, 139);
+            ;
         }
 
-        .calendar-container .flatpickr-day.flatpickr-disabled {
+        .flatpickr-calendar .flatpickr-day.flatpickr-disabled {
             color: #cbd5e1;
         }
     </style>
@@ -106,570 +74,16 @@
                     <!-- Step 1: Select a Doctor -->
                     <div id="step-1" class="space-y-6">
                         <div>
-                            <h3 class="mb-4 text-xl font-medium">
-                                Select a Doctor
-                            </h3>
+                            <h3 class="mb-4 text-xl font-medium">Select a Doctor</h3>
                             <div class="mb-4">
-                                <div class="inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1">
-                                    <button type="button"
-                                        class="tab-button active px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm"
-                                        data-tab="all">All Doctors</button>
-                                    <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md"
-                                        data-tab="general">General</button>
-                                    <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md"
-                                        data-tab="cardiology">Cardiology</button>
-                                    <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md"
-                                        data-tab="neurology">Neurology</button>
-                                    <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md"
-                                        data-tab="pediatrics">Pediatrics</button>
+                                <div id="doc-category"
+                                    class="inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1">
+                                    <!-- Doctor Category Tabs button will be added here dynamically -->
                                 </div>
                             </div>
-                            <div class="tab-content" id="all-tab">
-                                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                    <!-- Doctor Card 1 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-smith" data-name="Dr. Emily Smith"
-                                        data-specialty="General Medicine">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Emily Smith"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Emily Smith</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    General Medicine
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.9</span>
-                                                    <span class="text-sm text-muted-foreground">(124 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    12 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor Card 2 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-johnson" data-name="Dr. Michael Johnson"
-                                        data-specialty="Cardiology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Michael Johnson"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Michael Johnson</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Cardiology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.8</span>
-                                                    <span class="text-sm text-muted-foreground">(98 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    15 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor Card 3 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-patel" data-name="Dr. Priya Patel" data-specialty="Neurology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Priya Patel"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Priya Patel</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Neurology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.7</span>
-                                                    <span class="text-sm text-muted-foreground">(87 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    10 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor Card 4 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-williams" data-name="Dr. James Williams"
-                                        data-specialty="Pediatrics">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. James Williams"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. James Williams</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Pediatrics
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.9</span>
-                                                    <span class="text-sm text-muted-foreground">(142 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    14 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor Card 5 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-chen" data-name="Dr. Lisa Chen" data-specialty="General Medicine">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Lisa Chen"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Lisa Chen</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    General Medicine
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.6</span>
-                                                    <span class="text-sm text-muted-foreground">(76 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    8 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor Card 6 -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-rodriguez" data-name="Dr. Carlos Rodriguez"
-                                        data-specialty="Cardiology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Carlos Rodriguez"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Carlos Rodriguez</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Cardiology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.8</span>
-                                                    <span class="text-sm text-muted-foreground">(112 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    11 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- General Tab Content -->
-                            <div class="tab-content hidden" id="general-tab">
-                                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                    <!-- Dr. Emily Smith -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-smith" data-name="Dr. Emily Smith"
-                                        data-specialty="General Medicine">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Emily Smith"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Emily Smith</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    General Medicine
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.9</span>
-                                                    <span class="text-sm text-muted-foreground">(124 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    12 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dr. Lisa Chen -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-chen" data-name="Dr. Lisa Chen" data-specialty="General Medicine">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Lisa Chen"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Lisa Chen</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    General Medicine
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.6</span>
-                                                    <span class="text-sm text-muted-foreground">(76 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    8 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Cardiology Tab Content -->
-                            <div class="tab-content hidden" id="cardiology-tab">
-                                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                    <!-- Dr. Michael Johnson -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-johnson" data-name="Dr. Michael Johnson"
-                                        data-specialty="Cardiology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Michael Johnson"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Michael Johnson</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Cardiology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.8</span>
-                                                    <span class="text-sm text-muted-foreground">(98 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    15 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dr. Carlos Rodriguez -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-rodriguez" data-name="Dr. Carlos Rodriguez"
-                                        data-specialty="Cardiology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Carlos Rodriguez"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Carlos Rodriguez</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Cardiology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.8</span>
-                                                    <span class="text-sm text-muted-foreground">(112 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    11 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Neurology Tab Content -->
-                            <div class="tab-content hidden" id="neurology-tab">
-                                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                    <!-- Dr. Priya Patel -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-patel" data-name="Dr. Priya Patel" data-specialty="Neurology">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. Priya Patel"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. Priya Patel</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Neurology
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.7</span>
-                                                    <span class="text-sm text-muted-foreground">(87 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    10 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pediatrics Tab Content -->
-                            <div class="tab-content hidden" id="pediatrics-tab">
-                                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                    <!-- Dr. James Williams -->
-                                    <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
-                                        data-id="dr-williams" data-name="Dr. James Williams"
-                                        data-specialty="Pediatrics">
-                                        <div class="p-4">
-                                            <div class="flex flex-col items-center text-center">
-                                                <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
-                                                    <img src="https://placehold.co/300x300" alt="Dr. James Williams"
-                                                        class="object-cover w-full h-full">
-                                                </div>
-                                                <h4 class="mb-1 text-lg font-semibold">Dr. James Williams</h4>
-                                                <span
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
-                                                    Pediatrics
-                                                </span>
-                                                <div class="flex items-center mb-2 space-x-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="#eab308" stroke="#eab308"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="w-4 h-4">
-                                                        <polygon
-                                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                        </polygon>
-                                                    </svg>
-                                                    <span class="text-sm font-medium">4.9</span>
-                                                    <span class="text-sm text-muted-foreground">(142 reviews)</span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    14 years experience
-                                                </p>
-                                                <div class="flex flex-wrap justify-center gap-1 mt-3">
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Available Today
-                                                    </span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Online Consult
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Single grid for all doctor cards -->
+                            <div id="doctor-grid" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                <!-- All doctor cards will be inserted here dynamically -->
                             </div>
                         </div>
                     </div>
@@ -677,51 +91,58 @@
                     <!-- Step 2: Select Date & Appointment Type -->
                     <div id="step-2" class="space-y-6 hidden">
                         <div>
-                            <h3 class="mb-4 text-xl font-medium">
-                                Select Date & Appointment Type
-                            </h3>
+                            <h4 class="mb-4 text-base font-bold"> <span id="sel-doc-name" class="font-serif"></span>
+                                ----- <span id="sel-doc-specialty" class="font-mono text-blue-800 underline"></span>
+                            </h4>
+                            <h3 class="mb-4 text-xl font-medium">Select Date & Appointment Type</h3>
                             <div class="grid gap-6 md:grid-cols-2">
                                 <div>
-                                    <p class="mb-2 font-medium">Choose a date</p>
-                                    <div id="calendar" class="calendar-container border rounded-md p-4"></div>
+                                    <p class=" font-medium">Choose a date</p>
+                                    <div id="calendar" class="calendar-container border hidden">
+                                        <!-- Calendar will be inserted here dynamically -->
+                                    </div>
                                 </div>
                                 <div>
                                     <p class="mb-2 font-medium">Appointment type</p>
-                                    <div class="space-y-4">
+                                    <div id="appointment-types" class="space-y-4">
                                         <div class="flex items-start p-4 border rounded-lg">
                                             <input type="radio" id="consultation" name="appointmentType" class="mt-1"
-                                                checked value="consultation" />
+                                                value="consultation" checked />
                                             <div class="ml-3">
-                                                <label for="consultation" class="font-medium cursor-pointer">
-                                                    General Consultation
-                                                </label>
-                                                <p class="text-sm text-muted-foreground">
-                                                    Regular checkup or general health concerns
-                                                </p>
+                                                <label for="consultation" class="font-medium cursor-pointer">General
+                                                    Consultation</label>
+                                                <p class="text-sm text-muted-foreground">Regular checkup or general
+                                                    health concerns</p>
                                             </div>
                                         </div>
                                         <div class="flex items-start p-4 border rounded-lg">
                                             <input type="radio" id="followup" name="appointmentType" class="mt-1"
                                                 value="followup" />
                                             <div class="ml-3">
-                                                <label for="followup" class="font-medium cursor-pointer">
-                                                    Follow-up Visit
-                                                </label>
-                                                <p class="text-sm text-muted-foreground">
-                                                    Follow-up on previous treatment or consultation
-                                                </p>
+                                                <label for="followup" class="font-medium cursor-pointer">Follow-up
+                                                    Visit</label>
+                                                <p class="text-sm text-muted-foreground">Follow-up on previous treatment
+                                                    or consultation</p>
                                             </div>
                                         </div>
                                         <div class="flex items-start p-4 border rounded-lg">
                                             <input type="radio" id="specialist" name="appointmentType" class="mt-1"
                                                 value="specialist" />
                                             <div class="ml-3">
-                                                <label for="specialist" class="font-medium cursor-pointer">
-                                                    Specialist Consultation
-                                                </label>
-                                                <p class="text-sm text-muted-foreground">
-                                                    Specialized treatment for specific conditions
-                                                </p>
+                                                <label for="specialist" class="font-medium cursor-pointer">Specialist
+                                                    Consultation</label>
+                                                <p class="text-sm text-muted-foreground">Specialized treatment for
+                                                    specific conditions</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start p-4 border rounded-lg">
+                                            <input type="radio" id="online" name="appointmentType" class="mt-1"
+                                                value="online" />
+                                            <div class="ml-3">
+                                                <label for="online" class="font-medium cursor-pointer">Online
+                                                    Consultation</label>
+                                                <p class="text-sm text-muted-foreground">Virtual appointment via video
+                                                    call</p>
                                             </div>
                                         </div>
                                     </div>
@@ -733,93 +154,12 @@
                     <!-- Step 3: Select Time Slot -->
                     <div id="step-3" class="space-y-6 hidden">
                         <div>
-                            <h3 class="mb-4 text-xl font-medium">
-                                Select Time Slot
-                            </h3>
+                            <h3 class="mb-4 text-xl font-medium">Select Time Slot</h3>
                             <p class="mb-4 text-muted-foreground" id="selected-date-display">
                                 Available time slots for the selected date
                             </p>
-                            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="09:00 AM">
-                                    09:00 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="09:30 AM">
-                                    09:30 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium opacity-50 cursor-not-allowed"
-                                    data-time="10:00 AM" disabled>
-                                    10:00 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="10:30 AM">
-                                    10:30 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="11:00 AM">
-                                    11:00 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="11:30 AM">
-                                    11:30 AM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium opacity-50 cursor-not-allowed"
-                                    data-time="12:00 PM" disabled>
-                                    12:00 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium opacity-50 cursor-not-allowed"
-                                    data-time="12:30 PM" disabled>
-                                    12:30 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="02:00 PM">
-                                    02:00 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="02:30 PM">
-                                    02:30 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="03:00 PM">
-                                    03:00 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium opacity-50 cursor-not-allowed"
-                                    data-time="03:30 PM" disabled>
-                                    03:30 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="04:00 PM">
-                                    04:00 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="04:30 PM">
-                                    04:30 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="05:00 PM">
-                                    05:00 PM
-                                </button>
-                                <button
-                                    class="time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary"
-                                    data-time="05:30 PM">
-                                    05:30 PM
-                                </button>
+                            <div id="time-slots-container" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                                <!-- Time slots will be inserted here dynamically -->
                             </div>
                         </div>
                     </div>
@@ -984,7 +324,264 @@
         </div>
 
         <script>
+            const category = ["all", "general", "cardiology", "neurology", "pediatrics"];
+
+            ;
+
+            const doctors = [
+                {
+                    id: "dr-smith",
+                    name: "Dr. Emily Smith",
+                    specialty: "General Medicine",
+                    experience: 12,
+                    rating: 4.9,
+                    reviews: 124,
+                    fees: 150,
+                    image: "https://placehold.co/300x300",
+                    availability: {
+                        consultation: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM"],
+                            "2025-03-11": ["09:00 AM", "10:00 AM", "11:00 AM"]
+
+                        },
+                        followup: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM"],
+                            "2025-03-11": ["02:00 PM", "10:00 AM", "11:00 AM"]
+
+                        },
+                        online: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+
+
+                        }
+                    },
+                    appointmentTypes: ["consultation", "followup", "online"]
+                },
+                {
+                    id: "dr-patel",
+                    name: "Dr. Priya Patel",
+                    specialty: "Cardiology",
+                    experience: 10,
+                    rating: 4.7,
+                    reviews: 87,
+                    fees: 180,
+                    image: "https://placehold.co/300x300",
+                    availability: {
+                        consultation: {
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+                        },
+                        followup: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        specialist: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        online: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        }
+                    },
+                    appointmentTypes: ["consultation", "followup", "specialist", "online"]
+                },
+                {
+                    id: "dr-patel2",
+                    name: "Dr. Priya Patel",
+                    specialty: "Neurology",
+                    experience: 10,
+                    rating: 4.7,
+                    reviews: 87,
+                    fees: 180,
+                    image: "https://placehold.co/300x300",
+                    availability: {
+                        consultation: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        followup: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        specialist: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        online: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        }
+                    },
+                    appointmentTypes: ["consultation", "followup", "specialist", "online"]
+                },
+                {
+                    id: "dr-williams",
+                    name: "Dr. James Williams",
+                    specialty: "Pediatrics",
+                    experience: 14,
+                    rating: 4.9,
+                    reviews: 142,
+                    fees: 160,
+                    image: "https://placehold.co/300x300",
+                    availability: {
+                        consultation: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        specialist: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        },
+                        online: {
+
+                            "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+                            "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
+
+                        }
+                    },
+                    appointmentTypes: ["consultation", "specialist", "online"]
+                }
+            ];
+
+
+
+
+
+            // Function to generate doctor card HTML
+            function generateDoctorCard(doctor) {
+                return `
+        <div class="doctor-card cursor-pointer transition-all hover:shadow-md border border-border rounded-lg"
+            data-id="${doctor.id}" 
+            data-name="${doctor.name}" 
+            data-specialty="${doctor.specialty}"
+            data-fees="${doctor.fees}">
+            <div class="p-4">
+                <div class="flex flex-col items-center text-center">
+                    <div class="relative w-24 h-24 mb-4 overflow-hidden rounded-full">
+                        <img src="${doctor.image}" alt="${doctor.name}" class="object-cover w-full h-full">
+                    </div>
+                    <h4 class="mb-1 text-lg font-semibold">${doctor.name}</h4>
+                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2">
+                        ${doctor.specialty}
+                    </span>
+                    <div class="flex items-center mb-2 space-x-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#eab308" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span class="text-sm font-medium">${doctor.rating}</span>
+                        <span class="text-sm text-muted-foreground">(${doctor.reviews} reviews)</span>
+                    </div>
+                    <p class="text-sm text-muted-foreground">${doctor.experience} years experience</p>
+                    <div class="flex flex-wrap justify-center gap-1 mt-3">
+                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            Available Today
+                        </span>
+                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            Online Consult
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+            }
+
+
+            // Function to populate all doctor cards into the single grid
+            function populateAllDoctorCards() {
+                const grid = document.getElementById('doctor-grid');
+                const doctorCardsHTML = doctors.map(doctor => generateDoctorCard(doctor)).join('');
+                grid.innerHTML = doctorCardsHTML;
+            }
+
+            // Function to filter doctor cards based on the selected tab
+            function filterDoctorCards(tabId) {
+                const allCards = document.querySelectorAll('.doctor-card');
+                if (tabId === 'all') {
+                    allCards.forEach(card => {
+                        card.classList.remove('hidden');
+                    });
+                } else {
+                    const tabToSpecialty = {
+                        'general': 'General Medicine',
+                        'cardiology': 'Cardiology',
+                        'neurology': 'Neurology',
+                        'pediatrics': 'Pediatrics'
+                    };
+                    const selectedSpecialty = tabToSpecialty[tabId];
+                    allCards.forEach(card => {
+                        const cardSpecialty = card.getAttribute('data-specialty');
+                        if (cardSpecialty === selectedSpecialty) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                }
+            }
+
+            // Function to initialize tab buttons
+            function init_tabButtons(category) {
+                const docCategory = document.getElementById('doc-category');
+                category.forEach(catg => {
+                    if (catg === "all") {
+                        docCategory.innerHTML += `
+                <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm active"
+                data-tab="all">All Doctors</button>`;
+                    } else {
+                        docCategory.innerHTML += `
+                <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md"
+                data-tab="${catg}">${catg.charAt(0).toUpperCase() + catg.slice(1)}</button>`;
+                    }
+                });
+            }
+
+
             document.addEventListener('DOMContentLoaded', function () {
+
+                // Create tab buttons
+                init_tabButtons(category);
+
+                // Populate all doctor cards into the single grid
+                populateAllDoctorCards();
+
                 // Initialize variables
                 let currentStep = 1;
                 let selectedDoctor = null;
@@ -992,7 +589,9 @@
                 let selectedDoctorSpecialty = '';
                 let selectedDate = null;
                 let selectedTime = null;
-                let appointmentType = 'consultation';
+                let appointmentType = 'consultation'; // Default value
+                let calendarInstance = null;
+
 
                 // DOM elements
                 const nextButton = document.getElementById('next-button');
@@ -1004,25 +603,6 @@
                 const confirmationDialog = document.getElementById('confirmation-dialog');
                 const confirmOkButton = document.getElementById('confirm-ok-button');
 
-                // Initialize flatpickr calendar
-                const calendar = flatpickr("#calendar", {
-                    inline: true,
-                    minDate: "today",
-                    disable: [
-                        function (date) {
-                            // Disable weekends (Saturday is 6, Sunday is 0)
-                            return (date.getDay() === 0 || date.getDay() === 6);
-                        }
-                    ],
-                    onChange: function (selectedDates, dateStr) {
-                        selectedDate = selectedDates[0];
-                        document.getElementById('selected-date-display').textContent =
-                            `Available time slots for ${selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-                        document.getElementById('summary-date').textContent =
-                            selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                        updateNextButtonState();
-                    }
-                });
 
                 // Tab switching
                 tabButtons.forEach(button => {
@@ -1031,45 +611,180 @@
                         tabButtons.forEach(btn => {
                             btn.classList.remove('active', 'bg-white', 'shadow-sm');
                         });
-
                         // Add active class to clicked button
                         button.classList.add('active', 'bg-white', 'shadow-sm');
 
-                        // Hide all tab contents
-                        tabContents.forEach(content => {
-                            content.classList.add('hidden');
-                        });
-
-                        // Show the selected tab content
+                        // Filter doctor cards based on the selected tab
                         const tabId = button.getAttribute('data-tab');
-                        document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                        filterDoctorCards(tabId);
                     });
                 });
 
-                // Doctor selection
-                doctorCards.forEach(card => {
-                    card.addEventListener('click', () => {
-                        // Remove selected class from all cards
-                        doctorCards.forEach(c => {
-                            c.classList.remove('border-2', 'border-primary', 'shadow-md');
+
+                // Doctor selection with event delegation
+                document.addEventListener('click', function (event) {
+                    if (event.target.closest('.doctor-card')) {
+                        const card = event.target.closest('.doctor-card');
+                        // Remove selected styles from all cards
+                        document.querySelectorAll('.doctor-card').forEach(c => {
+                            c.classList.remove('border-2', 'border-primary', 'shadow-md', 'bg-blue-50');
                             c.classList.add('border', 'border-border');
                         });
-
-                        // Add selected class to clicked card
+                        // Add selected styles to clicked card
                         card.classList.remove('border', 'border-border');
-                        card.classList.add('border-2', 'border-primary', 'shadow-md');
-
-                        // Update selected doctor
+                        card.classList.add('border-2', 'border-primary', 'shadow-md', 'bg-blue-50');
+                        // Update selected doctor variables
                         selectedDoctor = card.getAttribute('data-id');
                         selectedDoctorName = card.getAttribute('data-name');
                         selectedDoctorSpecialty = card.getAttribute('data-specialty');
+                        // data adding for appoinment date book section
+                        document.getElementById('sel-doc-name').textContent = `For ${selectedDoctorName}`;
+                        document.getElementById('sel-doc-name').setAttribute('data-id', selectedDoctor);
+                        document.getElementById('sel-doc-specialty').textContent = `${selectedDoctorSpecialty}`;
+                        const doctorData = doctors.find(doc => doc.id === selectedDoctor);
+                        if (doctorData) {
+                            initCalendar(doctorData.availability); // Update calendar
+                            updateAppointmentTypes(doctorData.appointmentTypes); // Update appointment types
+                        }
 
                         // Update summary
                         document.getElementById('summary-doctor-name').textContent = selectedDoctorName;
-
                         updateNextButtonState();
+                    }
+                });
+
+                // Ensure "All" tab is active by default
+                filterDoctorCards('all');
+
+
+
+
+                // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                // Step 2 - Select Date & Appointment Type
+
+                // Initialize Flatpickr calendar dynamically based on doctor's availability
+                function initCalendar(doctorAvailability) {
+                    if (calendarInstance) {
+                        calendarInstance.destroy(); // Destroy existing instance to avoid duplicates
+                    }
+                    const availabilityForType = doctorAvailability[appointmentType] || { days: [] };
+                    calendarInstance = flatpickr("#calendar", {
+                        inline: true,
+                        minDate: "today",
+                        enable: Object.keys(availabilityForType), // Get array of available dates from the freeSlot object
+                        onChange: function (selectedDates, dateStr) {
+                            let selectedDate_temp = selectedDates[0];
+                            document.getElementById('selected-date-display').textContent =
+                                `Available time slots for ${selectedDate_temp.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                            document.getElementById('summary-date').textContent =
+                                selectedDate_temp.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                            selectedDate = selectedDate_temp
+
+                            updateTimeSlots(doctorAvailability,);
+                            updateNextButtonState();
+                        }
+                    });
+                }
+
+
+                // Update appointment types based on selected doctor
+                function updateAppointmentTypes(doctorAppointmentTypes) {
+                    const appointmentTypeInputs = document.querySelectorAll('input[name="appointmentType"]');
+                    appointmentTypeInputs.forEach(input => {
+                        const type = input.value;
+                        if (doctorAppointmentTypes.includes(type)) {
+                            input.disabled = false;
+                            input.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
+                        } else {
+                            input.disabled = true;
+                            input.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
+                            if (input.checked) {
+                                input.checked = false; // Uncheck if disabled
+                                appointmentType = ''; // Reset if selected type is unavailable
+                            }
+                        }
+                    });
+                }
+
+
+
+
+                // Appointment type selection
+                document.querySelectorAll('input[name="appointmentType"]').forEach(input => {
+                    input.addEventListener('change', () => {
+                        if (!input.disabled) {
+                            appointmentType = input.value;
+                            const appointmentTypeText = {
+                                consultation: 'General Consultation',
+                                followup: 'Follow-up Visit',
+                                specialist: 'Specialist Consultation',
+                                online: 'Online Consultation'
+                            }[appointmentType];
+                            document.getElementById('summary-appointment-type').textContent = appointmentTypeText;
+
+                            const doctorData = doctors.find(doc => doc.id === selectedDoctor);
+                            if (doctorData) {
+                                calendarInstance = initCalendar(doctorData.availability, appointmentType, calendarInstance);
+                                updateTimeSlots(doctorData.availability, appointmentType);
+                            }
+                            updateNextButtonState();
+                        }
                     });
                 });
+
+
+                // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                // Step 3 - Select Time Slot
+
+                // Function to generate time slot buttons dynamically
+                function generateTimeSlots(availableTimesForDate) {
+                    const timeSlotsContainer = document.getElementById('time-slots-container');
+                    timeSlotsContainer.innerHTML = '';
+
+                    availableTimesForDate.forEach(time => {
+                        const button = document.createElement('button');
+                        button.className = 'time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary';
+                        button.setAttribute('data-time', time);
+                        button.textContent = time;
+                        timeSlotsContainer.appendChild(button);
+                    });
+                }
+
+                // Function to update time slots based on selected doctor and date
+                function updateTimeSlots(doctorAvailability) {
+
+
+                    if (selectedDoctor && selectedDate && appointmentType) {
+                        const doctorData = doctors.find(doc => doc.id === selectedDoctor);
+                        const availabilityForType = (doctorData.availability[appointmentType]);
+
+                        datesel = selectedDate.toLocaleDateString('en-CA');
+
+                        const availableTimesForDate = availabilityForType[datesel] || [];
+
+                        if (availabilityForType && availableTimesForDate.length > 0) {
+                            generateTimeSlots(availableTimesForDate);
+                        } else {
+                            document.getElementById('time-slots-container').innerHTML =
+                                '<p class="text-muted-foreground">No available time slots for this date and appointment type.</p>';
+                        }
+                    }
+                }
+
+                // Event delegation for time slot selection
+                document.getElementById('time-slots-container').addEventListener('click', function (event) {
+                    if (event.target.classList.contains('time-slot')) {
+                        const timeSlots = document.querySelectorAll('.time-slot');
+                        timeSlots.forEach(slot => {
+                            slot.classList.remove('bg-primary', 'text-primary-foreground');
+                        });
+                        event.target.classList.add('bg-primary', 'text-primary-foreground');
+                        selectedTime = event.target.getAttribute('data-time');
+                        document.getElementById('summary-time').textContent = selectedTime;
+                        updateNextButtonState();
+                    }
+                });
+
 
                 // Time slot selection
                 timeSlots.forEach(slot => {
@@ -1096,21 +811,6 @@
                     }
                 });
 
-                // Appointment type selection
-                document.querySelectorAll('input[name="appointmentType"]').forEach(input => {
-                    input.addEventListener('change', () => {
-                        appointmentType = input.value;
-
-                        // Update summary
-                        let appointmentTypeText = 'General Consultation';
-                        if (appointmentType === 'followup') {
-                            appointmentTypeText = 'Follow-up Visit';
-                        } else if (appointmentType === 'specialist') {
-                            appointmentTypeText = 'Specialist Consultation';
-                        }
-                        document.getElementById('summary-appointment-type').textContent = appointmentTypeText;
-                    });
-                });
 
                 // Next button click
                 nextButton.addEventListener('click', () => {
@@ -1237,6 +937,7 @@
                 // Initialize
                 updateNextButtonState();
             });
+
         </script>
 </body>
 
