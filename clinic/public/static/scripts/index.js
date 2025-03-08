@@ -98,7 +98,7 @@ function updatePagination() {
         const dot = document.createElement('button');
         dot.className = `pagination-dot h-2 rounded-full bg-gray-300 transition-all ${currentIndex === i ? 'w-8 bg-blue-500 active' : 'w-2'}`;
         dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        dot.addEventListener('click', () => {
+        dot.addEventListener('click', () => { 
             currentIndex = i;
             initCarousel();
         }); 
