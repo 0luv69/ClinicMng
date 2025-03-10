@@ -183,3 +183,23 @@
 }
 
 
+
+
+/* Calender appoinment page */
+.flatpickr-calendar .flatpickr-day.selected {
+    background: #0056b3;
+    border-color: #0056b3;
+}
+
+.flatpickr-calendar .flatpickr-day.today {
+    border-color: #0056b3;
+}
+
+.flatpickr-calendar .flatpickr-day:hover {
+    background: rgb(50, 87, 139);
+    ;
+}
+
+.flatpickr-calendar .flatpickr-day.flatpickr-disabled {
+    color: #cbd5e1;
+}

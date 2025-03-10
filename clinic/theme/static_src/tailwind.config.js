@@ -62,7 +62,7 @@ module.exports = {
                             foreground: '#1e293b',
                         },
                         muted: {
-                            DEFAULT: '#f1f5f9',
+                            DEFAULT: '#cfd6dd',
                             foreground: '#64748b',
                         },
                         accent: {
