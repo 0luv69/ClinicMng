@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <!-- Main Content Container -->
+    <div class="flex flex-col min-h-screen pt-7 px-4 sm:px-6 lg:px-8">
+        <!-- Fluid Column Container -->
+        <div class="flex flex-col flex-1 w-full max-w-7xl mx-auto">
+            <!-- Inner Container -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex-1">
+                <!-- Hidden Inputs -->
+                <input class="hidden" name="appointmentUrl" type="hidden" value="https://hms.infyom.com/appointments">
+                <input class="hidden" name="patientUrl" type="hidden" value="https://hms.infyom.com/patients">
+                <input class="hidden" name="doctorUrl" type="hidden" value="https://hms.infyom.com/doctors">
+                <input class="hidden" name="doctorShowUrl" type="hidden" value="https://hms.infyom.com/employee/doctor">
+                <input class="hidden" name="patientRole" type="hidden" value="1">
+                <input class="hidden" name="doctorRole" type="hidden" value="1">
+                <input class="hidden" name="loginDoctor" type="hidden" value="">
+                <input class="hidden" name="adminRole" type="hidden" value="">
+                <input class="hidden" name="doctorDepartmentUrl" type="hidden"
+                    value="https://hms.infyom.com/doctor-departments">
+                <input class="hidden" id="Appointment" name="appointment" type="hidden" value="Appointment">
+                <input class="hidden" id="todayAppointment" name="todayAppointment" type="hidden" value="Today">
+                <input class="hidden" id="yesterdayAppointment" name="yesterdayAppointment" type="hidden"
+                    value="Yesterday">
+                <input class="hidden" id="thisWeekAppointment" name="thisWeekAppointment" type="hidden"
+                    value="This Week">
+                <input class="hidden" id="last7DayAppointment" name="last7DayAppointment" type="hidden"
+                    value="Last 7 days">
+                <input class="hidden" id="last30DayAppointment" name="last30DayAppointment" type="hidden"
+                    value="Last 30 days">
+                <input class="hidden" id="thisMonthAppointment" name="thisMonthAppointment" type="hidden"
+                    value="This month">
+                <input class="hidden" id="lastMonthAppointment" name="lastMonthAppointment" type="hidden"
+                    value="Last month">
+
+                <!-- Inner Content Area -->
+                <div class="flex flex-col space-y-6">
+                    <!-- Header Section -->
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <!-- Search Bar -->
+                        <div class="relative w-full max-w-xs">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                                <i class="fas fa-magnifying-glass"></i>
+                            </span>
+                            <input
+                                class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-400"
+                                type="search" placeholder="Search" aria-label="Search" wire:model.live="search">
+                        </div>
+
+                        <!-- Right Side Actions -->
+                        <div class="flex items-center gap-3 flex-wrap justify-start lg:justify-end">
+                            <!-- Calendar Button -->
+                            <a href="https://hms.infyom.com/appointment-calendars"
+                                class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <i class="fas fa-calendar-days mr-2"></i>
+                                Calendar
+                            </a>
+
+                            <!-- Filter Dropdown -->
+                            <div class="relative">
+                                <button
+                                    class="flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors duration-200"
+                                    type="button" id="appointmentFilterBtn" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fas fa-filter mr-2"></i>
+                                    Filter
+                                </button>
+                                <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl z-10 hidden"
+                                    aria-labelledby="appointmentFilterBtn">
+                                    <div class="p-4 border-b border-gray-200">
+                                        <h3 class="text-lg font-semibold text-gray-900">Filter Options</h3>
+                                    </div>
+                                    <div class="p-4">
+                                        <label for="appointmentStatus"
+                                            class="block text-sm font-medium text-gray-700 mb-1">Status:</label>
+                                        <select
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                            id="appointmentStatus" name="status">
+                                            <option value="2">All</option>
+                                            <option value="0">Pending</option>
+                                            <option value="1">Completed</option>
+                                            <option value="3">Cancelled</option>
+                                        </select>
+                                        <div class="mt-4 flex justify-end">
+                                            <button type="reset" id="appointmentResetFilter"
+                                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200">
+                                                Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions Dropdown -->
+                            <div class="relative">
+                                <button
+                                    class="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                    <i class="fas fa-angle-down ml-2"></i>
+                                </button>
+                                <ul class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 hidden"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a href="https://hms.infyom.com/appointments/create"
+                                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-100 hover:text-indigo-900 transition-colors duration-200">
+                                            New Appointment
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://hms.infyom.com/export-appointments"
+                                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-100 hover:text-indigo-900 transition-colors duration-200">
+                                            Export to Excel
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder for Table or Other Content -->
+                    <div class="text-center text-gray-500">
+                        Table or additional content will be added here
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic JavaScript for Dropdown Toggle (for demonstration, replace with proper framework if needed) -->
+    <script>
+        document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(button => {
+            button.addEventListener('click', () => {
+                const dropdown = button.nextElementSibling;
+                dropdown.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
