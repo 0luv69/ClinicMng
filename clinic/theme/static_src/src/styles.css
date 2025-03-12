@@ -203,3 +203,10 @@
 .flatpickr-calendar .flatpickr-day.flatpickr-disabled {
     color: #cbd5e1;
 }
+
+
+
+
+.hello:check123 {
+    @apply bg-slate-100 text-slate-800;
+}
