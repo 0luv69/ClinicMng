@@ -125,7 +125,6 @@ nextBtn.addEventListener('click', () => {
 // Handle window resize
 window.addEventListener('resize', () => {
     const newCardsToShow = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
-    console.log(newCardsToShow);
     if (newCardsToShow !== cardsToShow) {
         cardsToShow = newCardsToShow;
         // Adjust currentIndex if necessary
@@ -297,8 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (dots.length === 0 || totalPages <= 1) return;
 
-        console.log(currentIndex);
-        console.log (dots.length);
         dots.forEach((dot, index) => {
 
             if (index === currentIndex) {
