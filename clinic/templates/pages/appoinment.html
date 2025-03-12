@@ -3,6 +3,12 @@
 {% block titles %}Appointment Book || Nepal's Care {% endblock titles %}
 
 
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endblock styles %}
+
+
 {% block content %}
 
 <div class="container max-w-6xl px-4 py-8 mx-auto">
@@ -299,6 +305,9 @@
 
 
 {% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 <script>
     const category = ["all", "general", "cardiology", "neurology", "pediatrics"];
