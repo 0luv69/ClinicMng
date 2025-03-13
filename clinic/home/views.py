@@ -14,8 +14,8 @@ def home_page2(request):
     return render(request, 'others/index1.html')
 
 
-def appoinment(request):
-    return render(request, 'pages/appoinment.html')
+def BookAppoinment(request):
+    return render(request, 'pages/patient/book_appoinment.html')
 
 
 def login(request):

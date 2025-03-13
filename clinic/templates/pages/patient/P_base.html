@@ -60,8 +60,10 @@
                 <!-- Menu List -->
                 <div class="overflow-y-auto h-full ">
                     <ul class=" px-4 mt-3" id="menuList">
+
+                        <!-- Dashboard -->
                         <li class="menuListItems ">
-                            <a href="/patients/dashboard"
+                            <a href="/patient/"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -99,13 +101,62 @@
                             </a>
                         </li>
 
+
+                        <!-- appoinment -->
+                        <li class="menuListItems ">
+                            <a href="/p/view-appoinment/"
+                                class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
+                                <span class="mr-3">
+
+                                    <svg id='Appointment_Scheduling_24' viewBox='0 0 24 24' class="w-6 h-6"
+                                        xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+
+
+                                        <g transform="matrix(0.83 0 0 0.83 12 12)">
+                                            <path
+                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                transform=" translate(-12, -13.5)"
+                                                d="M 12 3 C 10.067003375592222 3 8.5 4.567003375592223 8.5 6.5 C 8.5 8.432996624407778 10.067003375592222 10 12 10 C 13.932996624407778 10 15.5 8.432996624407778 15.5 6.5 C 15.5 4.567003375592223 13.932996624407778 3 12 3 z M 4.5 6 C 3.1192881254230165 6 2 7.119288125423017 2 8.5 C 2 9.880711874576983 3.1192881254230165 11 4.5 11 C 5.880711874576983 11 7 9.880711874576983 7 8.5 C 7 7.119288125423017 5.880711874576983 6 4.5 6 z M 12 12 C 9.664 12 5 13.172 5 15.5 L 5 19 L 12.091797 19 C 12.57237 21.827306 15.041286 24 18 24 C 21.3 24 24 21.3 24 18 C 24 14.7 21.3 12 18 12 C 17.095098 12 16.238168 12.207572 15.466797 12.570312 C 14.236368 12.197012 12.933023 12 12 12 z M 3.8984375 13.052734 C 2.3174375 13.296734 0 14.389078 0 15.705078 L 0 19 L 3 19 L 3 15.5 C 3 14.539 3.3454375 13.732734 3.8984375 13.052734 z M 18 14 C 20.2 14 22 15.8 22 18 C 22 20.2 20.2 22 18 22 C 15.8 22 14 20.2 14 18 C 14 15.8 15.8 14 18 14 z M 18.900391 15.199219 L 17.199219 18.099609 L 19.400391 20.300781 L 20.300781 19.300781 L 18.800781 17.900391 L 20 15.800781 L 18.900391 15.199219 z"
+                                                stroke-linecap="round" />
+                                        </g>
+                                    </svg>
+
+                                </span>
+                                <span class="shortBarToggle">Appoinment</span>
+                            </a>
+                        </li>
+
+
+
+                        <li class="menuListItems ">
+                            <a href="/p/document/"
+                                class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
+                                <span class="mr-3">
+
+                                    <svg id='Document_24' viewBox='0 0 24 24' class="w-6 h-6"
+                                        xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+
+
+                                        <g transform="matrix(1 0 0 1 12 12)">
+                                            <path
+                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                transform=" translate(-12, -12)"
+                                                d="M 14 2 L 6 2 C 4.9 2 4 2.9 4 4 L 4 20 C 4 21.1 4.9 22 6 22 L 18 22 C 19.1 22 20 21.1 20 20 L 20 8 L 14 2 z M 16 18 L 8 18 L 8 16 L 16 16 L 16 18 z M 16 14 L 8 14 L 8 12 L 16 12 L 16 14 z M 13 9 L 13 3.5 L 18.5 9 L 13 9 z"
+                                                stroke-linecap="round" />
+                                        </g>
+                                    </svg>
+
+                                </span>
+                                <span class="shortBarToggle">Document</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- Main Content Wrapper -->
-        <div class="flex flex-col flex-1 bg-slate-50">
+        <div class="flex flex-col flex-1 bg-slate-50 overflow-x-hidden">
             <!-- Header -->
             <header class="flex items-center justify-between px-4 py-2 bg-white shadow">
                 <button class="block lg:hidden p-0  sidebarToggle">
