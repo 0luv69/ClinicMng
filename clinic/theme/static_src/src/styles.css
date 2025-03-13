@@ -230,3 +230,13 @@ background: #475569; /* Tailwind's gray-600 */
 scrollbar-width: thin;
 scrollbar-color: #64748b #f1f5f9; /* thumb color, track color */
 }
+
+
+
+
+
+
+
+.document-card{
+    @apply cursor-pointer bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 duration-100;
+}

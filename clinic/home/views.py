@@ -17,6 +17,9 @@ def home_page2(request):
 def BookAppoinment(request):
     return render(request, 'pages/patient/book_appoinment.html')
 
+def ViewDocument(request):
+    return render(request, 'pages/patient/view_document.html')
+
 
 def login(request):
     return render(request, 'pages/login.html')

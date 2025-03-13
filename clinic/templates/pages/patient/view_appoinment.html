@@ -13,27 +13,6 @@
 
 {% block content %}
 
-<!-- Offline Alert -->
-<div class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-center"
-    wire:offline.class.remove="hidden">
-    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18.364 5.636a9 9 0 11-12.728 12.728 9 9 0 0112.728-12.728zM11 9v6m2-3H9" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-    <span>You are not connected to the internet.</span>
-</div>
-
-<!-- Skeleton Loading -->
-<div class="animate-pulse hidden space-y-4">
-    <div class="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-        <div class="rounded-full bg-gray-200 h-12 w-12"></div>
-        <div class="flex-1 space-y-3">
-            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
-        </div>
-        <div class="h-8 bg-gray-200 rounded w-24"></div>
-    </div>
-</div>
 
 <!-- Fluid Column Container -->
 <div class="flex flex-col min-h-screen pt-7 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -740,6 +719,17 @@
                 // Replace with actual delete logic
             }
         });
+    });
+</script>
+
+
+<script>
+
+    dashboard_nav_all = document.querySelectorAll('.appoinment-nav a');
+    console.log(dashboard_nav_all);
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
     });
 </script>
 

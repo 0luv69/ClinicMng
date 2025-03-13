@@ -972,4 +972,16 @@
 
 </script>
 
+
+
+<script>
+
+    dashboard_nav_all = document.querySelectorAll('.bookAppoinment-nav a');
+    console.log(dashboard_nav_all);
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
+    });
+</script>
+
 {% endblock scripts %}
