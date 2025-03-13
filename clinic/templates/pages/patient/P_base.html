@@ -9,6 +9,8 @@
 
     </title>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <!-- Fab icon -->
+    <link rel="icon" href="{% static 'icon-64.png' %}" type="image/png">
     {% block styles %}
     {% endblock styles %}
 </head>
@@ -270,7 +272,7 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div class="hidden group-hover/notify:block absolute right-0 top-full -mt-3 z-10 w-80 bg-white rounded-lg shadow-lg border-[1px] border-green-950"
+                            <div class="hidden group-hover/notify:block absolute -right-20 md:right-0 top-full -mt-3 z-10 w-80 bg-white rounded-lg shadow-lg border-[1px] border-green-950"
                                 id="notificationDropdown">
                                 <!-- Header -->
                                 <div class="border-b py-4 px-5">

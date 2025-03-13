@@ -139,69 +139,19 @@
 
                 <!-- Step 4: Patient Information -->
                 <div id="step-4" class="space-y-6 hidden">
-                    <div>
-                        <h3 class="mb-4 text-xl font-medium">
-                            Patient Information
-                        </h3>
-                        <div class="grid gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <label for="firstName"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">First
-                                    Name</label>
-                                <input id="firstName"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="Enter your first name">
-                            </div>
-                            <div class="space-y-2">
-                                <label for="lastName"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Last
-                                    Name</label>
-                                <input id="lastName"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="Enter your last name">
-                            </div>
-                            <div class="space-y-2">
-                                <label for="email"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
-                                <input id="email" type="email"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="Enter your email">
-                            </div>
-                            <div class="space-y-2">
-                                <label for="phone"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Phone
-                                    Number</label>
-                                <input id="phone"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="Enter your phone number">
-                            </div>
-                            <div class="space-y-2 md:col-span-2">
-                                <label for="reason"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Reason
-                                    for Visit</label>
-                                <textarea id="reason"
-                                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="Briefly describe your symptoms or reason for the appointment"
-                                    rows="4"></textarea>
-                            </div>
-                            <div class="space-y-2 md:col-span-2">
-                                <label for="insurance"
-                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Insurance
-                                    Information</label>
-                                <select id="insurance"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                                    <option value="" selected disabled>Select your insurance provider</option>
-                                    <option value="aetna">Aetna</option>
-                                    <option value="bluecross">Blue Cross Blue Shield</option>
-                                    <option value="cigna">Cigna</option>
-                                    <option value="humana">Humana</option>
-                                    <option value="medicare">Medicare</option>
-                                    <option value="unitedhealthcare">UnitedHealthcare</option>
-                                    <option value="other">Other</option>
-                                    <option value="none">None/Self-Pay</option>
-                                </select>
-                            </div>
+
+                    <div class="grid gap-4 md:grid-cols-2">
+
+                        <div class="space-y-2 md:col-span-2">
+                            <label for="reason"
+                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Describe
+                                the Reason here</label>
+                            <textarea id="reason"
+                                class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                placeholder="Briefly describe your symptoms or reason for the appointment"
+                                rows="4"></textarea>
                         </div>
+
                     </div>
 
                     <div id="booking-summary" class="p-4 mt-6 border rounded-lg bg-muted/30">

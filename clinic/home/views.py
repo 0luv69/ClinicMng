@@ -7,7 +7,6 @@ from django.contrib import messages
 
 
 def home_page(request):
-    messages.success(request, 'Welcome to our website!')
     return render(request, 'pages/index.html')
 
 def home_page2(request):

@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+ @keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    40% {
+        transform: scale(1.1);
+    }
+
+    60% {
+        transform: scale(1.2);
+    }
+}
+
+.animate-heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
 
 .ripple {
     @apply block absolute w-[50px] h-[50px] rounded-full opacity-0;
