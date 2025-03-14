@@ -24,6 +24,10 @@ def message(request):
     return render(request, 'pages/patient/message.html')
 
 
+def prescriptions(request):
+    return render(request, 'pages/patient/prescriptions.html')
+
+
 def login(request):
     return render(request, 'pages/login.html')
 
