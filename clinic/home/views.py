@@ -27,6 +27,10 @@ def register(request):
     return render(request, 'pages/register.html')
 
 
+def patientDashboardOld(request):
+    return render(request, 'pages/others/patient_dashboard.html')
+
+
 def patientDashboard(request):
     return render(request, 'pages/patient/dashboard.html')
 

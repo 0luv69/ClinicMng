@@ -9,7 +9,8 @@ urlpatterns = [
     path('register/', register, name='register'),
 
 
-    path('patient/', patientDashboard, name='patient'),
+    path('patient/old', patientDashboardOld, name='patientDashboardold'),
+    path('patient/', patientDashboard, name='patient_dashboard'),
     path('p/view-appoinment/', viewAppoinment, name='viewAppoinment'),
     path('p/book-appoinment/', BookAppoinment, name='BookAppoinment'),
     path('p/document/', ViewDocument, name='ViewDocument'),
