@@ -72,7 +72,7 @@
 
                         <!-- Dashboard -->
                         <li class="menuListItems dashboard-nav">
-                            <a href="/patient/"
+                            <a href="{% url 'patient_dashboard' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -113,7 +113,7 @@
 
                         <!-- view appoinment -->
                         <li class="menuListItems appoinment-nav">
-                            <a href="/p/view-appoinment/"
+                            <a href="{% url 'viewAppoinment' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -138,7 +138,7 @@
 
                         <!-- Book Appoinment  -->
                         <li class="menuListItems bookAppoinment-nav">
-                            <a href="/p/book-appoinment/"
+                            <a href="{% url 'BookAppoinment' %}/"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -200,7 +200,7 @@
 
                         <!-- Document  -->
                         <li class="menuListItems documnet-nav">
-                            <a href="/p/document/"
+                            <a href="{% url 'ViewDocument' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -225,7 +225,7 @@
 
                         <!-- Message -->
                         <li class="menuListItems message-nav">
-                            <a href="/p/document/"
+                            <a href="{% url 'message' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"

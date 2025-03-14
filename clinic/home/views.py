@@ -20,6 +20,10 @@ def ViewDocument(request):
     return render(request, 'pages/patient/view_document.html')
 
 
+def message(request):
+    return render(request, 'pages/patient/message.html')
+
+
 def login(request):
     return render(request, 'pages/login.html')
 
@@ -28,7 +32,7 @@ def register(request):
 
 
 def patientDashboardOld(request):
-    return render(request, 'pages/others/patient_dashboard.html')
+    return render(request, 'others/patient_dashboard.html')
 
 
 def patientDashboard(request):
