@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titles %}Patient Portol || Nepal's Care{% endblock titles %}
 
+        <meta name="google-site-verification" content="r2c7M748axvrDabOkAYO4cTYho-D9-OruPGhVBC6TJE" />
+
     </title>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
     <!-- Fab icon -->
@@ -905,6 +907,13 @@
 
         // Add event listener to toggle button
         document.addEventListener('DOMContentLoaded', () => {
+
+            const isBarShort = localStorage.getItem('isBarShort');
+            if (isBarShort === 'true') {
+                shortBarToggle(true);
+            }
+
+
             const toggleButton = document.querySelectorAll('.sidebarToggle');
             toggleButton.forEach((button) => {
                 button.addEventListener('click', sidebarToggle);
@@ -914,10 +923,6 @@
             ShortBarTogglebtn.addEventListener('click', shortBarToggle);
 
 
-            const isBarShort = localStorage.getItem('isBarShort');
-            if (isBarShort === 'true') {
-                shortBarToggle(true);
-            }
 
         });
     </script>
