@@ -231,10 +231,12 @@
 
 /* Custom scrollbar styles */
 .custom-scrollbar::-webkit-scrollbar {
+    
 height: 8px; /* Height for horizontal scrollbar */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
+    
 background: #f1f5f9; /* Tailwind's gray-100 */
 border-radius: 4px;
 }
@@ -252,6 +254,7 @@ background: #475569; /* Tailwind's gray-600 */
 .custom-scrollbar {
 scrollbar-width: thin;
 scrollbar-color: #64748b #f1f5f9; /* thumb color, track color */
+
 }
 
 

@@ -24,6 +24,10 @@ def message(request):
     return render(request, 'pages/patient/message.html')
 
 
+def labReport(request):
+    return render(request, 'pages/patient/lab_report.html')
+
+
 def prescriptions(request):
     return render(request, 'pages/patient/prescriptions.html')
 

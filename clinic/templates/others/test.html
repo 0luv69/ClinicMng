@@ -4,489 +4,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinic Management System - Prescriptions Dashboard</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Lab Reports | Clinic Management System</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons CDN -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script> -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        /* Additional custom styles if needed */
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-    </style>
+
 </head>
 
-<body class="bg-gray-50">
-    <div class="flex flex-col w-full max-w-6xl mx-auto min-h-screen p-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Prescriptions Management</h1>
+<section class="bg-gray-50 min-h-screen">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Prescriptions Management</h1>
 
-        <!-- Overview Panel -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4 border-l-4 border-green-500">
-                <div class="p-3 bg-green-100 rounded-full">
-                    <i data-lucide="pill" class="w-6 h-6 text-green-600"></i>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6 flex items-center">
+                <div class="rounded-full bg-blue-100 p-3 mr-4">
+                    <i data-lucide="file-text" class="h-6 w-6 text-blue-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Active Prescriptions</p>
-                    <p class="text-2xl font-bold">3</p>
+                    <p class="text-sm font-medium text-gray-500">Recent Lab Reports</p>
+                    <p class="text-xl font-semibold text-gray-900" id="total-reports">0</p>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4 border-l-4 border-yellow-500">
-                <div class="p-3 bg-yellow-100 rounded-full">
-                    <i data-lucide="refresh-cw" class="w-6 h-6 text-yellow-600"></i>
+            <div class="bg-white rounded-lg shadow p-6 flex items-center">
+                <div class="rounded-full bg-red-100 p-3 mr-4">
+                    <i data-lucide="alert-circle" class="h-6 w-6 text-red-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Pending Refills</p>
-                    <p class="text-2xl font-bold">1</p>
+                    <p class="text-sm font-medium text-gray-500">Abnormal Findings</p>
+                    <p class="text-xl font-semibold text-gray-900" id="abnormal-count">0</p>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4 border-l-4 border-blue-500">
-                <div class="p-3 bg-blue-100 rounded-full">
-                    <i data-lucide="clock" class="w-6 h-6 text-blue-600"></i>
+            <div class="bg-white rounded-lg shadow p-6 flex items-center">
+                <div class="rounded-full bg-yellow-100 p-3 mr-4">
+                    <i data-lucide="calendar" class="h-6 w-6 text-yellow-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Recent Orders</p>
-                    <p class="text-2xl font-bold">2</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4 border-l-4 border-red-500">
-                <div class="p-3 bg-red-100 rounded-full">
-                    <i data-lucide="alert-circle" class="w-6 h-6 text-red-600"></i>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500">Alerts</p>
-                    <p class="text-2xl font-bold">1</p>
+                    <p class="text-sm font-medium text-gray-500">Pending Lab Orders</p>
+                    <p class="text-xl font-semibold text-gray-900" id="pending-count">2</p>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-6">
-            <!-- Main Content -->
-            <div class="flex-1">
-                <!-- Tabs -->
-                <div class="flex mb-4 border-b">
-                    <button class="px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600" id="tab-active">
-                        Active Prescriptions
-                    </button>
-                    <button class="px-4 py-2 font-medium text-gray-500" id="tab-history">
-                        Prescription History
-                    </button>
+        <!-- Alert Banner -->
+        <div id="alert-banner" class="hidden bg-amber-50 border-l-4 border-amber-400 p-4 mb-8 rounded-md">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <i data-lucide="alert-circle" class="h-5 w-5 text-amber-400"></i>
                 </div>
-
-                <!-- Prescriptions List -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <!-- Active Prescriptions Table -->
-                    <div id="active-prescriptions-table">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Medication</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Dosage</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Prescribed By</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Duration</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="active-prescriptions-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- History Prescriptions Table -->
-                    <div id="history-prescriptions-table" class="hidden">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Medication</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Dosage</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Prescribed By</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Period</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="history-prescriptions-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar - Medication Insights & Reminders -->
-            <div class="w-full md:w-80 space-y-6">
-                <!-- Daily Medication Schedule -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Today's Medications</h3>
-                    <div class="space-y-3" id="today-medications">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Warnings -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Important Notices</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-start p-3 bg-yellow-50 rounded border-l-4 border-yellow-400">
-                            <i data-lucide="alert-triangle" class="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0"></i>
-                            <div>
-                                <p class="text-sm font-medium text-yellow-800">Potential Interaction</p>
-                                <p class="text-xs text-yellow-700 mt-1">Amlodipine and Atorvastatin may interact. Take
-                                    at least 2 hours apart.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start p-3 bg-blue-50 rounded border-l-4 border-blue-400">
-                            <i data-lucide="alert-circle" class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0"></i>
-                            <div>
-                                <p class="text-sm font-medium text-blue-800">Medication Tip</p>
-                                <p class="text-xs text-blue-700 mt-1">Take Metformin with food to reduce stomach
-                                    discomfort.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="ml-3">
+                    <p class="text-sm text-amber-700" id="alert-message">
+                        You have lab report(s) with abnormal findings. Please review them or consult with your doctor.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Emergency & Support -->
-        <div class="mt-6 bg-white rounded-lg shadow overflow-hidden">
-            <div class="border-b border-gray-200 bg-gray-50 px-4 py-3">
-                <h3 class="text-lg font-medium text-gray-800">Emergency & Support</h3>
+        <!-- Filters and Search -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="relative rounded-md shadow-sm w-64 mr-4">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="search" class="h-4 w-4 text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search-input"
+                                class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Search reports..." />
+                        </div>
+                        <button id="filter-toggle-btn"
+                            class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i data-lucide="filter" class="h-4 w-4 mr-2"></i>
+                            Filter
+                        </button>
+                    </div>
+
+                    <div class="flex items-center">
+                        <button id="sort-toggle-btn"
+                            class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-2">
+                            <i data-lucide="arrow-up-down" class="h-4 w-4 mr-2"></i>
+                            <span id="sort-label">Newest First</span>
+                        </button>
+                        <div class="relative inline-block text-left">
+                            <select id="view-select"
+                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="all">All Reports</option>
+                                <option value="abnormal">Abnormal Only</option>
+                                <option value="pending">Pending Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Panel -->
+                <div id="filter-panel" class="hidden mt-4 pt-4 border-t border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select id="status-filter"
+                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="all">All</option>
+                                <option value="normal">Normal</option>
+                                <option value="abnormal">Abnormal</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
-                <button
-                    class="flex items-center justify-center p-4 text-red-600 hover:bg-red-50 transition-colors duration-200">
-                    <i data-lucide="phone-call" class="h-5 w-5 mr-2"></i>
-                    <span class="font-medium">Emergency Help</span>
-                </button>
-                <button
-                    class="flex items-center justify-center p-4 text-blue-600 hover:bg-blue-50 transition-colors duration-200">
-                    <i data-lucide="map-pin" class="h-5 w-5 mr-2"></i>
-                    <span class="font-medium">Find Pharmacy</span>
-                </button>
-                <button
-                    class="flex items-center justify-center p-4 text-green-600 hover:bg-green-50 transition-colors duration-200">
-                    <i data-lucide="user" class="h-5 w-5 mr-2"></i>
-                    <span class="font-medium">Doctor Consultation</span>
-                </button>
+
+            <!-- Lab Report List -->
+            <div class="overflow-hidden">
+                <ul id="reports-list" class="divide-y divide-gray-200">
+                    <!-- Reports will be dynamically inserted here -->
+                    <li class="py-8 hidden" id="no-reports-message">
+                        <div class="text-center">
+                            <i data-lucide="file-text" class="mx-auto h-12 w-12 text-gray-300"></i>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">No lab reports found</h3>
+                            <p class="mt-1 text-sm text-gray-500">
+                                Try changing your search criteria or filters
+                            </p>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Report Item Template -->
+    <template id="report-item-template">
+        <li class="hover:bg-gray-50 transition-colors duration-150">
+            <div class="px-4 py-4 sm:px-6 cursor-pointer report-header">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="file-text" class="h-6 w-6 report-icon"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900 report-type"></div>
+                            <div class="flex items-center mt-1">
+                                <div class="text-sm text-gray-500 mr-2">
+                                    <i data-lucide="clock" class="inline h-3 w-3 mr-1"></i>
+                                    <span class="report-date"></span>
+                                </div>
+                                <div class="text-sm text-gray-500 report-doctor"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full report-status-badge"></span>
+                        <div class="ml-2 report-chevron">
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expanded Report Details -->
+            <div class="px-4 py-4 sm:px-6 bg-gray-50 border-t border-gray-200 report-details hidden">
+                <div class="border-b border-gray-200 pb-4 mb-4">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Report Details</h3>
+                    <p class="text-sm text-gray-600 report-notes"></p>
+                </div>
+
+                <table class="min-w-full divide-y divide-gray-200 mb-4">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Parameter
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Result
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Reference Range
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 report-parameters">
+                        <!-- Parameters will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <div class="flex justify-end">
+                    <button
+                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3">
+                        <i data-lucide="download" class="h-4 w-4 mr-2"></i>
+                        Download PDF
+                    </button>
+                    <button
+                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3">
+                        <i data-lucide="share-2" class="h-4 w-4 mr-2"></i>
+                        Share
+                    </button>
+                    <button
+                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i data-lucide="printer" class="h-4 w-4 mr-2"></i>
+                        Print
+                    </button>
+                </div>
+            </div>
+        </li>
+    </template>
+
+    <!-- Parameter Row Template -->
+    <template id="parameter-row-template">
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 param-name"></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 param-value"></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 param-reference"></td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm font-medium param-status"></span>
+            </td>
+        </tr>
+    </template>
+
     <script>
         // Initialize Lucide icons
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initializeLabReports();
+        });
 
-        // Sample data
-        const activePrescriptions = [
-            { id: 1, name: 'Amlodipine', dosage: '10mg', frequency: 'Once daily', doctor: 'Dr. Sarah Johnson', specialty: 'Cardiology', startDate: '2025-01-15', endDate: '2025-04-15', status: 'Active', refillStatus: 'Available', instructions: 'Take with or without food, at the same time each day. Avoid grapefruit products.', sideEffects: 'May cause dizziness, swelling in ankles, or headache.' },
-            { id: 2, name: 'Metformin', dosage: '500mg', frequency: 'Twice daily', doctor: 'Dr. Michael Chen', specialty: 'Endocrinology', startDate: '2025-02-10', endDate: '2025-05-10', status: 'Active', refillStatus: 'Pending', instructions: 'Take with meals to reduce stomach upset. Monitor blood sugar regularly.', sideEffects: 'May cause nausea, diarrhea, or decreased vitamin B12 levels with long-term use.' },
-            { id: 3, name: 'Atorvastatin', dosage: '20mg', frequency: 'Once daily', doctor: 'Dr. Sarah Johnson', specialty: 'Cardiology', startDate: '2025-01-15', endDate: '2025-07-15', status: 'Active', refillStatus: 'Expiring Soon', instructions: 'Take in the evening. Avoid consuming large amounts of grapefruit juice.', sideEffects: 'May cause muscle pain, weakness, or liver problems.' }
-        ];
+        function initializeLabReports() {
+            // Sample data
+            const labReports = [
+                {
+                    id: 1,
+                    date: '2025-03-10',
+                    type: 'Blood Test',
+                    status: 'abnormal',
+                    doctor: 'Dr. Sarah Johnson',
+                    parameters: [
+                        { name: 'Hemoglobin', value: '10.2', unit: 'g/dL', reference: '12.0-15.5', status: 'low' },
+                        { name: 'White Blood Cells', value: '11.3', unit: '10³/µL', reference: '4.5-11.0', status: 'high' },
+                        { name: 'Glucose', value: '98', unit: 'mg/dL', reference: '70-100', status: 'normal' },
+                    ],
+                    notes: 'Patient shows signs of mild anemia. Recommend iron supplements and follow-up in 4 weeks.'
+                },
+                {
+                    id: 2,
+                    date: '2025-02-25',
+                    type: 'Lipid Panel',
+                    status: 'normal',
+                    doctor: 'Dr. Robert Chen',
+                    parameters: [
+                        { name: 'Total Cholesterol', value: '185', unit: 'mg/dL', reference: '<200', status: 'normal' },
+                        { name: 'HDL Cholesterol', value: '55', unit: 'mg/dL', reference: '>40', status: 'normal' },
+                        { name: 'LDL Cholesterol', value: '110', unit: 'mg/dL', reference: '<130', status: 'normal' },
+                        { name: 'Triglycerides', value: '120', unit: 'mg/dL', reference: '<150', status: 'normal' },
+                    ],
+                    notes: 'All lipid levels within normal range. Continue current diet and exercise regimen.'
+                },
+                {
+                    id: 3,
+                    date: '2025-03-05',
+                    type: 'Urinalysis',
+                    status: 'abnormal',
+                    doctor: 'Dr. Emily Martinez',
+                    parameters: [
+                        { name: 'pH', value: '6.0', unit: '', reference: '4.5-8.0', status: 'normal' },
+                        { name: 'Protein', value: '30', unit: 'mg/dL', reference: '<20', status: 'high' },
+                        { name: 'Glucose', value: 'Negative', unit: '', reference: 'Negative', status: 'normal' },
+                        { name: 'Ketones', value: 'Trace', unit: '', reference: 'Negative', status: 'high' },
+                    ],
+                    notes: 'Elevated protein levels detected. Recommend follow-up testing and possible nephrology consultation.'
+                },
+                {
+                    id: 4,
+                    date: '2025-01-15',
+                    type: 'Thyroid Panel',
+                    status: 'normal',
+                    doctor: 'Dr. James Wilson',
+                    parameters: [
+                        { name: 'TSH', value: '2.4', unit: 'mIU/L', reference: '0.4-4.0', status: 'normal' },
+                        { name: 'T4', value: '1.1', unit: 'ng/dL', reference: '0.8-1.8', status: 'normal' },
+                        { name: 'T3', value: '120', unit: 'ng/dL', reference: '80-200', status: 'normal' },
+                    ],
+                    notes: 'Thyroid function normal. No additional testing required at this time.'
+                }
+            ];
 
-        const historyPrescriptions = [
-            { id: 4, name: 'Amoxicillin', dosage: '500mg', frequency: 'Three times daily', doctor: 'Dr. James Wilson', specialty: 'General Practice', startDate: '2024-12-05', endDate: '2024-12-15', status: 'Completed', reason: 'Full course completed' },
-            { id: 5, name: 'Prednisone', dosage: '20mg tapering', frequency: 'Per schedule', doctor: 'Dr. Emily Roberts', specialty: 'Rheumatology', startDate: '2024-11-10', endDate: '2024-12-22', status: 'Discontinued', reason: 'Side effects (insomnia, mood changes)' }
-        ];
+            // State variables
+            let currentReports = [...labReports];
+            let searchTerm = '';
+            let filterStatus = 'all';
+            let sortOrder = 'newest';
+            let expandedReportId = null;
 
-        // Today's medications
-        const todayMedications = [
-            { name: 'Amlodipine', time: '8:00 AM', taken: true },
-            { name: 'Metformin', time: '8:00 AM', taken: true },
-            { name: 'Metformin', time: '8:00 PM', taken: false },
-            { name: 'Atorvastatin', time: '8:00 PM', taken: false },
-        ];
+            // DOM elements
+            const reportsList = document.getElementById('reports-list');
+            const noReportsMessage = document.getElementById('no-reports-message');
+            const searchInput = document.getElementById('search-input');
+            const filterToggleBtn = document.getElementById('filter-toggle-btn');
+            const filterPanel = document.getElementById('filter-panel');
+            const statusFilter = document.getElementById('status-filter');
+            const sortToggleBtn = document.getElementById('sort-toggle-btn');
+            const sortLabel = document.getElementById('sort-label');
+            const viewSelect = document.getElementById('view-select');
+            const totalReportsElement = document.getElementById('total-reports');
+            const abnormalCountElement = document.getElementById('abnormal-count');
+            const alertBanner = document.getElementById('alert-banner');
+            const alertMessage = document.getElementById('alert-message');
 
-        // Status badge helper function
-        function getStatusBadgeHTML(status) {
-            let colorClass = '';
-            switch (status) {
-                case 'Active':
-                    colorClass = 'bg-green-100 text-green-800';
-                    break;
-                case 'Pending':
-                    colorClass = 'bg-yellow-100 text-yellow-800';
-                    break;
-                case 'Expiring Soon':
-                    colorClass = 'bg-orange-100 text-orange-800';
-                    break;
-                case 'Completed':
-                    colorClass = 'bg-blue-100 text-blue-800';
-                    break;
-                case 'Discontinued':
-                    colorClass = 'bg-red-100 text-red-800';
-                    break;
-                default:
-                    colorClass = 'bg-gray-100 text-gray-800';
+            // Event listeners
+            filterToggleBtn.addEventListener('click', () => {
+                filterPanel.classList.toggle('hidden');
+            });
+
+            sortToggleBtn.addEventListener('click', () => {
+                sortOrder = sortOrder === 'newest' ? 'oldest' : 'newest';
+                sortLabel.textContent = sortOrder === 'newest' ? 'Newest First' : 'Oldest First';
+                renderReports();
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                renderReports();
+            });
+
+            statusFilter.addEventListener('change', (e) => {
+                filterStatus = e.target.value;
+                renderReports();
+            });
+
+            viewSelect.addEventListener('change', (e) => {
+                const view = e.target.value;
+                if (view === 'all') {
+                    filterStatus = 'all';
+                } else if (view === 'abnormal') {
+                    filterStatus = 'abnormal';
+                } else if (view === 'pending') {
+                    filterStatus = 'pending';
+                }
+                statusFilter.value = filterStatus;
+                renderReports();
+            });
+
+            // Helper functions
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
             }
-            return `<span class="px-2 py-1 text-xs font-medium rounded-full ${colorClass}">${status}</span>`;
-        }
 
-        // Format a date string
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString();
-        }
+            function getStatusBadgeClass(status) {
+                switch (status) {
+                    case 'normal':
+                        return 'bg-green-100 text-green-800';
+                    case 'abnormal':
+                        return 'bg-red-100 text-red-800';
+                    case 'pending':
+                        return 'bg-yellow-100 text-yellow-800';
+                    default:
+                        return 'bg-gray-100 text-gray-800';
+                }
+            }
 
-        // Render active prescriptions
-        function renderActivePrescriptions() {
-            const tableBody = document.getElementById('active-prescriptions-body');
-            tableBody.innerHTML = '';
+            function getParameterStatusClass(status) {
+                switch (status) {
+                    case 'normal':
+                        return 'text-green-600';
+                    case 'high':
+                        return 'text-red-600';
+                    case 'low':
+                        return 'text-blue-600';
+                    default:
+                        return 'text-gray-600';
+                }
+            }
 
-            activePrescriptions.forEach(prescription => {
-                // Create main row
-                const mainRow = document.createElement('tr');
-                mainRow.className = 'hover:bg-gray-50';
-                mainRow.dataset.id = prescription.id;
+            function toggleReportDetails(reportId) {
+                const reportItems = document.querySelectorAll('.report-header');
+                reportItems.forEach(item => {
+                    const id = parseInt(item.closest('li').dataset.reportId);
+                    const detailsSection = item.nextElementSibling;
+                    const chevron = item.querySelector('.report-chevron i');
 
-                mainRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                                <i data-lucide="pill" class="h-5 w-5 text-blue-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${prescription.name}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${prescription.dosage}</div>
-                        <div class="text-sm text-gray-500">${prescription.frequency}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${prescription.doctor}</div>
-                        <div class="text-sm text-gray-500">${prescription.specialty}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                            <div class="flex items-center">
-                                <i data-lucide="calendar" class="h-4 w-4 mr-1 text-gray-500"></i>
-                                <span>${formatDate(prescription.startDate)}</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i data-lucide="calendar" class="h-4 w-4 mr-1 text-gray-500"></i>
-                                <span>${formatDate(prescription.endDate)}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        ${getStatusBadgeHTML(prescription.refillStatus)}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button 
-                            onclick="toggleDetails(${prescription.id})"
-                            class="text-blue-600 hover:text-blue-900 flex items-center details-btn"
-                            data-id="${prescription.id}"
-                        >
-                            Details <i data-lucide="chevron-down" class="ml-1 h-4 w-4"></i>
-                        </button>
-                    </td>
-                `;
-
-                tableBody.appendChild(mainRow);
-
-                // Create details row (initially hidden)
-                const detailsRow = document.createElement('tr');
-                detailsRow.className = 'details-row hidden';
-                detailsRow.dataset.id = prescription.id;
-
-                detailsRow.innerHTML = `
-                    <td colspan="6" class="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <h4 class="font-medium text-gray-700 mb-2">Instructions</h4>
-                                <p class="text-sm text-gray-600">${prescription.instructions}</p>
-                                
-                                <h4 class="font-medium text-gray-700 mt-4 mb-2">Possible Side Effects</h4>
-                                <p class="text-sm text-gray-600">${prescription.sideEffects}</p>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 mb-2">Actions</h4>
-                                <div class="flex flex-col space-y-2">
-                                    <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                        <i data-lucide="refresh-cw" class="mr-2 h-4 w-4"></i> Request Refill
-                                    </button>
-                                    <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                        <i data-lucide="file-text" class="mr-2 h-4 w-4"></i> View Full Details
-                                    </button>
-                                    <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                        <i data-lucide="message-circle" class="mr-2 h-4 w-4"></i> Report Issue
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                `;
-
-                tableBody.appendChild(detailsRow);
-            });
-
-            // Re-initialize Lucide icons since we added new ones
-            lucide.createIcons();
-        }
-
-        // Render history prescriptions
-        function renderHistoryPrescriptions() {
-            const tableBody = document.getElementById('history-prescriptions-body');
-            tableBody.innerHTML = '';
-
-            historyPrescriptions.forEach(prescription => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50';
-
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-100 rounded-full">
-                                <i data-lucide="pill" class="h-5 w-5 text-gray-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${prescription.name}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${prescription.dosage}</div>
-                        <div class="text-sm text-gray-500">${prescription.frequency}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${prescription.doctor}</div>
-                        <div class="text-sm text-gray-500">${prescription.specialty}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                            <div class="flex items-center">
-                                <i data-lucide="calendar" class="h-4 w-4 mr-1 text-gray-500"></i>
-                                <span>${formatDate(prescription.startDate)}</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i data-lucide="calendar" class="h-4 w-4 mr-1 text-gray-500"></i>
-                                <span>${formatDate(prescription.endDate)}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        ${getStatusBadgeHTML(prescription.status)}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${prescription.reason}
-                    </td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-
-            // Re-initialize Lucide icons
-            lucide.createIcons();
-        }
-
-        // Render today's medications
-        function renderTodayMedications() {
-            const container = document.getElementById('today-medications');
-            container.innerHTML = '';
-
-            todayMedications.forEach((med, index) => {
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between p-2 rounded hover:bg-gray-50';
-
-                div.innerHTML = `
-                    <div class="flex items-center">
-                        ${med.taken ?
-                        `<i data-lucide="check-circle" class="h-5 w-5 text-green-500 mr-2"></i>` :
-                        `<i data-lucide="clock" class="h-5 w-5 text-blue-500 mr-2"></i>`
+                    if (id === reportId) {
+                        if (expandedReportId === reportId) {
+                            // Collapse
+                            detailsSection.classList.add('hidden');
+                            chevron.setAttribute('data-lucide', 'chevron-down');
+                            expandedReportId = null;
+                        } else {
+                            // Expand
+                            detailsSection.classList.remove('hidden');
+                            chevron.setAttribute('data-lucide', 'chevron-up');
+                            expandedReportId = reportId;
+                        }
+                    } else {
+                        // Collapse others
+                        detailsSection.classList.add('hidden');
+                        chevron.setAttribute('data-lucide', 'chevron-down');
                     }
-                        <span class="text-sm">${med.name}</span>
-                    </div>
-                    <div class="text-xs text-gray-500">${med.time}</div>
-                `;
-
-                container.appendChild(div);
-            });
-
-            // Re-initialize Lucide icons
-            lucide.createIcons();
-        }
-
-        // Toggle details row visibility
-        function toggleDetails(id) {
-            const detailsRow = document.querySelector(`.details-row[data-id="${id}"]`);
-            const button = document.querySelector(`.details-btn[data-id="${id}"]`);
-
-            if (detailsRow.classList.contains('hidden')) {
-                detailsRow.classList.remove('hidden');
-                button.innerHTML = `Less <i data-lucide="chevron-up" class="ml-1 h-4 w-4"></i>`;
-            } else {
-                detailsRow.classList.add('hidden');
-                button.innerHTML = `Details <i data-lucide="chevron-down" class="ml-1 h-4 w-4"></i>`;
+                });
+                lucide.createIcons();
             }
 
-            // Re-initialize Lucide icons
-            lucide.createIcons();
+            // Render functions
+            function renderReports() {
+                // Filter and sort reports
+                currentReports = labReports
+                    .filter(report => {
+                        const matchesSearch =
+                            report.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            report.doctor.toLowerCase().includes(searchTerm.toLowerCase());
+                        const matchesStatus = filterStatus === 'all' || report.status === filterStatus;
+                        return matchesSearch && matchesStatus;
+                    })
+                    .sort((a, b) => {
+                        if (sortOrder === 'newest') {
+                            return new Date(b.date) - new Date(a.date);
+                        } else {
+                            return new Date(a.date) - new Date(b.date);
+                        }
+                    });
+
+                // Clear current list
+                const currentReportItems = document.querySelectorAll('#reports-list > li:not(#no-reports-message)');
+                currentReportItems.forEach(item => item.remove());
+
+                // Show message if no reports
+                if (currentReports.length === 0) {
+                    noReportsMessage.classList.remove('hidden');
+                } else {
+                    noReportsMessage.classList.add('hidden');
+
+                    // Create report items
+                    currentReports.forEach(report => {
+                        const template = document.getElementById('report-item-template');
+                        const clone = document.importNode(template.content, true);
+                        const reportItem = clone.querySelector('li');
+
+                        // Set report data attributes
+                        reportItem.dataset.reportId = report.id;
+
+                        // Set report header content
+                        const reportIcon = reportItem.querySelector('.report-icon');
+                        reportIcon.classList.add(report.status === 'abnormal' ? 'text-red-500' : 'text-blue-500');
+
+                        reportItem.querySelector('.report-type').textContent = report.type;
+                        reportItem.querySelector('.report-date').textContent = formatDate(report.date);
+                        reportItem.querySelector('.report-doctor').textContent = report.doctor;
+
+                        const statusBadge = reportItem.querySelector('.report-status-badge');
+                        statusBadge.textContent = report.status.charAt(0).toUpperCase() + report.status.slice(1);
+                        statusBadge.classList.add(...getStatusBadgeClass(report.status).split(' '));
+
+                        // Set report details content
+                        reportItem.querySelector('.report-notes').textContent = report.notes;
+
+                        // Add parameters
+                        const parametersContainer = reportItem.querySelector('.report-parameters');
+                        report.parameters.forEach(param => {
+                            const paramTemplate = document.getElementById('parameter-row-template');
+                            const paramClone = document.importNode(paramTemplate.content, true);
+                            const paramRow = paramClone.querySelector('tr');
+
+                            // Highlight abnormal rows
+                            if (param.status !== 'normal') {
+                                paramRow.classList.add('bg-red-50');
+                            }
+
+                            paramRow.querySelector('.param-name').textContent = param.name;
+                            paramRow.querySelector('.param-value').textContent = `${param.value} ${param.unit}`;
+                            paramRow.querySelector('.param-reference').textContent = param.reference;
+
+                            const statusElement = paramRow.querySelector('.param-status');
+                            statusElement.textContent = param.status.charAt(0).toUpperCase() + param.status.slice(1);
+                            statusElement.classList.add(getParameterStatusClass(param.status));
+
+                            parametersContainer.appendChild(paramRow);
+                        });
+
+                        // Add event listener to toggle details
+                        const reportHeader = reportItem.querySelector('.report-header');
+                        reportHeader.addEventListener('click', () => {
+                            toggleReportDetails(report.id);
+                        });
+
+                        // Add to DOM
+                        reportsList.appendChild(reportItem);
+                    });
+                }
+
+                // Refresh icons
+                lucide.createIcons();
+
+                // Update stats
+                updateStats();
+            }
+
+            function updateStats() {
+                totalReportsElement.textContent = labReports.length;
+
+                const abnormalCount = labReports.filter(report => report.status === 'abnormal').length;
+                abnormalCountElement.textContent = abnormalCount;
+
+                // Show/hide alert banner
+                if (abnormalCount > 0) {
+                    alertBanner.classList.remove('hidden');
+                    alertMessage.textContent = `You have ${abnormalCount} lab report(s) with abnormal findings. Please review them or consult with your doctor.`;
+                } else {
+                    alertBanner.classList.add('hidden');
+                }
+            }
+
+            // Initial render
+            renderReports();
         }
-
-        // Tab switching
-        document.getElementById('tab-active').addEventListener('click', function () {
-            this.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
-            this.classList.remove('text-gray-500');
-
-            document.getElementById('tab-history').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-            document.getElementById('tab-history').classList.add('text-gray-500');
-
-            document.getElementById('active-prescriptions-table').classList.remove('hidden');
-            document.getElementById('history-prescriptions-table').classList.add('hidden');
-        });
-
-        document.getElementById('tab-history').addEventListener('click', function () {
-            this.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
-            this.classList.remove('text-gray-500');
-
-            document.getElementById('tab-active').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-            document.getElementById('tab-active').classList.add('text-gray-500');
-
-            document.getElementById('history-prescriptions-table').classList.remove('hidden');
-            document.getElementById('active-prescriptions-table').classList.add('hidden');
-        });
-
-        // Initialize the dashboard
-        document.addEventListener('DOMContentLoaded', function () {
-            renderActivePrescriptions();
-            renderHistoryPrescriptions();
-            renderTodayMedications();
-        });
     </script>
-</body>
+</section>
 
 </html>

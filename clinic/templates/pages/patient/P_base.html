@@ -25,7 +25,7 @@
     <div class="flex flex-row flex-1">
         <!-- Sidebar -->
         <div id="sidebarPanel"
-            class="w-64 fixed inset-y-0 z-50 lg:relative bg-white h-screen transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0">
+            class="w-64 fixed inset-y-0 z-50 lg:relative bg-white h-screen transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 ">
             <div class="text-white flex-shrink-0 ">
                 <!-- Logo Section -->
                 <div class="flex flex-row justify-between items-center py-5 px-6 border-b border-gray-700">
@@ -256,8 +256,65 @@
                                                 stroke-linecap="round" />
                                         </g>
                                     </svg>
+
+
                                 </span>
                                 <span class="shortBarToggle">Prescriptions</span>
+                            </a>
+                        </li>
+
+
+
+                        <!-- Lab Report  -->
+                        <li class="menuListItems labReport-nav">
+                            <a href="{% url 'labReport' %}"
+                                class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
+                                <span class="mr-3">
+
+                                    <svg class="h-6 w-6" fill="currentColor" stroke="currentColor" viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                        <g transform="matrix(0.83 0 0 0.83 12 12)">
+                                            <g style="">
+                                                <g transform="matrix(1 0 0 1 -3 -3.25)">
+                                                    <path
+                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-9, -8.75)"
+                                                        d="M 12 8 L 6 8 C 5.585786437626905 8 5.25 8.335786437626904 5.25 8.75 C 5.25 9.164213562373096 5.585786437626905 9.5 6 9.5 L 12 9.5 C 12.414213562373096 9.5 12.75 9.164213562373096 12.75 8.75 C 12.75 8.335786437626904 12.414213562373096 8 12 8 Z"
+                                                        stroke-linecap="round" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 -3 0.3)">
+                                                    <path
+                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-9, -12.3)"
+                                                        d="M 12 11.55 L 6 11.55 C 5.585786437626905 11.55 5.25 11.885786437626905 5.25 12.3 C 5.25 12.714213562373097 5.585786437626905 13.05 6 13.05 L 12 13.05 C 12.414213562373096 13.05 12.75 12.714213562373097 12.75 12.3 C 12.75 11.885786437626905 12.414213562373096 11.55 12 11.55 Z"
+                                                        stroke-linecap="round" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 -4.25 3.85)">
+                                                    <path
+                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-7.75, -15.85)"
+                                                        d="M 9.51 15.1 L 6 15.1 C 5.585786437626904 15.1 5.249999999999999 15.435786437626906 5.249999999999999 15.850000000000001 C 5.249999999999999 16.264213562373097 5.585786437626904 16.6 6 16.6 L 9.51 16.6 C 9.924213562373096 16.6 10.26 16.264213562373097 10.26 15.850000000000001 C 10.26 15.435786437626906 9.924213562373096 15.100000000000001 9.51 15.100000000000001 Z"
+                                                        stroke-linecap="round" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 -2 0)">
+                                                    <path
+                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-10, -12)"
+                                                        d="M 8.58 21 L 3.5 21 C 3.2238576250846034 21 3 20.7761423749154 3 20.5 L 3 5.5 C 3 5.223857625084603 3.2238576250846034 5 3.5 5 L 16.5 5 C 16.7761423749154 5 17 5.223857625084603 17 5.5 L 17 6.66 L 18.87 6.66 C 19.269092937042497 6.677523470562369 19.65749970372167 6.7943892233684915 20 7 L 20 3.5 C 20 2.6715728752538097 19.32842712474619 2 18.5 2 L 13.5 2 C 13.414996425957586 1.995343330025426 13.337167560953473 1.9508696928802183 13.29 1.88 C 12.603028995607765 0.7157089217038677 11.35185164714019 0.0012109622604132841 10 0.0012109622604132841 C 8.64814835285981 0.0012109622604132841 7.396971004392233 0.7157089217038681 6.709999999999999 1.8800000000000008 C 6.662832439046525 1.9508696928802178 6.585003574042413 1.9953433300254253 6.5 2 L 1.5 2 C 0.6715728752538098 2 0 2.6715728752538097 0 3.5 L 0 22.5 C 0 23.32842712474619 0.6715728752538098 24 1.5 24 L 9.79 24 C 9.09579934634775 23.23305802237709 8.670945149874282 22.260457919706425 8.579999999999998 21.23 C 8.575013564480868 21.15341441335242 8.575013564480868 21.07658558664758 8.58 21 Z"
+                                                        stroke-linecap="round" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 5.1 4.15)">
+                                                    <path
+                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-17.1, -16.15)"
+                                                        d="M 23.15 18.79 L 23.15 18.79 L 23.15 18.79 L 19.62 15 L 19.62 9.16 C 19.6146141876919 8.748037936375392 19.281962063624608 8.4153858123081 18.87 8.41 L 15.32 8.41 C 14.905786437626904 8.41 14.57 8.745786437626904 14.57 9.16 L 14.57 15 L 11 18.79 L 11 18.79 C 11 18.79 11 18.79 11 18.79 C 10.874356883931988 18.9444389586955 10.76069298028359 19.108248702188778 10.659999999999998 19.28 C 10.657343007869263 19.316618532981327 10.657343007869263 19.353381467018668 10.66 19.389999999999997 C 10.579046205659777 19.536717593917892 10.512084126280246 19.690730376490812 10.46 19.849999999999998 C 10.46615535446252 19.866098340838274 10.46615535446252 19.883901659161722 10.46 19.9 C 10.243568629497025 20.64200642059957 10.314989320607044 21.438347126476295 10.659999999999998 22.13 L 10.66 22.189999999999998 C 10.733802275758476 22.32905853118078 10.817343890563121 22.462725114868213 10.91 22.589999999999996 L 10.99 22.709999999999997 C 11.109806721320572 22.8498085913666 11.240191408633398 22.980193278679426 11.380000000000003 23.099999999999998 L 11.38 23.159999999999997 L 11.38 23.159999999999997 C 11.943106165348702 23.624481811450515 12.650047352546139 23.87898063884159 13.38 23.879999999999995 L 20.65 23.879999999999995 C 21.474008955414114 23.894782910062844 22.270994769115262 23.586040657908345 22.869999999999997 23.019999999999996 C 23.482322576947475 22.45693581142438 23.842658260125862 21.671404022095494 23.869999999999997 20.839999999999996 C 23.869999999999997 20.839999999999996 23.869999999999997 20.759999999999998 23.869999999999997 20.709999999999997 C 23.853958890349915 20.007007340671638 23.600155981054886 19.330199582551558 23.15 18.79 Z M 16.07 15.34 L 16.07 9.91 L 18.12 9.91 L 18.12 15.34 C 18.119423577897958 15.532221062496518 18.19076421181834 15.71770671068952 18.32 15.86 L 20.84 18.53 L 13.35 18.53 L 15.86 15.860000000000001 C 15.992045564102362 15.718695197432176 16.066886938872976 15.533373698000174 16.07 15.34 Z"
+                                                        stroke-linecap="round" />
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <span class="shortBarToggle">Lab Report</span>
                             </a>
                         </li>
 
@@ -273,7 +330,7 @@
         <!-- Main Content Wrapper -->
         <div class="flex flex-col flex-1 bg-slate-50 overflow-x-hidden">
             <!-- Header -->
-            <header class="flex items-center justify-between px-4 py-2 bg-white shadow">
+            <header class="flex items-center justify-between px-4 py-2 bg-white shadow z-20">
                 <button class="block lg:hidden p-0  sidebarToggle">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -763,7 +820,7 @@
 
 
             <!-- Footer -->
-            <footer class="container mx-auto py-3 mt-6 border-t border-gray-200">
+            <!-- <footer class="container mx-auto py-3 mt-6 border-t border-gray-200">
                 <div class="flex flex-col sm:flex-row justify-between items-center px-4">
                     <p class="text-gray-600 text-xs">© 2025 <a href="/"
                             class="hover:text-gray-800 transition-colors">Nepal's care</a></p>
@@ -771,7 +828,7 @@
                         <a href="#" class="text-xs text-gray-500 hover:text-gray-800 transition-colors">Terms</a>
                     </div>
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
 
