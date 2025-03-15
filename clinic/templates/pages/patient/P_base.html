@@ -869,6 +869,40 @@
             }
         };
 
+        function shortBarToggle(checking = false) {
+
+            // save the state in local storage as isBarShort
+            const isBarShort = localStorage.getItem('isBarShort');
+            if (isBarShort === 'true' && !checking) {
+                localStorage.setItem('isBarShort', 'false');
+            } else {
+                localStorage.setItem('isBarShort', 'true');
+            }
+
+
+
+
+            const shortBarToggle = document.querySelectorAll('.shortBarToggle');
+            const sidebarPanel = document.querySelector('#sidebarPanel');
+            const menuList = document.querySelector('#menuList');
+
+            const menuLinks = document.querySelectorAll('.menuListItems a');
+            menuLinks.forEach(link => {
+                link.classList.toggle('justify-center');
+            });
+
+            menuList.classList.toggle('px-4');
+            // menuList.classList.toggle('w-64');
+
+
+            sidebarPanel.classList.toggle('w-20');
+            sidebarPanel.classList.toggle('w-64');
+            shortBarToggle.forEach((shortBar) => {
+                shortBar.classList.toggle('hidden');
+
+            });
+        }
+
         // Add event listener to toggle button
         document.addEventListener('DOMContentLoaded', () => {
             const toggleButton = document.querySelectorAll('.sidebarToggle');
@@ -876,31 +910,14 @@
                 button.addEventListener('click', sidebarToggle);
             });
 
-
             const ShortBarTogglebtn = document.querySelector('.ShortBarTogglebtn');
-            ShortBarTogglebtn.addEventListener('click', () => {
-                const shortBarToggle = document.querySelectorAll('.shortBarToggle');
-                const sidebarPanel = document.querySelector('#sidebarPanel');
-                const menuList = document.querySelector('#menuList');
-
-                const menuLinks = document.querySelectorAll('.menuListItems a');
-                menuLinks.forEach(link => {
-                    link.classList.toggle('justify-center');
-                });
-
-                menuList.classList.toggle('px-4');
-                // menuList.classList.toggle('w-64');
+            ShortBarTogglebtn.addEventListener('click', shortBarToggle);
 
 
-                sidebarPanel.classList.toggle('w-20');
-                sidebarPanel.classList.toggle('w-64');
-                shortBarToggle.forEach((shortBar) => {
-                    shortBar.classList.toggle('hidden');
-
-                });
-
-            });
-
+            const isBarShort = localStorage.getItem('isBarShort');
+            if (isBarShort === 'true') {
+                shortBarToggle(true);
+            }
 
         });
     </script>
