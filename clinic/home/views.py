@@ -66,4 +66,4 @@ def viewAppoinment(request):
 
 
 def doctor(request):
-    return render(request, 'pages/doctor-portal.html')
+    return render(request, 'pages/doctor/dashboard.html')

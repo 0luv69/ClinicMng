@@ -15,10 +15,10 @@ urlpatterns = [
     path('p/book-appoinment/', BookAppoinment, name='BookAppoinment'),
     path('p/document/', ViewDocument, name='ViewDocument'),
     path('p/lab-report/', labReport, name='labReport'),
-
-
     path('p/prescriptions/', prescriptions, name='prescriptions'),
-    path('message/', message, name='message'),
+    path('p/message/', message, name='p-message'),
+
+
 
 
 

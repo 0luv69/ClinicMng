@@ -1,0 +1,575 @@
+{% extends "pages/doctor/D_base.html" %}
+{% load static %}
+
+{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+
+{% block pageof %} Dashboard of Doctor {% endblock pageof %}
+{% block linkPageof %} /patient/adv {% endblock linkPageof %}
+
+{% block styles %}
+<!-- <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> -->
+
+{% endblock styles %}
+
+{% block content %}
+
+<main class="flex-1 overflow-auto p-4 md:p-6">
+    <div class="grid gap-6">
+        <div>
+            <h2 class="text-2xl font-bold tracking-tight">Dashboard</h2>
+            <p class="text-muted-foreground">Welcome back, Dr. Smith. Here's your overview for today.</p>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-lg border bg-card p-4 shadow-sm">
+                <div class="flex flex-row items-center justify-between pb-2">
+                    <h3 class="text-sm font-medium">Total Patients</h3>
+                    <svg class="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold">1,248</div>
+                    <p class="text-xs text-muted-foreground">+4.3% from last month</p>
+                </div>
+            </div>
+            <div class="rounded-lg border bg-card p-4 shadow-sm">
+                <div class="flex flex-row items-center justify-between pb-2">
+                    <h3 class="text-sm font-medium">Today's Appointments</h3>
+                    <svg class="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold">12</div>
+                    <p class="text-xs text-muted-foreground">3 pending confirmations</p>
+                </div>
+            </div>
+            <div class="rounded-lg border bg-card p-4 shadow-sm">
+                <div class="flex flex-row items-center justify-between pb-2">
+                    <h3 class="text-sm font-medium">Unread Messages</h3>
+                    <svg class="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold">7</div>
+                    <p class="text-xs text-muted-foreground">2 urgent messages</p>
+                </div>
+            </div>
+            <div class="rounded-lg border bg-card p-4 shadow-sm">
+                <div class="flex flex-row items-center justify-between pb-2">
+                    <h3 class="text-sm font-medium">Pending Lab Results</h3>
+                    <svg class="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold">5</div>
+                    <p class="text-xs text-muted-foreground">1 critical result</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="grid gap-6 md:grid-cols-6">
+            <!-- Left column - Schedule -->
+            <div class="rounded-lg border bg-card shadow-sm md:col-span-4">
+                <div class="flex flex-row items-center p-4 pb-2 border-b">
+                    <div>
+                        <h3 class="font-semibold">Today's Schedule</h3>
+                        <p class="text-sm text-muted-foreground" id="currentDate"></p>
+                    </div>
+                    <button class="btn btn-outline ml-auto text-sm px-3 py-1">
+                        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        View Calendar
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        <!-- Appointment 1 -->
+                        <div class="flex items-center gap-4 rounded-lg border p-3">
+                            <div class="flex-shrink-0">
+                                <div class="avatar h-8 w-8 rounded-full">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="Sarah Johnson"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">SJ</div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium truncate">Sarah Johnson</p>
+                                    <span class="badge badge-outline ml-auto">Follow-up</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>PT-7823</span>
+                                    <span>•</span>
+                                    <span class="flex items-center">
+                                        <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        09:00 AM
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Confirmed
+                                </span>
+                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Appointment 2 -->
+                        <div class="flex items-center gap-4 rounded-lg border p-3">
+                            <div class="flex-shrink-0">
+                                <div class="avatar h-8 w-8 rounded-full">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="Michael Chen"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">MC</div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium truncate">Michael Chen</p>
+                                    <span class="badge badge-outline ml-auto">New Patient</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>PT-5467</span>
+                                    <span>•</span>
+                                    <span class="flex items-center">
+                                        <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        10:30 AM
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Confirmed
+                                </span>
+                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Appointment 3 -->
+                        <div class="flex items-center gap-4 rounded-lg border p-3">
+                            <div class="flex-shrink-0">
+                                <div class="avatar h-8 w-8 rounded-full">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="Emily Rodriguez"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">ER</div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium truncate">Emily Rodriguez</p>
+                                    <span class="badge badge-outline ml-auto">Consultation</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>PT-3219</span>
+                                    <span>•</span>
+                                    <span class="flex items-center">
+                                        <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        11:45 AM
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="badge badge-outline bg-amber-50 text-amber-700 border-amber-200 flex items-center">
+                                    <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Pending
+                                </span>
+                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Appointment 4 -->
+                        <div class="flex items-center gap-4 rounded-lg border p-3">
+                            <div class="flex-shrink-0">
+                                <div class="avatar h-8 w-8 rounded-full">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="David Wilson"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">DW</div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium truncate">David Wilson</p>
+                                    <span class="badge badge-outline ml-auto">Follow-up</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>PT-9054</span>
+                                    <span>•</span>
+                                    <span class="flex items-center">
+                                        <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        02:15 PM
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Confirmed
+                                </span>
+                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Appointment 5 -->
+                        <div class="flex items-center gap-4 rounded-lg border p-3">
+                            <div class="flex-shrink-0">
+                                <div class="avatar h-8 w-8 rounded-full">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="Lisa Thompson"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">LT</div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium truncate">Lisa Thompson</p>
+                                    <span class="badge badge-outline ml-auto">Urgent Care</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>PT-6128</span>
+                                    <span>•</span>
+                                    <span class="flex items-center">
+                                        <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        03:30 PM
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Confirmed
+                                </span>
+                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t">
+                    <button class="btn btn-outline w-full">
+                        View All Appointments
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right column - Notifications and Recent Patients -->
+            <div class="space-y-6 md:col-span-2">
+                <!-- Notifications -->
+                <div class="rounded-lg border bg-card shadow-sm">
+                    <div class="p-4 border-b">
+                        <h3 class="font-semibold">Notifications</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-4">
+                            <!-- Notification 1 -->
+                            <div class="flex gap-3">
+                                <div class="mt-0.5 rounded-full p-1 bg-red-100 text-red-600">
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.33-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-sm font-medium">Lab Result</p>
+                                        <span class="badge badge-destructive ml-auto text-[10px] px-1 py-0 h-4">
+                                            Urgent
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground">
+                                        <span class="font-medium">Sarah Johnson:</span> Blood work results are ready for
+                                        review
+                                    </p>
+                                    <p class="text-xs text-muted-foreground">10 mins ago</p>
+                                </div>
+                            </div>
+
+                            <!-- Notification 2 -->
+                            <div class="flex gap-3">
+                                <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-sm font-medium">Message</p>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground">
+                                        <span class="font-medium">Michael Chen:</span> Question about medication dosage
+                                    </p>
+                                    <p class="text-xs text-muted-foreground">30 mins ago</p>
+                                </div>
+                            </div>
+
+                            <!-- Notification 3 -->
+                            <div class="flex gap-3">
+                                <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-sm font-medium">Appointment</p>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground">
+                                        <span class="font-medium">Emily Rodriguez:</span> Requested appointment
+                                        reschedule
+                                    </p>
+                                    <p class="text-xs text-muted-foreground">1 hour ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t">
+                        <button class="btn btn-ghost w-full">
+                            View All Notifications
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Patients -->
+                <div class="rounded-lg border bg-card shadow-sm">
+                    <div class="p-4 border-b">
+                        <h3 class="font-semibold">Recent Patients</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-4">
+                            <!-- Patient 1 -->
+                            <div class="flex items-center gap-3">
+                                <div class="avatar h-10 w-10 rounded-full">
+                                    <img src="/placeholder.svg?height=40&width=40" alt="Robert Smith"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">RS</div>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center">
+                                        <p class="text-sm font-medium">Robert Smith</p>
+                                        <svg class="ml-auto h-4 w-4 text-muted-foreground" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                                        <span>PT-4532</span>
+                                        <span>•</span>
+                                        <span>Yesterday</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="badge badge-outline text-xs">Hypertension</span>
+                                        <span
+                                            class="badge badge-outline text-xs bg-green-50 text-green-700 border-green-200">Stable</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Patient 2 -->
+                            <div class="flex items-center gap-3">
+                                <div class="avatar h-10 w-10 rounded-full">
+                                    <img src="/placeholder.svg?height=40&width=40" alt="Jennifer Lee"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">JL</div>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center">
+                                        <p class="text-sm font-medium">Jennifer Lee</p>
+                                        <svg class="ml-auto h-4 w-4 text-muted-foreground" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                                        <span>PT-7891</span>
+                                        <span>•</span>
+                                        <span>3 days ago</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="badge badge-outline text-xs">Diabetes Type 2</span>
+                                        <span
+                                            class="badge badge-outline text-xs bg-blue-50 text-blue-700 border-blue-200">Improving</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Patient 3 -->
+                            <div class="flex items-center gap-3">
+                                <div class="avatar h-10 w-10 rounded-full">
+                                    <img src="/placeholder.svg?height=40&width=40" alt="Thomas Brown"
+                                        class="avatar-image">
+                                    <div class="avatar-fallback">TB</div>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center">
+                                        <p class="text-sm font-medium">Thomas Brown</p>
+                                        <svg class="ml-auto h-4 w-4 text-muted-foreground" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                                        <span>PT-2345</span>
+                                        <span>•</span>
+                                        <span>1 week ago</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="badge badge-outline text-xs">Asthma</span>
+                                        <span
+                                            class="badge badge-outline text-xs bg-amber-50 text-amber-700 border-amber-200">Needs
+                                            Review</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t">
+                        <button class="btn btn-ghost w-full">
+                            View All Patients
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Stats -->
+        <div class="rounded-lg border bg-card shadow-sm">
+            <div class="p-4 border-b">
+                <h3 class="font-semibold">Weekly Statistics</h3>
+                <p class="text-sm text-muted-foreground">Patient visits and consultations for the past week</p>
+            </div>
+            <div class="p-4">
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium">Total Visits</span>
+                            <span class="ml-auto text-sm text-muted-foreground">78</span>
+                        </div>
+                        <div class="progress h-2 rounded-full">
+                            <div class="progress-bar h-2 rounded-full" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium">New Patients</span>
+                            <span class="ml-auto text-sm text-muted-foreground">23</span>
+                        </div>
+                        <div class="progress h-2 rounded-full">
+                            <div class="progress-bar h-2 rounded-full" style="width: 23%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium">Follow-ups</span>
+                            <span class="ml-auto text-sm text-muted-foreground">45</span>
+                        </div>
+                        <div class="progress h-2 rounded-full">
+                            <div class="progress-bar h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium">Teleconsultations</span>
+                            <span class="ml-auto text-sm text-muted-foreground">10</span>
+                        </div>
+                        <div class="progress h-2 rounded-full">
+                            <div class="progress-bar h-2 rounded-full" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+
+    dashboard_nav_all = document.querySelectorAll('.dashboard-nav a');
+    console.log(dashboard_nav_all);
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
+    });
+</script>
+{% endblock scripts %}
