@@ -985,6 +985,10 @@ select {
   top: 100%;
 }
 
+.-right-1 {
+  right: -0.25rem;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -1483,6 +1487,10 @@ select {
 
 .w-px {
   width: 1px;
+}
+
+.w-56 {
+  width: 14rem;
 }
 
 .min-w-0 {
@@ -2179,6 +2187,11 @@ select {
   border-color: rgb(234 179 8 / var(--tw-border-opacity, 1));
 }
 
+.border-amber-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(253 230 138 / var(--tw-border-opacity, 1));
+}
+
 .bg-accent {
   --tw-bg-opacity: 1;
   background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
@@ -2375,6 +2388,10 @@ select {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
+}
+
+.bg-muted\/40 {
+  background-color: rgb(207 214 221 / 0.4);
 }
 
 .bg-opacity-50 {
@@ -2716,6 +2733,11 @@ select {
   padding-bottom: 2rem;
 }
 
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -2864,6 +2886,10 @@ select {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[10px\] {
+  font-size: 10px;
 }
 
 .font-bold {
@@ -3820,6 +3846,11 @@ select {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-muted:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(207 214 221 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:from-blue-600:hover {
   --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
@@ -4352,6 +4383,10 @@ select {
     grid-column: span 2 / span 2;
   }
 
+  .md\:col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+
   .md\:-mt-80 {
     margin-top: -20rem;
   }
@@ -4444,6 +4479,14 @@ select {
     width: auto;
   }
 
+  .md\:w-\[300px\] {
+    width: 300px;
+  }
+
+  .md\:grow-0 {
+    flex-grow: 0;
+  }
+
   .md\:scale-110 {
     --tw-scale-x: 1.1;
     --tw-scale-y: 1.1;
@@ -4464,6 +4507,10 @@ select {
 
   .md\:grid-cols-\[300px_1fr\] {
     grid-template-columns: 300px 1fr;
+  }
+
+  .md\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .md\:flex-row {
@@ -4554,6 +4601,10 @@ select {
 }
 
 @media (min-width: 1024px) {
+  .lg\:static {
+    position: static;
+  }
+
   .lg\:relative {
     position: relative;
   }
