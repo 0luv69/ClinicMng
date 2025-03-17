@@ -24,5 +24,5 @@ urlpatterns = [
 
 
 
-    path('doctor/', doctor, name='doctor'),
+    path('doctor/', doctor, name='doctor_dashboard'),
 ]

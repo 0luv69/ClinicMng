@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titles %}Patient Portol || Nepal's Care{% endblock titles %}
+    <title>{% block titles %}Doctor Portol || Nepal's Care{% endblock titles %}
 
         <meta name="google-site-verification" content="r2c7M748axvrDabOkAYO4cTYho-D9-OruPGhVBC6TJE" />
 
@@ -14,6 +14,8 @@
     <!-- Fab icon -->
     <link rel="icon" href="{% static 'icon-64.png' %}" type="image/png">
     {% block styles %}
+
+
     {% endblock styles %}
 </head>
 
@@ -74,7 +76,7 @@
 
                         <!-- Dashboard -->
                         <li class="menuListItems dashboard-nav">
-                            <a href="{% url 'patient_dashboard' %}"
+                            <a href="{% url 'doctor_dashboard' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 

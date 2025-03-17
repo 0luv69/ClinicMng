@@ -9,6 +9,8 @@
 {% block styles %}
 <!-- <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> -->
 
+
+
 {% endblock styles %}
 
 {% block content %}
@@ -85,7 +87,8 @@
                         <h3 class="font-semibold">Today's Schedule</h3>
                         <p class="text-sm text-muted-foreground" id="currentDate"></p>
                     </div>
-                    <button class="btn btn-outline ml-auto text-sm px-3 py-1">
+                    <button
+                        class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent border border-border text-foreground hover:bg-muted hover:text-muted-foreground ml-auto text-sm px-3 py-1">
                         <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -98,16 +101,20 @@
                         <!-- Appointment 1 -->
                         <div class="flex items-center gap-4 rounded-lg border p-3">
                             <div class="flex-shrink-0">
-                                <div class="avatar h-8 w-8 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-8 w-8 rounded-full">
                                     <img src="/placeholder.svg?height=32&width=32" alt="Sarah Johnson"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">SJ</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        SJ</div>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
                                     <p class="font-medium truncate">Sarah Johnson</p>
-                                    <span class="badge badge-outline ml-auto">Follow-up</span>
+                                    <span
+                                        class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground ml-auto">Follow-up</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span>PT-7823</span>
@@ -123,14 +130,15 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-green-50 text-green-700 border border-green-200">
                                     <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Confirmed
                                 </span>
-                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                <button
+                                    class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted h-8 w-8 p-0">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -142,16 +150,21 @@
                         <!-- Appointment 2 -->
                         <div class="flex items-center gap-4 rounded-lg border p-3">
                             <div class="flex-shrink-0">
-                                <div class="avatar h-8 w-8 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-8 w-8 rounded-full">
                                     <img src="/placeholder.svg?height=32&width=32" alt="Michael Chen"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">MC</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        MC</div>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
                                     <p class="font-medium truncate">Michael Chen</p>
-                                    <span class="badge badge-outline ml-auto">New Patient</span>
+                                    <span
+                                        class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground ml-auto">New
+                                        Patient</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span>PT-5467</span>
@@ -167,14 +180,15 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-green-50 text-green-700 border border-green-200">
                                     <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Confirmed
                                 </span>
-                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                <button
+                                    class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted h-8 w-8 p-0">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -186,16 +200,20 @@
                         <!-- Appointment 3 -->
                         <div class="flex items-center gap-4 rounded-lg border p-3">
                             <div class="flex-shrink-0">
-                                <div class="avatar h-8 w-8 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-8 w-8 rounded-full">
                                     <img src="/placeholder.svg?height=32&width=32" alt="Emily Rodriguez"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">ER</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        ER</div>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
                                     <p class="font-medium truncate">Emily Rodriguez</p>
-                                    <span class="badge badge-outline ml-auto">Consultation</span>
+                                    <span
+                                        class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground ml-auto">Consultation</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span>PT-3219</span>
@@ -211,14 +229,15 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="badge badge-outline bg-amber-50 text-amber-700 border-amber-200 flex items-center">
+                                    class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-amber-50 text-amber-700 border border-amber-200">
                                     <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Pending
                                 </span>
-                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                <button
+                                    class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted h-8 w-8 p-0">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -230,16 +249,20 @@
                         <!-- Appointment 4 -->
                         <div class="flex items-center gap-4 rounded-lg border p-3">
                             <div class="flex-shrink-0">
-                                <div class="avatar h-8 w-8 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-8 w-8 rounded-full">
                                     <img src="/placeholder.svg?height=32&width=32" alt="David Wilson"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">DW</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        DW</div>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
                                     <p class="font-medium truncate">David Wilson</p>
-                                    <span class="badge badge-outline ml-auto">Follow-up</span>
+                                    <span
+                                        class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground ml-auto">Follow-up</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span>PT-9054</span>
@@ -255,14 +278,15 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-green-50 text-green-700 border border-green-200">
                                     <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Confirmed
                                 </span>
-                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                <button
+                                    class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted h-8 w-8 p-0">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -274,16 +298,21 @@
                         <!-- Appointment 5 -->
                         <div class="flex items-center gap-4 rounded-lg border p-3">
                             <div class="flex-shrink-0">
-                                <div class="avatar h-8 w-8 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-8 w-8 rounded-full">
                                     <img src="/placeholder.svg?height=32&width=32" alt="Lisa Thompson"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">LT</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        LT</div>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
                                     <p class="font-medium truncate">Lisa Thompson</p>
-                                    <span class="badge badge-outline ml-auto">Urgent Care</span>
+                                    <span
+                                        class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground ml-auto">Urgent
+                                        Care</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span>PT-6128</span>
@@ -299,14 +328,15 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
+                                    class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-green-50 text-green-700 border border-green-200">
                                     <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Confirmed
                                 </span>
-                                <button class="btn btn-ghost h-8 w-8 p-0">
+                                <button
+                                    class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted h-8 w-8 p-0">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -317,7 +347,8 @@
                     </div>
                 </div>
                 <div class="p-4 border-t">
-                    <button class="btn btn-outline w-full">
+                    <button
+                        class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent border border-border text-foreground hover:bg-muted hover:text-muted-foreground w-full">
                         View All Appointments
                     </button>
                 </div>
@@ -327,15 +358,18 @@
             <div class="space-y-6 md:col-span-2">
                 <!-- Notifications -->
                 <div class="rounded-lg border bg-card shadow-sm">
-                    <div class="p-4 border-b">
+                    <div class="flex items-center justify-between p-4 border-b">
                         <h3 class="font-semibold">Notifications</h3>
+                        <span
+                            class="inline-flex items-center justify-center rounded-full w-5 h-5 bg-primary text-xs text-primary-foreground">3</span>
                     </div>
                     <div class="p-4">
                         <div class="space-y-4">
                             <!-- Notification 1 -->
-                            <div class="flex gap-3">
-                                <div class="mt-0.5 rounded-full p-1 bg-red-100 text-red-600">
-                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex gap-3 hover:bg-muted/50 p-2 rounded-md transition-colors">
+                                <div class="mt-0.5   ">
+                                    <svg class="h-8 w-8 bg-red-100 p-1.5 rounded-full text-red-600" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.33-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
@@ -343,22 +377,25 @@
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center gap-2">
                                         <p class="text-sm font-medium">Lab Result</p>
-                                        <span class="badge badge-destructive ml-auto text-[10px] px-1 py-0 h-4">
-                                            Urgent
-                                        </span>
+                                        <span
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-1.5 py-0.5 bg-destructive text-destructive-foreground ml-auto">Urgent</span>
                                     </div>
                                     <p class="text-sm text-muted-foreground">
                                         <span class="font-medium">Sarah Johnson:</span> Blood work results are ready for
                                         review
                                     </p>
-                                    <p class="text-xs text-muted-foreground">10 mins ago</p>
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-xs text-muted-foreground">10 mins ago</p>
+                                        <button class="text-xs text-primary hover:underline">Mark as read</button>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Notification 2 -->
-                            <div class="flex gap-3">
-                                <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
-                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex gap-3 hover:bg-muted/50 p-2 rounded-md transition-colors">
+                                <div class="mt-0.5  ">
+                                    <svg class="h-8 w-8 bg-blue-100 p-1.5 rounded-full text-blue-600" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                     </svg>
@@ -366,38 +403,59 @@
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center gap-2">
                                         <p class="text-sm font-medium">Message</p>
+                                        <span class="inline-flex w-2 h-2 rounded-full bg-blue-500 ml-auto"></span>
                                     </div>
                                     <p class="text-sm text-muted-foreground">
                                         <span class="font-medium">Michael Chen:</span> Question about medication dosage
                                     </p>
-                                    <p class="text-xs text-muted-foreground">30 mins ago</p>
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-xs text-muted-foreground">30 mins ago</p>
+                                        <div class="flex gap-2">
+                                            <button class="text-xs text-primary hover:underline">Reply</button>
+                                            <button class="text-xs text-primary hover:underline">Mark as read</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Notification 3 -->
-                            <div class="flex gap-3">
-                                <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
-                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex gap-3 hover:bg-muted/50 p-2 rounded-md transition-colors">
+                                <div class="mt-0.5">
+                                    <svg class="h-8 w-8  rounded-full p-1.5 bg-green-100 text-green-600" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center gap-2">
                                         <p class="text-sm font-medium">Appointment</p>
+                                        <span class="inline-flex w-2 h-2 rounded-full bg-blue-500 ml-auto"></span>
                                     </div>
                                     <p class="text-sm text-muted-foreground">
                                         <span class="font-medium">Emily Rodriguez:</span> Requested appointment
                                         reschedule
                                     </p>
-                                    <p class="text-xs text-muted-foreground">1 hour ago</p>
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-xs text-muted-foreground">1 hour ago</p>
+                                        <div class="flex gap-2">
+                                            <button class="text-xs text-primary hover:underline">Accept</button>
+                                            <button
+                                                class="text-xs text-muted-foreground hover:underline">Decline</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 border-t">
-                        <button class="btn btn-ghost w-full">
+                    <div class="p-4 border-t flex items-center justify-between">
+                        <button
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors text-primary hover:text-primary/80">
                             View All Notifications
+                        </button>
+                        <button
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors text-muted-foreground hover:text-foreground">
+                            Mark All as Read
                         </button>
                     </div>
                 </div>
@@ -411,10 +469,13 @@
                         <div class="space-y-4">
                             <!-- Patient 1 -->
                             <div class="flex items-center gap-3">
-                                <div class="avatar h-10 w-10 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-10 w-10 rounded-full">
                                     <img src="/placeholder.svg?height=40&width=40" alt="Robert Smith"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">RS</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        RS</div>
                                 </div>
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center">
@@ -431,19 +492,23 @@
                                         <span>Yesterday</span>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="badge badge-outline text-xs">Hypertension</span>
                                         <span
-                                            class="badge badge-outline text-xs bg-green-50 text-green-700 border-green-200">Stable</span>
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground">Hypertension</span>
+                                        <span
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-green-50 text-green-700 border border-green-200">Stable</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Patient 2 -->
                             <div class="flex items-center gap-3">
-                                <div class="avatar h-10 w-10 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-10 w-10 rounded-full">
                                     <img src="/placeholder.svg?height=40&width=40" alt="Jennifer Lee"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">JL</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        JL</div>
                                 </div>
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center">
@@ -460,19 +525,24 @@
                                         <span>3 days ago</span>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="badge badge-outline text-xs">Diabetes Type 2</span>
                                         <span
-                                            class="badge badge-outline text-xs bg-blue-50 text-blue-700 border-blue-200">Improving</span>
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground">Diabetes
+                                            Type 2</span>
+                                        <span
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-blue-50 text-blue-700 border border-blue-200">Improving</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Patient 3 -->
                             <div class="flex items-center gap-3">
-                                <div class="avatar h-10 w-10 rounded-full">
+                                <div
+                                    class="relative flex items-center justify-center overflow-hidden h-10 w-10 rounded-full">
                                     <img src="/placeholder.svg?height=40&width=40" alt="Thomas Brown"
-                                        class="avatar-image">
-                                    <div class="avatar-fallback">TB</div>
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full font-medium bg-muted text-muted-foreground">
+                                        TB</div>
                                 </div>
                                 <div class="flex-1 space-y-1">
                                     <div class="flex items-center">
@@ -489,9 +559,10 @@
                                         <span>1 week ago</span>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="badge badge-outline text-xs">Asthma</span>
                                         <span
-                                            class="badge badge-outline text-xs bg-amber-50 text-amber-700 border-amber-200">Needs
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-transparent border border-border text-foreground">Asthma</span>
+                                        <span
+                                            class="inline-flex items-center rounded-md text-xs font-medium px-2 py-0.5 whitespace-nowrap bg-amber-50 text-amber-700 border border-amber-200">Needs
                                             Review</span>
                                     </div>
                                 </div>
@@ -499,7 +570,8 @@
                         </div>
                     </div>
                     <div class="p-4 border-t">
-                        <button class="btn btn-ghost w-full">
+                        <button
+                            class="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-transparent text-foreground hover:bg-muted w-full">
                             View All Patients
                         </button>
                     </div>
@@ -520,8 +592,8 @@
                             <span class="text-sm font-medium">Total Visits</span>
                             <span class="ml-auto text-sm text-muted-foreground">78</span>
                         </div>
-                        <div class="progress h-2 rounded-full">
-                            <div class="progress-bar h-2 rounded-full" style="width: 78%"></div>
+                        <div class="relative w-full overflow-hidden bg-muted rounded-full h-2">
+                            <div class="h-full bg-primary transition-all rounded-full" style="width: 78%"></div>
                         </div>
                     </div>
                     <div class="space-y-2">
@@ -529,8 +601,8 @@
                             <span class="text-sm font-medium">New Patients</span>
                             <span class="ml-auto text-sm text-muted-foreground">23</span>
                         </div>
-                        <div class="progress h-2 rounded-full">
-                            <div class="progress-bar h-2 rounded-full" style="width: 23%"></div>
+                        <div class="relative w-full overflow-hidden bg-muted rounded-full h-2">
+                            <div class="h-full bg-primary transition-all rounded-full" style="width: 23%"></div>
                         </div>
                     </div>
                     <div class="space-y-2">
@@ -538,8 +610,8 @@
                             <span class="text-sm font-medium">Follow-ups</span>
                             <span class="ml-auto text-sm text-muted-foreground">45</span>
                         </div>
-                        <div class="progress h-2 rounded-full">
-                            <div class="progress-bar h-2 rounded-full" style="width: 45%"></div>
+                        <div class="relative w-full overflow-hidden bg-muted rounded-full h-2">
+                            <div class="h-full bg-primary transition-all rounded-full" style="width: 45%"></div>
                         </div>
                     </div>
                     <div class="space-y-2">
@@ -547,8 +619,8 @@
                             <span class="text-sm font-medium">Teleconsultations</span>
                             <span class="ml-auto text-sm text-muted-foreground">10</span>
                         </div>
-                        <div class="progress h-2 rounded-full">
-                            <div class="progress-bar h-2 rounded-full" style="width: 10%"></div>
+                        <div class="relative w-full overflow-hidden bg-muted rounded-full h-2">
+                            <div class="h-full bg-primary transition-all rounded-full" style="width: 10%"></div>
                         </div>
                     </div>
                 </div>
