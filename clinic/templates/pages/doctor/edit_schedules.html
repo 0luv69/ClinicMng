@@ -7,34 +7,31 @@
 {% block linkPageof %} /d/edit-schedules/ {% endblock linkPageof %}
 
 {% block styles %}
-<<<<<<< HEAD <!-- <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js">
+<!-- <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js">
     </script> -->
-    =======
-    >>>>>>> b75f0e3 (first commit)
 
 
+{% endblock styles %}
 
-    {% endblock styles %}
-
-    {% block content %}
+{% block content %}
 
 
 
 
-    {% endblock content %}
+{% endblock content %}
 
 
-    {% block scripts %}
+{% block scripts %}
 
-    <script>
+<script>
 
-        dashboard_nav_all = document.querySelectorAll('.edit_schedules-nav a');
-        console.log(dashboard_nav_all);
-        dashboard_nav_all.forEach((nav) => {
-            nav_innertab =
-                nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
-        });
-    </script>
+    dashboard_nav_all = document.querySelectorAll('.edit_schedules-nav a');
+    console.log(dashboard_nav_all);
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
+    });
+</script>
 
 
-    {% endblock scripts %}
+{% endblock scripts %}
