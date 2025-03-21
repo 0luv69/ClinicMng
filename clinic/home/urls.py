@@ -25,4 +25,5 @@ urlpatterns = [
 
 
     path('doctor/', doctor, name='doctor_dashboard'),
+    path('d/edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
 ]

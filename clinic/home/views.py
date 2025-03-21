@@ -67,3 +67,7 @@ def viewAppoinment(request):
 
 def doctor(request):
     return render(request, 'pages/doctor/dashboard.html')
+
+
+def d_edit_schedules(request):
+    return render(request, 'pages/doctor/edit_schedules.html')
