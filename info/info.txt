@@ -40,10 +40,13 @@ git config --global user.email "koiralasimpal51@gmail.com"
 
 
 
-    git config user.name "0luv69"
+git config user.name "0luv69"
 git config user.email "baniyarujal@gmail.com"
 
 
 git config --global user.name "0luv69"
 git config --global user.email "baniyarujal@gmail.com"
 
+git remote add origin https://github.com/Simpalkoirala/clinicMng.git
+git branch -M main  # Ensures your local branch is 'main'
+git push -u origin main
