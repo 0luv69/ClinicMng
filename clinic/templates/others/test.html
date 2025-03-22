@@ -4,866 +4,825 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Dashboard - MediClinic</title>
-    <!-- Tailwind CSS via CDN -->
+    <title>Doctor's Schedule - Appointment Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <style>
-        /* Custom styles to match shadcn/ui look */
-        :root {
-            --background: 0 0% 100%;
-            --foreground: 222.2 84% 4.9%;
-            --card: 0 0% 100%;
-            --card-foreground: 222.2 84% 4.9%;
-            --popover: 0 0% 100%;
-            --popover-foreground: 222.2 84% 4.9%;
-            --primary: 221.2 83.2% 53.3%;
-            --primary-foreground: 210 40% 98%;
-            --secondary: 210 40% 96.1%;
-            --secondary-foreground: 222.2 47.4% 11.2%;
-            --muted: 210 40% 96.1%;
-            --muted-foreground: 215.4 16.3% 46.9%;
-            --accent: 210 40% 96.1%;
-            --accent-foreground: 222.2 47.4% 11.2%;
-            --destructive: 0 84.2% 60.2%;
-            --destructive-foreground: 210 40% 98%;
-            --border: 214.3 31.8% 91.4%;
-            --input: 214.3 31.8% 91.4%;
-            --ring: 221.2 83.2% 53.3%;
-            --radius: 0.5rem;
+        /* Custom styles for transitions and animations */
+        .schedule-slot {
+            transition: transform 0.15s ease, background-color 0.2s ease;
         }
 
-        .bg-background {
-            background-color: hsl(var(--background));
+        .schedule-slot:hover {
+            transform: scale(1.05);
         }
 
-        .bg-muted\/40 {
-            background-color: hsl(var(--muted) / 0.4);
+        .tab-trigger {
+            transition: all 0.2s ease;
         }
 
-        .bg-card {
-            background-color: hsl(var(--card));
+        .tab-trigger.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #3730a3;
         }
 
-        .text-foreground {
-            color: hsl(var(--foreground));
+        .day-selected {
+            background-color: #4f46e5;
+            color: white;
         }
 
-        .text-muted-foreground {
-            color: hsl(var(--muted-foreground));
-        }
-
-        .text-primary-foreground {
-            color: hsl(var(--primary-foreground));
-        }
-
-        .border-border {
-            border-color: hsl(var(--border));
-        }
-
-        .bg-primary {
-            background-color: hsl(var(--primary));
-        }
-
-        .bg-secondary {
-            background-color: hsl(var(--secondary));
-        }
-
-        .text-secondary-foreground {
-            color: hsl(var(--secondary-foreground));
-        }
-
-        .bg-destructive {
-            background-color: hsl(var(--destructive));
-        }
-
-        .text-destructive-foreground {
-            color: hsl(var(--destructive-foreground));
-        }
-
-        .rounded-md {
-            border-radius: var(--radius);
-        }
-
-        .rounded-lg {
-            border-radius: calc(var(--radius) + 0.125rem);
-        }
-
-        .rounded-full {
-            border-radius: 9999px;
-        }
-
-        /* Avatar styles */
-        .avatar {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .avatar-image {
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .avatar-fallback {
+        .dialog-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            z-index: 10;
+        }
+
+        .dropdown-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            background-color: hsl(var(--muted));
-            color: hsl(var(--muted-foreground));
+            padding: 0.5rem 1rem;
+            cursor: pointer;
         }
 
-        /* Button styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius);
-            font-weight: 500;
-            transition-property: color, background-color, border-color;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
+        .dropdown-item:hover {
+            background: #f1f5f9;
         }
 
-        .btn-ghost {
-            background-color: transparent;
-            color: hsl(var(--foreground));
+        .dropdown-header {
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            color: #475569;
         }
 
-        .btn-ghost:hover {
-            background-color: hsl(var(--muted));
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 0.25rem 0;
         }
 
-        .btn-secondary {
-            background-color: hsl(var(--secondary));
-            color: hsl(var(--secondary-foreground));
-        }
-
-        .btn-secondary:hover {
-            background-color: hsl(var(--secondary) / 0.8);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid hsl(var(--border));
-            color: hsl(var(--foreground));
-        }
-
-        .btn-outline:hover {
-            background-color: hsl(var(--muted));
-            color: hsl(var(--muted-foreground));
-        }
-
-        /* Badge styles */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            border-radius: var(--radius);
-            font-size: 0.75rem;
-            font-weight: 500;
-            line-height: 1;
-            padding: 0.125rem 0.5rem;
-            white-space: nowrap;
-        }
-
-        .badge-outline {
-            background-color: transparent;
-            border: 1px solid hsl(var(--border));
-            color: hsl(var(--foreground));
-        }
-
-        .badge-destructive {
-            background-color: hsl(var(--destructive));
-            color: hsl(var(--destructive-foreground));
-        }
-
-        /* Progress bar */
-        .progress {
-            position: relative;
+        .text-input,
+        .select-input {
             width: 100%;
-            overflow: hidden;
-            background-color: hsl(var(--muted));
-            border-radius: 9999px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: hsl(var(--primary));
-            transition-property: width;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            margin-top: 0.25rem;
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        border: "hsl(var(--border))",
-                        input: "hsl(var(--input))",
-                        ring: "hsl(var(--ring))",
-                        background: "hsl(var(--background))",
-                        foreground: "hsl(var(--foreground))",
-                        primary: {
-                            DEFAULT: "hsl(var(--primary))",
-                            foreground: "hsl(var(--primary-foreground))",
-                        },
-                        secondary: {
-                            DEFAULT: "hsl(var(--secondary))",
-                            foreground: "hsl(var(--secondary-foreground))",
-                        },
-                        destructive: {
-                            DEFAULT: "hsl(var(--destructive))",
-                            foreground: "hsl(var(--destructive-foreground))",
-                        },
-                        muted: {
-                            DEFAULT: "hsl(var(--muted))",
-                            foreground: "hsl(var(--muted-foreground))",
-                        },
-                        accent: {
-                            DEFAULT: "hsl(var(--accent))",
-                            foreground: "hsl(var(--accent-foreground))",
-                        },
-                        popover: {
-                            DEFAULT: "hsl(var(--popover))",
-                            foreground: "hsl(var(--popover-foreground))",
-                        },
-                        card: {
-                            DEFAULT: "hsl(var(--card))",
-                            foreground: "hsl(var(--card-foreground))",
-                        },
-                    },
-                },
-            },
-        };
-    </script>
 </head>
 
-<body class="bg-muted/40">
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r bg-background -translate-x-full transition-transform lg:static lg:translate-x-0">
-            <div class="flex h-14 items-center border-b px-4">
-                <h2 class="text-lg font-semibold">MediClinic</h2>
-                <button class="btn btn-ghost ml-auto lg:hidden h-8 w-8 p-0" id="closeSidebar"
-                    aria-label="Close sidebar">
-                    <i data-lucide="x" class="h-5 w-5"></i>
-                </button>
-            </div>
-            <div class="flex items-center gap-3 border-b px-4 py-3">
-                <div class="avatar h-10 w-10 rounded-full">
-                    <img src="/placeholder.svg?height=40&width=40" alt="Dr. Jane Smith" class="avatar-image">
-                    <div class="avatar-fallback">JS</div>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-sm font-medium">Dr. Jane Smith</span>
-                    <span class="text-xs text-muted-foreground">Cardiologist</span>
-                </div>
-            </div>
-            <nav class="flex-1 overflow-auto py-4">
-                <div class="px-3">
-                    <h3 class="mb-2 px-4 text-xs font-semibold uppercase text-muted-foreground">Main</h3>
-                    <div class="space-y-1">
-                        <button class="btn btn-secondary w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="activity" class="mr-2 h-4 w-4"></i>
-                            Dashboard
-                        </button>
-                        <button class="btn btn-ghost w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="calendar" class="mr-2 h-4 w-4"></i>
-                            Appointments
-                        </button>
-                        <button class="btn btn-ghost w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="users" class="mr-2 h-4 w-4"></i>
-                            Patients
-                        </button>
-                        <button class="btn btn-ghost w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="message-square" class="mr-2 h-4 w-4"></i>
-                            Messages
-                        </button>
-                        <button class="btn btn-ghost w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="file-text" class="mr-2 h-4 w-4"></i>
-                            Medical Records
-                        </button>
-                    </div>
-                </div>
-                <div class="mt-6 px-3">
-                    <h3 class="mb-2 px-4 text-xs font-semibold uppercase text-muted-foreground">Settings</h3>
-                    <div class="space-y-1">
-                        <button class="btn btn-ghost w-full justify-start px-4 py-2 text-sm">
-                            <i data-lucide="user" class="mr-2 h-4 w-4"></i>
-                            Profile
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </aside>
-
-        <!-- Main content -->
-        <div class="flex flex-1 flex-col">
+<body class="bg-gray-50">
+    <main class="min-h-screen">
+        <div class="container mx-auto p-6">
             <!-- Header -->
-            <header class="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6">
-                <button class="btn btn-ghost lg:hidden h-8 w-8 p-0" id="openSidebar" aria-label="Open sidebar">
-                    <i data-lucide="menu" class="h-5 w-5"></i>
-                </button>
-                <div class="w-full flex-1 md:grow-0 md:w-72">
-                    <form>
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"></i>
-                            <input type="search" placeholder="Search patients..."
-                                class="w-full rounded-md border border-input bg-background px-3 py-2 pl-8 text-sm md:w-[300px]" />
-                        </div>
-                    </form>
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Edit Your Schedule</h1>
+                    <p class="text-gray-500">Configure your availability, breaks, and working hours</p>
                 </div>
-                <div class="ml-auto flex items-center gap-2">
-                    <button class="btn btn-outline relative h-8 w-8 p-0 rounded-md">
-                        <i data-lucide="bell" class="h-4 w-4"></i>
-                        <span
-                            class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
-                            3
-                        </span>
+                <div class="flex items-center gap-4">
+                    <button id="stats-button" class="p-2 rounded-md border bg-white hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-gray-600">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 16v-4" />
+                            <path d="M12 8h.01" />
+                        </svg>
                     </button>
-                    <div class="relative" id="userDropdown">
-                        <button class="btn btn-ghost rounded-full h-8 w-8 p-0">
-                            <div class="avatar h-8 w-8 rounded-full">
-                                <img src="/placeholder.svg?height=32&width=32" alt="Dr. Jane Smith"
-                                    class="avatar-image">
-                                <div class="avatar-fallback">JS</div>
-                            </div>
-                        </button>
-                        <div id="userMenu"
-                            class="hidden absolute right-0 mt-2 w-56 rounded-md border bg-background p-1 shadow-lg">
-                            <div class="px-2 py-1.5 text-sm font-medium">My Account</div>
-                            <div class="h-px bg-muted my-1"></div>
-                            <button
-                                class="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-muted">Profile</button>
-                            <button
-                                class="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-muted">Settings</button>
-                            <div class="h-px bg-muted my-1"></div>
-                            <button class="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-muted">Log
-                                out</button>
-                        </div>
-                    </div>
+                    <span class="text-sm text-gray-500">
+                        Weekly hours: <span id="total-weekly-hours" class="font-medium text-green-500">0h</span>
+                    </span>
+                    <button id="save-button"
+                        class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Save Changes
+                    </button>
                 </div>
-            </header>
+            </div>
 
-            <!-- Main dashboard content -->
-            <main class="flex-1 overflow-auto p-4 md:p-6">
-                <div class="grid gap-6">
-                    <div>
-                        <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
-                        <p class="text-muted-foreground">Welcome back, Dr. Smith. Here's your overview for today.</p>
-                    </div>
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="grid w-full grid-cols-1 md:grid-cols-3 mb-6 gap-2">
+                    <button
+                        class="tab-trigger p-3 text-sm font-medium text-slate-500 bg-slate-50 border border-slate-200 hover:bg-slate-100 active"
+                        data-tab="week">Weekly Calendar</button>
+                    <button
+                        class="tab-trigger p-3 text-sm font-medium text-slate-500 bg-slate-50 border border-slate-200 hover:bg-slate-100"
+                        data-tab="settings">Settings & Presets</button>
+                    <button
+                        class="tab-trigger p-3 text-sm font-medium text-slate-500 bg-slate-50 border border-slate-200 hover:bg-slate-100"
+                        data-tab="stats">Insights & Analytics</button>
+                </div>
 
-                    <!-- Stats cards -->
-                    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                        <div class="rounded-lg border bg-card p-4 shadow-sm">
-                            <div class="flex flex-row items-center justify-between pb-2">
-                                <h3 class="text-sm font-medium">Total Patients</h3>
-                                <i data-lucide="users" class="h-4 w-4 text-muted-foreground"></i>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold">1,248</div>
-                                <p class="text-xs text-muted-foreground">+4.3% from last month</p>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border bg-card p-4 shadow-sm">
-                            <div class="flex flex-row items-center justify-between pb-2">
-                                <h3 class="text-sm font-medium">Today's Appointments</h3>
-                                <i data-lucide="calendar" class="h-4 w-4 text-muted-foreground"></i>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold">12</div>
-                                <p class="text-xs text-muted-foreground">3 pending confirmations</p>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border bg-card p-4 shadow-sm">
-                            <div class="flex flex-row items-center justify-between pb-2">
-                                <h3 class="text-sm font-medium">Unread Messages</h3>
-                                <i data-lucide="message-square" class="h-4 w-4 text-muted-foreground"></i>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold">7</div>
-                                <p class="text-xs text-muted-foreground">2 urgent messages</p>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border bg-card p-4 shadow-sm">
-                            <div class="flex flex-row items-center justify-between pb-2">
-                                <h3 class="text-sm font-medium">Pending Lab Results</h3>
-                                <i data-lucide="file-text" class="h-4 w-4 text-muted-foreground"></i>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold">5</div>
-                                <p class="text-xs text-muted-foreground">1 critical result</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Main content area -->
-                    <div class="grid gap-6 md:grid-cols-6">
-                        <!-- Left column - Schedule -->
-                        <div class="rounded-lg border bg-card shadow-sm md:col-span-4">
-                            <div class="flex flex-row items-center p-4 pb-2 border-b">
-                                <div>
-                                    <h3 class="font-semibold">Today's Schedule</h3>
-                                    <p class="text-sm text-muted-foreground" id="currentDate"></p>
+                <!-- Weekly Calendar Tab -->
+                <div class="tab-content active" id="week-tab">
+                    <div class="space-y-6">
+                        <div class="shadow-md border border-slate-200 rounded-lg">
+                            <div
+                                class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg border-b border-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="bg-white p-2 rounded-full shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600">
+                                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                                <line x1="16" x2="16" y1="2" y2="6" />
+                                                <line x1="8" x2="8" y1="2" y2="6" />
+                                                <line x1="3" x2="21" y1="10" y2="10" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-indigo-900">Weekly Schedule</h3>
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm">
+                                        <button id="prev-week" class="p-1 hover:bg-indigo-50 text-indigo-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m15 18-6-6 6-6" />
+                                            </svg>
+                                        </button>
+                                        <span id="week-range" class="text-sm font-medium text-indigo-900"></span>
+                                        <button id="next-week" class="p-1 hover:bg-indigo-50 text-indigo-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m9 18 6-6-6-6" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
-                                <button class="btn btn-outline ml-auto text-sm px-3 py-1">
-                                    <i data-lucide="calendar" class="mr-2 h-4 w-4"></i>
-                                    View Calendar
-                                </button>
+                                <div class="mt-2 flex flex-wrap items-center gap-2">
+                                    <span class="text-slate-600">Click or drag to manage your schedule:</span>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <span
+                                            class="bg-emerald-100 border-emerald-300 text-emerald-700 px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>Available
+                                        </span>
+                                        <span
+                                            class="bg-amber-100 border-amber-300 text-amber-700 px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-amber-500"></div>Break
+                                        </span>
+                                        <span
+                                            class="bg-red-100 border-red-300 text-red-700 px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>Booked
+                                        </span>
+                                        <span
+                                            class="bg-slate-100 border-slate-300 text-slate-700 px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-slate-500"></div>Unavailable
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="p-4">
-                                <div class="space-y-4">
-                                    <!-- Appointment 1 -->
-                                    <div class="flex items-center gap-4 rounded-lg border p-3">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar h-8 w-8 rounded-full">
-                                                <img src="/placeholder.svg?height=32&width=32" alt="Sarah Johnson"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">SJ</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium truncate">Sarah Johnson</p>
-                                                <span class="badge badge-outline ml-auto">Follow-up</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <span>PT-7823</span>
-                                                <span>•</span>
-                                                <span class="flex items-center">
-                                                    <i data-lucide="clock" class="mr-1 h-3 w-3"></i>
-                                                    09:00 AM
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
-                                                <i data-lucide="check-circle-2" class="mr-1 h-3 w-3"></i>
-                                                Confirmed
-                                            </span>
-                                            <button class="btn btn-ghost h-8 w-8 p-0">
-                                                <i data-lucide="more-horizontal" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Appointment 2 -->
-                                    <div class="flex items-center gap-4 rounded-lg border p-3">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar h-8 w-8 rounded-full">
-                                                <img src="/placeholder.svg?height=32&width=32" alt="Michael Chen"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">MC</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium truncate">Michael Chen</p>
-                                                <span class="badge badge-outline ml-auto">New Patient</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <span>PT-5467</span>
-                                                <span>•</span>
-                                                <span class="flex items-center">
-                                                    <i data-lucide="clock" class="mr-1 h-3 w-3"></i>
-                                                    10:30 AM
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
-                                                <i data-lucide="check-circle-2" class="mr-1 h-3 w-3"></i>
-                                                Confirmed
-                                            </span>
-                                            <button class="btn btn-ghost h-8 w-8 p-0">
-                                                <i data-lucide="more-horizontal" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Appointment 3 -->
-                                    <div class="flex items-center gap-4 rounded-lg border p-3">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar h-8 w-8 rounded-full">
-                                                <img src="/placeholder.svg?height=32&width=32" alt="Emily Rodriguez"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">ER</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium truncate">Emily Rodriguez</p>
-                                                <span class="badge badge-outline ml-auto">Consultation</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <span>PT-3219</span>
-                                                <span>•</span>
-                                                <span class="flex items-center">
-                                                    <i data-lucide="clock" class="mr-1 h-3 w-3"></i>
-                                                    11:45 AM
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="badge badge-outline bg-amber-50 text-amber-700 border-amber-200 flex items-center">
-                                                <i data-lucide="clock-3" class="mr-1 h-3 w-3"></i>
-                                                Pending
-                                            </span>
-                                            <button class="btn btn-ghost h-8 w-8 p-0">
-                                                <i data-lucide="more-horizontal" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Appointment 4 -->
-                                    <div class="flex items-center gap-4 rounded-lg border p-3">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar h-8 w-8 rounded-full">
-                                                <img src="/placeholder.svg?height=32&width=32" alt="David Wilson"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">DW</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium truncate">David Wilson</p>
-                                                <span class="badge badge-outline ml-auto">Follow-up</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <span>PT-9054</span>
-                                                <span>•</span>
-                                                <span class="flex items-center">
-                                                    <i data-lucide="clock" class="mr-1 h-3 w-3"></i>
-                                                    02:15 PM
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
-                                                <i data-lucide="check-circle-2" class="mr-1 h-3 w-3"></i>
-                                                Confirmed
-                                            </span>
-                                            <button class="btn btn-ghost h-8 w-8 p-0">
-                                                <i data-lucide="more-horizontal" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Appointment 5 -->
-                                    <div class="flex items-center gap-4 rounded-lg border p-3">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar h-8 w-8 rounded-full">
-                                                <img src="/placeholder.svg?height=32&width=32" alt="Lisa Thompson"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">LT</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium truncate">Lisa Thompson</p>
-                                                <span class="badge badge-outline ml-auto">Urgent Care</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <span>PT-6128</span>
-                                                <span>•</span>
-                                                <span class="flex items-center">
-                                                    <i data-lucide="clock" class="mr-1 h-3 w-3"></i>
-                                                    03:30 PM
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="badge badge-outline bg-green-50 text-green-700 border-green-200 flex items-center">
-                                                <i data-lucide="check-circle-2" class="mr-1 h-3 w-3"></i>
-                                                Confirmed
-                                            </span>
-                                            <button class="btn btn-ghost h-8 w-8 p-0">
-                                                <i data-lucide="more-horizontal" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                <div id="schedule-grid" class="grid grid-cols-8 gap-2"></div>
+                            </div>
+                            <div
+                                class="flex justify-between items-center py-4 px-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-b-lg border-t border-slate-200">
+                                <div class="text-sm text-slate-600 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="text-blue-500">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12 16v-4" />
+                                        <path d="M12 8h.01" />
+                                    </svg>
+                                    <span>Drag to select multiple slots at once</span>
+                                </div>
+                                <div class="text-sm bg-white px-3 py-1.5 rounded-full shadow-sm text-slate-700">
+                                    <span class="font-medium">Weekly Hours:</span> <span
+                                        id="footer-weekly-hours">0h</span>
                                 </div>
                             </div>
-                            <div class="p-4 border-t">
-                                <button class="btn btn-outline w-full">
-                                    View All Appointments
+                        </div>
+                        <div id="schedule-warnings"
+                            class="border-amber-300 bg-gradient-to-r from-amber-50 to-amber-100 shadow-md rounded-lg hidden">
+                            <div class="p-4 border-b border-amber-200">
+                                <h3 class="text-lg font-semibold text-amber-800 flex items-center gap-2">
+                                    <div class="bg-white p-1.5 rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="text-amber-500">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M12 16v-4" />
+                                            <path d="M12 8h.01" />
+                                        </svg>
+                                    </div>
+                                    Scheduling Warnings
+                                </h3>
+                            </div>
+                            <div class="p-4" id="warning-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings & Presets Tab -->
+                <div class="tab-content hidden" id="settings-tab">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border rounded-lg shadow-sm bg-white">
+                            <div class="p-6 border-b">
+                                <h3 class="text-lg font-semibold">Quick Presets</h3>
+                                <p class="text-sm text-gray-500">Apply predefined schedules to your week</p>
+                            </div>
+                            <div class="p-6 grid grid-cols-1 gap-4">
+                                <button
+                                    class="preset-button flex items-center border bg-white hover:bg-gray-100 px-4 py-2 rounded-md"
+                                    data-preset="full-day">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="mr-2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                    Full Day (9 AM - 6 PM)
+                                </button>
+                                <button
+                                    class="preset-button flex items-center border bg-white hover:bg-gray-100 px-4 py-2 rounded-md"
+                                    data-preset="morning">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="mr-2">
+                                        <circle cx="12" cy="13" r="8" />
+                                        <path d="M5 3 2 6" />
+                                        <path d="m22 6-3-3" />
+                                        <path d="m6 19-2 2" />
+                                        <path d="m18 19 2 2" />
+                                        <path d="m9 13 2 2 4-4" />
+                                    </svg>
+                                    Morning Shift (8 AM - 12 PM)
+                                </button>
+                                <button
+                                    class="preset-button flex items-center border bg-white hover:bg-gray-100 px-4 py-2 rounded-md"
+                                    data-preset="evening">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="mr-2">
+                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                                    </svg>
+                                    Evening Shift (3 PM - 9 PM)
+                                </button>
+                                <button id="custom-template-btn"
+                                    class="flex items-center border bg-white hover:bg-gray-100 px-4 py-2 rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="mr-2">
+                                        <path d="M5 12h14" />
+                                        <path d="M12 5v14" />
+                                    </svg>
+                                    Create Custom Template
                                 </button>
                             </div>
                         </div>
-
-                        <!-- Right column - Notifications and Recent Patients -->
-                        <div class="space-y-6 md:col-span-2">
-                            <!-- Notifications -->
-                            <div class="rounded-lg border bg-card shadow-sm">
-                                <div class="p-4 border-b">
-                                    <h3 class="font-semibold">Notifications</h3>
-                                </div>
-                                <div class="p-4">
-                                    <div class="space-y-4">
-                                        <!-- Notification 1 -->
-                                        <div class="flex gap-3">
-                                            <div class="mt-0.5 rounded-full p-1 bg-red-100 text-red-600">
-                                                <i data-lucide="alert-circle" class="h-3 w-3"></i>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center gap-2">
-                                                    <p class="text-sm font-medium">Lab Result</p>
-                                                    <span
-                                                        class="badge badge-destructive ml-auto text-[10px] px-1 py-0 h-4">
-                                                        Urgent
-                                                    </span>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    <span class="font-medium">Sarah Johnson:</span> Blood work results
-                                                    are ready for review
-                                                </p>
-                                                <p class="text-xs text-muted-foreground">10 mins ago</p>
-                                            </div>
-                                        </div>
-
-                                        <!-- Notification 2 -->
-                                        <div class="flex gap-3">
-                                            <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
-                                                <i data-lucide="bell" class="h-3 w-3"></i>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center gap-2">
-                                                    <p class="text-sm font-medium">Message</p>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    <span class="font-medium">Michael Chen:</span> Question about
-                                                    medication dosage
-                                                </p>
-                                                <p class="text-xs text-muted-foreground">30 mins ago</p>
-                                            </div>
-                                        </div>
-
-                                        <!-- Notification 3 -->
-                                        <div class="flex gap-3">
-                                            <div class="mt-0.5 rounded-full p-1 bg-blue-100 text-blue-600">
-                                                <i data-lucide="bell" class="h-3 w-3"></i>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center gap-2">
-                                                    <p class="text-sm font-medium">Appointment</p>
-                                                </div>
-                                                <p class="text-sm text-muted-foreground">
-                                                    <span class="font-medium">Emily Rodriguez:</span> Requested
-                                                    appointment reschedule
-                                                </p>
-                                                <p class="text-xs text-muted-foreground">1 hour ago</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4 border-t">
-                                    <button class="btn btn-ghost w-full">
-                                        View All Notifications
-                                    </button>
-                                </div>
+                        <div class="border rounded-lg shadow-sm bg-white">
+                            <div class="p-6 border-b">
+                                <h3 class="text-lg font-semibold">Break Settings</h3>
+                                <p class="text-sm text-gray-500">Configure your regular breaks</p>
                             </div>
-
-                            <!-- Recent Patients -->
-                            <div class="rounded-lg border bg-card shadow-sm">
-                                <div class="p-4 border-b">
-                                    <h3 class="font-semibold">Recent Patients</h3>
+                            <div class="p-6 space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label for="lunch-break" class="text-sm font-medium">Lunch Break</label>
+                                        <div class="text-sm text-gray-500">Set a daily lunch break</div>
+                                    </div>
+                                    <input type="checkbox" id="lunch-break" class="toggle" checked>
                                 </div>
-                                <div class="p-4">
-                                    <div class="space-y-4">
-                                        <!-- Patient 1 -->
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar h-10 w-10 rounded-full">
-                                                <img src="/placeholder.svg?height=40&width=40" alt="Robert Smith"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">RS</div>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center">
-                                                    <p class="text-sm font-medium">Robert Smith</p>
-                                                    <i data-lucide="chevron-right"
-                                                        class="ml-auto h-4 w-4 text-muted-foreground"></i>
-                                                </div>
-                                                <div class="flex items-center gap-2 text-xs text-muted-foreground">
-                                                    <span>PT-4532</span>
-                                                    <span>•</span>
-                                                    <span>Yesterday</span>
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="badge badge-outline text-xs">Hypertension</span>
-                                                    <span
-                                                        class="badge badge-outline text-xs bg-green-50 text-green-700 border-green-200">Stable</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Patient 2 -->
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar h-10 w-10 rounded-full">
-                                                <img src="/placeholder.svg?height=40&width=40" alt="Jennifer Lee"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">JL</div>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center">
-                                                    <p class="text-sm font-medium">Jennifer Lee</p>
-                                                    <i data-lucide="chevron-right"
-                                                        class="ml-auto h-4 w-4 text-muted-foreground"></i>
-                                                </div>
-                                                <div class="flex items-center gap-2 text-xs text-muted-foreground">
-                                                    <span>PT-7891</span>
-                                                    <span>•</span>
-                                                    <span>3 days ago</span>
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="badge badge-outline text-xs">Diabetes Type 2</span>
-                                                    <span
-                                                        class="badge badge-outline text-xs bg-blue-50 text-blue-700 border-blue-200">Improving</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Patient 3 -->
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar h-10 w-10 rounded-full">
-                                                <img src="/placeholder.svg?height=40&width=40" alt="Thomas Brown"
-                                                    class="avatar-image">
-                                                <div class="avatar-fallback">TB</div>
-                                            </div>
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center">
-                                                    <p class="text-sm font-medium">Thomas Brown</p>
-                                                    <i data-lucide="chevron-right"
-                                                        class="ml-auto h-4 w-4 text-muted-foreground"></i>
-                                                </div>
-                                                <div class="flex items-center gap-2 text-xs text-muted-foreground">
-                                                    <span>PT-2345</span>
-                                                    <span>•</span>
-                                                    <span>1 week ago</span>
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="badge badge-outline text-xs">Asthma</span>
-                                                    <span
-                                                        class="badge badge-outline text-xs bg-amber-50 text-amber-700 border-amber-200">Needs
-                                                        Review</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="lunch-time-container">
+                                    <label for="lunch-time" class="text-sm font-medium">Lunch Time</label>
+                                    <select id="lunch-time" class="select-input">
+                                        <option value="11">11:00 AM</option>
+                                        <option value="12" selected>12:00 PM</option>
+                                        <option value="13">1:00 PM</option>
+                                        <option value="14">2:00 PM</option>
+                                    </select>
                                 </div>
-                                <div class="p-4 border-t">
-                                    <button class="btn btn-ghost w-full">
-                                        View All Patients
-                                    </button>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label for="evening-break" class="text-sm font-medium">Evening Break</label>
+                                        <div class="text-sm text-gray-500">Set a daily evening break</div>
+                                    </div>
+                                    <input type="checkbox" id="evening-break" class="toggle">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Weekly Stats -->
-                    <div class="rounded-lg border bg-card shadow-sm">
-                        <div class="p-4 border-b">
-                            <h3 class="font-semibold">Weekly Statistics</h3>
-                            <p class="text-sm text-muted-foreground">Patient visits and consultations for the past week
-                            </p>
-                        </div>
-                        <div class="p-4">
-                            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                                <div class="space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-sm font-medium">Total Visits</span>
-                                        <span class="ml-auto text-sm text-muted-foreground">78</span>
-                                    </div>
-                                    <div class="progress h-2 rounded-full">
-                                        <div class="progress-bar h-2 rounded-full" style="width: 78%"></div>
-                                    </div>
+                                <div id="evening-time-container" class="hidden">
+                                    <label for="evening-time" class="text-sm font-medium">Evening Break Time</label>
+                                    <select id="evening-time" class="select-input">
+                                        <option value="15" selected>3:00 PM</option>
+                                        <option value="16">4:00 PM</option>
+                                        <option value="17">5:00 PM</option>
+                                    </select>
                                 </div>
-                                <div class="space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-sm font-medium">New Patients</span>
-                                        <span class="ml-auto text-sm text-muted-foreground">23</span>
-                                    </div>
-                                    <div class="progress h-2 rounded-full">
-                                        <div class="progress-bar h-2 rounded-full" style="width: 23%"></div>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-sm font-medium">Follow-ups</span>
-                                        <span class="ml-auto text-sm text-muted-foreground">45</span>
-                                    </div>
-                                    <div class="progress h-2 rounded-full">
-                                        <div class="progress-bar h-2 rounded-full" style="width: 45%"></div>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-sm font-medium">Teleconsultations</span>
-                                        <span class="ml-auto text-sm text-muted-foreground">10</span>
-                                    </div>
-                                    <div class="progress h-2 rounded-full">
-                                        <div class="progress-bar h-2 rounded-full" style="width: 10%"></div>
-                                    </div>
-                                </div>
+                                <button id="apply-breaks"
+                                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Apply
+                                    Break Settings</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
+
+                <!-- Insights & Analytics Tab -->
+                <div class="tab-content hidden" id="stats-tab">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="border rounded-lg shadow-sm bg-white">
+                            <div class="p-6 border-b">
+                                <h3 class="text-lg font-semibold">Weekly Summary</h3>
+                            </div>
+                            <div class="p-6 space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Total Working Hours</span>
+                                    <span id="stats-total-hours" class="font-medium">0 hours</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Average Per Day</span>
+                                    <span id="stats-avg-hours" class="font-medium">0 hours</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Working Days</span>
+                                    <span id="stats-working-days" class="font-medium">0 days</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Scheduled Breaks</span>
+                                    <span id="stats-breaks" class="font-medium">0 slots</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded-lg shadow-sm bg-white">
+                            <div class="p-6 border-b">
+                                <h3 class="text-lg font-semibold">Workload Distribution</h3>
+                            </div>
+                            <div class="p-6" id="workload-stats"></div>
+                        </div>
+                        <div class="border rounded-lg shadow-sm bg-white">
+                            <div class="p-6 border-b">
+                                <h3 class="text-lg font-semibold">Recommendations</h3>
+                            </div>
+                            <div class="p-6" id="recommendations"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- JavaScript for interactivity -->
+        <!-- Custom Template Dialog -->
+        <div id="custom-template-dialog" class="dialog-overlay hidden">
+            <div class="dialog-content">
+                <h3 class="text-lg font-semibold">Create Custom Template</h3>
+                <p class="text-sm text-gray-500">Design a template schedule that you can apply anytime</p>
+                <div class="grid gap-4 py-4">
+                    <div>
+                        <label for="template-name" class="text-sm font-medium">Template Name</label>
+                        <input type="text" id="template-name" placeholder="e.g., Summer Hours" class="text-input">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Working Hours</label>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div>
+                                <label for="start-time" class="text-xs font-medium">Start Time</label>
+                                <select id="start-time" class="select-input">
+                                    <option value="8">8:00 AM</option>
+                                    <option value="9" selected>9:00 AM</option>
+                                    <option value="10">10:00 AM</option>
+                                    <option value="11">11:00 AM</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="end-time" class="text-xs font-medium">End Time</label>
+                                <select id="end-time" class="select-input">
+                                    <option value="14">2:00 PM</option>
+                                    <option value="15">3:00 PM</option>
+                                    <option value="16">4:00 PM</option>
+                                    <option value="17" selected>5:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Apply to Days</label>
+                        <div class="grid grid-cols-7 gap-1 mt-2">
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Sunday">S</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Monday">M</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Tuesday">T</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Wednesday">W</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Thursday">T</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Friday">F</button>
+                            <button class="day-select border bg-white hover:bg-gray-100 h-8 rounded-md"
+                                data-day="Saturday">S</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button id="cancel-template"
+                        class="px-4 py-2 border bg-white hover:bg-gray-100 rounded-md">Cancel</button>
+                    <button id="save-template"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Save Template</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day Actions Menu -->
+        <div id="day-actions-menu" class="dropdown-menu hidden">
+            <div class="dropdown-header">Day Actions</div>
+            <div class="dropdown-divider"></div>
+            <button id="clear-day" class="dropdown-item text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    <line x1="10" x2="10" y1="11" y2="17" />
+                    <line x1="14" x2="14" y1="11" y2="17" />
+                </svg>
+                Clear All Slots
+            </button>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-header">Copy Schedule To</div>
+            <div id="copy-day-options" class="max-h-40 overflow-y-auto"></div>
+        </div>
+    </main>
+
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
+        document.addEventListener("DOMContentLoaded", () => {
+            // Constants (Updated to start with Sunday)
+            const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8 AM to 9 PM
 
-        // Set current date
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+            // State
+            let scheduleData = {};
+            let currentWeekStart = getStartOfWeek(new Date());
+            let isDragging = false;
+            let dragStatus = null;
+            let selectedDay = null;
+            const workHourLimits = { min: 6, max: 10 };
 
-        // Sidebar toggle functionality
-        const sidebar = document.getElementById('sidebar');
-        const openSidebarBtn = document.getElementById('openSidebar');
-        const closeSidebarBtn = document.getElementById('closeSidebar');
-
-        openSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.remove('-translate-x-full');
-        });
-
-        closeSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-        });
-
-        // User dropdown menu toggle
-        const userDropdown = document.getElementById('userDropdown');
-        const userMenu = document.getElementById('userMenu');
-
-        userDropdown.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!userDropdown.contains(e.target)) {
-                userMenu.classList.add('hidden');
+            // Initialize schedule data with default slots
+            function initializeScheduleData() {
+                scheduleData = DAYS.reduce((acc, day) => {
+                    acc[day] = HOURS.map(() => ({ status: "unavailable", duration: 30 }));
+                    return acc;
+                }, {});
+                DAYS.forEach(day => {
+                    for (let i = 2; i <= 9; i++) { // 10 AM to 5 PM
+                        scheduleData[day][i].status = "available";
+                    }
+                });
+                // Sample booked and break slots
+                scheduleData["Monday"][4].status = "break"; // 12 PM
+                scheduleData["Tuesday"][3].status = "booked"; // 11 AM
+                scheduleData["Thursday"][5].status = "booked"; // 1 PM
             }
+
+            // Render time slots in the first column (Clear previous content)
+            function renderTimeSlots() {
+                const grid = document.getElementById("schedule-grid");
+                grid.innerHTML = ""; // Clear existing content
+                const timeColumn = document.createElement("div");
+                timeColumn.className = "text-center";
+                timeColumn.innerHTML = `
+                    <div class="h-12 flex items-end justify-center pb-1">
+                        <span class="text-xs font-medium text-slate-500">TIME</span>
+                    </div>
+                    <div class="time-slots">${HOURS.map(hour => `
+                        <div class="h-16 flex items-center justify-center">
+                            <div class="text-sm font-medium text-slate-600">
+                                ${hour}:00 <span class="text-xs text-slate-400">${hour < 12 ? "AM" : "PM"}</span>
+                            </div>
+                        </div>
+                    `).join("")}</div>
+                `;
+                grid.appendChild(timeColumn);
+            }
+
+            // Render day columns with schedule slots (Append after clearing)
+            function renderDayColumns() {
+                const grid = document.getElementById("schedule-grid");
+                // Only clear day columns, not the time column
+                while (grid.children.length > 1) {
+                    grid.removeChild(grid.lastChild);
+                }
+                DAYS.forEach((day, dayIndex) => {
+                    const isToday = dayIndex === new Date().getDay(); // Sunday is 0, matches index
+                    const column = document.createElement("div");
+                    column.className = "day-column text-center";
+                    column.dataset.day = day;
+                    column.innerHTML = `
+                        <div class="day-header h-12 flex flex-col items-center justify-center bg-slate-50 rounded-t-md ${isToday ? "bg-indigo-100" : ""}">
+                            <span class="text-sm font-bold ${isToday ? "text-indigo-700" : "text-slate-700"}">${day.slice(0, 3)}</span>
+                            ${isToday ? `<span class="text-xs bg-indigo-600 text-white px-1.5 py-0.5 rounded-full mt-0.5">Today</span>` : ""}
+                            <div class="absolute top-1 right-1">
+                                <button class="day-menu-button p-1 hover:bg-slate-200 rounded-full" data-day="${day}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        ${scheduleData[day].map((slot, hourIndex) => `
+                            <div class="schedule-slot h-16 border border-slate-200 rounded-md cursor-pointer ${slot.status}" data-day="${day}" data-hour="${hourIndex}" tabindex="0" aria-label="Slot at ${day}, ${hourIndex + 8}:00 - ${slot.status}">
+                                ${slot.status === "booked" ? `<div class="flex flex-col items-center justify-center h-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="text-xs mt-1 text-red-600 font-medium">Booked</span></div>` :
+                            slot.status === "break" ? `<div class="flex flex-col items-center justify-center h-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg><span class="text-xs mt-1 text-amber-600 font-medium">Break</span></div>` :
+                                slot.status === "available" ? `<div class="flex flex-col items-center justify-center h-full"><div class="w-2 h-2 rounded-full bg-emerald-500 mb-1"></div><span class="text-xs text-emerald-600 font-medium">Available</span></div>` :
+                                    `<div class="flex flex-col items-center justify-center h-full"><span class="text-xs text-slate-400">Free</span></div>`}
+                            </div>
+                        `).join("")}
+                    `;
+                    grid.appendChild(column);
+                });
+            }
+
+            // Update week range display
+            function updateWeekRange() {
+                const endOfWeek = addDays(currentWeekStart, 6);
+                document.getElementById("week-range").textContent = `${formatDate(currentWeekStart, "MMM d")} - ${formatDate(endOfWeek, "MMM d, yyyy")}`;
+            }
+
+            // Calculate working hours for a day
+            function calculateWorkingHours(day) {
+                return scheduleData[day].filter(slot => slot.status === "available").length / 2; // 30-min slots
+            }
+
+            // Calculate total weekly hours
+            function calculateTotalWeeklyHours() {
+                return DAYS.reduce((total, day) => total + calculateWorkingHours(day), 0);
+            }
+
+            // Update all statistics
+            function updateStats() {
+                const totalWeeklyHours = calculateTotalWeeklyHours();
+                document.getElementById("total-weekly-hours").textContent = `${totalWeeklyHours}h`;
+                document.getElementById("footer-weekly-hours").textContent = `${totalWeeklyHours}h`;
+                document.getElementById("stats-total-hours").textContent = `${totalWeeklyHours} hours`;
+
+                const workingDays = DAYS.filter(day => calculateWorkingHours(day) > 0).length;
+                document.getElementById("stats-working-days").textContent = `${workingDays} days`;
+                document.getElementById("stats-avg-hours").textContent = `${workingDays > 0 ? (totalWeeklyHours / workingDays).toFixed(1) : 0} hours`;
+                document.getElementById("stats-breaks").textContent = `${DAYS.reduce((total, day) => total + scheduleData[day].filter(slot => slot.status === "break").length, 0)} slots`;
+
+                document.getElementById("workload-stats").innerHTML = DAYS.map(day => {
+                    const hours = calculateWorkingHours(day);
+                    const barColor = hours > workHourLimits.max ? "bg-red-400" : hours < workHourLimits.min && hours > 0 ? "bg-amber-400" : "bg-emerald-400";
+                    return `
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-sm">${day}</span>
+                                <span class="text-sm font-medium">${hours} hrs</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="${barColor} h-2 rounded-full" style="width: ${(hours / 12) * 100}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+
+                updateRecommendations();
+                updateWarnings();
+            }
+
+            // Update recommendations
+            function updateRecommendations() {
+                const rec = document.getElementById("recommendations");
+                rec.innerHTML = "";
+                const daysExceedingMax = DAYS.filter(day => calculateWorkingHours(day) > workHourLimits.max);
+                if (daysExceedingMax.length) rec.innerHTML += `<div class="text-sm"><div class="font-medium text-red-600">High Workload</div><p>Reduce hours on: ${daysExceedingMax.join(", ")}</p></div>`;
+                const daysBelowMin = DAYS.filter(day => calculateWorkingHours(day) < workHourLimits.min && calculateWorkingHours(day) > 0);
+                if (daysBelowMin.length) rec.innerHTML += `<div class="text-sm"><div class="font-medium text-amber-600">Low Workload</div><p>Increase hours on: ${daysBelowMin.join(", ")}</p></div>`;
+            }
+
+            // Update warnings
+            function updateWarnings() {
+                const warnings = document.getElementById("schedule-warnings");
+                const content = document.getElementById("warning-content");
+                content.innerHTML = "";
+                const daysExceedingMax = DAYS.filter(day => calculateWorkingHours(day) > workHourLimits.max);
+                const daysBelowMin = DAYS.filter(day => calculateWorkingHours(day) < workHourLimits.min && calculateWorkingHours(day) > 0);
+                if (daysExceedingMax.length || daysBelowMin.length) {
+                    warnings.classList.remove("hidden");
+                    if (daysExceedingMax.length) content.innerHTML += `<p class="text-amber-800"><span class="font-medium">Max Hours Exceeded:</span> ${daysExceedingMax.join(", ")}</p>`;
+                    if (daysBelowMin.length) content.innerHTML += `<p class="text-amber-800"><span class="font-medium">Min Hours Not Met:</span> ${daysBelowMin.join(", ")}</p>`;
+                } else {
+                    warnings.classList.add("hidden");
+                }
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                document.querySelectorAll(".tab-trigger").forEach(trigger => {
+                    trigger.addEventListener("click", () => {
+                        document.querySelectorAll(".tab-trigger").forEach(t => t.classList.remove("active"));
+                        trigger.classList.add("active");
+                        document.querySelectorAll(".tab-content").forEach(c => c.classList.add("hidden"));
+                        document.getElementById(`${trigger.dataset.tab}-tab`).classList.remove("hidden");
+                    });
+                });
+
+                document.getElementById("prev-week").addEventListener("click", () => {
+                    currentWeekStart = addDays(currentWeekStart, -7);
+                    updateWeekRange();
+                });
+                document.getElementById("next-week").addEventListener("click", () => {
+                    currentWeekStart = addDays(currentWeekStart, 7);
+                    updateWeekRange();
+                });
+
+                const grid = document.getElementById("schedule-grid");
+                grid.addEventListener("click", e => {
+                    const slot = e.target.closest(".schedule-slot");
+                    if (slot) handleSlotClick(slot.dataset.day, Number(slot.dataset.hour));
+                });
+                grid.addEventListener("mousedown", e => {
+                    const slot = e.target.closest(".schedule-slot");
+                    if (slot) handleDragStart(slot.dataset.day, Number(slot.dataset.hour));
+                });
+                grid.addEventListener("mouseover", e => {
+                    const slot = e.target.closest(".schedule-slot");
+                    if (slot && isDragging) handleDragOver(slot.dataset.day, Number(slot.dataset.hour));
+                });
+                document.addEventListener("mouseup", handleDragEnd);
+
+                grid.addEventListener("click", e => {
+                    const btn = e.target.closest(".day-menu-button");
+                    if (btn) showDayMenu(btn.dataset.day, btn);
+                });
+
+                document.getElementById("clear-day").addEventListener("click", () => {
+                    if (selectedDay) {
+                        clearDay(selectedDay);
+                        hideDayMenu();
+                    }
+                });
+
+                document.querySelectorAll(".preset-button").forEach(btn => {
+                    btn.addEventListener("click", () => applyPreset(btn.dataset.preset));
+                });
+
+                document.getElementById("apply-breaks").addEventListener("click", applyBreakSettings);
+                document.getElementById("custom-template-btn").addEventListener("click", () => document.getElementById("custom-template-dialog").classList.remove("hidden"));
+                document.getElementById("cancel-template").addEventListener("click", () => document.getElementById("custom-template-dialog").classList.add("hidden"));
+                document.getElementById("save-template").addEventListener("click", saveCustomTemplate);
+                document.querySelectorAll(".day-select").forEach(btn => btn.addEventListener("click", () => btn.classList.toggle("day-selected")));
+                document.getElementById("save-button").addEventListener("click", () => console.log("Schedule saved:", scheduleData));
+            }
+
+            // Handle slot click
+            function handleSlotClick(day, hourIndex) {
+                const current = scheduleData[day][hourIndex].status;
+                if (current === "booked") return;
+                scheduleData[day][hourIndex].status = current === "available" ? "break" : current === "break" ? "unavailable" : "available";
+                renderDayColumns();
+                updateStats();
+            }
+
+            // Handle drag interactions
+            function handleDragStart(day, hourIndex) {
+                const status = scheduleData[day][hourIndex].status;
+                if (status === "booked") return;
+                isDragging = true;
+                dragStatus = status === "available" ? "unavailable" : "available";
+            }
+            function handleDragOver(day, hourIndex) {
+                if (!isDragging || scheduleData[day][hourIndex].status === "booked") return;
+                scheduleData[day][hourIndex].status = dragStatus;
+            }
+            function handleDragEnd() {
+                if (isDragging) {
+                    renderDayColumns();
+                    updateStats();
+                    isDragging = false;
+                    dragStatus = null;
+                }
+            }
+
+            // Day menu functions
+            function showDayMenu(day, button) {
+                selectedDay = day;
+                const menu = document.getElementById("day-actions-menu");
+                menu.classList.remove("hidden");
+                const rect = button.getBoundingClientRect();
+                menu.style.top = `${rect.bottom + window.scrollY}px`;
+                menu.style.left = `${rect.left + window.scrollX}px`;
+                document.getElementById("copy-day-options").innerHTML = DAYS.filter(d => d !== day).map(d => `
+                    <button class="dropdown-item" onclick="copyDay('${day}', '${d}'); hideDayMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                        ${d}
+                    </button>
+                `).join("");
+            }
+            function hideDayMenu() {
+                document.getElementById("day-actions-menu").classList.add("hidden");
+                selectedDay = null;
+            }
+            function clearDay(day) {
+                scheduleData[day].forEach(slot => { if (slot.status !== "booked") slot.status = "unavailable"; });
+                renderDayColumns();
+                updateStats();
+            }
+            function copyDay(fromDay, toDay) {
+                scheduleData[toDay] = [...scheduleData[fromDay]];
+                renderDayColumns();
+                updateStats();
+            }
+
+            // Apply preset schedules
+            function applyPreset(preset) {
+                DAYS.forEach(day => {
+                    scheduleData[day].forEach((slot, i) => {
+                        if (slot.status !== "booked") {
+                            slot.status = preset === "full-day" && i >= 1 && i <= 10 ? "available" :
+                                preset === "morning" && i >= 0 && i <= 4 ? "available" :
+                                    preset === "evening" && i >= 7 && i <= 13 ? "available" : "unavailable";
+                        }
+                    });
+                });
+                renderDayColumns();
+                updateStats();
+            }
+
+            // Apply break settings
+            function applyBreakSettings() {
+                const lunchTime = document.getElementById("lunch-break").checked ? Number(document.getElementById("lunch-time").value) - 8 : -1;
+                const eveningTime = document.getElementById("evening-break").checked ? Number(document.getElementById("evening-time").value) - 8 : -1;
+                DAYS.forEach(day => {
+                    if (lunchTime >= 0) scheduleData[day][lunchTime].status = "break";
+                    if (eveningTime >= 0) scheduleData[day][eveningTime].status = "break";
+                });
+                renderDayColumns();
+                updateStats();
+            }
+
+            // Save custom template
+            function saveCustomTemplate() {
+                const name = document.getElementById("template-name").value;
+                const start = Number(document.getElementById("start-time").value);
+                const end = Number(document.getElementById("end-time").value);
+                const days = Array.from(document.querySelectorAll(".day-select.day-selected")).map(btn => btn.dataset.day);
+                if (name && days.length) {
+                    days.forEach(day => {
+                        scheduleData[day].forEach((slot, i) => {
+                            if (slot.status !== "booked") slot.status = (i + 8 >= start && i + 8 < end) ? "available" : "unavailable";
+                        });
+                    });
+                    renderDayColumns();
+                    updateStats();
+                    document.getElementById("custom-template-dialog").classList.add("hidden");
+                } else {
+                    console.log("Please provide a name and select days.");
+                }
+            }
+
+            // Helper functions
+            function getStartOfWeek(date) {
+                const day = date.getDay();
+                const diff = date.getDate() - day; // Start on Sunday (day 0)
+                return new Date(date.setDate(diff));
+            }
+            function addDays(date, days) {
+                const result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+            }
+            function formatDate(date, format) {
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                return format.replace("MMM", months[date.getMonth()]).replace("d", date.getDate()).replace("yyyy", date.getFullYear());
+            }
+
+            // Initialize
+            initializeScheduleData();
+            renderTimeSlots();
+            renderDayColumns();
+            updateWeekRange();
+            updateStats();
+            setupEventListeners();
         });
     </script>
 </body>
