@@ -1583,7 +1583,8 @@
         const presetButtons = document.querySelectorAll(".preset-button")
         presetButtons.forEach((button) => {
             button.addEventListener("click", () => {
-                button.classList.add('bg-blue-400')
+                presetButtons.forEach((btn) => btn.classList.remove("bg-blue-400", "hover:bg-blue-500"));
+                button.classList.add('bg-blue-400', "hover:bg-blue-500");
                 applyPreset(button)
             })
         })
