@@ -113,7 +113,7 @@
                         </li>
 
 
-                        <!-- view appoinment -->
+                        <!-- Edit Schedules  -->
                         <li class="menuListItems edit_schedules-nav">
                             <a href="{% url 'd_edit_schedules' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
@@ -138,92 +138,86 @@
                         </li>
 
 
-                        <!-- Book Appoinment  -->
-                        <li class="menuListItems bookAppoinment-nav">
-                            <a href="{% url 'BookAppoinment' %}"
+                        <!-- View Patients  -->
+                        <li class="menuListItems ViewPatients-nav">
+                            <a href="{% url 'ViewPatients' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
-
-
-
                                     <svg id='Medical_Room_Wait_24' class="w-6 h-6" viewBox='0 0 24 24'
                                         xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                                         <g transform="matrix(0.83 0 0 0.83 12 12)">
                                             <g style="">
-                                                <g transform="matrix(1 0 0 1 3.74 6.33)">
-                                                    <path
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        transform=" translate(-15.74, -18.33)"
-                                                        d="M 21.25 20.28 C 20.42157287525381 20.28 19.75 19.608427124746193 19.75 18.78 L 19.75 16.78 C 19.75 15.951572875253811 20.42157287525381 15.280000000000001 21.25 15.280000000000001 L 22.48 15.280000000000001 C 22.548788024729784 15.286023776785708 22.61714688430721 15.2644367684981 22.67 15.22 C 22.720747441886147 15.169740811282223 22.749513404399956 15.101421650311925 22.75 15.030000000000001 L 22.75 13.49 C 22.748811550557175 13.329582483301765 22.670723107812147 13.179476824465116 22.540048779233242 13.086420863204381 C 22.40937445065434 12.993364901943647 22.241985053244417 12.968660583700254 22.09 13.02 C 22.09 13.02 15.92 15.25 15.92 15.25 C 15.81014620462608 15.289716376239534 15.68985379537392 15.289716376239534 15.58 15.25 L 9.42 13 C 9.266800049800302 12.944612303359865 9.096222252666765 12.967330568136367 8.96285890044824 13.060883964468767 C 8.829495548229712 13.154437360801165 8.750069300241226 13.307095067975933 8.75 13.47 L 8.75 15 C 8.750486595600044 15.071421650311924 8.779252558113853 15.139740811282222 8.83 15.19 C 8.882853115692793 15.2344367684981 8.951211975270216 15.256023776785707 9.02 15.25 L 10.25 15.25 C 11.07842712474619 15.25 11.75 15.92157287525381 11.75 16.75 L 11.75 18.75 C 11.75 19.57842712474619 11.07842712474619 20.25 10.25 20.25 L 9 20.25 C 8.931211975270216 20.243976223214293 8.862853115692793 20.2655632315019 8.81 20.31 C 8.759252558113854 20.360259188717777 8.730486595600045 20.428578349688074 8.73 20.5 L 8.73 20.91 C 8.730089567496842 21.12051503773745 8.862026279119132 21.308424899744953 9.06 21.38 L 15.39 23.64 C 15.609707590747844 23.71943275247907 15.850292409252159 23.71943275247907 16.07 23.64 L 22.4 21.380000000000003 C 22.597973720880866 21.308424899744953 22.729910432503154 21.12051503773745 22.729999999999997 20.910000000000004 L 22.729999999999997 20.500000000000004 C 22.731675255755146 20.431039111680665 22.702310057557494 20.364967415735947 22.65 20.320000000000004 C 22.60089694802262 20.268543873098764 22.530749956030906 20.242700244470235 22.459999999999997 20.250000000000004 L 21.25 20.250000000000004 Z"
-                                                        stroke-linecap="round" />
-                                                </g>
-                                                <g transform="matrix(1 0 0 1 3.75 -5.03)">
+                                                <g transform="matrix(1 0 0 1 -1.47 -4.16)">
                                                     <circle
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        cx="0" cy="0" r="2.5" />
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        cx="0" cy="0" r="3.179" />
                                                 </g>
-                                                <g transform="matrix(1 0 0 1 -2.75 5.78)">
+                                                <g transform="matrix(1 0 0 1 -1.41 2.2)">
                                                     <path
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        transform=" translate(-9.25, -17.78)"
-                                                        d="M 10.25 19.28 C 10.526142374915397 19.28 10.75 19.0561423749154 10.75 18.78 L 10.75 16.78 C 10.75 16.503857625084603 10.526142374915397 16.28 10.25 16.28 L 9.25 16.28 C 8.42157287525381 16.28 7.75 16.95157287525381 7.75 17.78 C 7.75 18.608427124746193 8.42157287525381 19.28 9.25 19.28 Z"
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        transform=" translate(-10.59, -14.2)"
+                                                        d="M 16.262 15.916 C 15.154150731309995 13.808217757685188 12.969192134867457 12.488251498448781 10.588000000000001 12.488251498448781 C 8.206807865132543 12.488251498448781 6.021849268690005 13.808217757685187 4.914 15.916"
                                                         stroke-linecap="round" />
                                                 </g>
-                                                <g transform="matrix(1 0 0 1 10.25 5.78)">
-                                                    <path
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        transform=" translate(-22.25, -17.78)"
-                                                        d="M 23.49 16.94 C 23.20691559387698 16.533323370548388 22.74544259205046 16.287700643769753 22.25 16.28 L 21.25 16.28 C 20.9738576250846 16.28 20.75 16.503857625084603 20.75 16.78 L 20.75 18.78 C 20.75 19.0561423749154 20.9738576250846 19.28 21.25 19.28 L 22.25 19.28 C 23.07842712474619 19.28 23.75 18.608427124746193 23.75 17.78 C 23.753033309654796 17.47974031582999 23.662127110198163 17.186043363739334 23.49 16.94 Z"
-                                                        stroke-linecap="round" />
+                                                <g transform="matrix(1 0 0 1 -1.47 -1.47)">
+                                                    <circle
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        cx="0" cy="0" r="9.783" />
                                                 </g>
-                                                <g transform="matrix(1 0 0 1 -6.75 -6.72)">
-                                                    <path
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        transform=" translate(-5.25, -5.28)"
-                                                        d="M 10.25 6.53 L 10.25 4 C 10.25 3.7238576250846034 10.026142374915397 3.5 9.75 3.5 L 7.25 3.5 C 7.122843581869665 3.500918469118668 7.015255851150444 3.406241266085753 7 3.28 L 7 0.78 C 7 0.5038576250846033 6.776142374915397 0.28 6.5 0.28 L 4 0.28 C 3.7238576250846034 0.28 3.5 0.5038576250846033 3.5 0.78 L 3.5 3.2800000000000002 C 3.5 3.4180711874576986 3.3880711874576983 3.5300000000000002 3.25 3.5300000000000002 L 0.75 3.5300000000000002 C 0.4738576250846033 3.5300000000000002 0.25 3.7538576250846036 0.25 4.03 L 0.25 6.53 C 0.25 6.806142374915397 0.4738576250846033 7.03 0.75 7.03 L 3.25 7.03 C 3.3880711874576983 7.03 3.5 7.141928812542302 3.5 7.28 L 3.5 9.780000000000001 C 3.5 10.056142374915398 3.7238576250846034 10.280000000000001 4 10.280000000000001 L 6.5 10.280000000000001 C 6.776142374915397 10.280000000000001 7 10.056142374915398 7 9.780000000000001 L 7 7.28 C 6.9913765020837895 7.208672562896312 7.013857141297095 7.13708278645472 7.061708267775178 7.083489524799266 C 7.109559394253262 7.029896263143812 7.178155040373427 6.999480600011918 7.25 7 L 9.75 7 C 10.014838625766476 7.000477114281027 10.234110086435079 6.794361941252542 10.25 6.53 Z"
-                                                        stroke-linecap="round" />
+                                                <g transform="matrix(1 0 0 1 8.35 8.35)">
+                                                    <line
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        x1="2.9000000000000004" y1="2.9000000000000004"
+                                                        x2="-2.9000000000000004" y2="-2.9000000000000004" />
                                                 </g>
-                                                <g transform="matrix(1 0 0 1 3.75 0.44)">
-                                                    <path
-                                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                                                        transform=" translate(-15.75, -12.44)"
-                                                        d="M 20.05 12.72 C 20.147005183325852 12.684296708847304 20.218797261710563 12.60116903913869 20.240000000000002 12.5 C 20.265523627099075 12.399072963846839 20.23499094776881 12.292208586190911 20.160000000000004 12.22 C 19.152164062031975 11.21146565876148 17.785785271858668 10.64333974074205 16.36 10.64 L 15.14 10.64 C 13.714214728141334 10.643339740742052 12.347835937968028 11.211465658761478 11.34 12.219999999999999 C 11.265009052231193 12.292208586190911 11.234476372900929 12.399072963846839 11.26 12.5 C 11.281202738289437 12.60116903913869 11.35299481667415 12.684296708847304 11.45 12.72 L 15.649999999999999 14.22 C 15.715158964040652 14.240051285086082 15.784841035959344 14.240051285086082 15.849999999999998 14.22 Z"
-                                                        stroke-linecap="round" />
+                                                <g transform="matrix(1 0 0 1 -1.41 4.67)">
+                                                    <line
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        x1="0" y1="-0.5754999999999999" x2="0"
+                                                        y2="0.5754999999999999" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 -2.85 2.63)">
+                                                    <line
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        x1="-1.4334999999999996" y1="-1.4665" x2="1.4334999999999996"
+                                                        y2="1.4665" />
+                                                </g>
+                                                <g transform="matrix(1 0 0 1 0.02 2.63)">
+                                                    <line
+                                                        style="stroke: rgb(0,0,0); stroke-width: 1.5; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                        x1="1.4335000000000004" y1="-1.4665" x2="-1.4335000000000004"
+                                                        y2="1.4665" />
                                                 </g>
                                             </g>
                                         </g>
                                     </svg>
 
                                 </span>
-                                <span class="shortBarToggle">Book Appoinment</span>
+                                <span class="shortBarToggle">View Patients</span>
                             </a>
                         </li>
 
 
-                        <!-- Document  -->
-                        <li class="menuListItems documnet-nav">
-                            <a href="{% url 'ViewDocument' %}"
+                        <!-- Online Sessions -->
+                        <li class="menuListItems OnlineSession-nav">
+                            <a href="{% url 'OnlineSession' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
-
-                                    <svg id='Document_24' viewBox='0 0 24 24' class="w-6 h-6"
+                                    <svg id='Medical_Room_Wait_24' class="w-6 h-6" viewBox='0 0 24 24'
                                         xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-
-
-                                        <g transform="matrix(1 0 0 1 12 12)">
+                                        <g transform="matrix(0.91 0 0 0.91 12 12)">
                                             <path
                                                 style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
                                                 transform=" translate(-12, -12)"
-                                                d="M 14 2 L 6 2 C 4.9 2 4 2.9 4 4 L 4 20 C 4 21.1 4.9 22 6 22 L 18 22 C 19.1 22 20 21.1 20 20 L 20 8 L 14 2 z M 16 18 L 8 18 L 8 16 L 16 16 L 16 18 z M 16 14 L 8 14 L 8 12 L 16 12 L 16 14 z M 13 9 L 13 3.5 L 18.5 9 L 13 9 z"
+                                                d="M 3 5 C 1.897 5 1 5.897 1 7 L 1 17 C 1 18.103 1.897 19 3 19 L 16 19 C 17.103 19 18 18.103 18 17 L 18 14.080078 L 23 18.080078 L 23 5.9199219 L 18 9.9199219 L 18 7 C 18 5.897 17.103 5 16 5 L 3 5 z"
                                                 stroke-linecap="round" />
                                         </g>
                                     </svg>
 
                                 </span>
-                                <span class="shortBarToggle">Document</span>
+                                <span class="shortBarToggle">Online Sessions</span>
                             </a>
                         </li>
-
 
                         <!-- Message -->
                         <li class="menuListItems message-nav">
@@ -243,7 +237,7 @@
 
 
                         <!-- Prescriptions  -->
-                        <li class="menuListItems prescriptions-nav">
+                        <!-- <li class="menuListItems prescriptions-nav">
                             <a href="{% url 'prescriptions' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
@@ -263,12 +257,12 @@
                                 </span>
                                 <span class="shortBarToggle">Prescriptions</span>
                             </a>
-                        </li>
+                        </li> -->
 
 
 
                         <!-- Lab Report  -->
-                        <li class="menuListItems labReport-nav">
+                        <!-- <li class="menuListItems labReport-nav">
                             <a href="{% url 'labReport' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
@@ -318,7 +312,7 @@
                                 </span>
                                 <span class="shortBarToggle">Lab Report</span>
                             </a>
-                        </li>
+                        </li> -->
 
 
 
