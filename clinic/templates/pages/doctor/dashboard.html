@@ -21,6 +21,24 @@
             <h2 class="text-2xl font-bold tracking-tight">Dashboard</h2>
             <p class="text-muted-foreground">Welcome back, Dr. Smith. Here's your overview for today.</p>
         </div>
+        <!-- Status Card -->
+        <div class="bg-purple-50 rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">Your Current Status</h2>
+                    <p class="text-gray-600 mt-1">You are available for online consultations</p>
+                </div>
+                <div class="flex items-center">
+                    <span class="h-3 w-3 bg-green-500 rounded-full mr-2"></span>
+                    <select class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="available">Available</option>
+                        <option value="busy">Busy</option>
+                        <option value="away">Away</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
         <!-- Stats cards -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -119,7 +137,7 @@
                 <div class="relative">
                     <input type="date"
                         class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        value="2025-03-21" />
+                        value="2025-03-24" />
                     <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -174,12 +192,12 @@
         <script>
             // Updated JSON data with additional future appointments
             const appointmentsData = [
-                // Today's appointments (March 21, 2025)
+
                 {
                     id: 1,
                     patientName: "James Wilson",
                     time: "09:00 - 09:30",
-                    date: "2025-03-21",
+                    date: "2025-03-24",
                     type: "Check-up",
                     status: "upcoming",
                     notes: "New patient",
@@ -189,7 +207,7 @@
                     id: 2,
                     patientName: "Emma Thompson",
                     time: "10:00 - 10:45",
-                    date: "2025-03-21",
+                    date: "2025-03-24",
                     type: "Consult",
                     status: "upcoming",
                     notes: "Insurance verified",
@@ -199,7 +217,7 @@
                     id: 3,
                     patientName: "Michael Brown",
                     time: "11:00 - 11:30",
-                    date: "2025-03-21",
+                    date: "2025-03-24",
                     type: "Follow-up",
                     status: "completed",
                     notes: "Test results ready",
@@ -209,7 +227,7 @@
                     id: 4,
                     patientName: "Olivia Parker",
                     time: "14:00 - 14:30",
-                    date: "2025-03-21",
+                    date: "2025-03-24",
                     type: "Urgent",
                     status: "urgent",
                     notes: "High priority",
@@ -220,7 +238,7 @@
                     id: 5,
                     patientName: "Robert Johnson",
                     time: "09:30 - 10:00",
-                    date: "2025-03-22",
+                    date: "2025-03-25",
                     type: "Check-up",
                     status: "upcoming",
                     notes: "Annual physical",
@@ -230,7 +248,7 @@
                     id: 6,
                     patientName: "Sophia Martinez",
                     time: "11:30 - 12:00",
-                    date: "2025-03-22",
+                    date: "2025-03-26",
                     type: "Follow-up",
                     status: "upcoming",
                     notes: "Medication review",
@@ -240,7 +258,7 @@
                     id: 7,
                     patientName: "David Garcia",
                     time: "14:30 - 15:15",
-                    date: "2025-03-22",
+                    date: "2025-03-24",
                     type: "Consult",
                     status: "upcoming",
                     notes: "New referral",
@@ -473,7 +491,7 @@
                 resetButton.className = 'px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors';
                 resetButton.textContent = 'Reset Filters';
                 resetButton.addEventListener('click', function () {
-                    dateFilter.value = '2025-03-21';
+                    dateFilter.value = '2025-03-24';
                     statusFilter.value = 'All Appointments';
                     searchFilter.value = '';
                     updateTimeline();

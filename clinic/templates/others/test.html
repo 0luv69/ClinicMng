@@ -4,431 +4,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor's Patient Dashboard</title>
+    <title>Doctor Portal - Online Sessions</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 
-<body class="bg-gray-100">
-
-    <div class="flex h-screen overflow-hidden">
-        <!-- Main Content -->
-        <div class="flex-1 overflow-y-auto">
-            <div class="p-6 lg:p-10 w-full">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-800">Patient Management</h2>
-                    <p class="text-gray-600">View and manage your patient appointments</p>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Sidebar/Navigation -->
+        <div class="flex flex-1">
+            <!-- Main Content -->
+            <main class="flex-1 p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Online Sessions</h1>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </span>
+                            <input type="text" placeholder="Search sessions..."
+                                class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                        <button
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm flex items-center">
+                            <i class="fas fa-cog mr-2"></i> Settings
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Search and Filters -->
-                <div class="bg-white rounded-lg shadow p-4 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="relative">
-                            <input type="text" id="searchInput" placeholder="Search patients..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent pl-10">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-3"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                <!-- Status Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Your Current Status</h2>
+                            <p class="text-gray-600 mt-1">You are available for online consultations</p>
                         </div>
-                        <div class="flex space-x-2 overflow-x-auto md:justify-center">
-                            <button id="tabAll"
-                                class="px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300">All</button>
-                            <button id="tabUpcoming"
-                                class="px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 bg-blue-600 text-white">Upcoming</button>
-                            <button id="tabCompleted"
-                                class="px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300">Completed</button>
-                            <button id="tabCancelled"
-                                class="px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelled</button>
+                        <div class="flex items-center">
+                            <span class="h-3 w-3 bg-green-500 rounded-full mr-2"></span>
+                            <select
+                                class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="available">Available</option>
+                                <option value="busy">Busy</option>
+                                <option value="away">Away</option>
+                                <option value="offline">Offline</option>
+                            </select>
                         </div>
-                        <div class="text-right">
+                    </div>
+                </div>
+
+                <!-- Upcoming Session Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-yellow-500">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">Upcoming Session</h2>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">Starting
+                            in 5 minutes</span>
+                    </div>
+                    <div class="flex items-center">
+                        <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                            class="h-16 w-16 rounded-full mr-4 object-cover">
+                        <div class="flex-1">
+                            <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
+                            <p class="text-gray-600 text-sm">Follow-up Consultation • 10:30 AM - 11:00 AM</p>
+                            <p class="text-gray-500 text-sm mt-1">Chief Complaint: Persistent headache</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm">
+                                Join Session
+                            </button>
                             <button
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200">
-                                + New Appointment
+                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
+                                Reschedule
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Patients List -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Patient</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Appointment</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Issue</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="patientTableBody" class="divide-y divide-gray-200"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Patient Detail Modal -->
-                <div id="modal"
-                    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 transition-opacity duration-300">
-                    <div id="modalContent"
-                        class="bg-white rounded-lg shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300">
-                        <div class="p-6 border-b border-gray-200">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-lg font-semibold text-gray-900">Patient Details</h3>
-                                <button id="closeModal" class="text-gray-400 hover:text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="p-6" id="modalBody"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let patientData = [
-            {
-                "id": 1,
-                "name": "John Smith",
-                "age": 45,
-                "gender": "Male",
-                "appointment": "2025-03-24 10:00 AM",
-                "status": "upcoming",
-                "issue": "Annual checkup",
-                "phone": "555-123-4567",
-                "email": "john.smith@example.com",
-                "notes": "Previous hypertension history"
-            },
-            {
-                "id": 2,
-                "name": "Emily Johnson",
-                "age": 32,
-                "gender": "Female",
-                "appointment": "2025-03-25 11:30 AM",
-                "status": "upcoming",
-                "issue": "Migraine follow-up",
-                "phone": "555-234-5678",
-                "email": "emily.j@example.com",
-                "notes": "Experiencing side effects from medication"
-            },
-            {
-                "id": 3,
-                "name": "Robert Wilson",
-                "age": 68,
-                "gender": "Male",
-                "appointment": "2025-03-23 09:15 AM",
-                "status": "completed",
-                "issue": "Diabetes monitoring",
-                "phone": "555-345-6789",
-                "email": "rwilson@example.com",
-                "notes": "Blood sugar levels improving"
-            },
-            {
-                "id": 4,
-                "name": "Sarah Thompson",
-                "age": 28,
-                "gender": "Female",
-                "appointment": "2025-03-22 02:45 PM",
-                "status": "completed",
-                "issue": "Pregnancy checkup",
-                "phone": "555-456-7890",
-                "email": "sthompson@example.com",
-                "notes": "First trimester, weeks 10-12"
-            },
-            {
-                "id": 5,
-                "name": "Michael Davis",
-                "age": 52,
-                "gender": "Male",
-                "appointment": "2025-03-26 03:30 PM",
-                "status": "upcoming",
-                "issue": "Back pain consultation",
-                "phone": "555-567-8901",
-                "email": "mdavis@example.com",
-                "notes": "Recent injury from lifting"
-            },
-            {
-                "id": 6,
-                "name": "Jessica Brown",
-                "age": 39,
-                "gender": "Female",
-                "appointment": "2025-03-24 01:15 PM",
-                "status": "upcoming",
-                "issue": "Allergy symptoms",
-                "phone": "555-678-9012",
-                "email": "jbrown@example.com",
-                "notes": "Seasonal allergies worsening"
-            },
-            {
-                "id": 7,
-                "name": "David Lee",
-                "age": 41,
-                "gender": "Male",
-                "appointment": "2025-03-25 09:45 AM",
-                "status": "cancelled",
-                "issue": "Shoulder pain",
-                "phone": "555-789-0123",
-                "email": "dlee@example.com",
-                "notes": "Needs to reschedule"
-            },
-            {
-                "id": 8,
-                "name": "Laura Martinez",
-                "age": 35,
-                "gender": "Female",
-                "appointment": "2025-03-26 11:00 AM",
-                "status": "upcoming",
-                "issue": "Thyroid follow-up",
-                "phone": "555-890-1234",
-                "email": "lmartinez@example.com",
-                "notes": "New medication started last month"
-            }
-        ];
-        let activeTab = 'upcoming';
-        let searchTerm = '';
-
-        // DOM Elements
-        const patientTableBody = document.getElementById('patientTableBody');
-        const searchInput = document.getElementById('searchInput');
-        const tabAll = document.getElementById('tabAll');
-        const tabUpcoming = document.getElementById('tabUpcoming');
-        const tabCompleted = document.getElementById('tabCompleted');
-        const tabCancelled = document.getElementById('tabCancelled');
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-        const modalBody = document.getElementById('modalBody');
-        const closeModal = document.getElementById('closeModal');
-
-        // Load patient data (using existing array instead of fetch)
-        function loadPatientData() {
-            renderPatients();
-        }
-
-        // Filter and render patients
-        function renderPatients() {
-            const filteredPatients = patientData.filter(patient => {
-                const matchesSearch = patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    patient.issue.toLowerCase().includes(searchTerm.toLowerCase());
-                const matchesTab = activeTab === 'all' || patient.status === activeTab;
-                return matchesSearch && matchesTab;
-            });
-
-            patientTableBody.innerHTML = '';
-            if (filteredPatients.length === 0) {
-                patientTableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No patients found matching your search criteria.</td></tr>`;
-                return;
-            }
-
-            filteredPatients.forEach(patient => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50 cursor-pointer';
-                // Using placeholder images since actual images aren't available
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
+                <!-- Today's Sessions -->
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Sessions</h2>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+                    <!-- Session in Progress -->
+                    <div class="p-6 border-l-4 border-green-500 border-b border-gray-100">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    ${patient.name.charAt(0)}
+                            <div class="relative mr-4">
+                                <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                                    class="h-12 w-12 rounded-full object-cover">
+                                <span
+                                    class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Robert Chen</h3>
+                                        <p class="text-gray-600 text-sm">Initial Consultation • 9:00 AM - 9:30 AM</p>
+                                    </div>
+                                    <span
+                                        class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">In
+                                        Progress</span>
                                 </div>
                             </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${patient.name}</div>
-                                <div class="text-sm text-gray-500">${patient.age} yrs, ${patient.gender}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${patient.appointment}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            ${patient.status === 'upcoming' ? 'bg-blue-100 text-blue-800' :
-                        patient.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            'bg-red-100 text-red-800'}">
-                            ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${patient.issue}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex space-x-2">
-                            <button class="text-blue-600 hover:text-blue-900 view-btn" data-id="${patient.id}">View</button>
-                            ${patient.status === 'upcoming' ? `
-                                <button class="text-green-600 hover:text-green-900 check-in-btn" data-id="${patient.id}">Check in</button>
-                                <button class="text-red-600 hover:text-red-900 cancel-btn" data-id="${patient.id}">Cancel</button>
-                            ` : ''}
-                        </div>
-                    </td>
-                `;
-                row.querySelector('.view-btn').addEventListener('click', () => showModal(patient));
-                if (patient.status === 'upcoming') {
-                    row.querySelector('.check-in-btn').addEventListener('click', () => checkInPatient(patient.id));
-                    row.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
-                }
-                patientTableBody.appendChild(row);
-            });
-        }
-
-        // Basic check-in and cancel functionality
-        function checkInPatient(id) {
-            const patient = patientData.find(p => p.id === id);
-            if (patient) {
-                patient.status = 'completed';
-                renderPatients();
-            }
-        }
-
-        function cancelPatient(id) {
-            const patient = patientData.find(p => p.id === id);
-            if (patient) {
-                patient.status = 'cancelled';
-                renderPatients();
-            }
-        }
-
-        // Show modal with patient details
-        function showModal(patient) {
-            modalBody.innerHTML = `
-                <div class="flex flex-col md:flex-row mb-6">
-                    <div class="md:w-1/4 mb-4 md:mb-0">
-                        <div class="h-32 w-32 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500 mx-auto">
-                            ${patient.name.charAt(0)}
+                            <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm">
+                                Continue Session
+                            </button>
                         </div>
                     </div>
-                    <div class="md:w-3/4 md:pl-6">
-                        <h2 class="text-2xl font-bold text-gray-800">${patient.name}</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Age</p>
-                                <p class="text-base text-gray-800">${patient.age} years</p>
+
+                    <!-- Completed Session -->
+                    <div class="p-6 border-l-4 border-gray-300 border-b border-gray-100">
+                        <div class="flex items-center">
+                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                                class="h-12 w-12 rounded-full mr-4 object-cover">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Emily Wilson</h3>
+                                        <p class="text-gray-600 text-sm">Follow-up • 8:00 AM - 8:30 AM</p>
+                                    </div>
+                                    <span
+                                        class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full font-medium">Completed</span>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Gender</p>
-                                <p class="text-base text-gray-800">${patient.gender}</p>
+                            <button
+                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
+                                View Summary
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Sessions -->
+                    <div class="p-6 border-l-4 border-yellow-500 border-b border-gray-100">
+                        <div class="flex items-center">
+                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                                class="h-12 w-12 rounded-full mr-4 object-cover">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
+                                        <p class="text-gray-600 text-sm">Follow-up • 10:30 AM - 11:00 AM</p>
+                                    </div>
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">Up
+                                        Next</span>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Phone</p>
-                                <p class="text-base text-gray-800">${patient.phone}</p>
+                            <button
+                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-l-4 border-blue-200">
+                        <div class="flex items-center">
+                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                                class="h-12 w-12 rounded-full mr-4 object-cover">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Michael Brown</h3>
+                                        <p class="text-gray-600 text-sm">Initial Consultation • 2:00 PM - 2:45 PM</p>
+                                    </div>
+                                    <span
+                                        class="bg-blue-50 text-blue-600 text-xs px-3 py-1 rounded-full font-medium">Scheduled</span>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Email</p>
-                                <p class="text-base text-gray-800">${patient.email}</p>
-                            </div>
+                            <button
+                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
+                                View Details
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 pt-6">
-                    <h3 class="text-lg font-semibold mb-4">Appointment Details</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-500">Date & Time</p>
-                            <p class="text-base text-gray-800">${patient.appointment}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Status</p>
+
+                <!-- Week Overview -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Week Overview</h2>
+                    <div class="flex space-x-2">
+                        <button class="border border-gray-300 hover:bg-gray-50 text-gray-600 p-2 rounded-lg text-sm">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="border border-gray-300 hover:bg-gray-50 text-gray-600 p-2 rounded-lg text-sm">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                        <p class="text-sm font-medium text-gray-800 mb-1">Mon</p>
+                        <p class="text-xs text-gray-500 mb-2">Mar 24</p>
+                        <div class="h-2 w-full bg-blue-500 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-blue-600">4 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                        <p class="text-sm font-medium text-gray-800 mb-1">Tue</p>
+                        <p class="text-xs text-gray-500 mb-2">Mar 25</p>
+                        <div class="h-2 w-full bg-blue-300 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-blue-600">2 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                        <p class="text-sm font-medium text-gray-800 mb-1">Wed</p>
+                        <p class="text-xs text-gray-500 mb-2">Mar 26</p>
+                        <div class="h-2 w-full bg-blue-400 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-blue-600">3 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                        <p class="text-sm font-medium text-gray-800 mb-1">Thu</p>
+                        <p class="text-xs text-gray-500 mb-2">Mar 27</p>
+                        <div class="h-2 w-full bg-blue-600 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-blue-600">5 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                        <p class="text-sm font-medium text-gray-800 mb-1">Fri</p>
+                        <p class="text-xs text-gray-500 mb-2">Mar 28</p>
+                        <div class="h-2 w-full bg-blue-300 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-blue-600">2 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center bg-gray-50">
+                        <p class="text-sm font-medium text-gray-400 mb-1">Sat</p>
+                        <p class="text-xs text-gray-400 mb-2">Mar 29</p>
+                        <div class="h-2 w-full bg-gray-200 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-gray-400">0 Sessions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 text-center bg-gray-50">
+                        <p class="text-sm font-medium text-gray-400 mb-1">Sun</p>
+                        <p class="text-xs text-gray-400 mb-2">Mar 30</p>
+                        <div class="h-2 w-full bg-gray-200 rounded-full mb-1"></div>
+                        <p class="text-xs font-medium text-gray-400">0 Sessions</p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar for Quick Info -->
+            <aside class="hidden lg:block w-80 bg-white shadow-md p-6">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Tools</h3>
+                    <div class="space-y-3">
+                        <button
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm flex items-center justify-center">
+                            <i class="fas fa-video mr-2"></i> Start New Session
+                        </button>
+                        <button
+                            class="w-full border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm flex items-center justify-center">
+                            <i class="fas fa-notes-medical mr-2"></i> Access Medical Records
+                        </button>
+                        <button
+                            class="w-full border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm flex items-center justify-center">
+                            <i class="fas fa-prescription mr-2"></i> Write Prescription
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Upcoming Patient</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
+                                class="h-10 w-10 rounded-full mr-3 object-cover">
                             <div>
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    ${patient.status === 'upcoming' ? 'bg-blue-100 text-blue-800' :
-                    patient.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'}">
-                                    ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-                                </span>
+                                <h4 class="font-medium text-gray-800">Sarah Johnson</h4>
+                                <p class="text-gray-600 text-xs">32 years • Female</p>
                             </div>
                         </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Issue</p>
-                            <p class="text-base text-gray-800">${patient.issue}</p>
+                        <div class="space-y-2 mb-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-clipboard-list text-gray-400 mt-1 mr-2 w-4"></i>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Chief Complaint</p>
+                                    <p class="text-sm text-gray-800">Persistent headache for 2 weeks</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-pills text-gray-400 mt-1 mr-2 w-4"></i>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Current Medications</p>
+                                    <p class="text-sm text-gray-800">Ibuprofen 400mg</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-calendar-check text-gray-400 mt-1 mr-2 w-4"></i>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Last Visit</p>
+                                    <p class="text-sm text-gray-800">March 10, 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="w-full border border-blue-400 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg text-xs flex items-center justify-center">
+                            View Full Profile
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Stats</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar-check text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-800 font-medium">4 Sessions Today</p>
+                                <p class="text-xs text-gray-500">2 completed, 2 remaining</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-clock text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-800 font-medium">Average Duration</p>
+                                <p class="text-xs text-gray-500">24 minutes per session</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-users text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-800 font-medium">16 Patients This Week</p>
+                                <p class="text-xs text-gray-500">4 new, 12 returning</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 pt-6 mt-6">
-                    <h3 class="text-lg font-semibold mb-4">Patient Notes</h3>
-                    <p class="text-gray-700">${patient.notes}</p>
-                </div>
-                <div class="border-t border-gray-200 pt-6 mt-6 flex flex-wrap gap-3">
-                    ${patient.status === 'upcoming' ? `
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 start-btn" data-id="${patient.id}">Start Appointment</button>
-                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-red-700 transition-colors duration-200 cancel-btn" data-id="${patient.id}">Cancel Appointment</button>
-                    ` : ''}
-                    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition-colors duration-200">View Medical Records</button>
-                    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition-colors duration-200">Edit Patient Info</button>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
-            }, 10);
-
-            // Add event listeners for modal buttons
-            if (patient.status === 'upcoming') {
-                modalBody.querySelector('.start-btn').addEventListener('click', () => checkInPatient(patient.id));
-                modalBody.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
-            }
-        }
-
-        // Hide modal
-        function hideModal() {
-            modal.classList.remove('opacity-100');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        // Event Listeners
-        searchInput.addEventListener('input', (e) => {
-            searchTerm = e.target.value;
-            renderPatients();
-        });
-
-        tabAll.addEventListener('click', () => setActiveTab('all'));
-        tabUpcoming.addEventListener('click', () => setActiveTab('upcoming'));
-        tabCompleted.addEventListener('click', () => setActiveTab('completed'));
-        tabCancelled.addEventListener('click', () => setActiveTab('cancelled'));
-
-        function setActiveTab(tab) {
-            activeTab = tab;
-            [tabAll, tabUpcoming, tabCompleted, tabCancelled].forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-            });
-            const activeBtn = document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
-            activeBtn.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-            activeBtn.classList.add('bg-blue-600', 'text-white');
-            renderPatients();
-        }
-
-        closeModal.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) hideModal();
-        });
-
-        // Initial load
-        document.addEventListener('DOMContentLoaded', () => {
-            loadPatientData();
-        });
-    </script>
+            </aside>
+        </div>
+    </div>
 </body>
 
 </html>

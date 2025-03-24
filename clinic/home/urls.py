@@ -28,4 +28,5 @@ urlpatterns = [
     path('d/edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
     path('d/view-patients/', ViewPatients, name='ViewPatients'),
     path('d/online-session/', OnlineSession, name='OnlineSession'),
+    path('d/setting/', dSetting, name='dSetting'),
 ]

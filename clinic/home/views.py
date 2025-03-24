@@ -79,3 +79,7 @@ def ViewPatients(request):
 
 def OnlineSession(request):
     return render(request, 'pages/doctor/online_session.html')
+
+
+def dSetting(request):
+    return render(request, 'pages/doctor/setting.html')

@@ -1290,7 +1290,7 @@
             document.getElementById("footer-weekly-hours").textContent = `${totalWeeklyHours}h`;
 
             const workingDays = Array.from({ length: 7 }, (_, i) => addDays(currentWeekStart, i)).filter(
-                (date) => calculateWorkingHours(getDateString(date)) > 0
+                (date) => calculateWorkingHours(getDateString(date)) >= 0
             ).length;
             document.getElementById("stats-working-days").textContent = `${workingDays} days`;
 
@@ -1312,7 +1312,7 @@
                 const barColor =
                     hours > workHourLimits.max
                         ? "bg-red-400"
-                        : hours < workHourLimits.min && hours > 0
+                        : hours < workHourLimits.min && hours >= 0
                             ? "bg-amber-400"
                             : "bg-emerald-400";
                 const dayStats = document.createElement("div");
