@@ -24,6 +24,10 @@ def message(request):
     return render(request, 'pages/patient/message.html')
 
 
+def p_profile(request):
+    return render(request, 'pages/patient/profile.html')
+
+
 def labReport(request):
     return render(request, 'pages/patient/lab_report.html')
 
@@ -83,3 +87,7 @@ def OnlineSession(request):
 
 def dSetting(request):
     return render(request, 'pages/doctor/setting.html')
+
+
+def d_profile(request):
+    return render(request, 'pages/doctor/profile.html')

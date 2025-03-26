@@ -17,6 +17,7 @@ urlpatterns = [
     path('p/lab-report/', labReport, name='labReport'),
     path('p/prescriptions/', prescriptions, name='prescriptions'),
     path('p/message/', message, name='p-message'),
+    path('p/profile/', p_profile, name='p-profile'),
 
 
 
@@ -29,4 +30,5 @@ urlpatterns = [
     path('d/view-patients/', ViewPatients, name='ViewPatients'),
     path('d/online-session/', OnlineSession, name='OnlineSession'),
     path('d/setting/', dSetting, name='dSetting'),
+    path('d/profile/', d_profile, name='d-profile'),
 ]
