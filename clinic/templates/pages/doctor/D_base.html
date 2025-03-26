@@ -910,61 +910,65 @@
             }
         };
 
+        // This function either initializes the nav bar state or toggles it.
         function shortBarToggle(checking = false) {
-
-            // save the state in local storage as isBarShort
-            const isBarShort = localStorage.getItem('isBarShort');
-            if (isBarShort === 'true' && !checking) {
-                localStorage.setItem('isBarShort', 'false');
-            } else {
-                localStorage.setItem('isBarShort', 'true');
-            }
-
-
-
-
-            const shortBarToggle = document.querySelectorAll('.shortBarToggle');
             const sidebarPanel = document.querySelector('#sidebarPanel');
             const menuList = document.querySelector('#menuList');
-
+            const shortBarElements = document.querySelectorAll('.shortBarToggle');
             const menuLinks = document.querySelectorAll('.menuListItems a');
-            menuLinks.forEach(link => {
-                link.classList.toggle('justify-center');
-            });
 
-            menuList.classList.toggle('px-4');
-            // menuList.classList.toggle('w-64');
+            // If 'checking' is true, we only apply classes based on localStorage value.
+            if (checking) {
+                if (localStorage.getItem('isBarShort') === 'true') {
+                    // Apply the "short" state.
+                    sidebarPanel.classList.add('w-20');
+                    sidebarPanel.classList.remove('w-64');
+                    menuList.classList.remove('px-4');
 
+                    menuLinks.forEach(link => link.classList.add('justify-center'));
+                    shortBarElements.forEach(el => el.classList.add('hidden'));
+                } else {
+                    // Apply the "long" state.
+                    sidebarPanel.classList.add('w-64');
+                    sidebarPanel.classList.remove('w-20');
 
-            sidebarPanel.classList.toggle('w-20');
-            sidebarPanel.classList.toggle('w-64');
-            shortBarToggle.forEach((shortBar) => {
-                shortBar.classList.toggle('hidden');
+                    menuList.classList.add('px-4');
 
-            });
-        }
-
-        // Add event listener to toggle button
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const isBarShort = localStorage.getItem('isBarShort');
-            if (isBarShort === 'true') {
+                    menuLinks.forEach(link => link.classList.remove('justify-center'));
+                    shortBarElements.forEach(el => el.classList.remove('hidden'));
+                }
+            } else {
+                // Toggle the state.
+                if (localStorage.getItem('isBarShort') === 'true') {
+                    localStorage.setItem('isBarShort', 'false');
+                } else {
+                    localStorage.setItem('isBarShort', 'true');
+                }
+                // Then apply the new state.
                 shortBarToggle(true);
             }
+        }
 
+        // Initialize event listeners on DOM load.
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set the state based on localStorage.
+            if (localStorage.getItem('isBarShort') === null) {
+                // Initialize to "long" state if not set.
+                localStorage.setItem('isBarShort', 'false');
+            }
+            shortBarToggle(true);
 
-            const toggleButton = document.querySelectorAll('.sidebarToggle');
-            toggleButton.forEach((button) => {
+            // Set up the toggle buttons.
+            const toggleButtons = document.querySelectorAll('.sidebarToggle');
+            toggleButtons.forEach((button) => {
                 button.addEventListener('click', sidebarToggle);
             });
 
-            const ShortBarTogglebtn = document.querySelector('.ShortBarTogglebtn');
-            ShortBarTogglebtn.addEventListener('click', shortBarToggle);
-
-
-
+            const shortBarToggleBtn = document.querySelector('.ShortBarTogglebtn');
+            shortBarToggleBtn.addEventListener('click', () => shortBarToggle(false));
         });
     </script>
+
 
 
     <!-- // Check online status -->
