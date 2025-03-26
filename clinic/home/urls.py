@@ -11,9 +11,11 @@ urlpatterns = [
 
     path('patient/old', patientDashboardOld, name='patientDashboardold'),
     path('patient/', patientDashboard, name='patient_dashboard'),
+
     path('p/view-appoinment/', viewAppoinment, name='viewAppoinment'),
     path('p/book-appoinment/', BookAppoinment, name='BookAppoinment'),
     path('p/document/', ViewDocument, name='ViewDocument'),
+    path('p/join-v-call/', join_v_call, name='join_v_call'),
     path('p/lab-report/', labReport, name='labReport'),
     path('p/prescriptions/', prescriptions, name='prescriptions'),
     path('p/message/', message, name='p-message'),

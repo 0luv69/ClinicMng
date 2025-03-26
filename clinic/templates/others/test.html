@@ -4,331 +4,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Portal - Online Sessions</title>
+    <title>Video Consultation</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .gradient-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        }
+
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50">
-    <div class="min-h-screen flex flex-col">
-        <!-- Sidebar/Navigation -->
-        <div class="flex flex-1">
-            <!-- Main Content -->
-            <main class="flex-1 p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-gray-800">Online Sessions</h1>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </span>
-                            <input type="text" placeholder="Search sessions..."
-                                class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+<body class="bg-gray-50 font-['Inter']">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            <!-- Header -->
+            <div class="gradient-header text-white px-6 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold tracking-tight">Video Consultation</h1>
+                <div class="flex items-center space-x-4">
+                    <span id="current-time" class="text-sm font-medium opacity-90"></span>
+                    <button id="user-profile" class="hover:bg-white/10 p-2 rounded-full smooth-transition">
+                        <i class="fas fa-user-circle text-2xl opacity-90"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="grid grid-cols-12 gap-6 p-6">
+                <!-- Video Consultation Area -->
+                <div class="col-span-12 lg:col-span-8">
+                    <div class="bg-gray-100 rounded-xl overflow-hidden aspect-video relative shadow-inner">
+                        <!-- Local Video -->
+                        <div
+                            class="absolute bottom-4 right-4 w-[30%] rounded-lg overflow-hidden shadow-lg border-2 border-white/20">
+                            <video id="local-video" class="w-full h-full object-cover" autoplay muted></video>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-2">
+                                <span class="text-sm font-medium text-white">You</span>
+                            </div>
                         </div>
-                        <button
-                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm flex items-center">
-                            <i class="fas fa-cog mr-2"></i> Settings
+
+                        <!-- Remote Video -->
+                        <div class="w-full h-full bg-black">
+                            <video id="remote-video" class="w-full h-full object-cover" autoplay></video>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
+                                <span class="text-lg font-semibold text-white">Dr. Emily Smith</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Controls -->
+                    <div class="mt-6 flex justify-center space-x-4">
+                        <button id="mute-audio" class="bg-white hover:bg-gray-50 text-gray-700 shadow-md rounded-full p-4 smooth-transition
+                            hover:shadow-lg hover:-translate-y-0.5 border border-gray-100">
+                            <i class="fas fa-microphone text-xl w-6 h-6"></i>
+                        </button>
+                        <button id="stop-video" class="bg-white hover:bg-gray-50 text-gray-700 shadow-md rounded-full p-4 smooth-transition
+                            hover:shadow-lg hover:-translate-y-0.5 border border-gray-100">
+                            <i class="fas fa-video text-xl w-6 h-6"></i>
+                        </button>
+                        <button id="end-call" class="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-full shadow-md smooth-transition
+                            hover:shadow-lg hover:-translate-y-0.5 font-semibold">
+                            End Call
                         </button>
                     </div>
                 </div>
 
-                <!-- Status Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-lg font-semibold text-gray-800">Your Current Status</h2>
-                            <p class="text-gray-600 mt-1">You are available for online consultations</p>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="h-3 w-3 bg-green-500 rounded-full mr-2"></span>
-                            <select
-                                class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="available">Available</option>
-                                <option value="busy">Busy</option>
-                                <option value="away">Away</option>
-                                <option value="offline">Offline</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Upcoming Session Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-yellow-500">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Upcoming Session</h2>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">Starting
-                            in 5 minutes</span>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                            class="h-16 w-16 rounded-full mr-4 object-cover">
-                        <div class="flex-1">
-                            <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
-                            <p class="text-gray-600 text-sm">Follow-up Consultation • 10:30 AM - 11:00 AM</p>
-                            <p class="text-gray-500 text-sm mt-1">Chief Complaint: Persistent headache</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm">
-                                Join Session
-                            </button>
-                            <button
-                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
-                                Reschedule
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Today's Sessions -->
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Sessions</h2>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-                    <!-- Session in Progress -->
-                    <div class="p-6 border-l-4 border-green-500 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="relative mr-4">
-                                <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                                    class="h-12 w-12 rounded-full object-cover">
-                                <span
-                                    class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+                <!-- Sidebar -->
+                <div class="col-span-12 lg:col-span-4 space-y-6 mt-6 lg:mt-0">
+                    <!-- Consultation Details -->
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm">
+                        <h2 class="text-lg font-semibold mb-3 text-gray-700">Consultation Details</h2>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 text-sm">Patient:</span>
+                                <span class="font-medium text-gray-800">John Doe</span>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="font-medium text-gray-800">Robert Chen</h3>
-                                        <p class="text-gray-600 text-sm">Initial Consultation • 9:00 AM - 9:30 AM</p>
-                                    </div>
-                                    <span
-                                        class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">In
-                                        Progress</span>
-                                </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 text-sm">Doctor:</span>
+                                <span class="font-medium text-gray-800">Dr. Emily Smith</span>
                             </div>
-                            <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm">
-                                Continue Session
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 text-sm">Date:</span>
+                                <span class="font-medium text-gray-800" id="consultation-date"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Section -->
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm relative">
+                        <h3 class="font-semibold mb-3 text-gray-700">Chat</h3>
+                        <div id="chat-messages" class="h-48 overflow-y-auto space-y-2 pr-2 mb-3">
+                            <!-- Chat messages will be dynamically added here -->
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="chat-input" placeholder="Type a message..."
+                                class="flex-grow px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent smooth-transition">
+                            <button id="send-chat" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg smooth-transition
+                                    focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                Send
                             </button>
                         </div>
                     </div>
 
-                    <!-- Completed Session -->
-                    <div class="p-6 border-l-4 border-gray-300 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                                class="h-12 w-12 rounded-full mr-4 object-cover">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="font-medium text-gray-800">Emily Wilson</h3>
-                                        <p class="text-gray-600 text-sm">Follow-up • 8:00 AM - 8:30 AM</p>
-                                    </div>
-                                    <span
-                                        class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full font-medium">Completed</span>
-                                </div>
-                            </div>
-                            <button
-                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
-                                View Summary
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Upcoming Sessions -->
-                    <div class="p-6 border-l-4 border-yellow-500 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                                class="h-12 w-12 rounded-full mr-4 object-cover">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
-                                        <p class="text-gray-600 text-sm">Follow-up • 10:30 AM - 11:00 AM</p>
-                                    </div>
-                                    <span
-                                        class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">Up
-                                        Next</span>
-                                </div>
-                            </div>
-                            <button
-                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="p-6 border-l-4 border-blue-200">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                                class="h-12 w-12 rounded-full mr-4 object-cover">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="font-medium text-gray-800">Michael Brown</h3>
-                                        <p class="text-gray-600 text-sm">Initial Consultation • 2:00 PM - 2:45 PM</p>
-                                    </div>
-                                    <span
-                                        class="bg-blue-50 text-blue-600 text-xs px-3 py-1 rounded-full font-medium">Scheduled</span>
-                                </div>
-                            </div>
-                            <button
-                                class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm">
-                                View Details
-                            </button>
-                        </div>
+                    <!-- Medical Notes -->
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm">
+                        <h3 class="font-semibold mb-3 text-gray-700">Quick Notes</h3>
+                        <textarea id="medical-notes"
+                            class="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent smooth-transition"
+                            placeholder="Write quick consultation notes..." rows="4"></textarea>
                     </div>
                 </div>
-
-                <!-- Week Overview -->
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Week Overview</h2>
-                    <div class="flex space-x-2">
-                        <button class="border border-gray-300 hover:bg-gray-50 text-gray-600 p-2 rounded-lg text-sm">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="border border-gray-300 hover:bg-gray-50 text-gray-600 p-2 rounded-lg text-sm">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-7 gap-4">
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Mon</p>
-                        <p class="text-xs text-gray-500 mb-2">Mar 24</p>
-                        <div class="h-2 w-full bg-blue-500 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-blue-600">4 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Tue</p>
-                        <p class="text-xs text-gray-500 mb-2">Mar 25</p>
-                        <div class="h-2 w-full bg-blue-300 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-blue-600">2 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Wed</p>
-                        <p class="text-xs text-gray-500 mb-2">Mar 26</p>
-                        <div class="h-2 w-full bg-blue-400 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-blue-600">3 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Thu</p>
-                        <p class="text-xs text-gray-500 mb-2">Mar 27</p>
-                        <div class="h-2 w-full bg-blue-600 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-blue-600">5 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Fri</p>
-                        <p class="text-xs text-gray-500 mb-2">Mar 28</p>
-                        <div class="h-2 w-full bg-blue-300 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-blue-600">2 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center bg-gray-50">
-                        <p class="text-sm font-medium text-gray-400 mb-1">Sat</p>
-                        <p class="text-xs text-gray-400 mb-2">Mar 29</p>
-                        <div class="h-2 w-full bg-gray-200 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-gray-400">0 Sessions</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 text-center bg-gray-50">
-                        <p class="text-sm font-medium text-gray-400 mb-1">Sun</p>
-                        <p class="text-xs text-gray-400 mb-2">Mar 30</p>
-                        <div class="h-2 w-full bg-gray-200 rounded-full mb-1"></div>
-                        <p class="text-xs font-medium text-gray-400">0 Sessions</p>
-                    </div>
-                </div>
-            </main>
-
-            <!-- Right Sidebar for Quick Info -->
-            <aside class="hidden lg:block w-80 bg-white shadow-md p-6">
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Tools</h3>
-                    <div class="space-y-3">
-                        <button
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm flex items-center justify-center">
-                            <i class="fas fa-video mr-2"></i> Start New Session
-                        </button>
-                        <button
-                            class="w-full border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm flex items-center justify-center">
-                            <i class="fas fa-notes-medical mr-2"></i> Access Medical Records
-                        </button>
-                        <button
-                            class="w-full border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm flex items-center justify-center">
-                            <i class="fas fa-prescription mr-2"></i> Write Prescription
-                        </button>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Upcoming Patient</h3>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <div class="flex items-center mb-3">
-                            <img src="/api/placeholder/80/80" alt="Patient Avatar"
-                                class="h-10 w-10 rounded-full mr-3 object-cover">
-                            <div>
-                                <h4 class="font-medium text-gray-800">Sarah Johnson</h4>
-                                <p class="text-gray-600 text-xs">32 years • Female</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 mb-3">
-                            <div class="flex items-start">
-                                <i class="fas fa-clipboard-list text-gray-400 mt-1 mr-2 w-4"></i>
-                                <div class="flex-1">
-                                    <p class="text-xs text-gray-500">Chief Complaint</p>
-                                    <p class="text-sm text-gray-800">Persistent headache for 2 weeks</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-pills text-gray-400 mt-1 mr-2 w-4"></i>
-                                <div class="flex-1">
-                                    <p class="text-xs text-gray-500">Current Medications</p>
-                                    <p class="text-sm text-gray-800">Ibuprofen 400mg</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-calendar-check text-gray-400 mt-1 mr-2 w-4"></i>
-                                <div class="flex-1">
-                                    <p class="text-xs text-gray-500">Last Visit</p>
-                                    <p class="text-sm text-gray-800">March 10, 2025</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            class="w-full border border-blue-400 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg text-xs flex items-center justify-center">
-                            View Full Profile
-                        </button>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Stats</h3>
-                    <div class="space-y-4">
-                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
-                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                                <i class="fas fa-calendar-check text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-800 font-medium">4 Sessions Today</p>
-                                <p class="text-xs text-gray-500">2 completed, 2 remaining</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
-                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                                <i class="fas fa-clock text-green-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-800 font-medium">Average Duration</p>
-                                <p class="text-xs text-gray-500">24 minutes per session</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-lg flex items-center">
-                            <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                                <i class="fas fa-users text-purple-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-800 font-medium">16 Patients This Week</p>
-                                <p class="text-xs text-gray-500">4 new, 12 returning</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
+            </div>
         </div>
     </div>
+
+    <script>
+        // JavaScript with improved interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update current time
+            function updateTime() {
+                const now = new Date();
+                document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('consultation-date').textContent = now.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Audio Mute Toggle
+            const muteAudioBtn = document.getElementById('mute-audio');
+            muteAudioBtn.addEventListener('click', () => {
+                muteAudioBtn.classList.toggle('bg-red-500');
+                muteAudioBtn.classList.toggle('text-white');
+                muteAudioBtn.querySelector('i').classList.toggle('fa-microphone-slash');
+            });
+
+            // Video Stop Toggle
+            const stopVideoBtn = document.getElementById('stop-video');
+            stopVideoBtn.addEventListener('click', () => {
+                stopVideoBtn.classList.toggle('bg-red-500');
+                stopVideoBtn.classList.toggle('text-white');
+                stopVideoBtn.querySelector('i').classList.toggle('fa-video-slash');
+            });
+
+            // Chat Functionality
+            const chatInput = document.getElementById('chat-input');
+            const sendChatBtn = document.getElementById('send-chat');
+            const chatMessages = document.getElementById('chat-messages');
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'bg-white p-3 rounded-lg shadow-sm text-sm border border-gray-100';
+                    messageElement.innerHTML = `
+                        <div class="font-medium text-blue-600">You:</div>
+                        <div class="text-gray-700 mt-1">${message}</div>
+                        <div class="text-xs text-gray-400 text-right mt-2">${new Date().toLocaleTimeString()}</div>
+                    `;
+                    chatMessages.appendChild(messageElement);
+                    chatInput.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }
+
+            sendChatBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            // End Call Confirmation
+            const endCallBtn = document.getElementById('end-call');
+            endCallBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to end the call?')) {
+                    // Add call termination logic here
+                    alert('Call ended');
+                }
+            });
+
+            // Media Stream Handling
+            async function startVideoStream() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: { width: 1280, height: 720 },
+                        audio: true
+                    });
+                    const localVideo = document.getElementById('local-video');
+                    localVideo.srcObject = stream;
+                } catch (error) {
+                    console.error('Error accessing media devices:', error);
+                    alert('Could not access camera or microphone');
+                }
+            }
+
+            startVideoStream();
+        });
+    </script>
 </body>
 
 </html>

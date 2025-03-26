@@ -20,6 +20,11 @@ def ViewDocument(request):
     return render(request, 'pages/patient/view_document.html')
 
 
+
+def join_v_call(request):
+    return render(request, 'pages/patient/join-v-call.html')
+
+
 def message(request):
     return render(request, 'pages/patient/message.html')
 
