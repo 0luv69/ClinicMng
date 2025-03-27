@@ -9,39 +9,19 @@ urlpatterns = [
     path('register/', register, name='register'),
 
 
+
+    path('p/', include('patient.urls')),
+    path('d/', include('doctor.urls')),
+    # path('m/', include('management.urls')),
+
+
+
     path('patient/old', patientDashboardOld, name='patientDashboardold'),
-    path('patient/', patientDashboard, name='patient_dashboard'),
-
-    path('p/view-appoinment/', viewAppoinment, name='viewAppoinment'),
-    path('p/book-appoinment/', BookAppoinment, name='BookAppoinment'),
-    path('p/document/', ViewDocument, name='ViewDocument'),
-    path('p/join-v-call/', join_v_call, name='join_v_call'),
-    path('p/lab-report/', labReport, name='labReport'),
-    path('p/prescriptions/', prescriptions, name='prescriptions'),
-    path('p/message/', message, name='p-message'),
-    path('p/profile/', p_profile, name='p-profile'),
-
-
-
-
-
-
-
-    path('doctor/', doctor, name='doctor_dashboard'),
-    path('d/edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
-    path('d/view-patients/', ViewPatients, name='ViewPatients_d'),
-    path('d/online-session/', OnlineSession, name='OnlineSession'),
-    path('d/setting/', dSetting, name='dSetting'),
-    path('d/profile/', d_profile, name='d-profile'),
-
-
-
 
 
     path('management/', management, name='management_dashboard'),
-    path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
-    path('d/view-doctors/', ViewPatients, name='ViewDoctors_m'),
-
+    path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
+    path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
 
 
 ]

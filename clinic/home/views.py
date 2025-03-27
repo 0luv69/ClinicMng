@@ -13,32 +13,6 @@ def home_page2(request):
     return render(request, 'others/index1.html')
 
 
-def BookAppoinment(request):
-    return render(request, 'pages/patient/book_appoinment.html')
-
-def ViewDocument(request):
-    return render(request, 'pages/patient/view_document.html')
-
-
-
-def join_v_call(request):
-    return render(request, 'pages/patient/join-v-call.html')
-
-
-def message(request):
-    return render(request, 'pages/patient/message.html')
-
-
-def p_profile(request):
-    return render(request, 'pages/patient/profile.html')
-
-
-def labReport(request):
-    return render(request, 'pages/patient/lab_report.html')
-
-
-def prescriptions(request):
-    return render(request, 'pages/patient/prescriptions.html')
 
 
 def login(request):
@@ -52,12 +26,6 @@ def patientDashboardOld(request):
     return render(request, 'others/patient_dashboard.html')
 
 
-def patientDashboard(request):
-    return render(request, 'pages/patient/dashboard.html')
-
-
-def viewAppoinment(request):
-    return render(request, 'pages/patient/view_appoinment.html')
 
 
 
@@ -65,38 +33,10 @@ def viewAppoinment(request):
 
 
 
-
-
-
-
-
-
-
-
-
-def doctor(request):
-    return render(request, 'pages/doctor/dashboard.html')
-
-
-def d_edit_schedules(request):
-    return render(request, 'pages/doctor/edit_schedules.html')
 
 
 def ViewPatients(request):
     return render(request, 'pages/doctor/view_patients.html')
-
-
-def OnlineSession(request):
-    return render(request, 'pages/doctor/online_session.html')
-
-
-def dSetting(request):
-    return render(request, 'pages/doctor/setting.html')
-
-
-def d_profile(request):
-    return render(request, 'pages/doctor/profile.html')
-
 
 
 
