@@ -33,4 +33,13 @@ urlpatterns = [
     path('d/online-session/', OnlineSession, name='OnlineSession'),
     path('d/setting/', dSetting, name='dSetting'),
     path('d/profile/', d_profile, name='d-profile'),
+
+
+
+
+
+    path('management/', management, name='management_dashboard'),
+
+
+
 ]

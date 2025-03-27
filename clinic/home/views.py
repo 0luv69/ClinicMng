@@ -96,3 +96,9 @@ def dSetting(request):
 
 def d_profile(request):
     return render(request, 'pages/doctor/profile.html')
+
+
+
+
+def management(request):
+    return render(request, 'pages/management/dashboard.html')
