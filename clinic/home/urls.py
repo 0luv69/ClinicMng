@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('doctor/', doctor, name='doctor_dashboard'),
     path('d/edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
-    path('d/view-patients/', ViewPatients, name='ViewPatients'),
+    path('d/view-patients/', ViewPatients, name='ViewPatients_d'),
     path('d/online-session/', OnlineSession, name='OnlineSession'),
     path('d/setting/', dSetting, name='dSetting'),
     path('d/profile/', d_profile, name='d-profile'),
@@ -39,6 +39,8 @@ urlpatterns = [
 
 
     path('management/', management, name='management_dashboard'),
+    path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
+    path('d/view-doctors/', ViewPatients, name='ViewDoctors_m'),
 
 
 

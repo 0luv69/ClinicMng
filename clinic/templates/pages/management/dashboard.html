@@ -1,7 +1,8 @@
-{% extends "pages/patient/P_base.html" %}
+{% extends "pages/management/M_base.html" %}
 {% load static %}
 
-{% block titles %}Join Video Call || Nepal's Care {% endblock titles %}
+{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+
 
 {% block styles %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -31,8 +32,8 @@
 {% endblock styles %}
 
 
-{% block pageof %} Join Video Call {% endblock pageof %}
-{% block linkPageof %} /p/join-v-call/ {% endblock linkPageof %}
+{% block pageof %} Dashboard of Management {% endblock pageof %}
+{% block linkPageof %} /management/ {% endblock linkPageof %}
 
 {% block content %}
 
@@ -52,19 +53,19 @@
                     Mar 1 - Mar 31, 2025
                 </button>
             </div>
-            <button class="flex items-center px-3 py-2 text-sm border rounded-md shadow-sm bg-white hover:bg-gray-50">
+            <!-- <button class="flex items-center px-3 py-2 text-sm border rounded-md shadow-sm bg-white hover:bg-gray-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 Export
-            </button>
+            </button> -->
         </div>
     </div>
 
     <!-- Tabs -->
-    <div class="mb-4">
+    <!-- <div class="mb-4">
         <div class="border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
                 <button
@@ -84,7 +85,7 @@
                 </button>
             </nav>
         </div>
-    </div>
+    </div> -->
 
     <!-- Overview Tab Content -->
     <div id="overview" class="tab-content active space-y-6">
@@ -154,7 +155,9 @@
                 <h3 class="text-lg font-medium">Appointment Overview</h3>
                 <p class="text-sm text-gray-500 mb-4">Daily appointment distribution for the current month</p>
                 <div class="h-80">
-                    <canvas id="appointmentOverviewChart"></canvas>
+                    <canvas id="appointmentOverviewChart">
+                        <!-- the chart will be dynamically rendered here -->
+                    </canvas>
                 </div>
             </div>
 
@@ -163,7 +166,9 @@
                 <h3 class="text-lg font-medium">Appointment Types</h3>
                 <p class="text-sm text-gray-500 mb-4">Distribution by appointment category</p>
                 <div class="h-80">
-                    <canvas id="appointmentTypesChart"></canvas>
+                    <canvas id="appointmentTypesChart">
+                        <!-- the chart will be dynamically rendered here -->
+                    </canvas>
                 </div>
             </div>
         </div>
@@ -377,6 +382,13 @@
                         backgroundColor: 'rgba(239, 68, 68, 0.7)',
                         borderRadius: 4,
                         borderWidth: 0
+                    },
+                    {
+                        label: 'Rujal Baniya',
+                        data: [12, 9, 14, 11, 18, 22, 15],
+                        backgroundColor: 'rgba(29, 68, 68, 0.7)',
+                        borderRadius: 4,
+                        borderWidth: 0
                     }
                 ]
             },
@@ -510,7 +522,7 @@
 
 
 <script>
-    dashboard_nav_all = document.querySelectorAll('.joinVCall-nav a');
+    dashboard_nav_all = document.querySelectorAll('.dashboard-nav a');
     console.log(dashboard_nav_all);
     dashboard_nav_all.forEach((nav) => {
         nav_innertab =
