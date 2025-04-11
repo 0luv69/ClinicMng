@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from doctor.views import * 
 
+app_name = 'doctor'
 
 
 urlpatterns = [

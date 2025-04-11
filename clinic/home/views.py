@@ -9,17 +9,13 @@ from django.contrib import messages
 def home_page(request):
     return render(request, 'pages/index.html')
 
+
+
+
+
 def home_page2(request):
     return render(request, 'others/index1.html')
 
-
-
-
-def login(request):
-    return render(request, 'pages/login.html')
-
-def register(request):
-    return render(request, 'pages/register.html')
 
 
 def patientDashboardOld(request):
@@ -28,6 +24,8 @@ def patientDashboardOld(request):
 
 
 
+def terms(request):
+    return render(request, 'pages/index.html')
 
 
 

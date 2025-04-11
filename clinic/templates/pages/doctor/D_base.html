@@ -74,7 +74,7 @@
 
                         <!-- Dashboard -->
                         <li class="menuListItems dashboard-nav">
-                            <a href="{% url 'doctor_dashboard' %}"
+                            <a href="{% url 'doctor:doctor_dashboard' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -115,7 +115,7 @@
 
                         <!-- Edit Schedules  -->
                         <li class="menuListItems edit_schedules-nav">
-                            <a href="{% url 'd_edit_schedules' %}"
+                            <a href="{% url 'doctor:d_edit_schedules' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -140,7 +140,7 @@
 
                         <!-- View Patients  -->
                         <li class="menuListItems ViewPatients-nav">
-                            <a href="{% url 'ViewPatients_d' %}"
+                            <a href="{% url 'doctor:ViewPatients_d' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
                                     <svg id='Medical_Room_Wait_24' class="w-6 h-6" viewBox='0 0 24 24'
@@ -200,7 +200,7 @@
 
                         <!-- Online Sessions -->
                         <li class="menuListItems OnlineSession-nav">
-                            <a href="{% url 'OnlineSession' %}"
+                            <a href="{% url 'doctor:OnlineSession' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
                                     <svg id='Medical_Room_Wait_24' class="w-6 h-6" viewBox='0 0 24 24'
@@ -221,7 +221,7 @@
 
                         <!-- Message -->
                         <li class="menuListItems message-nav">
-                            <a href="{% url 'p-message' %}"
+                            <a href="{% url 'patient:p-message' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -239,7 +239,7 @@
 
                         <!-- Setting -->
                         <li class="menuListItems dSetting-nav">
-                            <a href="{% url 'dSetting' %}"
+                            <a href="{% url 'doctor:dSetting' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -261,7 +261,7 @@
 
                         <!-- profile  -->
                         <li class="menuListItems profile-nav">
-                            <a href="{% url 'd-profile' %}"
+                            <a href="{% url 'doctor:d-profile' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -283,7 +283,7 @@
 
                         <!-- Prescriptions  -->
                         <!-- <li class="menuListItems prescriptions-nav">
-                            <a href="{% url 'prescriptions' %}"
+                            <a href=""
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -308,7 +308,7 @@
 
                         <!-- Lab Report  -->
                         <!-- <li class="menuListItems labReport-nav">
-                            <a href="{% url 'labReport' %}"
+                            <a href=""
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 

@@ -2,15 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import * 
 
+from account.views import login, register
+
 urlpatterns = [
     path('', home_page, name='home'),
     path('2/', home_page2, name='home2'),
-    path('login/', login, name='login'),
-    path('register/', register, name='register'),
 
 
-    path('forget-password/', login, name='forget-password'),
-    path('terms/', login, name='terms'),
+    path('terms/', terms, name='terms'),
 
 
 
