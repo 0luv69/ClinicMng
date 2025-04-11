@@ -13,7 +13,7 @@
         <div class="px-6 py-8 sm:px-10">
             <h2 class="mb-8 text-center text-2xl font-bold text-gray-800">Create an Account</h2>
 
-            <form method="POST" action="/register">
+            <form method="POST" action="{% url 'register' %}">
                 <input type="hidden" name="_token" value="your-csrf-token-here">
 
                 <!-- First Name field -->
@@ -293,7 +293,7 @@
                     <input id="terms" name="terms" type="checkbox" required
                         class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label for="terms" class="ml-2 block text-sm text-gray-700">
-                        I agree to the <a href="/terms" class="text-blue-600 hover:text-blue-500">Terms and
+                        I agree to the <a href="{% url 'terms' %}" class="text-blue-600 hover:text-blue-500">Terms and
                             Conditions</a>
                     </label>
                 </div>

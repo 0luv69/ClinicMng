@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from ..clinic_base.views import * 
+from .views import * 
 
 urlpatterns = [
     path('', home_page, name='home'),
@@ -9,19 +9,19 @@ urlpatterns = [
     path('register/', register, name='register'),
 
 
-
-    path('p/', include('patient.urls')),
-    path('d/', include('doctor.urls')),
-    # path('m/', include('management.urls')),
+    path('forget-password/', login, name='forget-password'),
+    path('terms/', login, name='terms'),
 
 
 
-    path('patient/old', patientDashboardOld, name='patientDashboardold'),
 
 
-    path('management/', management, name='management_dashboard'),
-    path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
-    path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
+    # path('patient/old', patientDashboardOld, name='patientDashboardold'),
+
+
+    # path('management/', management, name='management_dashboard'),
+    # path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
+    # path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
 
 
 ]
