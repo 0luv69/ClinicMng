@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import * 
 
-from account.views import login, register
 
 urlpatterns = [
     path('', home_page, name='home'),

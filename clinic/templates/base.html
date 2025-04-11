@@ -87,10 +87,10 @@
 
                 <!-- Auth Buttons -->
                 <div class="flex space-x-3 ml-4">
-                    <a href="{% url 'login' %}"
+                    <a href="{% url 'account:login' %}"
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">Log
                         in</a>
-                    <a href="{% url 'register' %}"
+                    <a href="{% url 'account:register' %}"
                         class="px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 shadow-sm">Register</a>
                 </div>
             </nav>
@@ -170,7 +170,7 @@
 
                 <!-- Auth Buttons -->
                 <div class="pt-6 space-y-3">
-                    <a href="{% url 'login' %}"
+                    <a href="{% url 'account:login' %}"
                         class="flex items-center justify-center space-x-2 w-full px-4 py-2 rounded-full text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -179,7 +179,7 @@
                         </svg>
                         <span>Log in</span>
                     </a>
-                    <a href="{% url 'register' %}"
+                    <a href="{% url 'account:register' %}"
                         class="flex items-center justify-center space-x-2 w-full px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md transition-all duration-300 shadow-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">

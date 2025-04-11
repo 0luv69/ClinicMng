@@ -13,8 +13,8 @@
         <div class="px-6 py-8 sm:px-10">
             <h2 class="mb-8 text-center text-2xl font-bold text-gray-800">Welcome Back</h2>
 
-            <form method="POST" action="{% url 'login' %}">
-                <input type="hidden" name="_token" value="your-csrf-token-here">
+            <form method="POST" action="{% url 'account:Postlogin' %}">
+                {% csrf_token %}
 
                 <!-- Email field -->
                 <div class="mb-6">
@@ -63,7 +63,7 @@
                         <label for="password" class="block text-sm font-medium text-gray-700">
                             Password
                         </label>
-                        <a href="{% url 'forget-password' %}"
+                        <a href="{% url 'account:forget-password' %}"
                             class="text-sm font-medium text-blue-600 hover:text-blue-500">
                             Forgot password?
                         </a>
@@ -262,7 +262,7 @@
 
             <!-- Sign up link -->
             <div class="text-center">
-                <a href="/register" class="font-medium text-blue-600 hover:text-blue-500">
+                <a href="{% url 'account:register' %}" class="font-medium text-blue-600 hover:text-blue-500">
                     Create an account
                 </a>
             </div>

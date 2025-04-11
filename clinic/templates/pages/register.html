@@ -13,15 +13,14 @@
         <div class="px-6 py-8 sm:px-10">
             <h2 class="mb-8 text-center text-2xl font-bold text-gray-800">Create an Account</h2>
 
-            <form method="POST" action="{% url 'register' %}">
-                <input type="hidden" name="_token" value="your-csrf-token-here">
-
+            <form method="POST" action="{% url 'account:PostRegister' %}">
+                {% csrf_token %}
                 <!-- First Name field -->
                 <div class="mb-6">
-                    <label for="first_name" class="mb-1 block text-sm font-medium text-gray-700">
+                    <label for="full_name" class="mb-1 block text-sm font-medium text-gray-700">
                         Full Name
                     </label>
-                    <input id="first_name" name="first_name" type="text" required autocomplete="given-name"
+                    <input id="full_name" name="full_name" type="text" required autocomplete="name"
                         class="block w-full rounded-lg border border-gray-300 bg-white py-3 px-3 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         placeholder="Full Name">
                 </div>
@@ -319,7 +318,7 @@
 
             <!-- Sign in link -->
             <div class="text-center">
-                <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">
+                <a href="{% url 'account:login' %}" class="font-medium text-blue-600 hover:text-blue-500">
                     Sign in
                 </a>
             </div>

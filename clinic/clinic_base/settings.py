@@ -27,9 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'home',
-    # 'patient',
-    # 'doctor',
+    'home',
+    'patient',
+    'doctor',
+
+    'account',
 
     # Third party apps
     'tailwind',
