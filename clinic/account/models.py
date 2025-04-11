@@ -28,11 +28,12 @@ class Profile(models.Model):
     role = models.CharField(max_length=10, choices=USER_ROLES, default='patient')
 
     # personal information
+    profile_pic = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=16, blank=True) # validators should be a list
     address = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
 
 
     created_at = models.DateTimeField(auto_now_add=True)

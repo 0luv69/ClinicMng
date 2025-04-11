@@ -2,10 +2,43 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from functools import wraps
+from datetime import datetime
 
 
 
 app_name = 'account'
+
+
+
+
+def login_required_with_message(function=None, login_url=None, message=None):
+    """
+    Custom decorator for views that checks if the user is logged in.
+    Adds a message if the user is redirected to the login page.
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            print("Inside the decorator")
+            if not request.user.is_authenticated:
+                if message:
+                    messages.warning(request, message)
+                return redirect(login_url or 'account:login')
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+
+    if function:
+        return decorator(function)
+    return decorator
+
+
+
+
+
+
+
+
 
 
 def login_page(request):
@@ -40,8 +73,11 @@ def PostRegister(request):
 
         
         # Create a new user; here username is set as the email for simplicity
+        current_time = datetime.now().strftime('%Y%m%d%H%M%S')  # Format: YYYYMMDDHHMMSS
+        counter = str(User.objects.count() + 1).zfill(8)  # Ensure at least 6 digits
+        username = f"NCMS-{current_time}-{counter}"
         user = User.objects.create_user(
-            username=email,
+            username=username,
             email=email,
             password=password,
             first_name=full_name,  # Saving full name as the first_name field
@@ -53,7 +89,7 @@ def PostRegister(request):
         
         # Automatically log the user in after registration
         login(request, user)
-        return redirect('home')
+        return redirect('patient:p-profile')
     
     return redirect('account:register')
 
@@ -64,6 +100,10 @@ def Postlogin(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+
+        if not email or not password:
+            messages.error(request, "Email and password are required.")
+            return redirect('account:login')
         
         # Look up the user using the provided email
         try:
@@ -76,7 +116,15 @@ def Postlogin(request):
         if user:
             login(request, user)
             messages.success(request, "Login successful.")
-            return redirect('home') 
+
+            role = request.user.profile.role
+            if role == 'doctor':
+                return redirect('doctor:d-profile')
+            elif role == 'patient':
+                return redirect('patient:p-profile')
+            elif role == 'management':
+                return redirect('home')
+
         else:
             messages.error(request, "Invalid email or password. Please try again.")
             return redirect('account:login')
