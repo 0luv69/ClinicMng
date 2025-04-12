@@ -1,4 +1,5 @@
 {% load static %}
+{% load url_resolver %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,7 +62,7 @@
             </a>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="{% url 'patient:BookAppoinment' %}"
                     class="group relative px-6 py-3 rounded-full text-gray-700 bg-white border-2 border-blue-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 overflow-hidden">
 
@@ -85,6 +86,50 @@
                     </div>
                 </a>
 
+                {% if user.is_authenticated %}
+
+                <div class="relative group/profile-dropdown">
+                    <a class="block w-10 h-10 rounded-full overflow-hidden cursor-pointer">
+                        <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
+                            class="w-full h-full object-cover" alt="profile image">
+                    </a>
+                    <div
+                        class="hidden group-hover/profile-dropdown:block absolute right-0 w-64 bg-white rounded-lg shadow-lg border-[1px] border-green-950  z-50">
+                        <a href="{% role_to_url user.profile.role 'profile' %}"
+                            class="flex flex-col border-b py-4 items-center hover:bg-gray-100">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mx-auto mb-2">
+                                <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
+                                    class="w-full h-full object-cover" alt="profile image">
+                            </div>
+                            <h3 class="text-gray-900 font-semibold">{{ user.first_name }}</h3>
+                            <span class="text-sm text-gray-600">{{ user.email }}</span>
+                        </a>
+
+
+                        <ul class="py-4 space-y-2">
+                            <li>
+                                <a class="flex items-center px-4 py-2 text-gray-900 hover:bg-gray-100"
+                                    href="{% role_to_url user.profile.role 'profile' %}">
+                                    <span class=" text-gray-600 mr-3">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    View Profile
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="flex items-center px-4 py-2 text-gray-900 hover:bg-gray-100" href="/logout">
+                                    <span class="text-gray-600 mr-3">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </span>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% else %}
+
                 <!-- Auth Buttons -->
                 <div class="flex space-x-3 ml-4">
                     <a href="{% url 'account:login' %}"
@@ -93,7 +138,10 @@
                     <a href="{% url 'account:register' %}"
                         class="px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 shadow-sm">Register</a>
                 </div>
-            </nav>
+
+                {% endif %}
+
+            </div>
 
             <!-- Mobile Menu Button -->
             <button id="mobileMenuButton" class="md:hidden focus:outline-none text-gray-600 hover:text-gray-900">
@@ -105,9 +153,7 @@
             </button>
         </div>
 
-        <!-- Overlay for mobile menu (hidden by default) -->
-        <div id="menuOverlay"
-            class="fixed inset-0 bg-black bg-opacity-80 z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
 
         <!-- Mobile Sidebar Menu (hidden by default) -->
         <div id="mobileSidebar"
@@ -168,6 +214,15 @@
 
                 </a>
 
+
+                {% if user.is_authenticated %}
+
+
+
+
+                {% else %}
+
+
                 <!-- Auth Buttons -->
                 <div class="pt-6 space-y-3">
                     <a href="{% url 'account:login' %}"
@@ -190,8 +245,16 @@
                         <span>Register</span>
                     </a>
                 </div>
+
+                {% endif %}
             </div>
         </div>
+
+
+
+        <!-- Overlay for mobile menu (hidden by default) -->
+        <div id="menuOverlay"
+            class="fixed inset-0 bg-black bg-opacity-80 z-40 hidden transition-opacity duration-300 opacity-0"></div>
     </nav>
 
     <!-- Notification Section -->

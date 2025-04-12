@@ -17,5 +17,5 @@ urlpatterns = [
     path('lab-report/', labReport, name='labReport'),
     path('prescriptions/', prescriptions, name='prescriptions'),
     path('message/', message, name='p-message'),
-    path('profile/', p_profile, name='p-profile'),
+    path('profile/', p_profile, name='profile'),
 ]
