@@ -47,7 +47,43 @@ def p_profile(request):
         }
 
         return render(request, 'pages/patient/profile.html', context)
-    return render(request, 'pages/patient/profile.html')
+    
+    else:
+        profile_pic = request.FILES.get('profile_pic')
+
+
+
+        # personal information
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        date_of_birth = request.POST.get('date_of_birth')
+        address = request.POST.get('address')
+
+
+        # medical information
+        blood_type = request.POST.get('blood_type')
+        allergies = request.POST.get('allergies')
+        medical_conditions = request.POST.get('medical_conditions')
+        medicines_on = request.POST.get('medicines_on')
+        
+        # emergency contact information
+        emergency_contact_name = request.POST.get('emergency_contact_name')
+        emergency_contact_number = request.POST.get('emergency_contact_number')
+        emergency_contact_relationship = request.POST.get('emergency_contact_relationship')
+
+
+        print(full_name, email, phone_number, address, date_of_birth, blood_type, medical_conditions, allergies, medicines_on, emergency_contact_name, emergency_contact_number, emergency_contact_relationship)
+
+
+        # if profile_pic:
+        #     request.user.profile.profile_picture = profile_pic
+        #     request.user.profile.save()
+
+
+        return redirect('patient:profile')
+
+
 
 
 

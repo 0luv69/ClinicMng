@@ -39,7 +39,7 @@
                 <div class="flex flex-col sm:flex-row gap-8 mb-8 items-center sm:items-start">
                     <div class="relative">
                         <img id="pp_image" class="h-32 w-32 rounded-full border-2 border-blue-500"
-                            src="{{profile.profile_pic}}" alt="Profile picture">
+                            src="{{ profile.profile_pic.url }}" alt="Profile picture">
                         <button id="imageUploadButton"
                             class="absolute bottom-0 right-0 h-10 w-10 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300">
                             <svg class="h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -96,7 +96,8 @@
                     </div>
                 </div>
 
-                <form class="space-y-8">
+                <form class="space-y-8" action="{% url 'patient:profile' %}" method="POST">
+                    {% csrf_token %}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Personal Information -->
                         <div class="space-y-6">
@@ -105,33 +106,33 @@
                                 <label class="text-sm font-medium">Full Name</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="John Doe" name="fullName">
+                                    value="{{profile.user.first_name}}" name="full_name">
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-2">
                                     <label class="text-sm font-medium">Email</label>
                                     <input
                                         class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value="john.doe@example.com" name="email">
+                                        value="{{profile.user.email}}" name="email">
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-sm font-medium">Phone Number</label>
                                     <input
                                         class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value="555-123-4567" name="phone">
+                                        value="{{profile.ph_num|default:'Number not added' }}" name="phone_number">
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Date of Birth</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    type="date" value="1985-05-15" name="dateOfBirth">
+                                    type="date" value="{{profile.date_of_birth }}" name="date_of_birth">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Address</label>
                                 <textarea
                                     class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    name="address">123 Main St, Anytown, CA 12345</textarea>
+                                    name="address">{{profile.address|default:'Addres Not Added' }}</textarea>
                             </div>
                         </div>
 
@@ -143,17 +144,26 @@
                                 <div class="relative">
                                     <select
                                         class="w-full h-10 px-3 py-2 border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        name="bloodType">
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+" selected>O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="Unknown">Unknown</option>
+                                        name="blood_type">
+                                        <option {% if profile.medical_info.blood_group == "A+" %}selected{% endif %} 
+                                                value="A+"  >A+</option>
+                                        <option {% if profile.medical_info.blood_group == "A-" %}selected{% endif %} 
+                                                value="A-"  >A-</option>
+                                        <option {% if profile.medical_info.blood_group == "B+" %}selected{% endif %} 
+                                                value="B+"  >B+</option>
+                                        <option {% if profile.medical_info.blood_group == "B-" %}selected{% endif %} 
+                                                value="B-"  >B-</option>
+                                        <option {% if profile.medical_info.blood_group == "AB+" %}selected{% endif %}
+                                                value="AB+" >AB+</option>
+                                        <option {% if profile.medical_info.blood_group == "AB-" %}selected{% endif %}
+                                                value="AB-" >AB-</option>
+                                        <option {% if profile.medical_info.blood_group == "O+" %}selected{% endif %} 
+                                                value="O+"  >O+</option>
+                                        <option {% if profile.medical_info.blood_group == "O-" %}selected{% endif %} 
+                                                value="O-"  >O-</option>
+                                        <option value="Unknown" {% if profile.medical_info.blood_group == "" %}selected{% endif %}>Unknown</option>
                                     </select>
+
                                     <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
@@ -166,14 +176,20 @@
                                 <label class="text-sm font-medium">Allergies</label>
                                 <textarea
                                     class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    name="allergies">Penicillin, Peanuts</textarea>
+                                    name="allergies">{{ profile.medical_info.allergies}}</textarea>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-medium">Medical History</label>
+                                <label class="text-sm font-medium">Medical Conditions</label>
                                 <textarea
-                                    class="w-full min-h-[120px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    name="medicalHistory">Hypertension, diagnosed 2018
-Appendectomy, 2010</textarea>
+                                    class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    name="medicalHistory">{{ profile.medical_info.medical_conditions}}</textarea>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium">On Going Medications</label>
+                                <textarea
+                                    class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    name="medicines_on">{{ profile.medical_info.on_going_medications}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -186,26 +202,32 @@ Appendectomy, 2010</textarea>
                                 <label class="text-sm font-medium">Contact Name</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="Jane Doe" name="emergencyContactName">
+                                    value="{{profile.emg_contact_name}}" name="emergency_contact_name">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Contact Phone</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="555-987-6543" name="emergencyContactPhone">
+                                    value="{{profile.emg_contact_name}}" name="emergency_contact_number">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Relationship</label>
                                 <div class="relative">
                                     <select
                                         class="w-full h-10 px-3 py-2 border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        name="relationship">
-                                        <option value="Spouse" selected>Spouse</option>
-                                        <option value="Parent">Parent</option>
-                                        <option value="Child">Child</option>
-                                        <option value="Sibling">Sibling</option>
-                                        <option value="Friend">Friend</option>
-                                        <option value="Other">Other</option>
+                                        name="emergency_contact_relationship"> {{ profile.emg_contact_relation }}
+                                        <option {% if profile.emg_contact_relation == "spouse" %}selected{% endif %}
+                                            value="spouse">Spouse</option>
+                                        <option {% if profile.emg_contact_relation == "parent" %}selected{% endif %}
+                                            value="parent">Parent</option>
+                                        <option {% if profile.emg_contact_relation == "child" %}selected{% endif %}
+                                            value="child">Child</option>
+                                        <option {% if profile.emg_contact_relation == "sibling" %}selected{% endif %}
+                                            value="sibling">Sibling</option>
+                                        <option {% if profile.emg_contact_relation == "friend" %}selected{% endif %}
+                                            value="friend">Friend</option>
+                                        <option {% if profile.emg_contact_relation == "other" %}selected{% endif %}
+                                            value="other">Other</option>
                                     </select>
                                     <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -214,6 +236,13 @@ Appendectomy, 2010</textarea>
                                             d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium">Address</label>
+                                <input
+                                    class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    value="{{profile.emg_contact_name}}" name="emergencyContactPhone">
                             </div>
                         </div>
                     </div>
@@ -228,34 +257,32 @@ Appendectomy, 2010</textarea>
                                     <p class="text-sm text-gray-600">Receive notifications via email</p>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" class="sr-only" name="emailNotifications">
-                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer"></div>
-                                    <span
-                                        class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition "></span>
+                                    <input {% if profile.email_notification %}checked{% endif %}
+                                        type="checkbox" class="sr-only" name="emailNotifications" >
+                                    <div class="w-11 h-6 rounded-full peer {% if profile.email_notification %} bg-blue-600 
+                                                {% else %} bg-gray-200  {% endif %}"></div>
+                                    <span 
+                                        class=" {% if profile.email_notification %}translate-x-5 
+                                                {% else %}translate-x-0{% endif %}
+                                         absolute left-1 top-1 w-4 h-4  rounded-full transition bg-white "></span>
                                 </label>
                             </div>
-                            <div class="flex items-center justify-between border p-4 rounded-lg">
-                                <div>
-                                    <label class="text-base font-medium">SMS Notifications</label>
-                                    <p class="text-sm text-gray-600">Receive notifications via SMS</p>
-                                </div>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" class="sr-only" name="smsNotifications">
-                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer"></div>
-                                    <span
-                                        class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition "></span>
-                                </label>
-                            </div>
+
                             <div class="flex items-center justify-between border p-4 rounded-lg">
                                 <div>
                                     <label class="text-base font-medium">Appointment Reminders</label>
                                     <p class="text-sm text-gray-600">Receive appointment reminders</p>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" class="sr-only" name="appointmentReminders">
-                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer"></div>
-                                    <span
-                                        class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition "></span>
+                                    <input {% if profile.reminders %}checked{% endif %}
+                                    
+                                        type="checkbox" class="sr-only" name="appointmentReminders">
+                                    <div class="w-11 h-6 rounded-full peer {% if profile.email_notification %} bg-blue-600 
+                                                {% else %} bg-gray-200  {% endif %}"></div>
+                                    <span 
+                                        class=" {% if profile.email_notification %}translate-x-5 
+                                                {% else %}translate-x-0{% endif %}
+                                         absolute left-1 top-1 w-4 h-4  rounded-full transition bg-white "></span>
                                 </label>
                             </div>
                         </div>
@@ -336,12 +363,19 @@ Appendectomy, 2010</textarea>
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             const span = checkbox.parentElement.querySelector('span');
+            const divs = checkbox.parentElement.querySelector('div');
             if (checkbox.checked) {
-                span.classList.add('translate-x-5', 'bg-blue-600');
-                span.classList.remove('translate-x-0', 'bg-white');
+                divs.classList.add('bg-blue-600');
+                divs.classList.remove('bg-gray-200');
+
+                span.classList.add('translate-x-5');
+                span.classList.remove('translate-x-0');
             } else {
-                span.classList.remove('translate-x-5', 'bg-blue-600');
-                span.classList.add('translate-x-0', 'bg-white');
+                divs.classList.remove('bg-blue-600');
+                divs.classList.add('bg-gray-200');
+
+                span.classList.remove('translate-x-5');
+                span.classList.add('translate-x-0');
             }
         });
     });

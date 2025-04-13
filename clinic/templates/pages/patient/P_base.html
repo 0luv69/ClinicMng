@@ -1,4 +1,6 @@
 {% load static %}
+{% load url_resolver %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -621,41 +623,33 @@
                     <li class="px-2 sm:px-3">
                         <div class="relative group/profile-dropdown">
                             <a class="block w-10 h-10 rounded-full overflow-hidden cursor-pointer">
-                                <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
-                                    class="w-full h-full object-cover" alt="profile image">
+                                <img src="{{ user.profile.profile_pic.url }}" class="w-full h-full object-cover"
+                                    alt="profile image">
                             </a>
                             <div
                                 class="hidden group-hover/profile-dropdown:block absolute right-0 w-64 bg-white rounded-lg shadow-lg border-[1px] border-green-950  z-50">
-                                <a href="/view-profile"
+                                <a href="{% role_to_url user.profile.role 'profile' %}"
                                     class="flex flex-col border-b py-4 items-center hover:bg-gray-100">
                                     <div class="w-12 h-12 rounded-full overflow-hidden mx-auto mb-2">
-                                        <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
-                                            class="w-full h-full object-cover" alt="profile image">
+                                        <img src="{{ user.profile.profile_pic.url }}" class="w-full h-full object-cover"
+                                            alt="profile image">
                                     </div>
-                                    <h3 class="text-gray-900 font-semibold">Trith Shah</h3>
-                                    <span class="text-sm text-gray-600">tirth@gmail.com</span>
+                                    <h3 class="text-gray-900 font-semibold">{{ user.first_name }}</h3>
+                                    <span class="text-sm text-gray-600">{{ user.email }}</span>
                                 </a>
 
 
                                 <ul class="py-4 space-y-2">
                                     <li>
                                         <a class="flex items-center px-4 py-2 text-gray-900 hover:bg-gray-100"
-                                            href="/edit-profile">
+                                            href="{% role_to_url user.profile.role 'profile' %}">
                                             <span class=" text-gray-600 mr-3">
                                                 <i class="fas fa-user"></i>
                                             </span>
-                                            Edit Profile
+                                            View Profile
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="flex items-center px-4 py-2 text-gray-900 hover:bg-gray-100"
-                                            href="/change-password">
-                                            <span class="text-gray-600 mr-3">
-                                                <i class="fas fa-lock"></i>
-                                            </span>
-                                            Change Password
-                                        </a>
-                                    </li>
+
                                     <li>
                                         <a class="flex items-center px-4 py-2 text-gray-900 hover:bg-gray-100"
                                             href="/logout">
@@ -664,16 +658,10 @@
                                             </span>
                                             Logout
                                         </a>
-                                        <form id="logout-form" action="https://hms.infyom.com/logout" method="POST"
-                                            class="hidden">
-                                            <input type="hidden" name="_token"
-                                                value="9Y01yDwGF6AfqYIIyjJf58wwSq8AdPMOTr2O1HBo">
-                                        </form>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-
                     </li>
                 </ul>
             </header>
