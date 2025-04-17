@@ -218,7 +218,7 @@
                                 <label class="text-sm font-medium">Contact Phone</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_name}}" name="emergency_contact_number">
+                                    value="{{profile.emg_contact_num}}" name="emergency_contact_number">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Relationship</label>
@@ -252,7 +252,7 @@
                                 <label class="text-sm font-medium">Address</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_name}}" name="emergencyContactPhone">
+                                    value="{{profile.emg_contact_name}}" name="emergency_contact_address">
                             </div>
                         </div>
                     </div>
@@ -473,8 +473,8 @@
 
 
 
-const fileInput = document.querySelector('#profileImageInput_');
                 // new File → DataTransfer → input.files
+                const fileInput = document.querySelector('#profileImageInput_');
                 const newFile = new File([blob], selectedFile.name, {
                 type: selectedFile.type,
                 lastModified: Date.now()

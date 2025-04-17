@@ -49,10 +49,11 @@ def p_profile(request):
         return render(request, 'pages/patient/profile.html', context)
     
     else:
-        profile_pic = request.FILES.get('profileImage')
-
-                    
-        print("Profile Picture: ", profile_pic)
+        # Handle the form submission for profile update
+        profile_pic = request.FILES.get('profile_pic')
+        if profile_pic:
+            request.user.profile.profile_picture = profile_pic
+            request.user.profile.save()
 
         # personal information
         full_name = request.POST.get('full_name')
@@ -77,9 +78,6 @@ def p_profile(request):
         print(full_name, email, phone_number, address, date_of_birth, blood_type, medical_conditions, allergies, medicines_on, emergency_contact_name, emergency_contact_number, emergency_contact_relationship)
 
 
-        # if profile_pic:
-        #     request.user.profile.profile_picture = profile_pic
-        #     request.user.profile.save()
 
 
         return redirect('patient:profile')
@@ -96,7 +94,10 @@ def edit_profile(request):
     if request.method == 'POST':
 
         profile_pic = request.FILES.get('profile_pic')
-
+        if profile_pic:
+            request.user.profile.profile_pic = profile_pic
+            request.user.profile.save()
+            print("Profile picture updated successfully.")
 
 
         # personal information
@@ -113,16 +114,28 @@ def edit_profile(request):
         
         # emergency contact information
         emergency_contact_name = request.POST.get('emergency_contact_name')
-        emergency_contact_number = request.POST.get('emergency_contact_number')
+        emergency_contact_number = request.POST.get('emg_contact_num')
         emergency_contact_relationship = request.POST.get('emergency_contact_relationship')
+        emergency_contact_address = request.POST.get('emergency_contact_address')
+
+
+        # Update the user's profile information in the database
+        request.user.first_name = full_name
+        request.user.email = email
+        request.user.profile.ph_number = phone_number
+        request.user.profile.address = address
+        request.user.profile.date_of_birth = date_of_birth
+        request.user.profile.blood_type = blood_type
+        request.user.profile.medical_history = medical_history
+        request.user.profile.emg_contact_name = emergency_contact_name
+        request.user.profile.emg_contact_number = emergency_contact_number
+        request.user.profile.emg_contact_relation = emergency_contact_relationship
+        request.user.profile.emg_contact_address = emergency_contact_address
+        request.user.save()
 
 
 
-
-
-        if profile_pic:
-            request.user.profile.profile_picture = profile_pic
-            request.user.profile.save()
+        
 
 
         return redirect('patient:p-profile')
