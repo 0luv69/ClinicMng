@@ -20,8 +20,8 @@ def login_required_with_message(function=None, login_url=None, message=None):
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
-            print("Inside the decorator")
             if not request.user.is_authenticated:
+                print("User is not authenticated.")
                 if message:
                     messages.warning(request, message)
                 return redirect(login_url or 'account:login')

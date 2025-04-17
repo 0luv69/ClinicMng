@@ -96,8 +96,17 @@
                     </div>
                 </div>
 
-                <form class="space-y-8" action="{% url 'patient:profile' %}" method="POST">
+                <form class="space-y-8" action="{% url 'patient:profile' %}" method="POST" enctype="multipart/form-data">
+                    <!-- Image input tag -->
+
+<input type="file" id="profileImageInput_" name="profileImage" style="display: none;" />
+
+
+                    <!-- CSRF Token for security -->
                     {% csrf_token %}
+                    
+                    
+                    <!-- basic info -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Personal Information -->
                         <div class="space-y-6">
@@ -119,7 +128,7 @@
                                     <label class="text-sm font-medium">Phone Number</label>
                                     <input
                                         class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value="{{profile.ph_num|default:'Number not added' }}" name="phone_number">
+                                        value="{{profile.ph_num }}" name="phone_number" placeholder="Add Phone Number">
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -132,7 +141,8 @@
                                 <label class="text-sm font-medium">Address</label>
                                 <textarea
                                     class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    name="address">{{profile.address|default:'Addres Not Added' }}</textarea>
+                                    name="address" placeholder="Add Address"
+                                    >{{profile.address }}</textarea>
                             </div>
                         </div>
 
@@ -461,16 +471,21 @@
                 const url = URL.createObjectURL(blob);
                 document.querySelector('#pp_image').src = url;
 
-                // Here you would typically upload the blob to your server
-                // Example using FormData:
-                const formData = new FormData();
-                formData.append('profileImage', blob, 'profile.jpg');
 
-                // fetch('/upload', {
-                //     method: 'POST',
-                //     body: formData
-                // });
 
+const fileInput = document.querySelector('#profileImageInput_');
+                // new File → DataTransfer → input.files
+                const newFile = new File([blob], selectedFile.name, {
+                type: selectedFile.type,
+                lastModified: Date.now()
+                });
+                const dt = new DataTransfer();
+                dt.items.add(newFile);
+                fileInput.files = dt.files;
+
+                console.log('Hidden input now has:', fileInput.files[0]);
+               
+              
                 closeModal();
             });
         }

@@ -49,9 +49,10 @@ def p_profile(request):
         return render(request, 'pages/patient/profile.html', context)
     
     else:
-        profile_pic = request.FILES.get('profile_pic')
+        profile_pic = request.FILES.get('profileImage')
 
-
+                    
+        print("Profile Picture: ", profile_pic)
 
         # personal information
         full_name = request.POST.get('full_name')
