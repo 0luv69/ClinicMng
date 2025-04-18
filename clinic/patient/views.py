@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from account.models import Profile
+from account.models import Profile, MedicalInfo
+from django.contrib.auth.models import User
+from django.http import HttpRequest
+
+
 from account.views import login_required_with_message
 from django.contrib import messages
+from datetime import datetime
 
 
 # --------------------------------------- Rendering Pages ------------------------------------------------------------
@@ -34,12 +39,12 @@ def prescriptions(request):
     return render(request, 'pages/patient/prescriptions.html')
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
-def p_profile(request):
+def p_profile(request: HttpRequest):
     """Patient profile page view."""
 
     if request.method == 'GET':
         # Fetch the user's profile information
-        profile = Profile.objects.get(user=request.user)
+        profile: Profile = Profile.objects.get(user=request.user)
 
         # Pass the profile information to the template
         context = {
@@ -49,36 +54,58 @@ def p_profile(request):
         return render(request, 'pages/patient/profile.html', context)
     
     else:
-        # Handle the form submission for profile update
-        profile_pic = request.FILES.get('profile_pic')
-        if profile_pic:
-            request.user.profile.profile_picture = profile_pic
-            request.user.profile.save()
+        try:
+            profile: Profile = request.user.profile
+            user: User = request.user
 
-        # personal information
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        date_of_birth = request.POST.get('date_of_birth')
-        address = request.POST.get('address')
+            # Handle profile picture
+            profile_pic = request.FILES.get('profileImage')  # Match with form
+            if profile_pic:
+                profile.profile_pic = profile_pic
+
+            # Personal Info
+            user.first_name = request.POST.get('full_name', '').strip()
+            # user.email = request.POST.get('email', '').strip()
+            profile.ph_number = request.POST.get('phone_number', '').strip()
+            profile.address = request.POST.get('address', '').strip()
+
+            dob_str = request.POST.get('date_of_birth', '').strip()
+            if dob_str:
+                try:
+                    profile.date_of_birth = datetime.strptime(dob_str, '%Y-%m-%d').date()
+                except ValueError:
+                    messages.error(request, "Invalid date format for Date of Birth.")
+                    return redirect('patient:profile')
+
+            # Medical Info
+            medical_info: MedicalInfo = profile.medical_info
+            medical_info.blood_group = request.POST.get('blood_group', '').strip()
+            medical_info.medical_conditions = request.POST.get('medicalConditions', '').strip()  # fixed name
+            medical_info.allergies = request.POST.get('allergies', '').strip()  # make sure this field exists
+            medical_info.on_going_medications = request.POST.get('medicines_on', '').strip()  # make sure this field exists
+
+            # Emergency Contact
+            profile.emg_contact_name = request.POST.get('emergency_contact_name', '').strip()
+            profile.emg_contact_number = request.POST.get('emergency_contact_number', '').strip()
+            profile.emg_contact_relation = request.POST.get('emergency_contact_relationship', '').strip()
+            profile.emg_contact_address = request.POST.get('emergency_contact_address', '').strip()
+
+            print("Emergency Contact:", profile.emg_contact_name, profile.emg_contact_number, profile.emg_contact_relation, profile.emg_contact_address)
 
 
-        # medical information
-        blood_type = request.POST.get('blood_type')
-        allergies = request.POST.get('allergies')
-        medical_conditions = request.POST.get('medical_conditions')
-        medicines_on = request.POST.get('medicines_on')
-        
-        # emergency contact information
-        emergency_contact_name = request.POST.get('emergency_contact_name')
-        emergency_contact_number = request.POST.get('emergency_contact_number')
-        emergency_contact_relationship = request.POST.get('emergency_contact_relationship')
+            # Notification Settings
+            profile.email_notification = 'emailNotifications' in request.POST
+            profile.reminders = 'appointmentReminders' in request.POST
 
 
-        print(full_name, email, phone_number, address, date_of_birth, blood_type, medical_conditions, allergies, medicines_on, emergency_contact_name, emergency_contact_number, emergency_contact_relationship)
+            medical_info.save()
+            request.user.save()
+            profile.save()
 
-
-
+            messages.success(request, "Profile updated successfully.")
+        except Exception as e:
+            print(f"Error updating profile: {e}")
+            messages.error(request, "An error occurred while updating your profile.")
 
         return redirect('patient:profile')
 
@@ -89,53 +116,3 @@ def p_profile(request):
 
 # --------------------------------------- Adding Logic on each pages ------------------------------------------------------------
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access this page.")
-def edit_profile(request):
-    if request.method == 'POST':
-
-        profile_pic = request.FILES.get('profile_pic')
-        if profile_pic:
-            request.user.profile.profile_pic = profile_pic
-            request.user.profile.save()
-            print("Profile picture updated successfully.")
-
-
-        # personal information
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        address = request.POST.get('address')
-        date_of_birth = request.POST.get('date_of_birth')
-
-
-        # medical information
-        blood_type = request.POST.get('blood_type')
-        medical_history = request.POST.get('medical_conditions')
-        
-        # emergency contact information
-        emergency_contact_name = request.POST.get('emergency_contact_name')
-        emergency_contact_number = request.POST.get('emg_contact_num')
-        emergency_contact_relationship = request.POST.get('emergency_contact_relationship')
-        emergency_contact_address = request.POST.get('emergency_contact_address')
-
-
-        # Update the user's profile information in the database
-        request.user.first_name = full_name
-        request.user.email = email
-        request.user.profile.ph_number = phone_number
-        request.user.profile.address = address
-        request.user.profile.date_of_birth = date_of_birth
-        request.user.profile.blood_type = blood_type
-        request.user.profile.medical_history = medical_history
-        request.user.profile.emg_contact_name = emergency_contact_name
-        request.user.profile.emg_contact_number = emergency_contact_number
-        request.user.profile.emg_contact_relation = emergency_contact_relationship
-        request.user.profile.emg_contact_address = emergency_contact_address
-        request.user.save()
-
-
-
-        
-
-
-        return redirect('patient:p-profile')

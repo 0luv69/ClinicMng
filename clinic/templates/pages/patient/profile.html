@@ -24,12 +24,12 @@
             <button class="tab-btn active py-2 px-4 text-sm font-medium rounded-sm bg-white text-gray-900 shadow-sm"
                 data-tab="profile">Profile</button>
             <button class="tab-btn py-2 px-4 text-sm font-medium rounded-sm text-gray-600 hover:bg-gray-200"
-                data-tab="privacy">Password & Privacy</button>
+                data-tab="security">Security</button>
         </div>
     </div>
 
     <!-- Profile Tab -->
-    <div class="tab-content active" id="profile">
+    <div class="tab-content" id="profile">
         <div class="rounded-lg border bg-white shadow-sm">
             <div class="p-6">
                 <h3 class="text-2xl font-semibold mb-2">Profile Information</h3>
@@ -98,9 +98,7 @@
 
                 <form class="space-y-8" action="{% url 'patient:profile' %}" method="POST" enctype="multipart/form-data">
                     <!-- Image input tag -->
-
-<input type="file" id="profileImageInput_" name="profileImage" style="display: none;" />
-
+                    <input type="file" id="profileImageInput_" name="profileImage" style="display: none;" />
 
                     <!-- CSRF Token for security -->
                     {% csrf_token %}
@@ -119,23 +117,23 @@
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-2">
-                                    <label class="text-sm font-medium">Email</label>
+                                    <label class="text-sm font-medium">Email     <span class="text-red-500">*Can't be updated*</span></label>
                                     <input
                                         class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value="{{profile.user.email}}" name="email">
+                                        value="{{profile.user.email}}" name="email" disabled placeholder="Email Address">
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-sm font-medium">Phone Number</label>
                                     <input
                                         class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value="{{profile.ph_num }}" name="phone_number" placeholder="Add Phone Number">
+                                        value="{{profile.ph_number }}" name="phone_number" placeholder="Add Phone Number">
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Date of Birth</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    type="date" value="{{profile.date_of_birth }}" name="date_of_birth">
+                                    type="date" value="{{ profile.date_of_birth|date:'Y-m-d' }}" name="date_of_birth">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Address</label>
@@ -154,7 +152,7 @@
                                 <div class="relative">
                                     <select
                                         class="w-full h-10 px-3 py-2 border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        name="blood_type">
+                                        name="blood_group">
                                         <option {% if profile.medical_info.blood_group == "A+" %}selected{% endif %} 
                                                 value="A+"  >A+</option>
                                         <option {% if profile.medical_info.blood_group == "A-" %}selected{% endif %} 
@@ -192,7 +190,7 @@
                                 <label class="text-sm font-medium">Medical Conditions</label>
                                 <textarea
                                     class="w-full min-h-[80px] px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    name="medicalHistory">{{ profile.medical_info.medical_conditions}}</textarea>
+                                    name="medicalConditions">{{ profile.medical_info.medical_conditions}}</textarea>
                             </div>
 
                             <div class="space-y-2">
@@ -218,7 +216,7 @@
                                 <label class="text-sm font-medium">Contact Phone</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_num}}" name="emergency_contact_number">
+                                    value="{{ profile.emg_contact_number }}" name="emergency_contact_number">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Relationship</label>
@@ -252,7 +250,7 @@
                                 <label class="text-sm font-medium">Address</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_name}}" name="emergency_contact_address">
+                                    value="{{profile.emg_contact_address}}" name="emergency_contact_address">
                             </div>
                         </div>
                     </div>
@@ -268,8 +266,9 @@
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input {% if profile.email_notification %}checked{% endif %}
-                                        type="checkbox" class="sr-only" name="emailNotifications" >
-                                    <div class="w-11 h-6 rounded-full peer {% if profile.email_notification %} bg-blue-600 
+                                        type="checkbox" class="sr-only communication-checkbox" name="emailNotifications" >
+                                    
+                                        <div class="w-11 h-6 rounded-full peer {% if profile.email_notification %} bg-blue-600 
                                                 {% else %} bg-gray-200  {% endif %}"></div>
                                     <span 
                                         class=" {% if profile.email_notification %}translate-x-5 
@@ -285,12 +284,12 @@
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input {% if profile.reminders %}checked{% endif %}
+                                        type="checkbox" class="sr-only communication-checkbox" name="appointmentReminders">
                                     
-                                        type="checkbox" class="sr-only" name="appointmentReminders">
-                                    <div class="w-11 h-6 rounded-full peer {% if profile.email_notification %} bg-blue-600 
+                                        <div class="w-11 h-6 rounded-full peer {% if profile.reminders %} bg-blue-600 
                                                 {% else %} bg-gray-200  {% endif %}"></div>
                                     <span 
-                                        class=" {% if profile.email_notification %}translate-x-5 
+                                        class=" {% if profile.reminders %}translate-x-5 
                                                 {% else %}translate-x-0{% endif %}
                                          absolute left-1 top-1 w-4 h-4  rounded-full transition bg-white "></span>
                                 </label>
@@ -305,37 +304,42 @@
                         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Save
                             Changes</button>
                     </div>
+                
                 </form>
             </div>
         </div>
     </div>
 
     <!-- Privacy Tab -->
-    <div class="tab-content hidden" id="privacy">
+    <div class="tab-content hidden" id="security">
         <div class="rounded-lg border bg-white shadow-sm">
             <div class="p-6">
                 <h3 class="text-2xl font-semibold mb-2">Privacy & Security Settings</h3>
                 <p class="text-sm text-gray-600 mb-6">Manage your password, notification preferences, and privacy
                     options.</p>
 
-                <form class="space-y-6">
+                <form class="space-y-6" action="{% url 'patient:profile' %}" method="POST">
+                      {% csrf_token %}
+
+                    <input type="text" autocomplete="username" hidden>
+
                     <div class="space-y-2">
                         <label class="text-sm font-medium">Current Password</label>
                         <input
                             class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            type="password" name="currentPassword">
+                            type="password" name="current-password" autocomplete="current-password">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium">New Password</label>
                         <input
                             class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            type="password" name="newPassword">
+                            type="password" name="new-password" autocomplete="new-password">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium">Confirm New Password</label>
                         <input
                             class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            type="password" name="confirmPassword">
+                            type="password" name="confirm-password" autocomplete="new-password">
                     </div>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Update
                         Password</button>
@@ -346,10 +350,8 @@
 </div>
 
 <script>
-    // Tab Switching
-    document.querySelectorAll('.tab-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const tab = button.getAttribute('data-tab');
+    function toggleTab(tab_name){
+            const button = document.querySelector(`.tab-btn[data-tab="${tab_name}"]`);
 
             // Update button states
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -362,25 +364,44 @@
             // Update content visibility
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
-                content.classList.remove('active');
             });
-            document.getElementById(tab).classList.remove('hidden');
-            document.getElementById(tab).classList.add('active');
+            document.getElementById(tab_name).classList.remove('hidden');
+    }
+
+
+    // Tab Switching
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const tab_name = button.getAttribute('data-tab');
+            toggleTab(tab_name);
         });
     });
 
+    window.onload = function () {
+        if (window.location.hash === '#security') {
+            console.log('Security tab loaded');
+            toggleTab('security');
+        }
+    };
+
+
     // Toggle Switch Functionality
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('.communication-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             const span = checkbox.parentElement.querySelector('span');
             const divs = checkbox.parentElement.querySelector('div');
-            if (checkbox.checked) {
+            if (checkbox.checked) { 
+                console.log(`Toggled ${checkbox.name}:`, checkbox.checked);
+
                 divs.classList.add('bg-blue-600');
                 divs.classList.remove('bg-gray-200');
 
                 span.classList.add('translate-x-5');
                 span.classList.remove('translate-x-0');
             } else {
+                console.log(`Toggled ${checkbox.name}:`, checkbox.checked);
+
+
                 divs.classList.remove('bg-blue-600');
                 divs.classList.add('bg-gray-200');
 
