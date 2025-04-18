@@ -1083,7 +1083,7 @@
 
     <!-- Add Document Modal -->
     <div id="addDocumentModal" class="modal fixed inset-0 
-             bg-gray-800/80 backdrop-blur-sm hidden z-50 flex 
+             bg-gray-800/80 backdrop-blur-sm hidden z-40 flex 
              items-center justify-center transition-all duration-100 ease-in-out">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 transform
              transition-transform duration-100 scale-95 top-12 relative" id="modalInner">
@@ -1101,20 +1101,6 @@
             </div>
 
             <div class="p-6 top-32">
-                <!-- Error Alert -->
-                <div id="documentErrorsBox"
-                    class="hidden bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 rounded mb-6 animate-fadeIn">
-                    <div class="flex">
-                        <svg class="h-5 w-5 text-red-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span id="errorMessage"></span>
-                    </div>
-                </div>
-
                 <form id="addDocumentForm" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Title Field -->
@@ -1242,13 +1228,6 @@
 
 <!-- Add initialization script -->
 
-
-
-
-
-
-
-
 {% endblock content %}
 
 
@@ -1354,6 +1333,17 @@
 
         // ---------------------------------------------------------------
 
+        const ALLOWED_FILE_TYPES = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'application/msword', // .doc
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
+        ];
+
+        const MAX_FILE_SIZE_MB = 5; // Max size in MB
+
         // File handling functions
         dropZone.addEventListener('click', function () {
             fileInput.click();
@@ -1373,15 +1363,42 @@
             dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
 
             if (e.dataTransfer.files.length) {
-                handleFile(e.dataTransfer.files[0]);
+                validateAndHandleFile(e.dataTransfer.files[0]);
             }
         });
 
         fileInput.addEventListener('change', function () {
             if (fileInput.files.length) {
-                handleFile(fileInput.files[0]);
+                validateAndHandleFile(fileInput.files[0]);
             }
         });
+
+        function validateAndHandleFile(file) {
+            const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
+            const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
+
+            if (!isValidType) {
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Invalid file type. ",
+                    message: "Please upload only PDF, DOC, DOCX, JPG, JPEG, or PNG files."
+                });
+                fileInput.value = '';
+                return;
+            }
+
+            if (!isValidSize) {
+                  showNotification({
+                    color: "bg-red-500",
+                    title: "File is too large..",
+                    message: "Maximum allowed size is ${MAX_FILE_SIZE_MB}MB."
+                });
+                fileInput.value = '';
+                return;
+            }
+
+            handleFile(file); // proceed if valid
+        }
 
         function handleFile(file) {
             fileName.textContent = file.name;
@@ -1395,34 +1412,7 @@
             dropZone.classList.remove('border-green-500', 'bg-green-50', 'dark:bg-green-900/10');
         });
 
-        // Form submission
-        document.getElementById('addDocumentForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            // Add your form submission logic here
-
-            // Show success notification
-            // This is just an example - implement as needed
-            const successNotification = document.createElement('div');
-            successNotification.className = 'fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg transform transition-transform duration-500 translate-y-0 opacity-100';
-            successNotification.innerHTML = `
-        <div class="flex items-center">
-          <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          Document uploaded successfully!
-        </div>
-      `;
-            document.body.appendChild(successNotification);
-
-            setTimeout(() => {
-                successNotification.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => {
-                    document.body.removeChild(successNotification);
-                }, 500);
-            }, 3000);
-
-            closeModal();
-        });
+       
     });
 </script>
 
