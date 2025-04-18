@@ -65,8 +65,9 @@ class MedicalInfo(models.Model):
     medical_conditions = models.TextField(blank=True)
     on_going_medications = models.TextField(blank=True)
 
-
- 
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+  
     def __str__(self):
         return f"{self.profile.user.username}'s Medical Info"
 

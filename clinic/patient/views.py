@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from account.models import Profile, MedicalInfo
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 
@@ -10,6 +9,8 @@ from account.views import login_required_with_message
 from django.contrib import messages
 from datetime import datetime
 
+from account.models import Profile, MedicalInfo
+from patient.models import *
 
 # --------------------------------------- Rendering Pages ------------------------------------------------------------
 
@@ -18,6 +19,23 @@ def patientDashboard(request):
     return render(request, 'pages/patient/dashboard.html')
 
 def viewAppoinment(request):
+    if request.method == 'POST':
+        nick_name = request.POST.get('nick_name')
+        doc_type = request.POST.get('doc_type')
+        notes = request.POST.get('notes')
+
+        files = request.FILES.get('document_file')  
+
+        print (nick_name, doc_type, notes)
+
+        profile: Profile = request.user.profile
+
+
+        
+
+
+
+
     return render(request, 'pages/patient/view_appoinment.html')
 
 def BookAppoinment(request):
@@ -59,7 +77,7 @@ def p_profile(request: HttpRequest):
             user: User = request.user
 
             # Handle profile picture
-            profile_pic = request.FILES.get('profileImage')  # Match with form
+            profile_pic = request.FILES.get('profileImage')  
             if profile_pic:
                 profile.profile_pic = profile_pic
 

@@ -1082,11 +1082,11 @@
 
 
     <!-- Add Document Modal -->
-    <div id="addDocumentModal" class="modal fixed inset-0 
+    <div id="addDocumentModal" class="modal fixed inset-0
              bg-gray-800/80 backdrop-blur-sm hidden z-40 flex 
              items-center justify-center transition-all duration-100 ease-in-out">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 transform
-             transition-transform duration-100 scale-95 top-12 relative" id="modalInner">
+             transition-transform duration-100 scale-95 top-2 md:top-4 relative" id="modalInner">
             <!-- Header -->
             <div class="flex justify-between items-center p-6 border-b dark:border-gray-700">
                 <h3 class="text-2xl font-bold text-gray-800 dark:text-white">New Document</h3>
@@ -1100,10 +1100,12 @@
                 </button>
             </div>
 
-            <div class="p-6 top-32">
-                <form id="addDocumentForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Title Field -->
+            <div class="p-4">
+                <form id="addDocumentForm" class="space-y-4" action="{% url 'patient:viewAppoinment' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Nick Name Field -->
                         <div class="space-y-1">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nick Name
                                 <span class="text-red-500">*</span></label>
@@ -1118,7 +1120,7 @@
                                 </div>
                                 <input
                                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white pl-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-3 transition-colors"
-                                    required placeholder="Enter document title" name="title" type="text">
+                                    required placeholder="Enter document title" name="nick_name" type="text">
                             </div>
                         </div>
 
@@ -1138,12 +1140,13 @@
                                 </div>
                                 <select
                                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white pl-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-3 appearance-none transition-colors"
-                                    required name="document_type_id">
-                                    <option value="">Select Document Type</option>
-                                    <option value="1">MRI</option>
-                                    <option value="2">Prescription</option>
-                                    <option value="3">Lab Report</option>
-                                    <option value="4">X-Ray</option>
+                                    required name="doc_type">
+                                    <option value=''>Select Document Type</option>
+                                    <option value="MRI">MRI</option>
+                                    <option value="PRESCRIPTION">Prescription</option>
+                                    <option value="LAB_REPORT">Lab Report</option>
+                                    <option value="X_RAY">X-Ray</option>
+                                    <option value="OTHER_REPORT">Other Report</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
@@ -1156,7 +1159,6 @@
                             </div>
                         </div>
 
-                        <input type="hidden" name="patient_id" value="1383">
 
                         <!-- File Upload Area - Takes full width -->
                         <div class="col-span-1 md:col-span-2">
@@ -1178,7 +1180,7 @@
                                         <button type="button" id="browseFilesBtn"
                                             class="mt-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-300">Browse
                                             files</button>
-                                        <input type="file" class="hidden" id="fileInput" />
+                                        <input type="file" class="hidden" id="fileInput" name="document_file" />
                                     </div>
                                 </div>
                                 <!-- Selected File Preview -->
@@ -1202,6 +1204,23 @@
                                         </svg>
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!--Notes For remembering about file-->
+                         <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: currentcolor; fill-rule: nonzero; opacity: 1;" transform=" translate(-25, -25)" d="M 44 4 L 6 4 C 4.907 4 4 4.907 4 6 L 4 44 C 4 45.093 4.907 46 6 46 L 44 46 C 45.093 46 46 45.093 46 44 L 46 6 C 46 4.907 45.093 4 44 4 z M 25.977 27 L 46 27 L 26 46 L 25.977 27 z" stroke-linecap="round" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <input
+                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white pl-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-3 transition-colors"
+                                     placeholder="Enter Your Notes For this File" name="notes" type="text">
                             </div>
                         </div>
                     </div>
