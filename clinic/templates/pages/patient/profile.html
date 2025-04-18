@@ -318,7 +318,7 @@
                 <p class="text-sm text-gray-600 mb-6">Manage your password, notification preferences, and privacy
                     options.</p>
 
-                <form class="space-y-6" action="{% url 'patient:profile' %}" method="POST">
+                <form class="space-y-6" action="{% url 'account:changePassword' %}" method="POST">
                       {% csrf_token %}
 
                     <input type="text" autocomplete="username" hidden>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from functools import wraps
 from datetime import datetime
-
+from django.urls import reverse
 
 
 app_name = 'account'
@@ -118,12 +118,11 @@ def Postlogin(request):
             messages.success(request, "Login successful.")
 
             role = request.user.profile.role
-            if role == 'doctor':
-                return redirect('doctor:d-profile')
-            elif role == 'patient':
-                return redirect('patient:p-profile')
-            elif role == 'management':
+          
+            if role == 'management':
                 return redirect('home')
+            else:
+                return redirect(f'{role}:profile')
 
         else:
             messages.error(request, "Invalid email or password. Please try again.")
@@ -132,3 +131,54 @@ def Postlogin(request):
     
     # If GET request, simply render the login template
     return redirect('account:login')
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+def logout_page(request):
+    """Custom logout view."""
+    logout(request)
+    messages.success(request, "Logout successful.")
+    return redirect('account:login')
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+def change_password(request):
+    """Change password view."""
+
+    what_role = request.user.profile.role
+    profile_path = reverse(f'{what_role}:profile')
+    
+    if request.method == 'POST':
+
+        current_password = request.POST.get('current-password')
+        new_password = request.POST.get('new-password')
+        confirm_password = request.POST.get('confirm-password')
+
+        if not current_password or not new_password or not confirm_password:
+            messages.error(request, "All fields are required.")
+            return redirect(profile_path + '#security')
+
+        
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect(profile_path + '#security')
+
+        
+        user = authenticate(username=request.user.username, password=current_password)
+        if user:
+            user.set_password(new_password)
+            user.save()
+
+            login(request, user) # Re-authenticate the user after password change
+
+            messages.success(request, "Password changed successfully.")
+            return redirect(profile_path)
+
+        else:
+            messages.error(request, "Current password is incorrect.")
+            return redirect(profile_path + '#security')
+        
+    return redirect(profile_path + '#security')
+
+
+    
