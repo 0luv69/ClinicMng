@@ -144,132 +144,132 @@
 
         <!-- Documents Grid View -->
         <div id="gridView" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 fade-in">
-            <!-- Document Card Example 1 -->
-            <div class="document-card bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="h-48 bg-blue-100 flex items-center justify-center">
-                    <svg id='Documents_24' class="w-6 h-6  text-6xl text-blue-500" fill="currentColor"
-                        viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
-                        xmlns:xlink='http://www.w3.org/1999/xlink'>
-                        <g transform="matrix(0.91 0 0 0.91 12 12)">
-                            <path
-                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
-                                transform=" translate(-12.5, -12)"
-                                d="M 5 1 C 3.9 1 3 1.9 3 3 L 3 17 L 5 17 L 5 3 L 17 3 L 17 1 L 5 1 z M 9 5 C 7.9 5 7 5.9 7 7 L 7 21 C 7 22.1 7.9 23 9 23 L 20 23 C 21.1 23 22 22.1 22 21 L 22 10 L 17 5 L 9 5 z M 11 13 L 18 13 L 18 15 L 11 15 L 11 13 z M 11 17 L 18 17 L 18 19 L 11 19 L 11 17 z"
-                                stroke-linecap="round" />
-                        </g>
-                    </svg>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="font-semibold text-gray-800 truncate">image_picker8669721463104410176.jpg</h3>
-                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">MRI</span>
+
+            {% for doc in documents %}
+                <div class="document-card bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="h-48 bg-blue-100 flex items-center justify-center">
+                        <svg id='Documents_24' class="w-6 h-6  text-6xl text-blue-500" fill="currentColor"
+                            viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
+                            xmlns:xlink='http://www.w3.org/1999/xlink'>
+                            <g transform="matrix(0.91 0 0 0.91 12 12)">
+                                <path
+                                    style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
+                                    transform=" translate(-12.5, -12)"
+                                    d="M 5 1 C 3.9 1 3 1.9 3 3 L 3 17 L 5 17 L 5 3 L 17 3 L 17 1 L 5 1 z M 9 5 C 7.9 5 7 5.9 7 7 L 7 21 C 7 22.1 7.9 23 9 23 L 20 23 C 21.1 23 22 22.1 22 21 L 22 10 L 17 5 L 9 5 z M 11 13 L 18 13 L 18 15 L 11 15 L 11 13 z M 11 17 L 18 17 L 18 19 L 11 19 L 11 17 z"
+                                    stroke-linecap="round" />
+                            </g>
+                        </svg>
                     </div>
-                    <div class="flex items-center mb-3">
-                        <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
-                            alt="Patient" class="w-8 h-8 rounded-full mr-2">
-                        <div>
-                            <a href="https://hms.infyom.com/patients/1383"
-                                class="text-blue-600 hover:underline text-sm">Trith Shah</a>
-                            <p class="text-xs text-gray-500">tirth@gmail.com</p>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-semibold text-gray-800 
+                            truncate"> {{ doc.file.name|slice:":30" }}{% if doc.file.name|length > 30 %}…{% endif %}
+                                </h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{{ doc.doc_type }}</span>
                         </div>
-                    </div>
-                    <div class="border-t pt-3 flex justify-between">
-                        <span class="text-xs text-gray-500">
-
-
-                            <svg id='Calendar_24' class="w-4 h-4 mr-2" fill="currentColor" viewBox='0 0 24 24'
-                                xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-                                <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
-
-
-                                <g transform="matrix(1 0 0 1 12 12)">
-                                    <path
-                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
-                                        transform=" translate(-12, -11)"
-                                        d="M 6 1 L 6 3 L 5 3 C 3.9 3 3 3.9 3 5 L 3 19 C 3 20.1 3.9 21 5 21 L 19 21 C 20.1 21 21 20.1 21 19 L 21 5 C 21 3.9 20.1 3 19 3 L 18 3 L 18 1 L 16 1 L 16 3 L 8 3 L 8 1 L 6 1 z M 5 8 L 19 8 L 19 19 L 5 19 L 5 8 z"
-                                        stroke-linecap="round" />
-                                </g>
-                            </svg>
-
-
-
-
-                            Mar 10, 2025</span>
-                        <div class="flex space-x-2">
-                            <a href="#" class="text-blue-500 hover:text-blue-700" title="Download">
-                                <svg id='Download_from_the_Cloud_24' viewBox='0 0 24 24'
-                                    xmlns='http://www.w3.org/2000/svg' class="w-6 h-6" fill="currentColor"
-                                    xmlns:xlink='http://www.w3.org/1999/xlink'>
-                                    <g transform="matrix(0.83 0 0 0.83 12 12)">
-                                        <path
-                                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
-                                            transform=" translate(-12, -12)"
-                                            d="M 19.355 10.036 C 18.674 6.595 15.641 4 12 4 C 9.108 4 6.603 5.639 5.352 8.036 C 2.343 8.36 0 10.906 0 14 C 0 17.314 2.686 20 6 20 L 19 20 C 21.761 20 24 17.761 24 15 C 24 12.36 21.948 10.221 19.355 10.036 z M 12 18 L 7 13 L 10 13 L 10 9 L 14 9 L 14 13 L 17 13 L 12 18 z"
-                                            stroke-linecap="round" />
-                                    </g>
-                                </svg>
-                            </a>
-                            <a href="#" class="text-blue-500 hover:text-blue-700" title="Edit">
-                                <svg id='Edit_Folder_24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
-                                    class="w-6 h-6" fill="currentColor" xmlns:xlink='http://www.w3.org/1999/xlink'>
-
-                                    <g transform="matrix(0.91 0 0 0.91 12 12)">
-                                        <path
-                                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
-                                            transform=" translate(-13, -14)"
-                                            d="M 4 4 C 2.9 4 2 4.9 2 6 L 2 18 C 2 19.1 2.9 20 4 20 L 14.171875 20 L 22 12.171875 L 22 8 C 22 6.9 21.1 6 20 6 L 12.828125 6 C 12.298125 6 11.789062 5.7890625 11.414062 5.4140625 L 10.585938 4.5859375 C 10.210938 4.2109375 9.701875 4 9.171875 4 L 4 4 z M 22.207031 15 C 22.079156 15 21.951016 15.048984 21.853516 15.146484 L 20.853516 16.146484 L 22.853516 18.146484 L 23.853516 17.146484 C 24.048516 16.951484 24.048516 16.634453 23.853516 16.439453 L 22.560547 15.146484 C 22.462547 15.048984 22.334906 15 22.207031 15 z M 20.146484 16.853516 L 15.146484 21.853516 C 15.053484 21.947516 15 22.074031 15 22.207031 L 15 23.5 C 15 23.776 15.224 24 15.5 24 L 16.792969 24 C 16.925969 24 17.053484 23.946516 17.146484 23.853516 L 22.146484 18.853516 L 20.146484 16.853516 z"
-                                            stroke-linecap="round" />
-                                    </g>
-                                </svg>
-
-                            </a>
-                            <a href="#" class="text-red-500 hover:text-red-700" title="Delete">
-                                <svg id='trash_24' class="w-5 h-5" fill="currentColor" viewBox='0 0 24 24'
+                        <div class="flex items-center mb-3">
+                            <img src="https://ui-avatars.com/api/?name=Trith+Shah&size=100&rounded=true&color=fff&background=7d68f0"
+                                alt="Patient" class="w-8 h-8 rounded-full mr-2">
+                            <div>
+                                <a href="https://hms.infyom.com/patients/1383"
+                                    class="text-blue-600 hover:underline text-sm">Trith Shah</a>
+                                <p class="text-xs text-gray-500">tirth@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="border-t pt-3 flex justify-between">
+                            <span class="text-xs text-gray-500">
+                                <svg id='Calendar_24' class="w-4 h-4 mr-2" fill="currentColor" viewBox='0 0 24 24'
                                     xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                    <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
+
+
                                     <g transform="matrix(1 0 0 1 12 12)">
-                                        <g transform="matrix(1 0 0 1 0 0)">
-                                            <path
-                                                style="stroke: none; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                transform=" translate(-12, -12)" d="M 0 0 L 24 0 L 24 24 L 0 24 z"
-                                                stroke-linecap="round" />
-                                        </g>
-                                        <g transform="matrix(1 0 0 1 0 -5)">
-                                            <line
-                                                style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                x1="-8" y1="0" x2="8" y2="0" />
-                                        </g>
-                                        <g transform="matrix(1 0 0 1 -2 2)">
-                                            <line
-                                                style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                x1="0" y1="-3" x2="0" y2="3" />
-                                        </g>
-                                        <g transform="matrix(1 0 0 1 2 2)">
-                                            <line
-                                                style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                x1="0" y1="-3" x2="0" y2="3" />
-                                        </g>
-                                        <g transform="matrix(1 0 0 1 0 2)">
-                                            <path
-                                                style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                transform=" translate(-12, -14)"
-                                                d="M 5 7 L 6 19 C 6 20.104569499661586 6.8954305003384135 21 8 21 L 16 21 C 17.104569499661586 21 18 20.104569499661586 18 19 L 19 7"
-                                                stroke-linecap="round" />
-                                        </g>
-                                        <g transform="matrix(1 0 0 1 0 -7)">
-                                            <path
-                                                style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
-                                                transform=" translate(-12, -5)"
-                                                d="M 9 7 L 9 4 C 9 3.4477152501692068 9.447715250169207 3 10 3 L 14 3 C 14.552284749830793 3 15 3.4477152501692063 15 4 L 15 7"
-                                                stroke-linecap="round" />
-                                        </g>
+                                        <path
+                                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
+                                            transform=" translate(-12, -11)"
+                                            d="M 6 1 L 6 3 L 5 3 C 3.9 3 3 3.9 3 5 L 3 19 C 3 20.1 3.9 21 5 21 L 19 21 C 20.1 21 21 20.1 21 19 L 21 5 C 21 3.9 20.1 3 19 3 L 18 3 L 18 1 L 16 1 L 16 3 L 8 3 L 8 1 L 6 1 z M 5 8 L 19 8 L 19 19 L 5 19 L 5 8 z"
+                                            stroke-linecap="round" />
                                     </g>
                                 </svg>
-                            </a>
+                                {{ doc.created_at|date:"M d, Y" }}
+                            </span>
+                            <div class="flex space-x-2">
+                                <a href="{{ doc.file.url }}" class="text-blue-500 hover:text-blue-700" title="Download">
+                                    <svg id='Download_from_the_Cloud_24' viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg' class="w-6 h-6" fill="currentColor"
+                                        xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                        <g transform="matrix(0.83 0 0 0.83 12 12)">
+                                            <path
+                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
+                                                transform=" translate(-12, -12)"
+                                                d="M 19.355 10.036 C 18.674 6.595 15.641 4 12 4 C 9.108 4 6.603 5.639 5.352 8.036 C 2.343 8.36 0 10.906 0 14 C 0 17.314 2.686 20 6 20 L 19 20 C 21.761 20 24 17.761 24 15 C 24 12.36 21.948 10.221 19.355 10.036 z M 12 18 L 7 13 L 10 13 L 10 9 L 14 9 L 14 13 L 17 13 L 12 18 z"
+                                                stroke-linecap="round" />
+                                        </g>
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                    <svg id='Edit_Folder_24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'
+                                        class="w-6 h-6" fill="currentColor" xmlns:xlink='http://www.w3.org/1999/xlink'>
+
+                                        <g transform="matrix(0.91 0 0 0.91 12 12)">
+                                            <path
+                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;"
+                                                transform=" translate(-13, -14)"
+                                                d="M 4 4 C 2.9 4 2 4.9 2 6 L 2 18 C 2 19.1 2.9 20 4 20 L 14.171875 20 L 22 12.171875 L 22 8 C 22 6.9 21.1 6 20 6 L 12.828125 6 C 12.298125 6 11.789062 5.7890625 11.414062 5.4140625 L 10.585938 4.5859375 C 10.210938 4.2109375 9.701875 4 9.171875 4 L 4 4 z M 22.207031 15 C 22.079156 15 21.951016 15.048984 21.853516 15.146484 L 20.853516 16.146484 L 22.853516 18.146484 L 23.853516 17.146484 C 24.048516 16.951484 24.048516 16.634453 23.853516 16.439453 L 22.560547 15.146484 C 22.462547 15.048984 22.334906 15 22.207031 15 z M 20.146484 16.853516 L 15.146484 21.853516 C 15.053484 21.947516 15 22.074031 15 22.207031 L 15 23.5 C 15 23.776 15.224 24 15.5 24 L 16.792969 24 C 16.925969 24 17.053484 23.946516 17.146484 23.853516 L 22.146484 18.853516 L 20.146484 16.853516 z"
+                                                stroke-linecap="round" />
+                                        </g>
+                                    </svg>
+
+                                </a>
+                                <a href="#" class="text-red-500 hover:text-red-700" title="Delete">
+                                    <svg id='trash_24' class="w-5 h-5" fill="currentColor" viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                        <g transform="matrix(1 0 0 1 12 12)">
+                                            <g transform="matrix(1 0 0 1 0 0)">
+                                                <path
+                                                    style="stroke: none; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    transform=" translate(-12, -12)" d="M 0 0 L 24 0 L 24 24 L 0 24 z"
+                                                    stroke-linecap="round" />
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 0 -5)">
+                                                <line
+                                                    style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    x1="-8" y1="0" x2="8" y2="0" />
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 -2 2)">
+                                                <line
+                                                    style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    x1="0" y1="-3" x2="0" y2="3" />
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 2 2)">
+                                                <line
+                                                    style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    x1="0" y1="-3" x2="0" y2="3" />
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 0 2)">
+                                                <path
+                                                    style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    transform=" translate(-12, -14)"
+                                                    d="M 5 7 L 6 19 C 6 20.104569499661586 6.8954305003384135 21 8 21 L 16 21 C 17.104569499661586 21 18 20.104569499661586 18 19 L 19 7"
+                                                    stroke-linecap="round" />
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 0 -7)">
+                                                <path
+                                                    style="stroke: #ef4444 ; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                    transform=" translate(-12, -5)"
+                                                    d="M 9 7 L 9 4 C 9 3.4477152501692068 9.447715250169207 3 10 3 L 14 3 C 14.552284749830793 3 15 3.4477152501692063 15 4 L 15 7"
+                                                    stroke-linecap="round" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            {% empty %}
+                <p class="col-span-full text-gray-500">No documents uploaded yet.</p>
+            {% endfor %}
             <!-- Document Card Example 2 -->
             <div class="document-card bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="h-48 bg-green-100 flex items-center justify-center">
@@ -1185,7 +1185,7 @@
                                 </div>
                                 <!-- Selected File Preview -->
                                 <div id="selectedFile"
-                                    class="hidden animate-fadeIn flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                                    class=" animate-fadeIn flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-3"
                                         viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd"
@@ -1193,7 +1193,7 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                     <span class="text-sm text-gray-800 dark:text-gray-200 flex-grow font-medium"
-                                        id="fileName">image_picker8669721463104410176.jpg</span>
+                                        id="fileName"></span>
                                     <button type="button" id="removeFileBtn"
                                         class="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"

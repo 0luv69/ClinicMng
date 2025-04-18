@@ -94,11 +94,18 @@ def ViewDocument(request: HttpRequest):
             messages.error(request, "An error occurred while saving the document.")
             return redirect(path+'#add_new')
 
+
         return redirect('patient:ViewDocument')
     
 
 
-    return render(request, 'pages/patient/view_document.html')
+    profile: Profile = Profile.objects.get(user=request.user)
+    documents: Documents = Documents.objects.filter(profile= profile).order_by('-created_at')
+    context= {
+        'profile': profile,
+        'documents' : documents
+    }
+    return render(request, 'pages/patient/view_document.html', context)
 
 def join_v_call(request: HttpRequest):
     return render(request, 'pages/patient/join-v-call.html')
