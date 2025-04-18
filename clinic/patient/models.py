@@ -7,7 +7,7 @@ from account.models import Profile, MedicalInfo
 
 
 class Documents(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name="patients_documents")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_documents")
     nick_name = models.CharField(max_length=255, blank=True)
     doc_type = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank= True)

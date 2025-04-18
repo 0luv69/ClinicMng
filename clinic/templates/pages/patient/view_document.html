@@ -1101,7 +1101,7 @@
             </div>
 
             <div class="p-4">
-                <form id="addDocumentForm" class="space-y-4" action="{% url 'patient:viewAppoinment' %}" method="POST" enctype="multipart/form-data">
+                <form id="addDocumentForm" class="space-y-4" action="{% url 'patient:ViewDocument' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1331,6 +1331,11 @@
         function openDocumentModal() {
             modal.classList.remove('hidden');
         };
+
+        // open if hash in url has #add_new
+        if (window.location.hash === '#add_new'){
+            openDocumentModal()
+        }
 
         // Open modal when clicking the button
         document.getElementById('addDocumentBtn').addEventListener('click', openDocumentModal);
