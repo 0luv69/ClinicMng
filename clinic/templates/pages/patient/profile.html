@@ -210,31 +210,31 @@
                                 <label class="text-sm font-medium">Contact Name</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_name}}" name="emergency_contact_name">
+                                    value="{{profile.medical_info.emg_contact_name}}" name="emergency_contact_name">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Contact Phone</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{ profile.emg_contact_number }}" name="emergency_contact_number">
+                                    value="{{ profile.medical_info.emg_contact_number }}" name="emergency_contact_number">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-medium">Relationship</label>
                                 <div class="relative">
                                     <select
                                         class="w-full h-10 px-3 py-2 border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        name="emergency_contact_relationship"> {{ profile.emg_contact_relation }}
-                                        <option {% if profile.emg_contact_relation == "spouse" %}selected{% endif %}
+                                        name="emergency_contact_relationship"> {{ profile.medical_info.emg_contact_relation }}
+                                        <option {% if profile.medical_info.emg_contact_relation == "spouse" %}selected{% endif %}
                                             value="spouse">Spouse</option>
-                                        <option {% if profile.emg_contact_relation == "parent" %}selected{% endif %}
+                                        <option {% if profile.medical_info.emg_contact_relation == "parent" %}selected{% endif %}
                                             value="parent">Parent</option>
-                                        <option {% if profile.emg_contact_relation == "child" %}selected{% endif %}
+                                        <option {% if profile.medical_info.emg_contact_relation == "child" %}selected{% endif %}
                                             value="child">Child</option>
-                                        <option {% if profile.emg_contact_relation == "sibling" %}selected{% endif %}
+                                        <option {% if profile.medical_info.emg_contact_relation == "sibling" %}selected{% endif %}
                                             value="sibling">Sibling</option>
-                                        <option {% if profile.emg_contact_relation == "friend" %}selected{% endif %}
+                                        <option {% if profile.medical_info.emg_contact_relation == "friend" %}selected{% endif %}
                                             value="friend">Friend</option>
-                                        <option {% if profile.emg_contact_relation == "other" %}selected{% endif %}
+                                        <option {% if profile.medical_info.emg_contact_relation == "other" %}selected{% endif %}
                                             value="other">Other</option>
                                     </select>
                                     <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
@@ -250,7 +250,7 @@
                                 <label class="text-sm font-medium">Address</label>
                                 <input
                                     class="w-full h-10 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value="{{profile.emg_contact_address}}" name="emergency_contact_address">
+                                    value="{{profile.medical_info.emg_contact_address}}" name="emergency_contact_address">
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from mimetypes import guess_type
 
 from account.models import Profile, MedicalInfo
 
@@ -21,3 +21,11 @@ class Documents(models.Model):
 
     def __str__(self):
         return f"{self.nick_name}"
+    
+    def is_image(self):
+        mime_type, _ = guess_type(self.file.url)
+        return mime_type and mime_type.startswith('image')
+    
+    def is_pdf(self):
+        mime_type, _ = guess_type(self.file.url)
+        return mime_type == 'application/pdf'

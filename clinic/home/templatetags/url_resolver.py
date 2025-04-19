@@ -1,5 +1,3 @@
-# your_app/templatetags/url_resolver.py
-
 from django import template
 from django.urls import reverse, NoReverseMatch
 

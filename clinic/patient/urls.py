@@ -13,6 +13,8 @@ urlpatterns = [
     path('view-appoinment/', viewAppoinment, name='viewAppoinment'),
     path('book-appoinment/', BookAppoinment, name='BookAppoinment'),
     path('document/', ViewDocument, name='ViewDocument'),
+    path('delete-document/<int:doc_id>/', delete_document, name='deleteDocument'),
+
     path('join-v-call/', join_v_call, name='join_v_call'),
     path('lab-report/', labReport, name='labReport'),
     path('prescriptions/', prescriptions, name='prescriptions'),

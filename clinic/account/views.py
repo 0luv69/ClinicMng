@@ -89,7 +89,7 @@ def PostRegister(request):
         
         # Automatically log the user in after registration
         login(request, user)
-        return redirect('patient:p-profile')
+        return redirect('patient:profile')
     
     return redirect('account:register')
 

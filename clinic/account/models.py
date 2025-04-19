@@ -28,19 +28,12 @@ class Profile(models.Model):
     role = models.CharField(max_length=10, choices=USER_ROLES, default='patient')
 
     # personal information
-    profile_pic = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.jpg')
 
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     ph_number = models.CharField(validators=[phone_regex], max_length=16, blank=True) # validators should be a list
     address = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
-
-
-    # emergency contact
-    emg_contact_name = models.CharField(max_length=255, blank=True)
-    emg_contact_number = models.CharField(max_length=16, blank=True)
-    emg_contact_relation = models.CharField(max_length=255, blank=True)
-    emg_contact_address = models.CharField(max_length=255, blank=True)
 
 
     email_notification = models.BooleanField(default=True)
@@ -64,6 +57,13 @@ class MedicalInfo(models.Model):
     allergies = models.TextField(blank=True)
     medical_conditions = models.TextField(blank=True)
     on_going_medications = models.TextField(blank=True)
+
+
+    # emergency contact
+    emg_contact_name = models.CharField(max_length=255, blank=True)
+    emg_contact_number = models.CharField(max_length=16, blank=True)
+    emg_contact_relation = models.CharField(max_length=255, blank=True)
+    emg_contact_address = models.CharField(max_length=255, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext as _
 import magic  # python-magic-bin for mimetype detection 
@@ -107,6 +107,26 @@ def ViewDocument(request: HttpRequest):
     }
     return render(request, 'pages/patient/view_document.html', context)
 
+def delete_document(request, doc_id):
+    try:
+        document = get_object_or_404(Documents, id=doc_id)
+        
+        # Optional: Only allow delete on POST
+        if request.method == "POST":
+            if document.file:
+                document.file.delete(save=False)  # Delete file from storage
+            document.delete()  # Delete record from DB
+            return redirect('patient:ViewDocument')  # Redirect to your document list page
+    except Documents.DoesNotExist:
+        messages.error(request, "Document not found.")
+    except Exception as e:  
+        messages.error(request, f"An error occurred: {e}")
+
+    # If accessed via GET, redirect to same page (or show a confirm page optionally)
+    return redirect('patient:ViewDocument')
+
+
+
 def join_v_call(request: HttpRequest):
     return render(request, 'pages/patient/join-v-call.html')
 
@@ -159,17 +179,17 @@ def p_profile(request: HttpRequest):
                     return redirect('patient:profile')
 
             # Medical Info
-            medical_info: MedicalInfo = profile.medical_info
+            medical_info, created = MedicalInfo.objects.get_or_create(profile=profile)
             medical_info.blood_group = request.POST.get('blood_group', '').strip()
             medical_info.medical_conditions = request.POST.get('medicalConditions', '').strip()  # fixed name
             medical_info.allergies = request.POST.get('allergies', '').strip()  # make sure this field exists
             medical_info.on_going_medications = request.POST.get('medicines_on', '').strip()  # make sure this field exists
 
             # Emergency Contact
-            profile.emg_contact_name = request.POST.get('emergency_contact_name', '').strip()
-            profile.emg_contact_number = request.POST.get('emergency_contact_number', '').strip()
-            profile.emg_contact_relation = request.POST.get('emergency_contact_relationship', '').strip()
-            profile.emg_contact_address = request.POST.get('emergency_contact_address', '').strip()
+            medical_info.emg_contact_name = request.POST.get('emergency_contact_name', '').strip()
+            medical_info.emg_contact_number = request.POST.get('emergency_contact_number', '').strip()
+            medical_info.emg_contact_relation = request.POST.get('emergency_contact_relationship', '').strip()
+            medical_info.emg_contact_address = request.POST.get('emergency_contact_address', '').strip()
 
             # Notification Settings
             profile.email_notification = 'emailNotifications' in request.POST
