@@ -801,14 +801,13 @@
             const formData = new FormData();
             formData.append('doctor_id', selectedDoctor);
             formData.append('appointment_type', appointmentType);
-            formData.append('appointment_date', selectedDate.toISOString().split('T')[0]);
+            formData.append('appointment_date', `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`); // Format date to YYYY-MM-DD
             formData.append('appointment_time', selectedTime);
             formData.append('appointment_time_id', selectedTimeID);
             formData.append('appointment_reason', reason_text.value.trim());
             formData.append('appointment_file', fileInput.files[0]); // Append the file if selected    
 
-
-            fetch("{% url 'patient:BookAppoinment' %}", {
+  fetch("{% url 'patient:BookAppoinment' %}", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -843,7 +842,10 @@
                         message: "An error occurred while booking your appointment."
                     });
                 });
-        });
+          
+       
+       
+            });
     });
 
 

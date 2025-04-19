@@ -47,7 +47,7 @@ class Appointment(models.Model):
     time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
 
     appointment_type = models.CharField(max_length=50, choices=APPOINTMENT_TYPES, default='general_consultation')
-    appointment_date_str = models.DateTimeField()
+    appointment_date = models.DateField()
     appointment_time_str = models.CharField(max_length=50, blank=True)
 
 
@@ -60,4 +60,4 @@ class Appointment(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     def __str__(self):
-        return f"{self.profile} - {self.appointment_date_str} - {self.appointment_time_str}"
+        return f"{self.profile} - {self.appointment_date} - {self.appointment_time_str}"

@@ -85,8 +85,18 @@ def is_valid_file(uploaded_file, allowed_file_types=ALLOWED_FILE_TYPES_DOC, max_
 def patientDashboard(request: HttpRequest):
     return render(request, 'pages/patient/dashboard.html')
 
-def viewAppoinment(request: HttpRequest):   
-    return render(request, 'pages/patient/view_appoinment.html')
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+def viewAppoinment(request: HttpRequest):  
+    profile: Profile = Profile.objects.get(user=request.user)
+    appointments: Appointment = Appointment.objects.filter(profile=profile).order_by('-created_at')
+
+    context = {
+        'profile': profile,
+        'appointments': appointments,
+    }
+    return render(request, 'pages/patient/view_appoinment.html', context) 
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
@@ -115,7 +125,7 @@ def BookAppoinment(request: HttpRequest):
                             time_str: [each_time_slot.id, each_time_slot.duration, all_selected_types]
                         }
             doctor_data.append({
-                'id': doc.profile.id,
+                'id': doc.id,
                 'name': f"Dr. {doc.profile.user.first_name}",
                 'specialty': doc.get_specialization_display(),
                 'experience': doc.experience_years,
@@ -155,7 +165,8 @@ def BookAppoinment(request: HttpRequest):
 
             time_slot_instance.is_booked = True
             time_slot_instance.save()   
-
+            print(f"Time slot booked: {appointment_date}")
+            appointment_date_foramt = datetime.strptime(appointment_date, '%Y-%m-%d').date()
             # Create a new appointment
             appointment = Appointment.objects.create(
                 profile=profile,
@@ -163,7 +174,7 @@ def BookAppoinment(request: HttpRequest):
                 time_slot=time_slot_instance,
 
                 appointment_type=appointment_type,
-                appointment_date_str=appointment_date,
+                appointment_date=appointment_date_foramt,
                 appointment_time_str=appointment_time,
 
                 reason = appointment_reason,
