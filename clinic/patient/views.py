@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404 
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext as _
 import magic  # python-magic-bin for mimetype detection 
@@ -12,13 +13,40 @@ from django.contrib import messages
 from datetime import datetime
 
 from account.models import Profile, MedicalInfo
+from doctor.models import DoctorProfile, AppointmentDateSlot, AppointmentTimeSlot
 from patient.models import *
 from django.urls import reverse
 
-
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 # Constants
-ALLOWED_FILE_TYPES = [
+ALLOWED_FILE_TYPES_APPOINTMENT = [
+            # Documents
+            'application/pdf',
+            'application/msword', # .doc
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', # .docx
+            'text/plain', # .txt
+
+             # Images
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'image/gif',
+            'image/webp',
+
+             # Audio
+            'audio/mpeg',  # .mp3
+            'audio/wav',
+            'audio/ogg',
+
+            # Video
+            'video/mp4',
+            'video/ogg',
+            'video/webm'
+        ]
+
+ALLOWED_FILE_TYPES_DOC = [
     'application/pdf',
     'image/jpeg',
     'image/png',
@@ -28,18 +56,18 @@ ALLOWED_FILE_TYPES = [
 ]
 MAX_FILE_SIZE_MB = 5
 
-def is_valid_file(uploaded_file):
+def is_valid_file(uploaded_file, allowed_file_types=ALLOWED_FILE_TYPES_DOC, max_file_size_mb=MAX_FILE_SIZE_MB):
     if not uploaded_file:
         return False, _("No file uploaded.")
 
     # Check size
-    if uploaded_file.size > MAX_FILE_SIZE_MB * 1024 * 1024:
-        return False, _("File size exceeds 5MB.")
+    if uploaded_file.size > max_file_size_mb * 1024 * 1024:
+        return False, _(f"File size exceeds {max_file_size_mb} MB.")
 
     # Check file type using content sniffing
     file_type = magic.from_buffer(uploaded_file.read(2048), mime=True)
     uploaded_file.seek(0)  # reset file pointer after reading
-    if file_type not in ALLOWED_FILE_TYPES:
+    if file_type not in allowed_file_types:
         return False, _("Unsupported file type.")
 
     return True, None
@@ -60,8 +88,100 @@ def patientDashboard(request: HttpRequest):
 def viewAppoinment(request: HttpRequest):   
     return render(request, 'pages/patient/view_appoinment.html')
 
+
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
 def BookAppoinment(request: HttpRequest):
-    return render(request, 'pages/patient/book_appoinment.html')
+    """Doctor booking page."""
+
+    if request.method == 'GET':
+        # Fetch the user's profile information
+        profile: Profile = Profile.objects.get(user=request.user)
+        doctors: DoctorProfile = DoctorProfile.objects.all()
+
+        doctor_data = []
+        for doc in doctors:
+            date_slots = AppointmentDateSlot.objects.filter(doctor=doc)
+            date_json = {}
+            for each_date_slot in date_slots:
+                date_str = each_date_slot.date.strftime('%Y-%m-%d')
+
+                times_slots = AppointmentTimeSlot.objects.filter(appointment_date_slot=each_date_slot)
+                for each_time_slot in times_slots:
+                    time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
+                    all_selected_types = list(each_time_slot.appointment_type)
+                    date_json[date_str] = {
+                        time_str: [each_time_slot.id, each_time_slot.duration, all_selected_types]
+                    }
+            doctor_data.append({
+                'id': doc.profile.id,
+                'name': f"Dr. {doc.profile.user.first_name}",
+                'specialty': doc.get_specialization_display(),
+                'experience': doc.experience_years,
+                'rating': float(doc.star_rating) if doc.star_rating else None,
+                'reviews': doc.total_reviews,
+                'fees': float(doc.fees),
+                'image': doc.profile.profile_pic.url,
+                'availability': date_json,
+            })
+
+        context = {
+            'profile': profile,
+            'doctors': doctors,
+            'doctor_data_json': json.dumps(doctor_data, cls=DjangoJSONEncoder)
+        }
+
+        return render(request, 'pages/patient/book_appoinment.html', context)
+
+    elif request.method == 'POST':
+        try:
+            # Fetch the user's profile information
+            profile: Profile = Profile.objects.get(user=request.user)
+
+            # Get the selected doctor and appointment details from the form
+            doctor_id = request.POST.get('doctor_id')
+            appointment_type = request.POST.get('appointment_type')
+            appointment_date = request.POST.get('appointment_date')
+            appointment_time = request.POST.get('appointment_time')
+            appointment_time_slot_id = request.POST.get('appointment_time_id')
+            appointment_reason = request.POST.get('appointment_reason', '').strip()
+
+            appointment_file = request.FILES.get('appointment_file')
+
+            # Fetch the doctor and date slot objects
+            doctor: DoctorProfile = get_object_or_404(DoctorProfile, id=doctor_id)
+            time_slot_instance: AppointmentTimeSlot = get_object_or_404(AppointmentTimeSlot, id=appointment_time_slot_id)
+
+            # Create a new appointment
+            appointment = Appointment.objects.create(
+                profile=profile,
+                doctor=doctor,
+                time_slot=time_slot_instance,
+
+                appointment_type=appointment_type,
+                appointment_date_str=appointment_date,
+                appointment_time_str=appointment_time,
+
+                reason = appointment_reason,
+                status='Pending',
+            )
+
+            if appointment_file:
+                is_valid, error_msg = is_valid_file(appointment_file, ALLOWED_FILE_TYPES_APPOINTMENT, 20)
+                if not is_valid:
+                    messages.error(request, error_msg)
+                    return JsonResponse({'error': error_msg})
+                appointment.file = appointment_file
+                appointment.save()
+
+            messages.success(request, _("Appointment booked successfully."))
+            return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppoinment')})
+        except Exception as e:
+            messages.error(request, _("An error occurred while booking the appointment."))
+            error_msg = str(e)
+            print(f"Error: {error_msg}")
+        return JsonResponse({'error': error_msg})
+
+    return redirect('patient:BookAppoinment')
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
 def ViewDocument(request: HttpRequest):

@@ -692,16 +692,19 @@
 
         modal.addEventListener('dragover', function (e) {
             e.preventDefault();
-            dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
+            dropZone.classList.remove('border-gray-300', 'bg-gray-50');
+            dropZone.classList.add('border-blue-500', 'bg-blue-50', );
         });
 
         modal.addEventListener('dragleave', function () {
-            dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
+            dropZone.classList.remove('border-blue-500', 'bg-blue-50', );
+            dropZone.classList.add('border-gray-300', 'bg-gray-50');
         });
 
         modal.addEventListener('drop', function (e) {
             e.preventDefault();
-            dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
+             dropZone.classList.remove('border-blue-500', 'bg-blue-50', );
+            dropZone.classList.add('border-gray-300', 'bg-gray-50');
 
             if (e.dataTransfer.files.length) {
                 validateAndHandleFile(e.dataTransfer.files[0]);
@@ -732,7 +735,7 @@
                   showNotification({
                     color: "bg-red-500",
                     title: "File is too large..",
-                    message: "Maximum allowed size is ${MAX_FILE_SIZE_MB}MB."
+                    message: `Maximum allowed size is ${MAX_FILE_SIZE_MB}  MB.`
                 });
                 fileInput.value = '';
                 return;

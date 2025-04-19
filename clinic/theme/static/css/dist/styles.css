@@ -909,18 +909,6 @@ select {
   inset: 0px;
 }
 
-.inset-1 {
-  inset: 0.25rem;
-}
-
-.inset-4 {
-  inset: 1rem;
-}
-
-.inset-5 {
-  inset: 1.25rem;
-}
-
 .inset-x-0 {
   left: 0px;
   right: 0px;
@@ -1059,10 +1047,6 @@ select {
   top: 50%;
 }
 
-.top-12 {
-  top: 3rem;
-}
-
 .top-2 {
   top: 0.5rem;
 }
@@ -1153,6 +1137,10 @@ select {
 
 .col-span-2 {
   grid-column: span 2 / span 2;
+}
+
+.col-span-full {
+  grid-column: 1 / -1;
 }
 
 .row-span-1 {
@@ -1671,6 +1659,11 @@ select {
   width: auto;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
 }
@@ -1919,6 +1912,10 @@ select {
   flex-wrap: wrap;
 }
 
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
 .items-start {
   align-items: flex-start;
 }
@@ -2136,6 +2133,10 @@ select {
 
 .whitespace-nowrap {
   white-space: nowrap;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .rounded {
@@ -3059,6 +3060,11 @@ select {
   fill: currentColor;
 }
 
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -3345,11 +3351,6 @@ select {
   line-height: 1;
 }
 
-.text-6xl {
-  font-size: 3.75rem;
-  line-height: 1;
-}
-
 .text-\[0\.8rem\] {
   font-size: 0.8rem;
 }
@@ -3633,11 +3634,6 @@ select {
 .text-primary-foreground {
   --tw-text-opacity: 1;
   color: rgb(248 250 252 / var(--tw-text-opacity, 1));
-}
-
-.text-purple-500 {
-  --tw-text-opacity: 1;
-  color: rgb(168 85 247 / var(--tw-text-opacity, 1));
 }
 
 .text-purple-600 {
@@ -5080,16 +5076,16 @@ select {
     right: 2rem;
   }
 
+  .md\:top-4 {
+    top: 1rem;
+  }
+
   .md\:top-52 {
     top: 13rem;
   }
 
   .md\:top-64 {
     top: 16rem;
-  }
-
-  .md\:top-4 {
-    top: 1rem;
   }
 
   .md\:col-span-2 {

@@ -50,7 +50,7 @@
                         <h3 class="mb-4 text-xl font-medium">Select a Doctor</h3>
                         <div class="mb-4">
                             <div id="doc-category"
-                                class="flex flex-wrap gap-2 sm:inline-flex items-center justify-start sm:justify-center rounded-lg bg-muted p-1 overflow-x-auto">
+                                class="flex flex-nowrap gap-2 sm:inline-flex items-center justify-start sm:justify-center rounded-lg bg-muted p-1 overflow-x-scroll">
                                 <!-- Doctor Category Tabs button will be added here dynamically -->
                             </div>
                         </div>
@@ -78,46 +78,46 @@
                             <div>
                                 <p class="mb-2 font-medium">Appointment type</p>
                                 <div id="appointment-types" class="space-y-4">
-                                    <div class="flex items-start p-4 border rounded-lg">
-                                        <input type="radio" id="consultation" name="appointmentType" class="mt-1"
-                                            value="consultation" checked />
+                                    <label for='general_consultation' class="flex items-start p-4 border rounded-lg cursor-pointer">
+                                        <input type="radio" id="general_consultation" name="appointmentType" class="mt-1"
+                                            value="general_consultation" checked />
                                         <div class="ml-3">
-                                            <label for="consultation" class="font-medium cursor-pointer">General
-                                                Consultation</label>
+                                            <p for="" class="font-medium cursor-pointer">General
+                                                Consultation</p>
                                             <p class="text-sm text-muted-foreground">Regular checkup or general
                                                 health concerns</p>
                                         </div>
-                                    </div>
-                                    <div class="flex items-start p-4 border rounded-lg">
-                                        <input type="radio" id="followup" name="appointmentType" class="mt-1"
-                                            value="followup" />
+                                    </label>
+                                    <label for='follow_up_visit' class="flex items-start p-4 border rounded-lg cursor-pointer">
+                                        <input type="radio" id="follow_up_visit" name="appointmentType" class="mt-1"
+                                            value="follow_up_visit" />
                                         <div class="ml-3">
-                                            <label for="followup" class="font-medium cursor-pointer">Follow-up
-                                                Visit</label>
+                                            <p class="font-medium ">Follow-up
+                                                Visit</p>
                                             <p class="text-sm text-muted-foreground">Follow-up on previous treatment
                                                 or consultation</p>
                                         </div>
-                                    </div>
-                                    <div class="flex items-start p-4 border rounded-lg">
-                                        <input type="radio" id="specialist" name="appointmentType" class="mt-1"
-                                            value="specialist" />
+                                    </label>
+                                    <label for="offline_consultation" class="flex items-start p-4 border rounded-lg cursor-pointer">
+                                        <input type="radio" id="offline_consultation" name="appointmentType" class="mt-1"
+                                            value="offline_consultation" />
                                         <div class="ml-3">
-                                            <label for="specialist" class="font-medium cursor-pointer">Specialist
-                                                Consultation</label>
+                                            <p class="font-medium">Specialist
+                                                Consultation</p>
                                             <p class="text-sm text-muted-foreground">Specialized treatment for
                                                 specific conditions</p>
                                         </div>
-                                    </div>
-                                    <div class="flex items-start p-4 border rounded-lg">
-                                        <input type="radio" id="online" name="appointmentType" class="mt-1"
-                                            value="online" />
+                                    </label>
+                                    <label for='online_consultation' class="flex items-start p-4 border rounded-lg cursor-pointer">
+                                        <input type="radio" id="online_consultation" name="appointmentType" class="mt-1"
+                                            value="online_consultation" />
                                         <div class="ml-3">
-                                            <label for="online" class="font-medium cursor-pointer">Online
-                                                Consultation</label>
+                                            <p  class="font-medium cursor-pointer">Online
+                                                Consultation</p>
                                             <p class="text-sm text-muted-foreground">Virtual appointment via video
                                                 call</p>
                                         </div>
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -139,19 +139,45 @@
 
                 <!-- Step 4: Patient Information -->
                 <div id="step-4" class="space-y-6 hidden">
+                    <div class="space-y-2 md:col-span-2">
+                        <label for="reason"
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Describe
+                            the Reason here</label>
+                        <textarea id="reason"
+                            class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            placeholder="Briefly describe your symptoms or reason for the appointment"
+                            rows="4"></textarea>
+                    </div>
 
-                    <div class="grid gap-4 md:grid-cols-2">
-
-                        <div class="space-y-2 md:col-span-2">
-                            <label for="reason"
-                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Describe
-                                the Reason here</label>
-                            <textarea id="reason"
-                                class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                placeholder="Briefly describe your symptoms or reason for the appointment"
-                                rows="4"></textarea>
+                    <div class="mt-1 flex flex-col space-y-2">
+                        <label  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            Or   You can upload Files like (txt, audio, video) to describe...
+                        </label>
+                        <div class="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center bg-gray-50 dark:bg-gray-700/30 mb-3 transition-all hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 group cursor-pointer" 
+                            id="dropZone">
+                            <div class="text-center p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <p class="mt-2 text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300">
+                                    Drag and drop your file here or</p>
+                                <button type="button" id="browseFilesBtn" class="mt-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-300">Browse
+                                    files</button>
+                                <input type="file" class="hidden" id="fileInput" name="document_file">
+                            </div>
                         </div>
-
+                        <!-- Selected File Preview -->
+                        <div id="selectedFile" class="hidden animate-fadeIn flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-sm text-gray-800 dark:text-gray-200 flex-grow font-medium" id="fileName"></span>
+                            <button type="button" id="removeFileBtn" class="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <div id="booking-summary" class="p-4 mt-6 border rounded-lg bg-muted/30">
@@ -168,8 +194,7 @@
                                     <p class="font-medium">Doctor</p>
                                     <p class="text-sm text-muted-foreground" id="summary-doctor-name">Not selected
                                     </p>
-                                    <p class="text-sm text-muted-foreground" id="summary-appointment-type">General
-                                        Consultation</p>
+                                    <p class="text-sm text-muted-foreground" id="summary-appointment-type"></p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3">
@@ -198,14 +223,14 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">Duration</p>
-                                    <p class="text-sm text-muted-foreground">30 minutes</p>
+                                    <p class="text-sm text-muted-foreground">60 minutes</p>
                                 </div>
                             </div>
                         </div>
                         <div class="pt-3 mt-3 border-t">
                             <div class="flex justify-between">
                                 <p class="font-medium">Consultation Fee</p>
-                                <p class="font-medium">$150.00</p>
+                                <p class="font-medium" >Rs. <span id='summary-doctor-fee'>0</span> </p>
                             </div>
                             <p class="mt-1 text-xs text-muted-foreground">
                                 Insurance coverage may apply based on your provider
@@ -233,11 +258,15 @@
     <div id="confirmation-dialog" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
         <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
             <div class="text-center">
-                <h3 class="text-lg font-semibold">Appointment Confirmed!</h3>
-                <p class="mt-2 text-muted-foreground">
-                    Your appointment has been successfully booked. A confirmation email
-                    has been sent to your email address with all the details.
+                <h3 class="text-lg font-semibold">Last Click to Book</h3>
+                <p class="mt-2 text-muted-foreground" id="confirmation-message">
                 </p>
+                
+                <button id="confirm-no-button" onclick="document.getElementById('confirmation-dialog').classList.add('hidden')"
+                    class="mt-4 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-500 text-primary-foreground hover:bg-red-600 h-10 px-4 py-2">
+                    Cancel
+                </button>
+
                 <button id="confirm-ok-button"
                     class="mt-4 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                     OK
@@ -263,160 +292,7 @@
 <script>
     const category = ["all", "general", "cardiology", "neurology", "pediatrics"];
 
-    ;
-
-    const doctors = [
-        {
-            id: "dr-smith",
-            name: "Dr. Emily Smith",
-            specialty: "General Medicine",
-            experience: 12,
-            rating: 4.9,
-            reviews: 124,
-            fees: 150,
-            image: "{% static 'doc-2.png' %}",
-            availability: {
-                consultation: {
-
-                    "2025-06-07": ["09:00 AM", "10:00 AM", "11:00 AM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM"],
-                    "2025-04-11": ["09:00 AM", "10:00 AM", "11:00 AM"]
-
-                },
-                followup: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM"],
-                    "2025-04-11": ["02:00 PM", "10:00 AM", "11:00 AM"]
-
-                },
-                online: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-
-
-                }
-            },
-            appointmentTypes: ["consultation", "followup", "online"]
-        },
-        {
-            id: "dr-patel",
-            name: "Dr. Priya Patel",
-            specialty: "Cardiology",
-            experience: 10,
-            rating: 4.7,
-            reviews: 87,
-            fees: 180,
-            image: "{% static 'Doctors/h_doc5.png' %}",
-            availability: {
-                consultation: {
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-                },
-                followup: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                specialist: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                online: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                }
-            },
-            appointmentTypes: ["consultation", "followup", "specialist", "online"]
-        },
-        {
-            id: "dr-patel2",
-            name: "Dr. Priya Patel",
-            specialty: "Neurology",
-            experience: 10,
-            rating: 4.7,
-            reviews: 87,
-            fees: 180,
-            image: "{% static 'Doctors/h_doc3.png' %}",
-            availability: {
-                consultation: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                followup: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-04-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                specialist: {
-
-                    "2025-04-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                online: {
-
-                    "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                }
-            },
-            appointmentTypes: ["consultation", "followup", "specialist", "online"]
-        },
-        {
-            id: "dr-williams",
-            name: "Dr. James Williams",
-            specialty: "Pediatrics",
-            experience: 14,
-            rating: 4.9,
-            reviews: 142,
-            fees: 160,
-            image: "{% static 'Doctors/h_doc4.png' %}",
-            availability: {
-                consultation: {
-
-                    "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                specialist: {
-
-                    "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                },
-                online: {
-
-                    "2025-03-07": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-08": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-                    "2025-03-10": ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"]
-
-                }
-            },
-            appointmentTypes: ["consultation", "specialist", "online"]
-        }
-    ];
-
+    const doc = {{ doctor_data_json|safe }};
 
 
 
@@ -464,7 +340,7 @@
     // Function to populate all doctor cards into the single grid
     function populateAllDoctorCards() {
         const grid = document.getElementById('doctor-grid');
-        const doctorCardsHTML = doctors.map(doctor => generateDoctorCard(doctor)).join('');
+        const doctorCardsHTML = doc.map(doctor => generateDoctorCard(doctor)).join('');
         grid.innerHTML = doctorCardsHTML;
     }
 
@@ -500,11 +376,11 @@
         category.forEach(catg => {
             if (catg === "all") {
                 docCategory.innerHTML += `
-                <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm active hover:bg-slate-50"
+                <button type="button" class="tab-button text-nowrap px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm active hover:bg-slate-50"
                 data-tab="all">All Doctors</button>`;
             } else {
                 docCategory.innerHTML += `
-                <button type="button" class="tab-button px-3 py-1.5 text-sm font-medium rounded-md hover:bg-slate-50"
+                <button type="button" class="tab-button text-nowrap px-3 py-1.5 text-sm font-medium rounded-md hover:bg-slate-50"
                 data-tab="${catg}">${catg.charAt(0).toUpperCase() + catg.slice(1)}</button>`;
             }
         });
@@ -526,7 +402,8 @@
         let selectedDoctorSpecialty = '';
         let selectedDate = null;
         let selectedTime = null;
-        let appointmentType = 'consultation'; // Default value
+        let selectedTimeID = null;
+        let appointmentType = 'general_consultation'; // Default value
         let calendarInstance = null;
 
 
@@ -539,6 +416,8 @@
         const timeSlots = document.querySelectorAll('.time-slot');
         const confirmationDialog = document.getElementById('confirmation-dialog');
         const confirmOkButton = document.getElementById('confirm-ok-button');
+
+        const reason_text = document.getElementById('reason');
 
 
         // Tab switching
@@ -562,31 +441,42 @@
         document.addEventListener('click', function (event) {
             if (event.target.closest('.doctor-card')) {
                 const card = event.target.closest('.doctor-card');
+
                 // Remove selected styles from all cards
                 document.querySelectorAll('.doctor-card').forEach(c => {
                     c.classList.remove('border-2', 'border-primary', 'shadow-md', 'bg-blue-50');
                     c.classList.add('border', 'border-border');
                 });
+
                 // Add selected styles to clicked card
                 card.classList.remove('border', 'border-border');
                 card.classList.add('border-2', 'border-primary', 'shadow-md', 'bg-blue-50');
+
                 // Update selected doctor variables
                 selectedDoctor = card.getAttribute('data-id');
                 selectedDoctorName = card.getAttribute('data-name');
                 selectedDoctorSpecialty = card.getAttribute('data-specialty');
+                selectedDoctorFees = card.getAttribute('data-fees');
+
+
                 // data adding for appoinment date book section
                 document.getElementById('sel-doc-name').textContent = `For ${selectedDoctorName}`;
                 document.getElementById('sel-doc-name').setAttribute('data-id', selectedDoctor);
                 document.getElementById('sel-doc-specialty').textContent = `${selectedDoctorSpecialty}`;
-                const doctorData = doctors.find(doc => doc.id === selectedDoctor);
+
+              
+                const doctorData = doc.find(doc => String(doc.id) === selectedDoctor);
                 if (doctorData) {
                     initCalendar(doctorData.availability); // Update calendar
-                    updateAppointmentTypes(doctorData.appointmentTypes); // Update appointment types
+                    readyToMove = updateNextButtonState();
+                    if (readyToMove) {
+                        goToStep(2); // Move to step 2 if doctor is selected
+                    }
                 }
 
                 // Update summary
                 document.getElementById('summary-doctor-name').textContent = selectedDoctorName;
-                updateNextButtonState();
+                document.getElementById('summary-doctor-fee').textContent = selectedDoctorFees;
             }
         });
 
@@ -594,21 +484,19 @@
         filterDoctorCards('all');
 
 
-
-
-        // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // Step 2 - Select Date & Appointment Type
+        //  -------------- Step 2 - Select Date & Appointment Type ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        
 
         // Initialize Flatpickr calendar dynamically based on doctor's availability
         function initCalendar(doctorAvailability) {
+
             if (calendarInstance) {
                 calendarInstance.destroy(); // Destroy existing instance to avoid duplicates
             }
-            const availabilityForType = doctorAvailability[appointmentType] || { days: [] };
             calendarInstance = flatpickr("#calendar", {
                 inline: true,
                 minDate: "today",
-                enable: Object.keys(availabilityForType), // Get array of available dates from the freeSlot object
+                enable: Object.keys(doctorAvailability), // Get array of available dates from the freeSlot object
                 onChange: function (selectedDates, dateStr) {
                     let selectedDate_temp = selectedDates[0];
                     document.getElementById('selected-date-display').textContent =
@@ -617,71 +505,57 @@
                         selectedDate_temp.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                     selectedDate = selectedDate_temp
 
-                    updateTimeSlots(doctorAvailability,);
-                    updateNextButtonState();
-                }
-            });
-        }
-
-
-        // Update appointment types based on selected doctor
-        function updateAppointmentTypes(doctorAppointmentTypes) {
-            const appointmentTypeInputs = document.querySelectorAll('input[name="appointmentType"]');
-            appointmentTypeInputs.forEach(input => {
-                const type = input.value;
-                if (doctorAppointmentTypes.includes(type)) {
-                    input.disabled = false;
-                    input.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
-                    input.disabled = true;
-                    input.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
-                    if (input.checked) {
-                        input.checked = false; // Uncheck if disabled
-                        appointmentType = ''; // Reset if selected type is unavailable
+                    updateTimeSlots(doctorAvailability); // Update time slots based on selected date
+                    readyToMove = updateNextButtonState();
+                    if (readyToMove) {
+                        goToStep(3); // Move to step 2 if doctor is selected
                     }
                 }
             });
         }
 
-
-
-
-        // Appointment type selection
+        // Appointment type selection & update variable
         document.querySelectorAll('input[name="appointmentType"]').forEach(input => {
             input.addEventListener('change', () => {
                 if (!input.disabled) {
                     appointmentType = input.value;
                     const appointmentTypeText = {
-                        consultation: 'General Consultation',
-                        followup: 'Follow-up Visit',
-                        specialist: 'Specialist Consultation',
-                        online: 'Online Consultation'
+                        general_consultation: 'General Consultation',
+                        follow_up_visit: 'Follow-up Visit',
+                        offline_consultation: 'Offline Consultation',
+                        online_consultation: 'Online Consultation'
                     }[appointmentType];
-                    document.getElementById('summary-appointment-type').textContent = appointmentTypeText;
 
-                    const doctorData = doctors.find(doc => doc.id === selectedDoctor);
-                    if (doctorData) {
-                        calendarInstance = initCalendar(doctorData.availability, appointmentType, calendarInstance);
-                        updateTimeSlots(doctorData.availability, appointmentType);
+                    document.getElementById('summary-appointment-type').textContent = appointmentTypeText;
+                    
+                    readyToMove= updateNextButtonState();
+                      if (readyToMove) {
+                        goToStep(3); // Move to step 2 if doctor is selected
                     }
-                    updateNextButtonState();
                 }
             });
         });
 
+        
 
-        // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // Step 3 - Select Time Slot
+
+
+
+        // -----------Step 3 - Select Time Slot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
         // Function to generate time slot buttons dynamically
         function generateTimeSlots(availableTimesForDate) {
             const timeSlotsContainer = document.getElementById('time-slots-container');
             timeSlotsContainer.innerHTML = '';
+            availableTimesForDate_Key = Object.keys(availableTimesForDate)
 
-            availableTimesForDate.forEach(time => {
+
+            availableTimesForDate_Key.forEach(time => {
                 const button = document.createElement('button');
                 button.className = 'time-slot w-full px-4 py-2 border border-border rounded-md font-medium hover:border-primary';
                 button.setAttribute('data-time', time);
+                button.setAttribute('data-time-id', availableTimesForDate[time][0]);
                 button.textContent = time;
                 timeSlotsContainer.appendChild(button);
             });
@@ -690,16 +564,14 @@
         // Function to update time slots based on selected doctor and date
         function updateTimeSlots(doctorAvailability) {
 
+            if (selectedDoctor && selectedDate ) {
 
-            if (selectedDoctor && selectedDate && appointmentType) {
-                const doctorData = doctors.find(doc => doc.id === selectedDoctor);
-                const availabilityForType = (doctorData.availability[appointmentType]);
-
+                const doctorData = doc.find(doc => String(doc.id) === selectedDoctor);
                 datesel = selectedDate.toLocaleDateString('en-CA');
 
-                const availableTimesForDate = availabilityForType[datesel] || [];
+                const availableTimesForDate = (doctorData.availability[datesel]);
 
-                if (availabilityForType && availableTimesForDate.length > 0) {
+                if (availableTimesForDate ) {
                     generateTimeSlots(availableTimesForDate);
                 } else {
                     document.getElementById('time-slots-container').innerHTML =
@@ -717,36 +589,24 @@
                 });
                 event.target.classList.add('bg-primary', 'text-primary-foreground');
                 selectedTime = event.target.getAttribute('data-time');
+                selectedTimeID = event.target.getAttribute('data-time-id');
+
+
                 document.getElementById('summary-time').textContent = selectedTime;
-                updateNextButtonState();
+                readyToMove = updateNextButtonState();
+                if (readyToMove) {
+                        goToStep(4); // Move to step 2 if doctor is selected
+                    }
             }
         });
 
 
-        // Time slot selection
-        timeSlots.forEach(slot => {
-            if (!slot.disabled) {
-                slot.addEventListener('click', () => {
-                    // Remove selected class from all slots
-                    timeSlots.forEach(s => {
-                        if (!s.disabled) {
-                            s.classList.remove('bg-primary', 'text-primary-foreground');
-                        }
-                    });
+       
 
-                    // Add selected class to clicked slot
-                    slot.classList.add('bg-primary', 'text-primary-foreground');
 
-                    // Update selected time
-                    selectedTime = slot.getAttribute('data-time');
+        // ------- Others -----------------
 
-                    // Update summary
-                    document.getElementById('summary-time').textContent = selectedTime;
 
-                    updateNextButtonState();
-                });
-            }
-        });
 
 
         // Next button click
@@ -776,6 +636,14 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 // Show confirmation dialog
+                if (reason_text.value.trim() === '' && document.getElementById('fileInput').files.length === 0) {
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Please describe the reason.",
+                        message: "You must either describe your symptoms or upload a file."
+                    });
+                    return;
+                }
                 confirmationDialog.classList.remove('hidden');
             }
 
@@ -810,12 +678,7 @@
             updateNextButtonState();
         });
 
-        // Confirmation dialog OK button
-        confirmOkButton.addEventListener('click', () => {
-            confirmationDialog.classList.add('hidden');
-            // Reset form or redirect to another page
-            window.location.reload();
-        });
+        
 
         // Update progress indicators
         function updateProgressIndicators() {
@@ -845,7 +708,6 @@
         // Update next button state
         function updateNextButtonState() {
             let disabled = false;
-
             switch (currentStep) {
                 case 1:
                     disabled = !selectedDoctor;
@@ -869,6 +731,7 @@
                 nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
                 nextButton.disabled = false;
             }
+            return !disabled;
         }
 
         // go to specific step with number send among 1-4
@@ -889,6 +752,9 @@
 
                 // Update button text
                 if (currentStep === 4) {
+                    confirmation_message = document.getElementById('confirmation-message');
+                    confirmation_message.textContent =
+                        `Your appointment with ${selectedDoctorName} on ${selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${selectedTime} will be booked.`;
                     nextButton.textContent = 'Confirm Booking';
                 } else {
                     nextButton.textContent = 'Continue';
@@ -918,8 +784,176 @@
         });
         // Initialize
         updateNextButtonState();
+
+
+
+        // Confirmation dialog OK button
+        confirmOkButton.addEventListener('click', () => {
+            // create a form and do post request at postbooking
+            const formData = new FormData();
+            formData.append('doctor_id', selectedDoctor);
+            formData.append('appointment_type', appointmentType);
+            formData.append('appointment_date', selectedDate.toISOString().split('T')[0]);
+            formData.append('appointment_time', selectedTime);
+            formData.append('appointment_time_id', selectedTimeID);
+            formData.append('appointment_reason', reason_text.value.trim());
+            formData.append('appointment_file', fileInput.files[0]); // Append the file if selected    
+
+
+            fetch("{% url 'patient:BookAppoinment' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token for security
+                },
+                enctype: "multipart/form-data"
+
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification({
+                            color: "bg-green-500",
+                            title: "Booking Confirmed",
+                            message: "Your appointment has been successfully booked."
+                        });
+                        redirect_url = data.redirect_url || "{% url 'patient:viewAppoinment' %}";
+                        window.location.href = redirect_url;
+                    } else {
+                        showNotification({
+                            color: "bg-red-500",
+                            title: "Booking Failed !!",
+                            message: data.message || "An error occurred while booking your appointment."
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Booking Failed",
+                        message: "An error occurred while booking your appointment."
+                    });
+                });
+        });
     });
 
+
+    //---------------------------------------------------------------------------------------------------------
+    // File upload functionality
+
+     const ALLOWED_FILE_TYPES = [
+            // Documents
+            'application/pdf',
+            'application/msword', // .doc
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+            'text/plain', // .txt
+
+             // Images
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'image/gif',
+            'image/webp',
+
+             // Audio
+            'audio/mpeg',  // .mp3
+            'audio/wav',
+            'audio/ogg',
+
+            // Video
+            'video/mp4',
+            'video/ogg',
+            'video/webm'
+        ];
+
+    const MAX_FILE_SIZE_MB =20 ; // 6 MB
+
+    const modal = document.getElementById('step-4');
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const selectedFile = document.getElementById('selectedFile');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+    const fileName = document.getElementById('fileName');
+
+    // File handling functions
+    dropZone.addEventListener('click', function () {
+        fileInput.click();
+    });
+
+    modal.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        dropZone.classList.remove('border-gray-300', 'bg-gray-50');
+        dropZone.classList.add('border-blue-500', 'bg-blue-50', );
+    });
+
+    modal.addEventListener('dragleave', function () {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', );
+        dropZone.classList.add('border-gray-300', 'bg-gray-50');
+    });
+
+    modal.addEventListener('drop', function (e) {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', );
+        dropZone.classList.add('border-gray-300', 'bg-gray-50');
+
+        if (e.dataTransfer.files.length) {
+            validateAndHandleFile(e.dataTransfer.files[0]);
+        }
+    });
+
+
+    fileInput.addEventListener('change', function () {
+            if (fileInput.files.length) {
+                validateAndHandleFile(fileInput.files[0]);
+            }
+    });
+
+
+
+     function validateAndHandleFile(file) {
+            const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
+            const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
+
+            if (!isValidType) {
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Invalid file type. ",
+                    message: "Please upload only PDF, DOC, DOCX, TXT, JPG, JPEG, PNG, GIF, audio (MP3, WAV, OGG), or video (MP4, WEBM, OGG) files."
+                });
+                fileInput.value = '';
+                return;
+            }
+
+            if (!isValidSize) {
+                  showNotification({
+                    color: "bg-red-500",
+                    title: "File is too large..",
+                    message: `Maximum allowed size is ${MAX_FILE_SIZE_MB}  MB.`
+                });
+                fileInput.value = '';
+                return;
+            }
+
+            handleFile(file); // proceed if valid
+        }
+
+        function handleFile(file) {
+            fileName.textContent = file.name;
+            selectedFile.classList.remove('hidden');
+            dropZone.classList.remove('border-gray-300', 'bg-gray-50');
+            dropZone.classList.add('border-green-500', 'bg-green-50');
+        }
+
+        removeFileBtn.addEventListener('click', function () {
+            selectedFile.classList.add('hidden');
+            fileInput.value = '';
+            dropZone.classList.remove('border-green-500', 'bg-green-50');
+            dropZone.classList.add('border-gray-300', 'bg-gray-50');
+
+        });
+    
 </script>
 
 

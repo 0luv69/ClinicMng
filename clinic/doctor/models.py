@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from account.models import Profile
-
+from multiselectfield import MultiSelectField
 
 
 class DoctorProfile(models.Model):
@@ -20,16 +20,9 @@ class DoctorProfile(models.Model):
         ('other', 'Other'),
     ]
 
-    ALL_APPOINTMENT_TYPE =[
-        ('general_consultation', 'General Consultation'),
-        ('follow_up_visit', 'Follow-up Visit'),
-        ('online_consultation', 'Online Consultation'),
-        ('specialist_consultation', 'Specialist Consultation'),
-    ]
+   
 
     specialization = models.CharField(max_length=100, choices=SPECIALIZATIONS)
-    appointment_type = appointment_type = models.JSONField(blank=True, null=True, default=list)#eg: ["General Consultation", "Follow-up Visit", "Online Consultation" ]
-
 
     qualifications = models.TextField(blank=True, null=True)
     experience_years = models.IntegerField()
@@ -41,11 +34,9 @@ class DoctorProfile(models.Model):
     star_rating = models.FloatField(null=True, blank=True)
     total_reviews =  models.IntegerField(null=True)
 
-    #availability
-    available_days = models.JSONField(blank=True, null=True)  # e.g., ["Monday", "Wednesday"]
-    available_time_slots = models.JSONField(blank=True, null=True)  # e.g., [{"start": "10:00", "end": "14:00"}]
 
-    consultation_fee = models.DecimalField(max_digits=10, decimal_places=2)
+
+    fees = models.DecimalField(max_digits=10, decimal_places=2)
     accepts_new_patients = models.BooleanField(default=True)
 
 
@@ -65,3 +56,44 @@ class DoctorProfile(models.Model):
     def __str__(self):
         return f"Dr. {self.profile.user.first_name} ({self.specialization})"
     
+
+
+class AppointmentDateSlot(models.Model):
+
+    doctor = models.ForeignKey( DoctorProfile, on_delete=models.CASCADE, related_name='datetime_slots'
+    )
+  
+    date = models.DateField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f"{self.doctor} – @ {self.date}"
+    
+
+
+
+class AppointmentTimeSlot(models.Model):
+    appointment_date_slot = models.ForeignKey(AppointmentDateSlot, on_delete=models.CASCADE, related_name='appointment_times')
+    from_time = models.TimeField()
+    to_time = models.TimeField()
+
+    durations = [
+        ('15', '15 minutes'),
+        ('30', '30 minutes'),
+        ('45', '45 minutes'),
+        ('60', '60 minutes'),
+    ]
+    duration = models.CharField(max_length=3, choices=durations, default='60')
+
+    APPOINTMENT_TYPES =  [
+        ('general_consultation', 'General Consultation'),
+        ('follow_up_visit', 'Follow-up Visit'),
+        ('online_consultation', 'Online Consultation'),
+        ('offline_consultation', 'Offline Consultation'),
+    ]
+    appointment_type = MultiSelectField(choices=APPOINTMENT_TYPES, max_length=100, blank=True, null=True)
+    is_booked = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.appointment_date_slot} – {self.from_time}--{self.to_time}"

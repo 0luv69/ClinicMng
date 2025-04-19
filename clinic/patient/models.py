@@ -4,6 +4,8 @@ from mimetypes import guess_type
 
 from account.models import Profile, MedicalInfo
 
+from doctor.models import AppointmentTimeSlot, DoctorProfile
+
 
 
 class Documents(models.Model):
@@ -29,3 +31,33 @@ class Documents(models.Model):
     def is_pdf(self):
         mime_type, _ = guess_type(self.file.url)
         return mime_type == 'application/pdf'
+    
+
+
+class Appointment(models.Model):
+    APPOINTMENT_TYPES =  [
+        ('general_consultation', 'General Consultation'),
+        ('follow_up_visit', 'Follow-up Visit'),
+        ('online_consultation', 'Online Consultation'),
+        ('offline_consultation', 'Offline Consultation'),
+    ]
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments")
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
+    time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
+
+    appointment_type = models.CharField(max_length=50, choices=APPOINTMENT_TYPES, default='general_consultation')
+    appointment_date_str = models.DateTimeField()
+    appointment_time_str = models.CharField(max_length=50, blank=True)
+
+
+    file = models.FileField(upload_to='appointment_files/', blank=True)
+    reason = models.TextField(blank=True)
+
+    status = models.CharField(max_length=50, default='pending')
+
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+
+    def __str__(self):
+        return f"{self.profile} - {self.date}"
