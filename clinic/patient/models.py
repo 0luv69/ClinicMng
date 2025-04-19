@@ -60,4 +60,4 @@ class Appointment(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     def __str__(self):
-        return f"{self.profile} - {self.date}"
+        return f"{self.profile} - {self.appointment_date_str} - {self.appointment_time_str}"

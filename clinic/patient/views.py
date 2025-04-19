@@ -109,9 +109,11 @@ def BookAppoinment(request: HttpRequest):
                 for each_time_slot in times_slots:
                     time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
                     all_selected_types = list(each_time_slot.appointment_type)
-                    date_json[date_str] = {
-                        time_str: [each_time_slot.id, each_time_slot.duration, all_selected_types]
-                    }
+
+                    if not each_time_slot.is_booked:
+                        date_json[date_str] = {
+                            time_str: [each_time_slot.id, each_time_slot.duration, all_selected_types]
+                        }
             doctor_data.append({
                 'id': doc.profile.id,
                 'name': f"Dr. {doc.profile.user.first_name}",
@@ -150,6 +152,9 @@ def BookAppoinment(request: HttpRequest):
             # Fetch the doctor and date slot objects
             doctor: DoctorProfile = get_object_or_404(DoctorProfile, id=doctor_id)
             time_slot_instance: AppointmentTimeSlot = get_object_or_404(AppointmentTimeSlot, id=appointment_time_slot_id)
+
+            time_slot_instance.is_booked = True
+            time_slot_instance.save()   
 
             # Create a new appointment
             appointment = Appointment.objects.create(

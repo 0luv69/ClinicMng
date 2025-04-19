@@ -49,9 +49,10 @@
                     <div>
                         <h3 class="mb-4 text-xl font-medium">Select a Doctor</h3>
                         <div class="mb-4">
-                            <div id="doc-category"
-                                class="flex flex-nowrap gap-2 sm:inline-flex items-center justify-start sm:justify-center rounded-lg bg-muted p-1 overflow-x-scroll">
+                            <div class="w-full overflow-x-auto whitespace-nowrap px-1 py-1 rounded-lg bg-muted">
+                                <div class="inline-flex gap-2" id="doc-category">
                                 <!-- Doctor Category Tabs button will be added here dynamically -->
+                                </div>
                             </div>
                         </div>
                         <!-- Single grid for all doctor cards -->
@@ -290,7 +291,7 @@
 
 
 <script>
-    const category = ["all", "general", "cardiology", "neurology", "pediatrics"];
+    const category = ["all", "general_medicine", "cardiology", "neurology", "psychiatry" ,"orthopedics" ,"pediatrics", "pediatrics", "dermatology", "radiology", ];
 
     const doc = {{ doctor_data_json|safe }};
 
@@ -353,16 +354,23 @@
             });
         } else {
             const tabToSpecialty = {
-                'general': 'General Medicine',
+                'general_medicine': 'General Medicine',
                 'cardiology': 'Cardiology',
+                'dermatology': 'Dermatology',
                 'neurology': 'Neurology',
-                'pediatrics': 'Pediatrics'
+                'orthopedics': 'Orthopedics',
+                'pediatrics': 'Pediatrics',
+                'psychiatry': 'Psychiatry',
+                'radiology': 'Radiology',
+                'surgery': 'Surgery',
             };
             const selectedSpecialty = tabToSpecialty[tabId];
+            let active_cards_count = 0
             allCards.forEach(card => {
                 const cardSpecialty = card.getAttribute('data-specialty');
                 if (cardSpecialty === selectedSpecialty) {
                     card.classList.remove('hidden');
+                    active_cards_count += 1
                 } else {
                     card.classList.add('hidden');
                 }
