@@ -17,9 +17,9 @@ urlpatterns = [
     # path('patient/old', patientDashboardOld, name='patientDashboardold'),
 
 
-    # path('management/', management, name='management_dashboard'),
-    # path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
-    # path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
+    path('management/', management, name='management_dashboard'),
+    path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
+    path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
 
 
 ]

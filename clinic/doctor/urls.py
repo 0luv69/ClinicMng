@@ -18,5 +18,5 @@ urlpatterns = [
 
 
     path('setting/', dSetting, name='dSetting'),
-    path('profile/', d_profile, name='d-profile'),
+    path('profile/', d_profile, name='profile'),
 ]
