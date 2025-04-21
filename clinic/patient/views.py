@@ -121,9 +121,10 @@ def BookAppoinment(request: HttpRequest):
                     all_selected_types = list(each_time_slot.appointment_type)
 
                     if not each_time_slot.is_booked:
-                        date_json[date_str] = {
-                            time_str: [each_time_slot.id, each_time_slot.duration, all_selected_types]
-                        }
+                        if date_str not in date_json:
+                            date_json[date_str] = {}
+                        date_json[date_str][time_str] = [each_time_slot.id, each_time_slot.duration, all_selected_types]
+
             doctor_data.append({
                 'id': doc.id,
                 'name': f"Dr. {doc.profile.user.first_name}",
@@ -135,6 +136,7 @@ def BookAppoinment(request: HttpRequest):
                 'image': doc.profile.profile_pic.url,
                 'availability': date_json,
             })
+
 
         context = {
             'profile': profile,
@@ -178,7 +180,7 @@ def BookAppoinment(request: HttpRequest):
                 appointment_time_str=appointment_time,
 
                 reason = appointment_reason,
-                status='Pending',
+                status='pending'
             )
 
             if appointment_file:

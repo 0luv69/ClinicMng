@@ -1,10 +1,12 @@
 from django.db import models
+
 from django.contrib.auth.models import User
 from mimetypes import guess_type
 
 from account.models import Profile, MedicalInfo
 
 from doctor.models import AppointmentTimeSlot, DoctorProfile
+import uuid
 
 
 
@@ -42,6 +44,8 @@ class Appointment(models.Model):
         ('offline_consultation', 'Offline Consultation'),
     ]
 
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments")
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
     time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
@@ -55,12 +59,16 @@ class Appointment(models.Model):
     reason = models.TextField(blank=True)
 
 
-    STATUS_TYPE = [('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled'),( 'completed', 'Completed')]
-
-    status = models.CharField(max_length=50, default='pending', choices=STATUS_TYPE)
+    STATUS_TYPE = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('cancelled', 'Cancelled'),
+        ('completed', 'Completed')
+    ]
+    status = models.CharField(max_length=50,  choices=STATUS_TYPE, default='pending')
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     def __str__(self):
-        return f"{self.profile} - {self.appointment_date} - {self.appointment_time_str}"
+        return f"{self.profile} - {self.appointment_date} - {self.appointment_time_str} - {self.status}"
