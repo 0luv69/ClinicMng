@@ -54,7 +54,10 @@ class Appointment(models.Model):
     file = models.FileField(upload_to='appointment_files/', blank=True)
     reason = models.TextField(blank=True)
 
-    status = models.CharField(max_length=50, default='pending')
+
+    STATUS_TYPE = [('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled'),( 'completed', 'Completed')]
+
+    status = models.CharField(max_length=50, default='pending', choices=STATUS_TYPE)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
