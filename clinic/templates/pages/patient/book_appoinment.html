@@ -839,7 +839,7 @@
             formData.append('appointment_reason', reason_text.value.trim());
             formData.append('appointment_file', fileInput.files[0]); // Append the file if selected    
 
-  fetch("{% url 'patient:BookAppoinment' %}", {
+            fetch("{% url 'patient:BookAppoinment' %}", {
                 method: 'POST',
                 body: formData,
                 headers: {
