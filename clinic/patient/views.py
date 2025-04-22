@@ -88,7 +88,7 @@ def patientDashboard(request: HttpRequest):
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
-def viewAppoinment(request: HttpRequest):  
+def viewAppointment(request: HttpRequest):  
     profile: Profile = Profile.objects.get(user=request.user)
     appointments: Appointment = Appointment.objects.filter(profile=profile).order_by('-created_at')
 
@@ -96,11 +96,43 @@ def viewAppoinment(request: HttpRequest):
         'profile': profile,
         'appointments': appointments,
     }
-    return render(request, 'pages/patient/view_appoinment.html', context) 
+    return render(request, 'pages/patient/view_appointment.html', context) 
+
+
+def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
+    try:
+        print(f"Appointment ID: {apot_id}, Status: {status}")
+        print(Appointment.objects.filter(uuid=apot_id))
+        appointment = get_object_or_404(Appointment, uuid=apot_id)
+
+        profile: Profile = Profile.objects.get(user=request.user)
+        print(f"Profile: {profile}")
+        print(f"Appointment: {appointment}")
+        if request.method == 'POST':
+            if status == 'cancel':
+                if appointment.status != "completed":
+                    if appointment.time_slot:
+                        appointment.time_slot.is_booked = False
+                        appointment.time_slot.save()
+                    appointment.status = 'cancelled'
+                    appointment.save()
+                    messages.success(request, _("Appointment cancelled successfully."))
+                else:
+                    messages.error(request, _("Cannot cancel a completed appointment."))
+            elif status == 'edit':
+                # Logic for editing the appointment can be added here
+                pass
+            return redirect('patient:viewAppointment')
+    except Exception as e:
+        print(f"Error: {e}")
+        messages.error(request, _("An error occurred while processing your request."))
+        return redirect('patient:viewAppointment')
+
+
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
-def BookAppoinment(request: HttpRequest):
+def BookAppointment(request: HttpRequest):
     """Doctor booking page."""
 
     if request.method == 'GET':
@@ -144,7 +176,7 @@ def BookAppoinment(request: HttpRequest):
             'doctor_data_json': json.dumps(doctor_data, cls=DjangoJSONEncoder)
         }
 
-        return render(request, 'pages/patient/book_appoinment.html', context)
+        return render(request, 'pages/patient/book_appointment.html', context)
 
     elif request.method == 'POST':
         try:
@@ -192,18 +224,18 @@ def BookAppoinment(request: HttpRequest):
                 appointment.save()
 
             messages.success(request, _("Appointment booked successfully."))
-            return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppoinment')})
+            return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppointment')})
         except Exception as e:
             messages.error(request, _("An error occurred while booking the appointment."))
             error_msg = str(e)
             print(f"Error: {error_msg}")
         return JsonResponse({'error': error_msg})
 
-    return redirect('patient:BookAppoinment')
+    return redirect('patient:bookAppointment')
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
 def ViewDocument(request: HttpRequest):
-    path = reverse('patient:ViewDocument')
+    path = reverse('patient:viewDocument')
     if request.method == 'POST':
         nick_name = request.POST.get('nick_name', '').strip()
         doc_type = request.POST.get('doc_type', '').strip()
@@ -233,7 +265,7 @@ def ViewDocument(request: HttpRequest):
             return redirect(path+'#add_new')
 
 
-        return redirect('patient:ViewDocument')
+        return redirect('patient:viewDocument')
     
 
 
@@ -254,14 +286,14 @@ def delete_document(request, doc_id):
             if document.file:
                 document.file.delete(save=False)  # Delete file from storage
             document.delete()  # Delete record from DB
-            return redirect('patient:ViewDocument')  # Redirect to your document list page
+            return redirect('patient:viewDocument')  # Redirect to your document list page
     except Documents.DoesNotExist:
         messages.error(request, "Document not found.")
     except Exception as e:  
         messages.error(request, f"An error occurred: {e}")
 
     # If accessed via GET, redirect to same page (or show a confirm page optionally)
-    return redirect('patient:ViewDocument')
+    return redirect('patient:viewDocument')
 
 
 

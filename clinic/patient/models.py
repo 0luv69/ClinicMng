@@ -44,7 +44,7 @@ class Appointment(models.Model):
         ('offline_consultation', 'Offline Consultation'),
     ]
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=True)
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments")
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
@@ -66,6 +66,9 @@ class Appointment(models.Model):
         ('completed', 'Completed')
     ]
     status = models.CharField(max_length=50,  choices=STATUS_TYPE, default='pending')
+
+    # cancled_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, related_name="cancelled_appointments", blank=True, null=True) 
+    # cancel_reason = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
