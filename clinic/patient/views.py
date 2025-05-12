@@ -312,7 +312,38 @@ def message(request: HttpRequest):
     return render(request, 'pages/patient/message.html')
 
 def labReport(request: HttpRequest):
-    return render(request, 'pages/patient/lab_report.html')
+    profile: Profile = request.user.profile
+    reports: LabReport = LabReport.objects.filter(patient_profile=profile)
+
+    payload = []
+    for each_report in reports:
+        params = []
+        for each_params in each_report.parameters.all():
+            params.append({
+                'name':     each_params.parameter_name,
+                'result':     each_params.result,
+                'reference': each_params.reference_range,
+                'status':   each_params.status.lower(),
+            })
+
+        payload.append({
+            'id':         each_report.id,
+            'date':       each_report.report_date.strftime('%Y-%m-%d'),
+            'type':       each_report.report_type,
+            'status':     each_report.status.lower(),
+            'doctor':     each_report.doctor.profile.user.get_full_name(),
+            'parameters': params,
+            'notes':      each_report.report_description,
+        })
+
+    context = {
+            'profile': profile,
+            'lab_reports':json.dumps(payload, cls=DjangoJSONEncoder),
+        }
+
+
+
+    return render(request, 'pages/patient/lab_report.html', context)
 
 def prescriptions(request: HttpRequest):
     if request.method == 'GET':
