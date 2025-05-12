@@ -1,5 +1,5 @@
 {% extends "pages/patient/P_base.html" %}
-{% load choose_color %}
+{% load choose_color choose_text %}
 
 {% load static %}
 
@@ -33,10 +33,10 @@
     </div>
 
     <!-- Cards with improved visuals and animations -->
-    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4 mb-8">
+    <div class="flex justify-between overflow-x-auto gap-6 px-3 py-4 custom-scrollbar pb-4 custom-scrollbar">
         <!-- Appointment Card -->
         <div
-            class="rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            class="min-w-[288px] flex-shrink-0 rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="flex items-center space-x-4 p-6 pb-2 border-b border-blue-50">
                 <div class="bg-blue-100 p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -70,12 +70,9 @@
                                     <span class="text-sm text-gray-600 my-1">{{ latest_appointment.appointment_time_str }}</span>
                                 </div>
 
-                                <div class="flex items-center gap-2 justify-between rounded-sm bg-gray-50 p-1">
-                                    <span class="text-xs text-gray-600 my-1 ml-3"> From Dr. {{ latest_appointment.doctor.profile.user.first_name }}</span>
-                                    <div
-                                        class="inline-flex flex-col items-center rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                                        {{ latest_appointment.appointment_type }} 
-                                    </div>
+                                <div class="flex-col flex-shrink items-center gap-2 justify-between rounded-sm bg-gray-50 p-1 text-xs ">
+                                    <p class=" text-gray-600 my-1 "> From Dr. {{ latest_appointment.doctor.profile.user.first_name }}</p>
+                                    Type: <p class=" my-1 bg-blue-50 px-3 py-1 rounded-lg text-blue-700 inline-block " >{{ latest_appointment.appointment_type }} </p>
                                 </div>
                             </div>
                             {% else %}
@@ -105,7 +102,7 @@
 
         <!-- Lab Results Card -->
         <div
-            class="rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            class="min-w-[288px] flex-shrink-0 rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="flex items-center space-x-4 p-6 pb-2 border-b border-green-50">
                 <div class="bg-green-100 p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -153,7 +150,7 @@
 
         <!-- Prescription Card -->
         <div
-            class="rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            class="min-w-[288px] flex-shrink-0 rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="flex items-center space-x-4 p-6 pb-2 border-b border-red-50">
                 <div class="bg-red-100 p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -219,9 +216,9 @@
             </div>
         </div>
 
-        <!-- Health Reminders Card -->
+        <!-- Message Card -->
         <div
-            class="rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            class="min-w-[288px] flex-shrink-0 rounded-xl border bg-white text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="flex items-center space-x-4 p-6 pb-2 border-b border-purple-50">
                 <div class="bg-purple-100 p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -272,7 +269,7 @@
 
 
     <!-- Scollable shortcut tabs -->
-    <div class="flex items-center justify-between  gap-6 pb-4 overflow-x-scroll custom-scrollbar">
+    {% comment %} <div class="flex items-center justify-between  gap-6 pb-4 overflow-x-scroll custom-scrollbar">
         <a href="#" class="bg-white shadow rounded-lg p-6 flex items-center justify-between min-w-72 ">
             <div>
                 <h3 class="text-sm text-gray-500">Total Appointments</h3>
@@ -392,13 +389,12 @@
             </div>
         </a>
 
-    </div>
+    </div> {% endcomment %}
 
 
 
     <!-- Overview, Time line other section -->
-    <section class="flex flex-1 flex-col p-4 md:p-6 mt-8 
-    bg-white rounded-lg shadow-sm border border-gray-200">
+    <section class="flex flex-1 flex-col p-4 md:p-6 mt-8 bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
                 <h1 id="tabName" class="text-2xl font-bold tracking-tight">Overview</h1>
@@ -446,6 +442,8 @@
                     <!-- Appoinment Summary -->
                     <div id="appoinment_summary_crd"
                         class="rounded-lg border bg-white shadow-sm border-gray-200 hover:shadow-md transition-all">
+                        
+                        <!-- Card Header -->
                         <div class="flex flex-col space-y-1.5 p-6">
                             <h3 class="font-semibold flex items-center text-lg">
                                 <svg class="w-5 h-5 mr-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -457,96 +455,93 @@
                             </h3>
                             <p class="text-sm text-gray-500">Your upcoming and past appointments</p>
                         </div>
+
+                        <!-- Card Body -->
                         <div class="p-6 pt-0 space-y-4">
-                            <div class="flex items-start gap-4">
-                                <div class="rounded-full bg-green-100 p-2">
-                                    <svg class="w-4 h-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium">Upcoming Appointment</p>
-                                    <p class="text-xs text-gray-600 font-semibold">March 18, 2025 • 10:30 AM</p>
-                                    <div class="flex items-center mt-1">
-                                        <span class="text-xs text-gray-500 flex items-center">
-                                            <svg class="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                            {% with appointments=profile.patients_appointments.all|dictsortreversed:"appointment_date"|slice:":5" %}
+
+                                {% for each_app in appointments %}
+                                    <div class="flex items-start gap-4">
+                                        {% if each_app.status == "confirmed"%}
+                                        <div class="rounded-full bg-green-100 p-2">
+                                            <svg class="w-4 h-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            Dr. Smith
-                                        </span>
-                                        <span class="mx-2 text-gray-300">•</span>
-                                        <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">Annual
-                                            Check-up</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="h-px w-full bg-gray-100 my-4"></div>
-                            <div class="flex items-start gap-4">
-                                <div class="rounded-full bg-gray-100 p-2">
-                                    <svg class="w-4 h-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium">Past Appointment</p>
-                                    <p class="text-xs text-gray-600 font-semibold">February 15, 2025 • 11:00 AM</p>
-                                    <div class="flex items-center mt-1">
-                                        <span class="text-xs text-gray-500 flex items-center">
-                                            <svg class="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </div>
+
+                                        {% elif each_app.status == "cancelled" %}
+
+                                        <div class="rounded-full bg-red-100 p-2">
+                                            <svg class="w-4 h-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            Dr. Johnson
-                                        </span>
-                                        <span class="mx-2 text-gray-300">•</span>
-                                        <span
-                                            class="text-xs bg-gray-50 text-gray-700 px-2 py-0.5 rounded-full">Follow-up</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="h-px w-full bg-gray-100 my-4"></div>
-                            <div class="flex items-start gap-4">
-                                <div class="rounded-full bg-gray-100 p-2">
-                                    <svg class="w-4 h-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium">Past Appointment</p>
-                                    <p class="text-xs text-gray-600 font-semibold">January 10, 2025 • 9:15 AM</p>
-                                    <div class="flex items-center mt-1">
-                                        <span class="text-xs text-gray-500 flex items-center">
-                                            <svg class="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </div>
+
+                                        {% elif each_app.status == "pending" %}
+
+                                        <div class="rounded-full bg-orange-100 p-2">
+                                            <svg class="w-4 h-4 text-orange-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            Dr. Williams
-                                        </span>
-                                        <span class="mx-2 text-gray-300">•</span>
-                                        <span class="text-xs bg-gray-50 text-gray-700 px-2 py-0.5 rounded-full">Dental
-                                            Check-up</span>
+                                        </div>
+
+                                        {% else %}
+
+                                        <div class="rounded-full bg-blue-100 p-2">
+                                            <svg class="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                        </div>
+
+                                        {% endif %}
+
+
+                                        <div>
+                                            <p class="text-sm font-medium">{% get_appoinment_status_text each_app.status %}</p>
+                                            <p class="text-xs text-gray-600 font-semibold">{{ each_app.appointment_date|date:"F j, Y" }}  •  {{ each_app.appointment_time_str }}</p>
+                                            <div class="flex items-center mt-1">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    <svg class="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                                        </path>
+                                                    </svg>
+                                                    Dr. {{ each_app.doctor.profile.user.first_name }}
+                                                </span>
+                                                <span class="mx-2 text-gray-300">•</span>
+                                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{{ each_app.appointment_type }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="h-px w-full bg-gray-100 my-4"></div>
+
+                                {% empty %}
+                                    <p class="text-sm text-gray-600 my-1 ml-3 rounded-sm bg-gray-50 p-4">
+                                        No Appoinments were found.
+                                        Please Book some.
+                                    </p>
+        
+                                {% endfor %}
+                            {% endwith %}
                         </div>
+
+
+                        <!-- Card Footer -->
                         <div class="p-6 pt-0 mt-4">
-                            <a href="#"
+                            <a href="{% url 'patient:viewAppointment' %}"
                                 class="w-full h-9 px-3 flex items-center justify-center gap-1 rounded-md border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-sm font-medium">
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
