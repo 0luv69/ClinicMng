@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 
     # # Third party apps
     'tailwind',
-    # 'theme',
+    'theme',
 ]
 
 MIDDLEWARE = [

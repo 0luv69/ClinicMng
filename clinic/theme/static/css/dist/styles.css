@@ -154,7 +154,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: Inter, sans-serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -2316,6 +2316,11 @@ select {
   border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
 }
 
+.border-border {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+
 .border-emerald-200 {
   --tw-border-opacity: 1;
   border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
@@ -2399,6 +2404,15 @@ select {
 .border-orange-100 {
   --tw-border-opacity: 1;
   border-color: rgb(255 237 213 / var(--tw-border-opacity, 1));
+}
+
+.border-primary {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 86 179 / var(--tw-border-opacity, 1));
+}
+
+.border-primary\/10 {
+  border-color: rgb(0 86 179 / 0.1);
 }
 
 .border-purple-50 {
@@ -2493,6 +2507,11 @@ select {
   border-color: rgb(202 138 4 / var(--tw-border-opacity, 1));
 }
 
+.bg-accent {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+
 .bg-amber-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1));
@@ -2564,6 +2583,11 @@ select {
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.bg-border {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
 }
 
 .bg-cyan-500 {
@@ -2665,6 +2689,19 @@ select {
   background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
 }
 
+.bg-muted {
+  --tw-bg-opacity: 1;
+  background-color: rgb(207 214 221 / var(--tw-bg-opacity, 1));
+}
+
+.bg-muted\/30 {
+  background-color: rgb(207 214 221 / 0.3);
+}
+
+.bg-muted\/40 {
+  background-color: rgb(207 214 221 / 0.4);
+}
+
 .bg-orange-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
@@ -2678,6 +2715,15 @@ select {
 .bg-orange-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 86 179 / var(--tw-bg-opacity, 1));
+}
+
+.bg-primary\/10 {
+  background-color: rgb(0 86 179 / 0.1);
 }
 
 .bg-purple-100 {
@@ -2718,6 +2764,11 @@ select {
 .bg-red-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+
+.bg-secondary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
 }
 
 .bg-sky-50 {
@@ -3287,7 +3338,7 @@ select {
 }
 
 .font-sans {
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: Inter, sans-serif;
 }
 
 .font-serif {
@@ -3387,16 +3438,8 @@ select {
   line-height: 1;
 }
 
-.leading-normal {
-  line-height: 1.5;
-}
-
 .leading-relaxed {
   line-height: 1.625;
-}
-
-.tracking-normal {
-  letter-spacing: 0em;
 }
 
 .tracking-tight {
@@ -3409,6 +3452,11 @@ select {
 
 .tracking-wider {
   letter-spacing: 0.05em;
+}
+
+.text-accent-foreground {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
 }
 
 .text-amber-400 {
@@ -3561,6 +3609,19 @@ select {
   color: rgb(49 46 129 / var(--tw-text-opacity, 1));
 }
 
+.text-muted-foreground {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+
+.text-muted-foreground\/30 {
+  color: rgb(100 116 139 / 0.3);
+}
+
+.text-muted-foreground\/50 {
+  color: rgb(100 116 139 / 0.5);
+}
+
 .text-orange-700 {
   --tw-text-opacity: 1;
   color: rgb(194 65 12 / var(--tw-text-opacity, 1));
@@ -3574,6 +3635,16 @@ select {
 .text-pink-600 {
   --tw-text-opacity: 1;
   color: rgb(219 39 119 / var(--tw-text-opacity, 1));
+}
+
+.text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(0 86 179 / var(--tw-text-opacity, 1));
+}
+
+.text-primary-foreground {
+  --tw-text-opacity: 1;
+  color: rgb(248 250 252 / var(--tw-text-opacity, 1));
 }
 
 .text-purple-600 {
@@ -3609,6 +3680,11 @@ select {
 .text-red-800 {
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity, 1));
+}
+
+.text-secondary-foreground {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
 }
 
 .text-slate-300 {
@@ -3888,6 +3964,16 @@ select {
   font-weight: 500;
 }
 
+.placeholder\:text-muted-foreground::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+
+.placeholder\:text-muted-foreground::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+
 .last\:border-r-0:last-child {
   border-right-width: 0px;
 }
@@ -3960,6 +4046,16 @@ select {
 .hover\:border-indigo-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(165 180 252 / var(--tw-border-opacity, 1));
+}
+
+.hover\:border-primary:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 86 179 / var(--tw-border-opacity, 1));
+}
+
+.hover\:bg-accent:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-blue-100:hover {
@@ -4047,6 +4143,23 @@ select {
   background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-muted:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(207 214 221 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-muted\/20:hover {
+  background-color: rgb(207 214 221 / 0.2);
+}
+
+.hover\:bg-muted\/50:hover {
+  background-color: rgb(207 214 221 / 0.5);
+}
+
+.hover\:bg-primary\/90:hover {
+  background-color: rgb(0 86 179 / 0.9);
+}
+
 .hover\:bg-purple-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 232 255 / var(--tw-bg-opacity, 1));
@@ -4070,6 +4183,10 @@ select {
 .hover\:bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-secondary\/80:hover {
+  background-color: rgb(226 232 240 / 0.8);
 }
 
 .hover\:bg-slate-200\/70:hover {
@@ -4129,6 +4246,11 @@ select {
 
 .hover\:to-teal-800:hover {
   --tw-gradient-to: #115e59 var(--tw-gradient-to-position);
+}
+
+.hover\:text-accent-foreground:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-black:hover {
@@ -4471,6 +4593,11 @@ select {
 .data-\[state\=unchecked\]\:translate-x-0[data-state="unchecked"] {
   --tw-translate-x: 0px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[state\=checked\]\:bg-primary[data-state="checked"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 86 179 / var(--tw-bg-opacity, 1));
 }
 
 .data-\[state\=active\]\:shadow-sm[data-state="active"] {
