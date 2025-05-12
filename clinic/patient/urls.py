@@ -21,7 +21,7 @@ urlpatterns = [
     path('join-v-call/', join_v_call, name='join_v_call'),
     path('lab-report/', labReport, name='labReport'),
     path('prescriptions/', prescriptions, name='prescriptions'),
-    path('message/', message, name='p-message'),
+    path('message/', message, name='message'),
     path('profile/', p_profile, name='profile'),
 
 

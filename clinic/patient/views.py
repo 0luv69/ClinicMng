@@ -85,9 +85,14 @@ def is_valid_file(uploaded_file, allowed_file_types=ALLOWED_FILE_TYPES_DOC, max_
 def patientDashboard(request: HttpRequest):
     profile: Profile = request.user.profile
 
+    # Get all schedules from all prescriptions for this profile
+    all_schedules = PrescriptionSchedule.objects.filter(
+        prescription__profile=profile
+    ).order_by('-time')
 
     context = {
         'profile': profile,
+        'todayMedications': all_schedules
     }
 
     return render(request, 'pages/patient/dashboard.html', context)
@@ -360,6 +365,7 @@ def prescriptions(request: HttpRequest):
 
         active_data = []
         history_data = []
+        todayMedications = []
 
         for pres in prescriptions:
             data = {
@@ -374,12 +380,24 @@ def prescriptions(request: HttpRequest):
                 "status": pres.status.capitalize(),
             }
 
+
+
             if pres.status == "active":
                 data.update({
                     "refillStatus": "Available",  # placeholder: can add logic here
                     "instructions": pres.medicine.instructions,
                     "sideEffects": pres.medicine.side_effects,
                 })
+
+                pre_shed: PrescriptionSchedule = PrescriptionSchedule.objects.filter(prescription=pres).all()
+                if pre_shed:
+                    for each_shed in pre_shed:
+                        todayMedications.append({
+                            "name": pres.medicine.name,
+                            "time": each_shed.time.strftime('%I:%M %p'),  # 12-hour format with AM/PM
+                            "taken": each_shed.had_taken,
+                        })
+
                 active_data.append(data)
             else:
                 data["reason"] = pres.notes or "Course ended"
@@ -387,7 +405,8 @@ def prescriptions(request: HttpRequest):
 
         merged_json_data = {
            'active_data' : json.dumps( active_data, cls=DjangoJSONEncoder),
-           'history_data' : json.dumps(history_data, cls=DjangoJSONEncoder)
+           'history_data' : json.dumps(history_data, cls=DjangoJSONEncoder),
+           'todayMedications' : json.dumps(todayMedications, cls=DjangoJSONEncoder)
         }
 
         context = {

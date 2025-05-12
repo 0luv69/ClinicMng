@@ -122,32 +122,32 @@
             </div>
             <div class="p-6 pt-4">
                 {% with last_2_reports=profile.lab_reports_profile.all|dictsortreversed:"report_date"|slice:":2" %}
-                    {% if last_2_reports %}
-                        <div class="space-y-4">
-                            {% for each_report in last_2_reports %}
-                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span class="text-sm font-medium">{{ each_report.report_type }}</span>
-                                    <div
-                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 {% get_report_status_type_color each_report.status %}">
-                                        {{ each_report.status }}
-                                    </div>
+                    <div class="space-y-4">
+                        {% for each_report in last_2_reports %}
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-sm font-medium">{{ each_report.report_type }}</span>
+                                <div
+                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 {% get_report_status_type_color each_report.status %}">
+                                    {{ each_report.status }}
                                 </div>
-                                
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                    <p class="text-sm text-gray-600 my-1 ml-3 rounded-sm bg-gray-50 p-4">
-                        No lab results were found.
-                        Please check back later.
-                    </p>
-                    {% endif %}
+                            </div>
+                        
+                        {% empty %}
+                            <p class="text-sm text-gray-600 my-1 ml-3 rounded-sm bg-gray-50 p-4">
+                                No lab results were found.
+                                Please check back later.
+                            </p>
+
+
+                        {% endfor %}
+                    </div>
+                {% endwith %}
             </div>
             <div class="flex items-center p-6 pt-0">
                     <a href="{% url 'patient:labReport' %}"
                         class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-50 text-green-700 hover:bg-green-100 h-10 rounded-lg px-4 w-full">
                         View All Reports
                     </a>
-                {% endwith %}
             </div>
         </div>
 
@@ -163,36 +163,59 @@
                         <path d="m8.5 8.5 7 7"></path>
                     </svg>
                 </div>
-                <h3 class="tracking-tight text-lg font-semibold ">Prescription Alerts</h3>
+                <h3 class="tracking-tight text-lg font-semibold ">Medications To Take</h3>
             </div>
             <div class="p-6 pt-4">
                 <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-circle-alert h-5 w-5 text-red-500">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" x2="12" y1="8" y2="12"></line>
-                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                        </svg>
-                        <span class="text-base font-semibold">Lisinopril Refill Due</span>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between">
-                            <p class="text-sm text-gray-600">3 days remaining</p>
-                            <p class="text-sm font-medium text-red-600">25% left</p>
-                        </div>
-                        <div class="relative w-full overflow-hidden rounded-full bg-gray-200 h-3">
-                            <div class="h-full w-1/4 bg-red-500 rounded-full"></div>
-                        </div>
+                    <div class="space-y-2">
+                        {% for each_med in todayMedications|slice:":3" %}
+                            <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                                <div class="flex items-center">
+                                
+                                    {% if each_med.had_taken %}
+                                        <svg id="Validation_Check_Circle_24" class="h-5 w-5 text-green-500 mr-2" fill="currentcolor" stroke="currentcolor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g transform="matrix(1.43 0 0 1.43 12 12)">
+                                            <g style="">
+                                            <g transform="matrix(1 0 0 1 -0.5 0.5)">
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;" transform=" translate(-6.5, -7.5)" d="M 12.0524 6 C 12.1813 6.47821 12.25 6.98107 12.25 7.5 C 12.25 10.6756 9.67564 13.25 6.5 13.25 C 3.32436 13.25 0.75 10.6756 0.75 7.5 C 0.75 4.32436 3.32436 1.75 6.5 1.75 C 6.9459 1.75 7.37994 1.80075 7.79667 1.8968" stroke-linecap="round"></path>
+                                            </g>
+                                            <g transform="matrix(1 0 0 1 1 -1.5)">
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;" transform=" translate(-8, -5.5)" d="M 4 6.5 L 6.90909 9.5 C 8.278 5.56771 9.41805 3.84218 12 1.5" stroke-linecap="round"></path>
+                                            </g>
+                                            </g>
+                                            </g>
+                                        </svg>
+                                    {% else %}
+                                        <svg id="Clock_24" class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g transform="matrix(0.83 0 0 0.83 12 12)">
+                                                <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-16, -16)" d="M 16 4 C 9.382813 4 4 9.382813 4 16 C 4 22.617188 9.382813 28 16 28 C 22.617188 28 28 22.617188 28 16 C 28 9.382813 22.617188 4 16 4 Z M 16 6 C 21.535156 6 26 10.464844 26 16 C 26 21.535156 21.535156 26 16 26 C 10.464844 26 6 21.535156 6 16 C 6 10.464844 10.464844 6 16 6 Z M 15 8 L 15 17 L 22 17 L 22 15 L 17 15 L 17 8 Z" stroke-linecap="round"></path>
+                                            </g>
+                                        </svg>
+
+                                    {% endif %}
+                                
+                                
+                                
+                                    <span class="text-sm">{{ each_med.prescription.medicine.name }}</span>
+                                </div>
+                                <div class="text-xs text-gray-500">{{ each_med.time }}</div>
+                            </div>
+
+                        {% empty %}
+                            <p class="text-sm text-gray-600 my-1 ml-3 rounded-sm bg-gray-50 p-4">
+                                No medications were found.
+                                Please check back later.
+                            </p>
+                            
+                        {% endfor %}
                     </div>
                 </div>
             </div>
             <div class="flex items-center p-6 pt-0">
-                <button
+                <a href="{% url 'patient:prescriptions' %}"
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-50 text-red-700 hover:bg-red-100 h-10 rounded-lg px-4 w-full">
-                    Manage Prescriptions
-                </button>
+                    View Prescriptions
+                </a>
             </div>
         </div>
 
@@ -208,31 +231,40 @@
                         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
                     </svg>
                 </div>
-                <h3 class="tracking-tight text-lg font-semibold ">Health Reminders</h3>
+                <h3 class="tracking-tight text-lg font-semibold ">Messages</h3>
             </div>
             <div class="p-6 pt-4">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span class="text-sm font-medium">Flu Shot</span>
-                        <div
-                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-100 text-blue-700 border-blue-200">
-                            Due Soon
+                <div class="space-y-2">
+                    <div class="flex-col items-start justify-between p-2 rounded hover:bg-gray-50">
+                        <div class="flex items-center justify-between ">
+                            <span class="text-sm font-medium">Rujal Baniya</span>
+                            <div class="text-xs text-gray-500"> 12:30 pm</div>
                         </div>
+
+                        <span class="text-xs text-gray-500">
+                            {{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."|slice:":40" }}
+                        </span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span class="text-sm font-medium">Dental Check-up</span>
-                        <div
-                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 border-gray-200">
-                            Upcoming
+
+
+                    <div class="flex-col items-start justify-between p-2 rounded hover:bg-gray-50">
+                        <div class="flex items-center justify-between ">
+                            <span class="text-sm font-medium">Rujal Baniya</span>
+                            <div class="text-xs text-gray-500"> 12:30 pm</div>
                         </div>
+
+                        <span class="text-xs text-gray-500">
+                            {{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."|slice:":40" }}
+                        </span>
                     </div>
+                   
                 </div>
             </div>
             <div class="flex items-center p-6 pt-0">
-                <button
+                <a href="{% url 'patient:message' %}"
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-purple-50 text-purple-700 hover:bg-purple-100 h-10 rounded-lg px-4 w-full">
-                    View All Reminders
-                </button>
+                    View All Messages
+                </a>
             </div>
         </div>
 

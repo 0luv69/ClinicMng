@@ -175,6 +175,8 @@ class PrescriptionSchedule(models.Model):
                    )
     time         = models.TimeField()
 
+    had_taken    = models.BooleanField(default=False)
+
     class Meta:
         unique_together = ('prescription', 'time')
         ordering = ['time']
