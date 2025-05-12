@@ -33,9 +33,9 @@ INSTALLED_APPS = [
 
     'account',
 
-    # Third party apps
+    # # Third party apps
     'tailwind',
-    'theme',
+    # 'theme',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +68,7 @@ TEMPLATES = [
 ]
 
 # Tailwind configuration 
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+NPM_BIN_PATH = "npm.cmd"
 TAILWIND_APP_NAME = 'theme'
 
 

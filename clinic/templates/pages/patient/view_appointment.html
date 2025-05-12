@@ -684,6 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('common_reason').addEventListener('change', function(e) {
     var customField = document.getElementById('custom_reason_field');
     var customInput = document.getElementById('reason');
+
     if (e.target.value === 'other') {
       customField.hidden = false;
       customInput.required = true;
@@ -764,7 +765,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     dialog.classList.add('hidden');
                 }
             }else {
-                onConfirm();
                 dialog.classList.add('hidden');
             }
         });
