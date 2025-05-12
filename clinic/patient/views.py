@@ -83,7 +83,14 @@ def is_valid_file(uploaded_file, allowed_file_types=ALLOWED_FILE_TYPES_DOC, max_
 
 
 def patientDashboard(request: HttpRequest):
-    return render(request, 'pages/patient/dashboard.html')
+    profile: Profile = request.user.profile
+
+
+    context = {
+        'profile': profile,
+    }
+
+    return render(request, 'pages/patient/dashboard.html', context)
 
 
 
