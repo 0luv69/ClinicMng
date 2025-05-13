@@ -130,6 +130,6 @@ class LabReportAdmin(admin.ModelAdmin):
     inlines = [LabReportParameterInline]
     fieldsets = (
         (None, {
-            'fields': ('report_type', 'report_date', 'doctor', 'status', 'report_description', 'patient_profile')
+            'fields': ('uuid' , 'report_type', 'report_date', 'doctor', 'status', 'report_description', 'patient_profile')
         }),
     )

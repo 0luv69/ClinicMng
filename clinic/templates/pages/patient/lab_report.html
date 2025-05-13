@@ -253,7 +253,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        Download/ Print PDF
+                        Download PDF
                     </button>
                 </div>
             </div>
@@ -402,6 +402,8 @@
         }
 
         function toggleReportDetails(reportId) {
+
+
             const reportItems = document.querySelectorAll('.report-header');
             reportItems.forEach(item => {
                 const id = parseInt(item.closest('li').dataset.reportId);
@@ -409,6 +411,8 @@
                 const chevron = item.querySelector('.report-chevron');
                 const downChevron = chevron.querySelector('#down_chevron');
                 const upChevron = chevron.querySelector('#up_chevron');
+
+
 
                 if (id === reportId) {
                     if (expandedReportId === reportId) {
@@ -565,14 +569,16 @@
                     // Set download and print button actions
                     downloadBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
+
+                        // Construct the URL using the report.id in JavaScript
+                        const reportUrl = `/p/lab-report/${report.uuid}/download`;
+                        window.open(reportUrl, '_blank');
                       
                         // 1) Clone the report item
-                        const reportToDownload = reportItem.cloneNode(true);
-                        reportToDownload.querySelector('.report-action-btns')?.remove();
-                        reportToDownload.querySelector('.report-details')?.classList.remove('hidden');
-                      
-
-                        print_window_open(reportToDownload);
+                        // const reportToDownload = reportItem.cloneNode(true);
+                        // reportToDownload.querySelector('.report-action-btns')?.remove();
+                        // reportToDownload.querySelector('.report-details')?.classList.remove('hidden');
+                        // print_window_open(reportToDownload);
                     });
 
                 
@@ -620,7 +626,6 @@
 
 <script>
     dashboard_nav_all = document.querySelectorAll('.labReport-nav a');
-    console.log(dashboard_nav_all);
     dashboard_nav_all.forEach((nav) => {
         nav_innertab =
             nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');

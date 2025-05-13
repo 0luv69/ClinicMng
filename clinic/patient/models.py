@@ -191,6 +191,10 @@ class PrescriptionSchedule(models.Model):
 
 
 class LabReport(models.Model):
+
+
+    uuid = models.UUIDField(default=uuid.uuid4, editable=True)
+
     STATUS_CHOICES = [
         ('normal', 'Normal'),
         ('abnormal', 'Abnormal'),

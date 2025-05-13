@@ -5,7 +5,13 @@ from django.utils.translation import gettext as _
 import magic  # python-magic-bin for mimetype detection 
 
 from django.contrib.auth.models import User
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
+
+import openpyxl
+from openpyxl.styles import PatternFill, Font
+
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
 
 
 from account.views import login_required_with_message
@@ -112,6 +118,65 @@ def viewAppointment(request: HttpRequest):
         'appointments': appointments,
     }
     return render(request, 'pages/patient/view_appointment.html', context) 
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+def export_appointments_excel(request):
+    profile: Profile = request.user.profile
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Appointments"
+
+    # Add a description/info row at the top
+    ws.append([
+        f"Exported Appointments for: {profile.user.get_full_name()} (User ID: {profile.user.username})"
+    ])
+    ws.append([
+        f"Export Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    ])
+    ws.append([])  # Empty row for spacing
+    ws.append([])  # Empty row for spacing
+
+    # Header
+    # Define a fill color (light blue) and bold font for the header
+    header_fill = PatternFill(start_color="B7DEE8", end_color="B7DEE8", fill_type="solid")
+    header_font = Font(bold=True)
+
+    ws.append([
+        "ID", "Doctor", "Specialization", "Appointment Type", "Date", "Time",
+        "Reason For Appointment", "Status", "Cancelled By", "Cancel Reason"
+    ])
+
+    # Apply the fill and font to the header row
+    for cell in ws[ws.max_row]:
+        cell.fill = header_fill
+        cell.font = header_font
+
+    appointments  = Appointment.objects.filter(profile=profile).order_by('-created_at')
+    for appt in appointments:
+        cancelled_by = appt.cancled_by.user.first_name if appt.status == 'cancelled' and appt.cancled_by else "Null"
+        cancel_reason = appt.cancel_reason if appt.status == 'cancelled' else "Null"
+        ws.append([
+            str(appt.uuid),
+            appt.doctor.profile.user.first_name,
+            appt.doctor.specialization,
+            appt.appointment_type,
+            appt.appointment_date.strftime('%d %b %Y'),
+            f"{appt.appointment_time_str}",
+            appt.reason,
+            appt.status,
+            cancelled_by,
+            cancel_reason,
+        ])
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    response["Content-Disposition"] = "attachment; filename=appointments.xlsx"
+    wb.save(response)
+    return response
+
 
 
 def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
@@ -397,6 +462,7 @@ def labReport(request: HttpRequest):
 
         payload.append({
             'id':         each_report.id,
+            'uuid':         str(each_report.uuid),
             'date':       each_report.report_date.strftime('%Y-%m-%d'),
             'type':       each_report.report_type,
             'status':     each_report.status.lower(),
@@ -415,6 +481,22 @@ def labReport(request: HttpRequest):
 
 
     return render(request, 'pages/patient/lab_report.html', context)
+
+
+def lab_report_pdf(request, uuid):
+    report = get_object_or_404(LabReport, uuid=uuid)
+    html = render_to_string('pages/patient/lab_report_pdf.html', {
+        'report': report,
+        'parameters': report.parameters.all(),
+    })
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="lab_report_{report.uuid}.pdf"'
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF', status=500)
+    return response
+
+
 
 def prescriptions(request: HttpRequest):
     if request.method == 'GET':

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab Report {{ report.uuid }}</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    h1, h2 { margin-bottom: 0.2em; }
+    .metadata { margin-bottom: 1em; }
+    .metadata p { margin: 0.2em 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    th, td { border: 1px solid #333; padding: 0.5em; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+  <h1>Lab Report: {{ report.report_type }}</h1>
+  <div class="metadata">
+    <p><strong>Date:</strong> {{ report.report_date|date:"j M Y" }}</p>
+    <p><strong>Patient:</strong> {{ report.patient_profile.user.get_full_name }}</p>
+    <p><strong>Doctor:</strong> {{ report.doctor.doctorUser.get_full_name }}</p>
+    <p><strong>Status:</strong> {{ report.get_status_display }}</p>
+  </div>
+
+  <h2>Report Details</h2>
+  <p>{{ report.report_description }}</p>
+
+  <h2>Parameters</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Result</th>
+        <th>Reference Range</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in parameters %}
+      <tr>
+        <td>{{ p.parameter_name }}</td>
+        <td>{{ p.result }}</td>
+        <td>{{ p.reference_range }}</td>
+        <td>{{ p.get_status_display }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</body>
+</html>

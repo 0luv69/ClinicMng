@@ -139,7 +139,7 @@
                             <ul class=" hidden group-hover/action-dropdown:block absolute right-0 w-48 bg-white rounded-xl shadow-xl z-10 border border-gray-100 "
                                 aria-labelledby="dropdownMenuButton">
 
-                                <li><a href="export-appointments"
+                                <li><a href="{% url 'patient:export_appointments_excel' %}"
                                         class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-900 transition-all duration-200 rounded-b-xl">Export
                                         to Excel</a></li>
                             </ul>
