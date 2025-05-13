@@ -23,6 +23,7 @@ urlpatterns = [
     path('prescriptions/', prescriptions, name='prescriptions'),
     path('message/', message, name='message'),
     path('profile/', p_profile, name='profile'),
+    path('activities/', p_activities, name='activities'),
 
 
 

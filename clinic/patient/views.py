@@ -12,9 +12,12 @@ from account.views import login_required_with_message
 from django.contrib import messages
 from datetime import datetime
 
-from account.models import Profile, MedicalInfo
+from account.models import Profile, MedicalInfo, ActivityLog
 from doctor.models import DoctorProfile, AppointmentDateSlot, AppointmentTimeSlot
 from patient.models import *
+
+from account.utils import log_action
+
 from django.urls import reverse
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -134,6 +137,19 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
                         appointment.time_slot.save()
                     appointment.status = 'cancelled'
                     appointment.save()
+
+                    # Log the action
+                    log_action(
+                        profile=profile,
+                        action='CANCEL_APPT',
+                        title=_("Appointment Cancelled"),
+                        description=_("Appointment with Dr. {} on {} at {} has been cancelled.").format(
+                            appointment.doctor.profile.user.get_full_name(),
+                            appointment.appointment_date,
+                            appointment.appointment_time_str
+                        ),
+                        obj=appointment
+                    )
                     messages.success(request, _("Appointment cancelled successfully."))
                 else:
                     messages.error(request, _("Cannot cancel a completed appointment."))
@@ -240,6 +256,19 @@ def BookAppointment(request: HttpRequest):
                     return JsonResponse({'error': error_msg})
                 appointment.file = appointment_file
                 appointment.save()
+            
+            # Log the action
+            log_action(
+                user=profile,
+                action='BOOK_APPT',
+                title=_("Appointment Scheduled"),
+                description=_("Appointment booked with Dr. {} on {} at {}").format(
+                    doctor.profile.user.get_full_name(),
+                    appointment_date,
+                    appointment_time
+                ),
+                obj=appointment
+            )
 
             messages.success(request, _("Appointment booked successfully."))
             return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppointment')})
@@ -272,13 +301,22 @@ def ViewDocument(request: HttpRequest):
             return redirect(path+'#add_new')
         try:
             profile: Profile = request.user.profile
-            Documents.objects.create(
+            doc = Documents.objects.create(
                 profile=profile,
                 nick_name=nick_name,
                 doc_type=doc_type,
                 notes=notes,
                 file=uploaded_file,
             )
+            # Log the action
+            log_action(
+                profile=profile,
+                action='UPLOAD_DOC',
+                title=_("Document Uploaded"),
+                description=_("Document '{}' uploaded.").format(nick_name),
+                obj=doc
+            )
+
             messages.success(request, "Document uploaded successfully.")
         except Exception as e:
             messages.error(request, "An error occurred while saving the document.")
@@ -306,6 +344,17 @@ def delete_document(request, doc_id):
             if document.file:
                 document.file.delete(save=False)  # Delete file from storage
             document.delete()  # Delete record from DB
+            messages.success(request, "Document deleted successfully.")
+
+            log_action(
+                profile=request.user.profile,
+                action='DELETE_DOC',
+                title=_("Document Deleted"),
+                description=_("Document '{}' deleted.").format(document.nick_name),
+                obj=document
+            )
+
+
             return redirect('patient:viewDocument')  # Redirect to your document list page
     except Documents.DoesNotExist:
         messages.error(request, "Document not found.")
@@ -327,8 +376,16 @@ def labReport(request: HttpRequest):
     profile: Profile = request.user.profile
     reports: LabReport = LabReport.objects.filter(patient_profile=profile)
 
+    abnormal_reports = 0
+    pending_reports = 0
+
     payload = []
     for each_report in reports:
+        if each_report.status == 'abnormal':
+                abnormal_reports+=1
+        elif each_report.status == 'pending':
+                pending_reports+=1
+
         params = []
         for each_params in each_report.parameters.all():
             params.append({
@@ -351,6 +408,8 @@ def labReport(request: HttpRequest):
     context = {
             'profile': profile,
             'lab_reports':json.dumps(payload, cls=DjangoJSONEncoder),
+            'abnormal_reports': abnormal_reports, 
+            'pending_reports': pending_reports,
         }
 
 
@@ -421,6 +480,7 @@ def prescriptions(request: HttpRequest):
             'merged_json_data':merged_json_data,
             'active_prescriptions':active_prescriptions,
             'medicine_to_have': medicine_to_have,
+            'total_history_data': len(history_data),
         }
         return render(request, 'pages/patient/prescriptions.html', context)
 
@@ -495,6 +555,15 @@ def p_profile(request: HttpRequest):
 
 
 
+def p_activities(request: HttpRequest):
+    """Patient activities page view."""
+    profile: Profile = request.user.profile
+    activities = ActivityLog.objects.filter(profile=profile).order_by('-timestamp')
 
+    context = {
+        'profile': profile,
+        'activities': activities,
+    }
+    return render(request, 'pages/patient/activities.html', context)
 
 # --------------------------------------- Adding Logic on each pages ------------------------------------------------------------
