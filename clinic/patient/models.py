@@ -173,7 +173,7 @@ class PrescriptionSchedule(models.Model):
                        on_delete=models.CASCADE,
                        related_name='timeschedule'
                    )
-    time         = models.TimeField()
+    time         = models.TimeField( unique=False)
 
     had_taken    = models.BooleanField(default=False)
 

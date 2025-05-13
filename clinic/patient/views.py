@@ -367,6 +367,9 @@ def prescriptions(request: HttpRequest):
         history_data = []
         todayMedications = []
 
+        active_prescriptions = 0
+        medicine_to_have = 0
+
         for pres in prescriptions:
             data = {
                 "id": pres.id,
@@ -389,16 +392,19 @@ def prescriptions(request: HttpRequest):
                     "sideEffects": pres.medicine.side_effects,
                 })
 
-                pre_shed: PrescriptionSchedule = PrescriptionSchedule.objects.filter(prescription=pres).all()
+                pre_shed: PrescriptionSchedule = PrescriptionSchedule.objects.filter(prescription=pres).all().order_by('time')
                 if pre_shed:
                     for each_shed in pre_shed:
+                        medicine_to_have+=1
                         todayMedications.append({
                             "name": pres.medicine.name,
                             "time": each_shed.time.strftime('%I:%M %p'),  # 12-hour format with AM/PM
                             "taken": each_shed.had_taken,
                         })
 
+                active_prescriptions+=1
                 active_data.append(data)
+
             else:
                 data["reason"] = pres.notes or "Course ended"
                 history_data.append(data)
@@ -413,6 +419,8 @@ def prescriptions(request: HttpRequest):
             'profile': profile,
             'prescriptions': prescriptions,
             'merged_json_data':merged_json_data,
+            'active_prescriptions':active_prescriptions,
+            'medicine_to_have': medicine_to_have,
         }
         return render(request, 'pages/patient/prescriptions.html', context)
 
