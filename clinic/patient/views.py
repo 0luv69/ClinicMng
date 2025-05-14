@@ -7,6 +7,8 @@ import magic  # python-magic-bin for mimetype detection
 from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponse
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import openpyxl
 from openpyxl.styles import PatternFill, Font
 
@@ -108,19 +110,37 @@ def patientDashboard(request: HttpRequest):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
-def viewAppointment(request: HttpRequest):  
-    profile: Profile = Profile.objects.get(user=request.user)
-    appointments: Appointment = Appointment.objects.filter(profile=profile).order_by('-created_at')
+@login_required_with_message(login_url='account:login', message="You need to log in to View Your Appointments.")
+def viewAppointment(request: HttpRequest):
+    profile = Profile.objects.get(user=request.user)
+    qs = Appointment.objects.filter(profile=profile).order_by('-created_at')
+
+    # pull per_page from GET, default 10
+    per_page = int(request.GET.get('per_page', 10))
+    paginator = Paginator(qs, per_page)
+    page_num = request.GET.get('page')
+
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    # define your entries‑per‑page options here
+    per_page_options = [10, 25, 50, 100]
 
     context = {
         'profile': profile,
-        'appointments': appointments,
+        'appointments': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
+        'per_page_options': per_page_options,
     }
-    return render(request, 'pages/patient/view_appointment.html', context) 
+    return render(request, 'pages/patient/view_appointment.html', context)
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Get Excel Files.")
 def export_appointments_excel(request):
     profile: Profile = request.user.profile
 
@@ -178,7 +198,7 @@ def export_appointments_excel(request):
     return response
 
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to Delete, Edit Appointments.")
 def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
     try:
         appointment = get_object_or_404(Appointment, uuid=apot_id)
@@ -230,7 +250,7 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Book an appointment.")
 def BookAppointment(request: HttpRequest):
     """Doctor booking page."""
 
@@ -347,7 +367,7 @@ def BookAppointment(request: HttpRequest):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+@login_required_with_message(login_url='account:login', message="You need to log in to View Your Files/ Document.")
 def ViewDocument(request: HttpRequest):
     path = reverse('patient:viewDocument')
     if request.method == 'POST':
@@ -482,7 +502,7 @@ def labReport(request: HttpRequest):
 
     return render(request, 'pages/patient/lab_report.html', context)
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to Download PDF.")
 def lab_report_pdf(request, uuid):
     report = get_object_or_404(LabReport, uuid=uuid)
     html = render_to_string('pages/patient/lab_report_pdf.html', {
