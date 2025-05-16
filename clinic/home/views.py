@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-
+from django import forms
+from doctor.models import DoctorProfile
+from account.models import Profile
 # Create your views here.
 
 
 def home_page(request):
-    return render(request, 'pages/index.html')
+    all_doc_profiles = DoctorProfile.objects.all()
+
+
+
+    return render(request, 'pages/index.html', {'all_doc_profiles': all_doc_profiles})
 
 
 
@@ -44,9 +50,7 @@ def management(request):
 
 
 
-from django import forms
-from doctor.models import DoctorProfile
-from account.models import Profile
+
 
 
 class DoctorProfileForm(forms.ModelForm):
@@ -68,12 +72,6 @@ class DoctorProfileForm(forms.ModelForm):
             }),
         }
 
-
-
-
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
 
 
 def create_doctor_profile(request):
