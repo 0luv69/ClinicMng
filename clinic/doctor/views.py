@@ -92,4 +92,9 @@ def dSetting(request):
 
 
 def d_profile(request):
-    return render(request, 'pages/doctor/profile.html')
+    profile: Profile = request.user.profile
+
+    context = {
+            'profile': profile,
+    }
+    return render(request, 'pages/doctor/profile.html', context)

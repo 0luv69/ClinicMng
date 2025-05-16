@@ -592,7 +592,7 @@ def p_profile(request: HttpRequest):
 
     if request.method == 'GET':
         # Fetch the user's profile information
-        profile: Profile = Profile.objects.get(user=request.user)
+        profile: Profile = request.user.profile
 
         # Pass the profile information to the template
         context = {
