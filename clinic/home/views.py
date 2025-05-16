@@ -1,5 +1,4 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 
@@ -40,3 +39,71 @@ def ViewPatients(request):
 
 def management(request):
     return render(request, 'pages/management/dashboard.html')
+
+
+
+
+
+from django import forms
+from doctor.models import DoctorProfile
+from account.models import Profile
+
+
+class DoctorProfileForm(forms.ModelForm):
+    class Meta:
+        model = DoctorProfile
+        fields = [
+            'specialization',
+            'qualifications',
+            'experience_years',
+            'license_number',
+            'board_certified',
+            'languages_spoken',
+            'fees',
+            'accepts_new_patients',
+        ]
+        widgets = {
+            'languages_spoken': forms.TextInput(attrs={
+                'placeholder': 'e.g. ["English", "Nepali"]'
+            }),
+        }
+
+
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView
+
+
+def create_doctor_profile(request):
+    # Ensure the user is a doctor
+    profile = getattr(request.user, 'profile', None)
+
+    
+
+    if request.method == 'POST':
+        form = DoctorProfileForm(request.POST)
+        if form.is_valid():
+            doctor_profile = form.save(commit=False)
+            return redirect('doctor_profile_detail', slug=doctor_profile.slug)
+    else:
+        form = DoctorProfileForm()
+
+    return render(request, 'pages/management/d-profile_create.html', {'form': form, 'action': 'Create'})
+
+def update_doctor_profile(request, slug):
+    profile = getattr(request.user, 'profile', None)
+
+    doctor_profile = get_object_or_404(DoctorProfile, slug=slug)
+
+
+    if request.method == 'POST':
+        form = DoctorProfileForm(request.POST, instance=doctor_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('doctor_profile_detail', slug=doctor_profile.slug)
+    else:
+        form = DoctorProfileForm(instance=doctor_profile)
+
+    return render(request, 'pages/management/d-profile_create.html', {'form': form, 'action': 'Update'})
