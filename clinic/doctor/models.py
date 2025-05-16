@@ -93,7 +93,14 @@ class AppointmentTimeSlot(models.Model):
         ('offline_consultation', 'Offline Consultation'),
     ]
     appointment_type = MultiSelectField(choices=APPOINTMENT_TYPES, max_length=100, blank=True, null=True)
-    is_booked = models.BooleanField(default=False)
+    # is_booked = models.BooleanField(default=False)
+
+    status = models.CharField(max_length=20, default='available', choices=[
+        ('available', 'Available'),
+        ('booked', 'Booked'),
+        ('unavailable', 'Unavailable'),
+        ('break', 'Break'),
+    ])
 
     def __str__(self):
         return f"{self.appointment_date_slot} – {self.from_time}--{self.to_time}"

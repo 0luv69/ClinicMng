@@ -1006,7 +1006,7 @@
         const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8 AM to 9 PM
 
         // Predefined schedule data (replace this with backend data later)
-        let scheduleData = {
+        {% comment %} let scheduleData = {
             "2025-03-23": [
                 { hour: 8, status: "unavailable", duration: 30 },
                 { hour: 9, status: "unavailable", duration: 30 },
@@ -1119,7 +1119,9 @@
                 { hour: 20, status: "unavailable", duration: 30 },
                 { hour: 21, status: "unavailable", duration: 30 }
             ]
-        };
+        }; {% endcomment %}
+
+        let scheduleData = {{ scheduleData|safe }}
 
         // State
         let currentWeekStart = new Date(Object.keys(scheduleData)[0]);

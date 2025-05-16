@@ -33,6 +33,7 @@ class Profile(models.Model):
     address = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
+    gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')], blank=True)
 
     email_notification = models.BooleanField(default=True)
     sms_notification = models.BooleanField(default=True)

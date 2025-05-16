@@ -11,7 +11,7 @@ admin.site.register(DoctorProfile)
 class AppointmentTimeSlotInline(admin.TabularInline):
     model = AppointmentTimeSlot
     extra = 1
-    fields = ('from_time', 'to_time', 'duration', 'appointment_type', 'is_booked')
+    fields = ('from_time', 'to_time', 'duration', 'appointment_type', 'status')
     readonly_fields = ()
     verbose_name = "Time Slot"
     verbose_name_plural = "Time Slots"

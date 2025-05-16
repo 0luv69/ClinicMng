@@ -256,7 +256,7 @@ def BookAppointment(request: HttpRequest):
 
     if request.method == 'GET':
         # Fetch the user's profile information
-        profile: Profile = Profile.objects.get(user=request.user)
+        profile: Profile = request.user.profile
         doctors: DoctorProfile = DoctorProfile.objects.all()
 
         doctor_data = []
@@ -271,7 +271,7 @@ def BookAppointment(request: HttpRequest):
                     time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
                     all_selected_types = list(each_time_slot.appointment_type)
 
-                    if not each_time_slot.is_booked:
+                    if not each_time_slot.status == 'booked':
                         if date_str not in date_json:
                             date_json[date_str] = {}
                         date_json[date_str][time_str] = [each_time_slot.id, each_time_slot.duration, all_selected_types]

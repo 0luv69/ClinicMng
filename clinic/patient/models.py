@@ -46,7 +46,7 @@ class Appointment(models.Model):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
 
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments", help_text=" Patient Profile")
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
     time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
 
