@@ -218,7 +218,7 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
             if status == 'cancel':
                 if appointment.status != "completed":
                     if appointment.time_slot:
-                        appointment.time_slot.is_booked = False
+                        appointment.time_slot.status = 'available'
                         appointment.time_slot.save()
                     appointment.status = 'cancelled'
                     appointment.save()
@@ -271,7 +271,7 @@ def BookAppointment(request: HttpRequest):
                     time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
                     all_selected_types = list(each_time_slot.appointment_type)
 
-                    if not each_time_slot.status == 'booked':
+                    if not each_time_slot.status == 'booked' and not each_time_slot.status == 'unavailable':
                         if date_str not in date_json:
                             date_json[date_str] = {}
                         date_json[date_str][time_str] = [each_time_slot.id, each_time_slot.duration, all_selected_types]
@@ -316,7 +316,9 @@ def BookAppointment(request: HttpRequest):
             doctor: DoctorProfile = get_object_or_404(DoctorProfile, id=doctor_id)
             time_slot_instance: AppointmentTimeSlot = get_object_or_404(AppointmentTimeSlot, id=appointment_time_slot_id)
 
-            time_slot_instance.is_booked = True
+
+
+            time_slot_instance.status = 'booked'
             time_slot_instance.save()   
             print(f"Time slot booked: {appointment_date}")
             appointment_date_foramt = datetime.strptime(appointment_date, '%Y-%m-%d').date()

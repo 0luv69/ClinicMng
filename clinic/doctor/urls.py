@@ -9,6 +9,11 @@ urlpatterns = [
     path('', doctorDashboard, name='doctor_dashboard'),
     path('dashboard/', doctorDashboard, name='doctor_dashboard'),
     path('edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
+    path('get-dateTime-slots/', get_dateTime_slots, name='get_dateTime_slots_default'),
+    path('get-dateTime-slots/<str:start_date>/', get_dateTime_slots, name='get_dateTime_slots'),
+    path('submit-dateTime-slots/', submit_dateTime_slots, name='submit_dateTime_slots'),
+
+
     path('view-patients/', ViewPatients, name='ViewPatients_d'),
     path('online-session/', OnlineSession, name='OnlineSession'),
     path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
