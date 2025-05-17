@@ -91,9 +91,6 @@ def get_dateTime_slots(request, start_date=None):
     }, safe=False)
 
 
-
-
-
 def submit_dateTime_slots(request):
     if request.method != 'POST':
         return JsonResponse({'success': False,
@@ -202,6 +199,30 @@ def ViewPatients(request):
     }
 
     return render(request, 'pages/doctor/view_patients.html', context)
+
+
+
+def ViewPatientsRecords(request, patient_id):
+
+    profile: Profile = request.user.profile
+    doctor: DoctorProfile = DoctorProfile.objects.get(profile = profile)
+
+    patient: Profile = Profile.objects.get(user__username = patient_id)
+
+
+    lab_reports = patient.lab_reports_profile.all()
+    prescriptions = patient.prescriptions.all()
+
+    context = {
+        "patient": patient,
+        "doctor": doctor,
+        "patient_id": patient_id,
+        "lab_reports": lab_reports,
+        "prescriptions": prescriptions,
+    }
+
+    return render(request, 'pages/doctor/view_patients_records.html', context)
+
 
 
 def OnlineSession(request):
