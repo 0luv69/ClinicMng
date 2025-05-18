@@ -16,6 +16,10 @@ urlpatterns = [
 
     path('view-patients/', ViewPatients, name='ViewPatients_d'),
     path('view-patients-records/<str:patient_id>', ViewPatientsRecords, name='ViewPatientsRecords'),
+
+    path('actions-appointment/', Action_Appointment, name='Action_Appointment_from_Doc'),
+
+
     path('online-session/', OnlineSession, name='OnlineSession'),
     path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
     path('d/view-doctors/', ViewPatients, name='ViewDoctors_m'),

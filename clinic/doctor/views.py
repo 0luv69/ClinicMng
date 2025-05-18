@@ -225,6 +225,39 @@ def ViewPatientsRecords(request, patient_id):
 
 
 
+def Action_Appointment(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False,
+                             'message': 'Only POST requests allowed'}, 
+                             status=405)
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    profile: Profile = request.user.profile
+    doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
+
+    app_id = data.get('app_id')
+    action = data.get('action')
+    
+
+    appointment: Appointment = Appointment.objects.get(uuid=app_id)
+
+    if action == 'confirm':
+        appointment.status = 'confirmed'
+        appointment.confirm_by = doctor.profile
+        appointment.save()
+    elif action == 'cancel':
+        appointment.status = 'cancelled'
+        appointment.cancled_by = doctor.profile
+        appointment.cancel_reason = request.POST.get('cancel_reason', '')
+        appointment.save()
+
+    return JsonResponse({'success': True, 'message': f'Appointment {action}ed successfully'})
+
+
+
 def OnlineSession(request):
     return render(request, 'pages/doctor/online_session.html')
 

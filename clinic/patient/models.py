@@ -70,6 +70,8 @@ class Appointment(models.Model):
     cancled_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, related_name="cancelled_appointments", blank=True, null=True) 
     cancel_reason = models.TextField(blank=True, null=True)
 
+    confirm_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, related_name="confirmed_appointments", blank=True, null=True) 
+
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 

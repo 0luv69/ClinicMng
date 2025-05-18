@@ -117,105 +117,6 @@
 
 
 <script>
-    {% comment %} let patientData = [
-        {
-            "id": 1,
-            "name": "John Smith",
-            "age": 45,
-            "gender": "Male",
-            "appointment": "2025-03-24 10:00 AM",
-            "status": "pending",
-            "issue": "Annual checkup",
-            "phone": "555-123-4567",
-            "email": "john.smith@example.com",
-            "notes": "Previous hypertension history"
-        },
-        {
-            "id": 2,
-            "name": "Emily Johnson",
-            "age": 32,
-            "gender": "Female",
-            "appointment": "2025-03-25 11:30 AM",
-            "status": "pending",
-            "issue": "Migraine follow-up",
-            "phone": "555-234-5678",
-            "email": "emily.j@example.com",
-            "notes": "Experiencing side effects from medication"
-        },
-        {
-            "id": 3,
-            "name": "Robert Wilson",
-            "age": 68,
-            "gender": "Male",
-            "appointment": "2025-03-23 09:15 AM",
-            "status": "completed",
-            "issue": "Diabetes monitoring",
-            "phone": "555-345-6789",
-            "email": "rwilson@example.com",
-            "notes": "Blood sugar levels improving"
-        },
-        {
-            "id": 4,
-            "name": "Sarah Thompson",
-            "age": 28,
-            "gender": "Female",
-            "appointment": "2025-03-22 02:45 PM",
-            "status": "completed",
-            "issue": "Pregnancy checkup",
-            "phone": "555-456-7890",
-            "email": "sthompson@example.com",
-            "notes": "First trimester, weeks 10-12"
-        },
-        {
-            "id": 5,
-            "name": "Michael Davis",
-            "age": 52,
-            "gender": "Male",
-            "appointment": "2025-03-26 03:30 PM",
-            "status": "pending",
-            "issue": "Back pain consultation",
-            "phone": "555-567-8901",
-            "email": "mdavis@example.com",
-            "notes": "Recent injury from lifting"
-        },
-        {
-            "id": 6,
-            "name": "Jessica Brown",
-            "age": 39,
-            "gender": "Female",
-            "appointment": "2025-03-24 01:15 PM",
-            "status": "pending",
-            "issue": "Allergy symptoms",
-            "phone": "555-678-9012",
-            "email": "jbrown@example.com",
-            "notes": "Seasonal allergies worsening"
-        },
-        {
-            "id": 7,
-            "name": "David Lee",
-            "age": 41,
-            "gender": "Male",
-            "appointment": "2025-03-25 09:45 AM",
-            "status": "cancelled",
-            "issue": "Shoulder pain",
-            "phone": "555-789-0123",
-            "email": "dlee@example.com",
-            "notes": "Needs to reschedule"
-        },
-        {
-            "id": 8,
-            "name": "Laura Martinez",
-            "age": 35,
-            "gender": "Female",
-            "appointment": "2025-03-26 11:00 AM",
-            "status": "pending",
-            "issue": "Thyroid follow-up",
-            "phone": "555-890-1234",
-            "email": "lmartinez@example.com",
-            "notes": "New medication started last month"
-        }
-    ]; {% endcomment %}
-
     let patientData = {{ patientData|safe }}
 
     let activeTab = 'pending';
@@ -291,14 +192,23 @@
                         <div class="flex space-x-2">
                             <button class="text-blue-600 hover:text-blue-900 view-btn" data-id="${patient.id}">View</button>
                             ${patient.status === 'pending' ? `
-                                <button class="text-green-600 hover:text-green-900 check-in-btn" data-id="${patient.id}">Check in</button>
+                                <button class="text-green-600 hover:text-green-900 confirm-btn" data-id="${patient.id}">Confirm</button>
                                 <button class="text-red-600 hover:text-red-900 cancel-btn" data-id="${patient.id}">Cancel</button>
-                            ` : ''}
+                            `
+                            : patient.status === 'confirmed' ? `
+                                <button class="text-green-600 hover:text-green-900 check-in-btn" data-id="${patient.id}">Check In</button>
+                                <button class="text-red-600 hover:text-red-900 cancel-btn" data-id="${patient.id}">Cancel</button>
+                            ` :
+                            ''}
                         </div>
                     </td>
                 `;
             row.querySelector('.view-btn').addEventListener('click', () => showModal(patient));
-            if (patient.status === 'pending') {
+            if (patient.status === 'pending') {               
+                row.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
+                row.querySelector('.confirm-btn').addEventListener('click', () => confirmBTN(patient.id));
+
+            } else if (patient.status === 'confirmed') {
                 row.querySelector('.check-in-btn').addEventListener('click', () => checkInPatient(patient.id));
                 row.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
             }
@@ -315,11 +225,49 @@
         }
     }
 
+    function confirmBTN(id) {
+        const patient = patientData.find(p => p.id === id);
+        if (patient) {
+            fetch('/d/actions-appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ app_id: patient.id, action: 'confirm' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                patient.status = 'confirmed';
+                renderPatients();
+                hideModal();
+            })
+            .catch(error => {
+                alert('Failed to confirm appointment.');
+            });
+        }
+    }
+
     function cancelPatient(id) {
         const patient = patientData.find(p => p.id === id);
         if (patient) {
-            patient.status = 'cancelled';
-            renderPatients();
+            fetch('/d/actions-appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ app_id: patient.id, action: 'cancel' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                patient.status = 'cancelled';
+                renderPatients();
+                hideModal();
+            })
+            .catch(error => {
+                alert('Failed to cancel appointment.');
+            });
         }
     }
 
@@ -385,9 +333,13 @@
                 </div>
                 <div class="border-t border-gray-200 pt-6 mt-6 flex flex-wrap gap-3">
                     ${patient.status === 'pending' ? `
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 start-btn" data-id="${patient.id}">Start Appointment</button>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 confirm-btn" data-id="${patient.id}">Confirm Appointment</button>
                         <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-red-700 transition-colors duration-200 cancel-btn" data-id="${patient.id}">Cancel Appointment</button>
-                    ` : ''}
+                    ` 
+                    : patient.status === 'confirmed' ? `
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 start-btn" data-id="${patient.id}">Start Appointment</button>
+                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-red-700 transition-colors duration-200 cancel-btn" data-id="${patient.id}">Cancel Appointment</button>`
+                    :''}
                     <a href='/d/view-patients-records/${patient.patient_id}' target="_blank" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition-colors duration-200">View Medical Records</a>
                     ${patient.file === '' ? ``:
                     `<a href='${patient.file}' target="_blank"  class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition-colors duration-200">View Files</a>`}
@@ -402,6 +354,10 @@
 
         // Add event listeners for modal buttons
         if (patient.status === 'pending') {
+            modalBody.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
+            modalBody.querySelector('.confirm-btn').addEventListener('click', () => confirmBTN(patient.id));
+        } 
+        else if (patient.status === 'confirmed') {
             modalBody.querySelector('.start-btn').addEventListener('click', () => checkInPatient(patient.id));
             modalBody.querySelector('.cancel-btn').addEventListener('click', () => cancelPatient(patient.id));
         }
@@ -435,7 +391,6 @@
             btn.classList.remove('bg-blue-600', 'text-white');
             btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
         });
-        console.log(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`)
         const activeBtn = document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
         activeBtn.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
         activeBtn.classList.add('bg-blue-600', 'text-white');
