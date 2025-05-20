@@ -30,7 +30,7 @@
                 </div>
                 <div class="flex items-center">
                     <span class="h-3 w-3 bg-green-500 rounded-full mr-2"></span>
-                    <select class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select class="border rounded-lg pl-2 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="available">Available</option>
                         <option value="busy">Busy</option>
                         <option value="away">Away</option>
@@ -55,8 +55,8 @@
                 </div>
                 <div class="space-y-1">
                     <div class="flex items-baseline">
-                        <span class="text-3xl font-bold text-gray-900">1,248</span>
-                        <span class="ml-2 text-sm font-medium text-green-500">+4.3%</span>
+                        <span class="text-3xl font-bold text-gray-900">{{ counts.total_patients }}</span>
+                        <span class="hidden ml-2 text-sm font-medium text-green-500">+4.3%</span>
                     </div>
                     <p class="text-xs text-gray-500">Increase from last month</p>
                 </div>
@@ -74,9 +74,9 @@
                     </div>
                 </div>
                 <div class="space-y-1">
-                    <div class="text-3xl font-bold text-gray-900">12</div>
+                    <div class="text-3xl font-bold text-gray-900">{{ counts.todays_appointments }}</div>
                     <div class="flex items-center">
-                        <span class="text-xs text-amber-600 font-medium">3</span>
+                        <span class="text-xs text-amber-600 font-medium">{{ counts.pending_patients }}</span>
                         <span class="text-xs text-gray-500 ml-1">pending confirmations</span>
                     </div>
                 </div>
@@ -125,384 +125,158 @@
     </div>
 
 
-    <!-- Calendar & Filter Section -->
-    <section class="bg-white rounded-xl shadow-lg p-6 my-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+  <!-- Calendar & Filter Section -->
+    <section class="bg-white rounded-xl shadow-lg p-6 my-6" x-data="appointmentsFilter()" x-init="init()">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div class="flex items-center space-x-2">
                 <h2 class="text-xl font-bold text-gray-800">Appointment Schedule</h2>
-                <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-medium">Today</span>
+                <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-medium" x-show="date == today">Today</span>
             </div>
-
-            <div class="flex flex-wrap gap-3 mt-4 md:mt-0">
+            <div class="flex flex-wrap gap-3">
                 <div class="relative">
                     <input type="date"
+                        x-model="date"
                         class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        value="2025-03-24" />
-                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
+                    />
+                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" ...>...</svg>
                 </div>
-
                 <div class="relative">
-                    <select
+                    <select x-model="status"
                         class="appearance-none pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option>All Appointments</option>
-                        <option>Upcoming</option>
-                        <option>Completed</option>
-                        <option>Urgent</option>
+                        <option value="">All Appointments</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
                     </select>
-                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <svg class="w-5 h-5 text-gray-500 absolute right-2 top-1/2 transform -translate-y-1/2"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
+                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" ...>...</svg>
+                    <svg class="w-5 h-5 text-gray-500 absolute right-2 top-1/2 transform -translate-y-1/2" ...>...</svg>
                 </div>
-
                 <div class="relative">
-                    <input type="text" placeholder="Search patients..."
+                    <input type="text" x-model="search" placeholder="Search patients..."
                         class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" ...>...</svg>
                 </div>
             </div>
         </div>
-
         <!-- Timeline -->
-        <div
-            class="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 custom-scrollbar">
-            <div class="timeline min-w-max flex items-center gap-4 p-2" id="timeline">
-                <!-- Dynamically generated content will be here -->
+        <div class="overflow-x-auto pb-4 custom-scrollbar">
+            <div class="timeline min-w-max flex items-center gap-8 p-2" id="timeline">
+                {% for hour in hour_list %}
+                    <div class="timeline-hour flex flex-col items-center w-16 flex-shrink-0">
+                        <span class="text-sm font-semibold text-gray-600">{{ hour }}:00</span>
+                        <div class="h-20 w-px bg-gray-200 my-1"></div>
+                    </div>
+                    {% for appointment in all_appointments %}
+                        {% if appointment.appointment_time_str|slice:":2" == hour %}
+                            <div 
+                                class="appointment-card 
+                                    {% if appointment.appointment_type == 'general_consultation' %}bg-green-50 border-l-4 border-green-500
+                                    {% elif appointment.appointment_type == 'follow_up_visit' %}bg-purple-50 border-l-4 border-purple-500
+                                    {% elif appointment.appointment_type == 'online_consultation' %}bg-blue-50 border-l-4 border-blue-500
+                                    {% elif appointment.appointment_type == 'offline_consultation' %}bg-amber-50 border-l-4 border-amber-500
+                                    {% else %}bg-gray-50 border-l-4 border-gray-400{% endif %}
+                                    rounded-lg p-4 w-56 flex-shrink-0 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-2"
+                                    data-status="{{ appointment.status }}"
+                                    data-date="{{ appointment.appointment_date }}"
+                                    data-patient="{{ appointment.profile.user.first_name|lower }} {{ appointment.profile.user.last_name|lower }}"
+                                    x-show="filterCard('{{ appointment.appointment_date }}', '{{ appointment.status }}', '{{ appointment.profile.user.first_name|lower }} {{ appointment.profile.user.last_name|lower }}')"
+                                    x-transition.opacity
+                                >
+                                <div class="flex items-center gap-2">
+                                    {# Patient avatar or initials #}
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600">
+                                        {% if appointment.profile.user.profile_image %}
+                                            <img src="{{ appointment.profile.user.profile_image.url }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+                                        {% else %}
+                                            {{ appointment.profile.user.first_name|slice:":1" }}{{ appointment.profile.user.last_name|slice:":1" }}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-800 font-medium truncate">
+                                            {{ appointment.profile.user.first_name }} {{ appointment.profile.user.last_name }}
+                                        </div>
+                                        <div class="text-xs text-gray-500">{{ appointment.appointment_time_str }}</div>
+                                    </div>
+                                    <span class="ml-auto px-2 py-1
+                                        {% if appointment.appointment_type == 'general_consultation' %}bg-green-100 text-green-700
+                                        {% elif appointment.appointment_type == 'follow_up_visit' %}bg-purple-100 text-purple-700
+                                        {% elif appointment.appointment_type == 'online_consultation' %}bg-blue-100 text-blue-700
+                                        {% elif appointment.appointment_type == 'offline_consultation' %}bg-amber-100 text-amber-700
+                                        {% else %}bg-gray-100 text-gray-700{% endif %}
+                                        text-xs rounded-full font-medium">
+                                        {{ appointment.get_appointment_type_display }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center text-xs text-gray-500 gap-2">
+                                    {% if appointment.status == 'pending' %}
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" ...>...</svg> Pending
+                                        </span>
+                                    {% elif appointment.status == 'confirmed' %}
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" ...>...</svg> Confirmed
+                                        </span>
+                                    {% elif appointment.status == 'completed' %}
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" ...>...</svg> Completed
+                                        </span>
+                                    {% elif appointment.status == 'cancelled' %}
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" ...>...</svg> Cancelled
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" ...>...</svg> {{ appointment.status|capfirst }}
+                                        </span>
+                                    {% endif %}
+                                    {% if appointment.reason %}
+                                        <span class="ml-2 text-gray-400 truncate" title="{{ appointment.reason }}">{{ appointment.reason|truncatewords:5 }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
             </div>
+            <template x-if="filteredCount() === 0">
+                <div class="w-full flex flex-col items-center justify-center py-10 text-gray-400">
+                    <svg class="w-14 h-14 mb-2" fill="none" stroke="currentColor" ...>...</svg>
+                    <div>No appointments found for the selected filters.</div>
+                </div>
+            </template>
         </div>
+
+
 
         <script>
-            // Updated JSON data with additional future appointments
-            const appointmentsData = [
-
-                {
-                    id: 1,
-                    patientName: "James Wilson",
-                    time: "09:00 - 09:30",
-                    date: "2025-03-24",
-                    type: "Check-up",
-                    status: "upcoming",
-                    notes: "New patient",
-                    icon: "user"
-                },
-                {
-                    id: 2,
-                    patientName: "Emma Thompson",
-                    time: "10:00 - 10:45",
-                    date: "2025-03-24",
-                    type: "Consult",
-                    status: "upcoming",
-                    notes: "Insurance verified",
-                    icon: "shield"
-                },
-                {
-                    id: 3,
-                    patientName: "Michael Brown",
-                    time: "11:00 - 11:30",
-                    date: "2025-03-24",
-                    type: "Follow-up",
-                    status: "completed",
-                    notes: "Test results ready",
-                    icon: "file"
-                },
-                {
-                    id: 4,
-                    patientName: "Olivia Parker",
-                    time: "14:00 - 14:30",
-                    date: "2025-03-24",
-                    type: "Urgent",
-                    status: "urgent",
-                    notes: "High priority",
-                    icon: "activity"
-                },
-                // Tomorrow's appointments (March 22, 2025)
-                {
-                    id: 5,
-                    patientName: "Robert Johnson",
-                    time: "09:30 - 10:00",
-                    date: "2025-03-25",
-                    type: "Check-up",
-                    status: "upcoming",
-                    notes: "Annual physical",
-                    icon: "user"
-                },
-                {
-                    id: 6,
-                    patientName: "Sophia Martinez",
-                    time: "11:30 - 12:00",
-                    date: "2025-03-26",
-                    type: "Follow-up",
-                    status: "upcoming",
-                    notes: "Medication review",
-                    icon: "file"
-                },
-                {
-                    id: 7,
-                    patientName: "David Garcia",
-                    time: "14:30 - 15:15",
-                    date: "2025-03-24",
-                    type: "Consult",
-                    status: "upcoming",
-                    notes: "New referral",
-                    icon: "shield"
-                },
-                // Future appointments (March 23, 2025)
-                {
-                    id: 8,
-                    patientName: "Isabella Rodriguez",
-                    time: "10:00 - 10:30",
-                    date: "2025-03-23",
-                    type: "Check-up",
-                    status: "upcoming",
-                    notes: "Prenatal check",
-                    icon: "user"
-                },
-                // Additional future appointments (March 24, 2025)
-                {
-                    id: 9,
-                    patientName: "Liam Carter",
-                    time: "13:00 - 13:45",
-                    date: "2025-03-24",
-                    type: "Consult",
-                    status: "upcoming",
-                    notes: "Post-surgery review",
-                    icon: "shield"
-                },
-                {
-                    id: 10,
-                    patientName: "Ava Mitchell",
-                    time: "15:00 - 15:30",
-                    date: "2025-03-24",
-                    type: "Follow-up",
-                    status: "upcoming",
-                    notes: "Lab results discussion",
-                    icon: "file"
-                },
-                // Additional future appointments (March 25, 2025)
-                {
-                    id: 11,
-                    patientName: "Noah Evans",
-                    time: "09:15 - 09:45",
-                    date: "2025-03-25",
-                    type: "Check-up",
-                    status: "upcoming",
-                    notes: "Routine visit",
-                    icon: "user"
-                },
-                {
-                    id: 12,
-                    patientName: "Mia Turner",
-                    time: "16:00 - 16:45",
-                    date: "2025-03-25",
-                    type: "Urgent",
-                    status: "urgent",
-                    notes: "Emergency consult",
-                    icon: "activity"
-                }
-            ];
-
-            // Define working hours
-            const workingHours = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
-
-            // Define type colors for styling
-            const typeColors = {
-                'Check-up': { bg: 'green-50', border: 'green-500', text: 'green-800', badgeBg: 'green-100', badgeText: 'green-700' },
-                'Consult': { bg: 'blue-50', border: 'blue-500', text: 'blue-800', badgeBg: 'blue-100', badgeText: 'blue-700' },
-                'Follow-up': { bg: 'purple-50', border: 'purple-500', text: 'purple-800', badgeBg: 'purple-100', badgeText: 'purple-700' },
-                'Urgent': { bg: 'amber-50', border: 'amber-500', text: 'amber-800', badgeBg: 'amber-100', badgeText: 'amber-700' }
-            };
-
-            // Function to get icon SVG based on icon type
-            function getIconSvg(icon) {
-                switch (icon) {
-                    case 'user':
-                        return `<svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>`;
-                    case 'shield':
-                        return `<svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    </svg>`;
-                    case 'file':
-                        return `<svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>`;
-                    case 'activity':
-                        return `<svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                    </svg>`;
-                    default:
-                        return '';
-                }
-            }
-
-            // Function to convert time string to minutes since midnight
-            function timeToMinutes(time) {
-                const [hours, minutes] = time.split(':').map(Number);
-                return hours * 60 + minutes;
-            }
-
-            // Function to generate hour marker HTML
-            function generateHourMarker(hour) {
-                return `
-                <div class="timeline-hour flex flex-col items-center w-16 flex-shrink-0">
-                    <span class="text-sm font-semibold text-gray-600">${hour}</span>
-                    <div class="h-20 w-px bg-gray-200 my-1"></div>
-                </div>
-            `;
-            }
-
-            // Function to generate lunch break HTML
-            function generateLunchBreak() {
-                return `
-                <div class="bg-gray-50 border-l-4 border-gray-400 rounded-lg p-4 w-56 flex-shrink-0 shadow-sm">
-                    <div class="flex justify-center items-center h-10">
-                        <svg class="w-4 h-4 mr-2 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <p class="text-sm font-medium text-gray-600">Lunch Break</p>
-                    </div>
-                </div>
-            `;
-            }
-
-            // Function to generate appointment card HTML
-            function generateAppointmentCard(appointment) {
-                const colors = typeColors[appointment.type] || { bg: 'gray-50', border: 'gray-500', text: 'gray-800', badgeBg: 'gray-100', badgeText: 'gray-700' };
-                const iconSvg = getIconSvg(appointment.icon);
-                return `
-                <div class="bg-${colors.bg} border-l-4 border-${colors.border} rounded-lg p-4 w-56 flex-shrink-0 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-sm font-medium text-${colors.text}">${appointment.time}</p>
-                            <p class="text-sm text-gray-800 font-medium mt-1">${appointment.patientName}</p>
-                        </div>
-                        <span class="px-2 py-1 bg-${colors.badgeBg} text-${colors.badgeText} text-xs rounded-full font-medium">${appointment.type}</span>
-                    </div>
-                    <div class="flex items-center mt-2 text-xs text-gray-500">
-                        ${iconSvg}
-                        ${appointment.notes}
-                    </div>
-                </div>
-            `;
-            }
-
-            // Function to generate the timeline based on filtered appointments
-            function generateTimeline(filteredAppointments) {
-                const timelineContainer = document.getElementById('timeline');
-                timelineContainer.innerHTML = ''; // Clear existing content
-
-                workingHours.forEach(hour => {
-                    // Add hour marker
-                    const hourMarker = generateHourMarker(hour);
-                    timelineContainer.insertAdjacentHTML('beforeend', hourMarker);
-
-                    if (hour === '12:00') {
-                        // Add lunch break
-                        const lunchBreak = generateLunchBreak();
-                        timelineContainer.insertAdjacentHTML('beforeend', lunchBreak);
-                    } else {
-                        // Find appointments starting in this hour
-                        const hourStartMinutes = timeToMinutes(hour);
-                        const nextHour = (parseInt(hour.split(':')[0]) + 1).toString().padStart(2, '0') + ':00';
-                        const hourEndMinutes = timeToMinutes(nextHour);
-
-                        const appointmentsInHour = filteredAppointments
-                            .filter(appointment => {
-                                const startTime = appointment.time.split(' - ')[0];
-                                const startMinutes = timeToMinutes(startTime);
-                                return startMinutes >= hourStartMinutes && startMinutes < hourEndMinutes;
-                            })
-                            .sort((a, b) => {
-                                const aStart = timeToMinutes(a.time.split(' - ')[0]);
-                                const bStart = timeToMinutes(b.time.split(' - ')[0]);
-                                return aStart - bStart;
-                            });
-
-                        // Add appointment cards
-                        appointmentsInHour.forEach(appointment => {
-                            const appointmentCard = generateAppointmentCard(appointment);
-                            timelineContainer.insertAdjacentHTML('beforeend', appointmentCard);
-                        });
+            function appointmentsFilter() {
+                return {
+                    today: '{{ today }}',
+                    date: '{{ today }}',
+                    status: '',
+                    search: '',
+                    init() {
+                        this.date = this.today;
+                    },
+                    filterCard(cardDate, cardStatus, cardPatient) {
+                        let matchesDate = !this.date || cardDate === this.date;
+                        let matchesStatus = !this.status || cardStatus === this.status;
+                        let matchesSearch = !this.search || cardPatient.includes(this.search.toLowerCase());
+                        return matchesDate && matchesStatus && matchesSearch;
+                    },
+                    filteredCount() {
+                        // This can only be used if you add a special class to visible cards, or count via DOM in Alpine.
+                        // For now, this is a placeholder.
+                        return document.querySelectorAll('.appointment-card[x-show="true"]').length;
                     }
-                });
+                }
             }
-
-            // Function to update the timeline based on filter inputs
-            function updateTimeline() {
-                const dateFilter = document.querySelector('input[type="date"]');
-                const statusFilter = document.querySelector('select');
-                const searchFilter = document.querySelector('input[type="text"]');
-
-                const selectedDate = dateFilter.value;
-                const selectedStatus = statusFilter.value;
-                const searchTerm = searchFilter.value.toLowerCase();
-
-                // Filter appointments
-                const filteredAppointments = appointmentsData.filter(appointment => {
-                    const dateMatch = appointment.date === selectedDate;
-                    const statusMatch = selectedStatus === 'All Appointments' || appointment.status.toLowerCase() === selectedStatus.toLowerCase();
-                    const searchMatch = appointment.patientName.toLowerCase().includes(searchTerm);
-                    return dateMatch && statusMatch && searchMatch;
-                });
-
-                // Generate timeline with filtered appointments
-                generateTimeline(filteredAppointments);
-            }
-
-            // DOM Content Loaded Event Listener
-            document.addEventListener('DOMContentLoaded', function () {
-                const dateFilter = document.querySelector('input[type="date"]');
-                const statusFilter = document.querySelector('select');
-                const searchFilter = document.querySelector('input[type="text"]');
-
-                // Add event listeners for filter changes
-                dateFilter.addEventListener('change', updateTimeline);
-                statusFilter.addEventListener('change', updateTimeline);
-                searchFilter.addEventListener('input', updateTimeline);
-
-                // Add reset button
-                const filtersContainer = document.querySelector('.flex.flex-wrap.gap-3');
-                const resetButton = document.createElement('button');
-                resetButton.className = 'px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors';
-                resetButton.textContent = 'Reset Filters';
-                resetButton.addEventListener('click', function () {
-                    dateFilter.value = '2025-03-24';
-                    statusFilter.value = 'All Appointments';
-                    searchFilter.value = '';
-                    updateTimeline();
-                });
-                filtersContainer.appendChild(resetButton);
-
-                // Initial timeline generation
-                updateTimeline();
-            });
         </script>
+
     </section>
+
+    
 
 </main>
 

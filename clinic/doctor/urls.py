@@ -8,6 +8,10 @@ app_name = 'doctor'
 urlpatterns = [
     path('', doctorDashboard, name='doctor_dashboard'),
     path('dashboard/', doctorDashboard, name='doctor_dashboard'),
+
+
+
+
     path('edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
     path('get-dateTime-slots/', get_dateTime_slots, name='get_dateTime_slots_default'),
     path('get-dateTime-slots/<str:start_date>/', get_dateTime_slots, name='get_dateTime_slots'),

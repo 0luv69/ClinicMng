@@ -8,11 +8,31 @@ from collections import defaultdict
 
 from django.http import JsonResponse
 import json
+from django.utils import timezone
 
+from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 
 def doctorDashboard(request):
-    return render(request, 'pages/doctor/dashboard.html')
+    profile = request.user.profile
+    doctor = DoctorProfile.objects.get(profile=profile)
+    all_appointments = Appointment.objects.filter(doctor=doctor)
+    hour_list = ["09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"]
+    today = date.today().strftime('%Y-%m-%d')
+    context = {
+        'doctor': doctor,
+        'all_appointments': all_appointments,
+        'hour_list': hour_list,
+        'today': today,
+        'counts': {
+            'total_patients': all_appointments.count(),
+            'pending_patients': all_appointments.filter(status='pending').count(),
+            'todays_appointments': all_appointments.filter(appointment_date=date.today()).count(),
+        },
+    }
+
+    print("Doctor Dashboard Context: ", context)
+    return render(request, 'pages/doctor/dashboard.html', context)
 
 
 def d_edit_schedules(request):
@@ -157,7 +177,7 @@ def submit_dateTime_slots(request):
     return JsonResponse({'success': True, 'message': 'Schedule updated successfully'})
 
 
-
+ 
 
 def ViewPatients(request):
     profile: Profile = request.user.profile
