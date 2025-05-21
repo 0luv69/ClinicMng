@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <!-- Stats cards -->
+        <!-- Summary Cards Section -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <!-- Total Patients Card -->
             <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
@@ -127,90 +127,19 @@
 
     <!-- Calendar & Filter Section -->
     <section class="bg-white rounded-xl shadow-lg p-6 my-6">
-        <div class="container mx-auto px-4 py-8">
-            <div class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-900">Appointment Dashboard</h1>
-                <p class="text-gray-600">Manage your patient appointments efficiently</p>
+        <div class="container mx-auto px-2 py-8">
+            <div class="flex items-center space-x-2 mb-3 md:mb-0">
+                <h2 class="text-xl font-bold text-gray-800">Appointment Filters</h2>
             </div>
-        
-            <!-- Statistics Summary Section -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Today's Appointments</p>
-                            <p class="text-2xl font-bold text-gray-800">{{ today_count }}</p>
-                        </div>
-                        <div class="bg-blue-100 rounded-full p-2">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Confirmed</p>
-                            <p class="text-2xl font-bold text-gray-800">{{ confirmed_count }}</p>
-                        </div>
-                        <div class="bg-green-100 rounded-full p-2">
-                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow p-4 border-l-4 border-amber-500">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Pending</p>
-                            <p class="text-2xl font-bold text-gray-800">{{ pending_count }}</p>
-                        </div>
-                        <div class="bg-amber-100 rounded-full p-2">
-                            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">This Week</p>
-                            <p class="text-2xl font-bold text-gray-800">{{ week_count }}</p>
-                        </div>
-                        <div class="bg-purple-100 rounded-full p-2">
-                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
+
             <!-- Filters Section -->
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
-                    <div class="flex items-center space-x-2">
-                        <h2 class="text-xl font-bold text-gray-800">Appointment Filters</h2>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-3 w-full md:w-auto">
+            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-3 w-full md:w-auto">
                         <div class="relative w-full sm:w-auto">
                             <input type="date"
                                 id="filter-date"
-                                class="w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 value="{{ today }}" />
                             <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -225,7 +154,7 @@
                         <div class="relative w-full sm:w-auto">
                             <select
                                 id="filter-status"
-                                class="w-full sm:w-auto appearance-none pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                class="w-full appearance-none pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                 <option value="">All Statuses</option>
                                 <option value="pending">Pending</option>
                                 <option value="confirmed">Confirmed</option>
@@ -237,18 +166,14 @@
                                 stroke-linejoin="round">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                             </svg>
-                            <svg class="w-5 h-5 text-gray-500 absolute right-2 top-1/2 transform -translate-y-1/2"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                            
                         </div>
                         
                         <div class="relative w-full sm:w-auto">
                             <input type="text" 
                                 id="search-patient" 
                                 placeholder="Search patients..."
-                                class="w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                             <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -256,41 +181,85 @@
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
                         </div>
+                        
+                        <!-- View Mode Toggle -->
+                        <div class="relative w-full sm:w-auto flex rounded-lg overflow-hidden border border-gray-300">
+                            <button 
+                                id="timeline-view-btn"
+                                class="view-toggle-btn flex-1 sm:flex-none px-3 py-2 flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                </svg>
+                                Timeline
+                            </button>
+                            <button 
+                                id="list-view-btn"
+                                class="view-toggle-btn flex-1 sm:flex-none px-3 py-2 flex items-center justify-center bg-white text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                                </svg>
+                                List
+                            </button>
+                            <button 
+                                id="week-view-btn"
+                                class="view-toggle-btn flex-1 sm:flex-none px-3 py-2 flex items-center justify-center bg-white text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Week
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         
-            <!-- Appointments Timeline Section -->
-            <div x-data="appointmentManager()" 
-                 class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Appointments Management Section -->
+            <div x-data="appointmentManager()" class="bg-white rounded-xl shadow-lg overflow-hidden">
+                
                 <!-- Date Navigation Header -->
-                <div class="flex justify-between items-center p-4 border-b border-gray-100">
-                    <button @click="previousDay()" class="text-blue-600 hover:text-blue-800 flex items-center">
-                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-wrap justify-between items-center p-3 sm:p-4 border-b border-gray-100">
+                    <button @click="previousDay()" class="text-blue-600 hover:text-blue-800 flex items-center text-sm sm:text-base order-1">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
-                        Previous Day
+                        <span x-show="viewMode !== 'week'" class="hidden xs:inline">Previous Day</span>
+                        <span x-show="viewMode !== 'week'" class="inline xs:hidden">Prev</span>
+                        <span x-show="viewMode === 'week'" class="hidden xs:inline">Previous Week</span>
+                        <span x-show="viewMode === 'week'" class="inline xs:hidden">Prev</span>
                     </button>
-                    <div>
-                        <span class="text-lg font-medium text-gray-800" x-text="formattedCurrentDate"></span>
+                    
+                    <div class="text-center order-3 w-full sm:w-auto sm:order-2 mt-3 sm:mt-0">
+                        <template x-if="viewMode !== 'week'">
+                            <span class="text-base sm:text-lg font-medium text-gray-800" x-text="formattedCurrentDate"></span>
+                        </template>
+                        <template x-if="viewMode === 'week'">
+                            <span class="text-base sm:text-lg font-medium text-gray-800" x-text="getWeekRangeText()"></span>
+                        </template>
                         <span 
                             x-show="isToday" 
                             class="ml-2 bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-medium"
                         >Today</span>
                     </div>
-                    <button @click="nextDay()" class="text-blue-600 hover:text-blue-800 flex items-center">
-                        Next Day
-                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    
+                    <button @click="nextDay()" class="text-blue-600 hover:text-blue-800 flex items-center text-sm sm:text-base order-2 sm:order-3">
+                        <span x-show="viewMode !== 'week'" class="hidden xs:inline">Next Day</span>
+                        <span x-show="viewMode !== 'week'" class="inline xs:hidden">Next</span>
+                        <span x-show="viewMode === 'week'" class="hidden xs:inline">Next Week</span>
+                        <span x-show="viewMode === 'week'" class="inline xs:hidden">Next</span>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </button>
                 </div>
         
-                <!-- Timeline Header -->
-                <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
-                    <div class="flex items-center space-x-2">
-                        <h3 class="text-sm font-medium text-gray-700">Appointment Timeline</h3>
-                        <div class="flex items-center space-x-4 ml-4">
+                <!-- Legend Header -->
+                <div class="bg-gray-50 px-4 sm:px-6 py-3 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+                    <div class="flex flex-col xs:flex-row items-start xs:items-center space-y-2 xs:space-y-0 xs:space-x-2 w-full sm:w-auto">
+                        <h3 class="text-sm font-medium text-gray-700">Appointments</h3>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 ml-0 xs:ml-4 mt-2 xs:mt-0">
                             <div class="flex items-center">
                                 <span class="w-3 h-3 rounded-full bg-green-500 mr-1"></span>
                                 <span class="text-xs text-gray-600">General</span>
@@ -309,6 +278,10 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div x-show="filteredAppointments.length > 0" class="w-full sm:w-auto text-left sm:text-right">
+                        <span class="text-sm text-gray-500" x-text="`${filteredAppointments.length} appointment(s) found`"></span>
+                    </div>
                 </div>
         
                 <!-- No appointments message -->
@@ -325,92 +298,384 @@
                     <p class="text-gray-400 text-sm">Try adjusting your filters or checking a different date</p>
                 </div>
         
-                <!-- Timeline -->
+                <!-- Timeline View (IMPROVED) -->
                 <div 
-                    x-show="filteredAppointments.length > 0" 
-                    class="overflow-x-auto pb-4 relative scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+                    x-show="filteredAppointments.length > 0 && viewMode === 'timeline'" 
+                    class="relative"
                 >
-                    <div class="timeline min-w-max flex p-4 relative">
-                        <!-- Current time indicator (if today) -->
+                    <!-- Timeline container with improved styling -->
+                    <div class="timeline-container overflow-x-auto pb-4 relative scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 border-t border-gray-100">
+                        {% comment %} <!-- Fixed "Now" indicator for today -->
                         <div 
-                            x-show="isToday" 
-                            :style="`left: ${getCurrentTimePosition()}%`"
-                            class="absolute top-0 bottom-0 border-l-2 border-red-500 z-10"
+                            x-show="isToday"
+                            class="absolute top-0 bottom-0 z-20 pointer-events-none"
+                            :style="{ left: `${getCurrentTimePosition()}%` }"
                         >
-                            <div class="bg-red-500 text-white text-xs py-1 px-2 rounded -ml-10 -mt-1">Now</div>
-                        </div>
-                    
-                        <!-- Hours timeline -->
-                        <template x-for="hour in hourList" :key="hour">
-                            <div class="hour-column flex flex-col mr-2" style="min-width: 120px">
-                                <div class="text-xs font-medium text-gray-500 mb-2 pl-1" x-text="`${hour}:00`"></div>
-                                
-                                <div class="hour-slots space-y-2">
-                                    <template x-for="appointment in getAppointmentsByHour(hour)" :key="appointment.id">
-                                        <div 
-                                            class="appointment-card rounded-lg p-3 transform transition-all duration-200 hover:shadow-md hover:-translate-y-1"
-                                            :class="getAppointmentCardClasses(appointment)"
-                                        >
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <p class="text-sm font-medium" x-text="appointment.appointment_time_str"></p>
-                                                    <p class="text-sm font-medium mt-1" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></p>
-                                                </div>
-                                                <span 
-                                                    class="px-2 py-1 text-xs rounded-full font-medium"
-                                                    :class="getAppointmentTypeClasses(appointment)"
-                                                    x-text="getAppointmentTypeDisplay(appointment)"
-                                                ></span>
-                                            </div>
-                                            
-                                            <div class="flex items-center justify-between mt-3">
-                                                <div class="flex items-center text-xs text-gray-500">
+                            <div class="h-full flex flex-col">
+                                <div class="bg-red-500 text-white text-xs py-1 px-2 rounded shadow-md">Now</div>
+                                <div class="w-0.5 h-full bg-red-400 opacity-70 mx-auto"></div>
+                            </div>
+                        </div> {% endcomment %}
+                        
+                        <!-- Timeline content -->
+                        <div class="timeline min-w-max flex p-4 relative">
+                            <!-- Dynamic hours timeline -->
+                            <template x-for="hour in getDisplayHours()" :key="hour">
+                                <div class="hour-column flex flex-col mr-4" style="min-width: 200px; max-width: 300px">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-2">
+                                            <span class="text-xs font-medium text-gray-700" x-text="hour"></span>
+                                        </div>
+                                        <div class="text-xs font-medium text-gray-500" x-text="`${hour}:00`"></div>
+                                    </div>
+                                    
+                                    <div class="hour-slots space-y-3">
+                                        <template x-for="appointment in getAppointmentsByHour(hour)" :key="appointment.id">
+                                            <div 
+                                                @click="showDetails(appointment)"
+                                                class="appointment-card rounded-lg p-3 transform transition-all duration-200 hover:shadow-md hover:-translate-y-1 cursor-pointer shadow-sm"
+                                                :class="getAppointmentCardClasses(appointment)"
+                                            >
+                                                <div class="flex justify-between items-start">
+                                                    <div>
+                                                        <p class="text-sm font-medium" x-text="appointment.appointment_time_str"></p>
+                                                        <p class="text-sm font-medium mt-1" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></p>
+                                                    </div>
                                                     <span 
-                                                        :class="getStatusIconClasses(appointment)" 
-                                                        x-html="getStatusIcon(appointment)"
-                                                    ></span>
-                                                    <span 
-                                                        class="ml-1"
-                                                        x-text="capitalizeFirstLetter(appointment.status)"
+                                                        class="px-2 py-1 text-xs rounded-full font-medium"
+                                                        :class="getAppointmentTypeClasses(appointment)"
+                                                        x-text="getAppointmentTypeDisplay(appointment)"
                                                     ></span>
                                                 </div>
                                                 
-                                                <div class="flex space-x-1">
-                                                    <button 
-                                                        @click="showDetails(appointment)"
-                                                        class="p-1 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-50"
-                                                        title="View details"
-                                                    >
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                    <button 
-                                                        @click="updateStatus(appointment)"
-                                                        class="p-1 text-gray-500 hover:text-green-600 rounded-full hover:bg-green-50"
-                                                        title="Update status"
-                                                    >
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
+                                                <div class="flex items-center justify-between mt-3">
+                                                    <div class="flex items-center text-xs text-gray-500">
+                                                        <span 
+                                                            :class="getStatusIconClasses(appointment)" 
+                                                            x-html="getStatusIcon(appointment)"
+                                                        ></span>
+                                                        <span 
+                                                            class="ml-1"
+                                                            x-text="capitalizeFirstLetter(appointment.status)"
+                                                        ></span>
+                                                    </div>
+                                                    
+                                                    <div class="flex space-x-1">
+                                                        <button 
+                                                            @click.stop="showDetails(appointment)"
+                                                            class="p-1 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-50"
+                                                            title="View details"
+                                                        >
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <button 
+                                                            @click.stop="updateStatus(appointment)"
+                                                            class="p-1 text-gray-500 hover:text-green-600 rounded-full hover:bg-green-50"
+                                                            title="Update status"
+                                                        >
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </div>
+                                                
+                                                <template x-if="appointment.reason">
+                                                    <div class="mt-2 text-xs text-gray-500 truncate" :title="appointment.reason" x-text="truncateText(appointment.reason, 40)"></div>
+                                                </template>
                                             </div>
-                                            
-                                            <template x-if="appointment.reason">
-                                                <div class="mt-2 text-xs text-gray-500 truncate" :title="appointment.reason" x-text="truncateText(appointment.reason, 40)"></div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- List View (IMPROVED) -->
+                <div 
+                    x-show="filteredAppointments.length > 0 && viewMode === 'list'" 
+                    class="pb-4 px-4"
+                >
+                    <div class="space-y-3 mt-4">
+                        <template x-if="filteredAppointments.length > 0">
+                            <div>
+                                <!-- Morning Section -->
+                                <template x-if="hasAppointmentsInTimeRange(0, 12)">
+                                    <div class="mb-4">
+                                        <h3 class="text-sm font-semibold text-gray-500 mb-2 flex items-center sticky top-0 bg-white py-2 z-10">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M12 6v6l4 2"></path>
+                                            </svg>
+                                            Morning (0:00 - 12:00)
+                                        </h3>
+                                        <div class="space-y-2">
+                                            <template x-for="appointment in getAppointmentsByTimeRange(0, 12)" :key="appointment.id">
+                                                <div 
+                                                    @click="showDetails(appointment)"
+                                                    class="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md cursor-pointer transition-all duration-200"
+                                                    :class="{'border-l-4 border-l-green-500': appointment.status === 'completed',
+                                                            'border-l-4 border-l-blue-500': appointment.status === 'confirmed',
+                                                            'border-l-4 border-l-amber-500': appointment.status === 'pending',
+                                                            'border-l-4 border-l-red-500': appointment.status === 'cancelled'}"
+                                                >
+                                                    <div class="flex flex-wrap items-center">
+                                                        <div class="mr-3 mb-2 sm:mb-0">
+                                                            <span 
+                                                                class="inline-block w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-medium text-gray-600"
+                                                                x-text="getPatientInitials(appointment)"
+                                                            ></span>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0 mb-2 sm:mb-0">
+                                                            <p class="font-medium truncate" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></p>
+                                                            <div class="flex flex-wrap items-center text-sm text-gray-500 gap-y-1">
+                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                </svg>
+                                                                <span class="mr-3" x-text="appointment.appointment_time_str"></span>
+                                                                <span 
+                                                                    class="px-2 py-0.5 text-xs rounded-full"
+                                                                    :class="getAppointmentTypeClasses(appointment)"
+                                                                    x-text="getAppointmentTypeDisplay(appointment)"
+                                                                ></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center space-x-2 ml-auto">
+                                                            <span 
+                                                                class="px-2 py-1 text-xs rounded-full capitalize whitespace-nowrap"
+                                                                :class="getStatusBadgeClass(appointment)"
+                                                                x-text="appointment.status"
+                                                            ></span>
+                                                            <button 
+                                                                @click.stop="showDetails(appointment)"
+                                                                class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-50"
+                                                            >
+                                                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </template>
                                         </div>
-                                    </template>
-                                </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Afternoon Section -->
+                                <template x-if="hasAppointmentsInTimeRange(12, 17)">
+                                    <div class="mb-4">
+                                        <h3 class="text-sm font-semibold text-gray-500 mb-2 flex items-center sticky top-0 bg-white py-2 z-10">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M12 12l4 2"></path>
+                                            </svg>
+                                            Afternoon (12:00 - 17:00)
+                                        </h3>
+                                        <div class="space-y-2">
+                                            <template x-for="appointment in getAppointmentsByTimeRange(12, 17)" :key="appointment.id">
+                                                <div 
+                                                    @click="showDetails(appointment)"
+                                                    class="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md cursor-pointer transition-all duration-200"
+                                                    :class="{'border-l-4 border-l-green-500': appointment.status === 'completed',
+                                                            'border-l-4 border-l-blue-500': appointment.status === 'confirmed',
+                                                            'border-l-4 border-l-amber-500': appointment.status === 'pending',
+                                                            'border-l-4 border-l-red-500': appointment.status === 'cancelled'}"
+                                                >
+                                                    <div class="flex flex-wrap items-center">
+                                                        <div class="mr-3 mb-2 sm:mb-0">
+                                                            <span 
+                                                                class="inline-block w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-medium text-gray-600"
+                                                                x-text="getPatientInitials(appointment)"
+                                                            ></span>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0 mb-2 sm:mb-0">
+                                                            <p class="font-medium truncate" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></p>
+                                                            <div class="flex flex-wrap items-center text-sm text-gray-500 gap-y-1">
+                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                </svg>
+                                                                <span class="mr-3" x-text="appointment.appointment_time_str"></span>
+                                                                <span 
+                                                                    class="px-2 py-0.5 text-xs rounded-full"
+                                                                    :class="getAppointmentTypeClasses(appointment)"
+                                                                    x-text="getAppointmentTypeDisplay(appointment)"
+                                                                ></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center space-x-2 ml-auto">
+                                                            <span 
+                                                                class="px-2 py-1 text-xs rounded-full capitalize whitespace-nowrap"
+                                                                :class="getStatusBadgeClass(appointment)"
+                                                                x-text="appointment.status"
+                                                            ></span>
+                                                            <button 
+                                                                @click.stop="showDetails(appointment)"
+                                                                class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-50"
+                                                            >
+                                                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Evening Section -->
+                                <template x-if="hasAppointmentsInTimeRange(17, 24)">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-500 mb-2 flex items-center sticky top-0 bg-white py-2 z-10">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                                            </svg>
+                                            Evening (17:00 - 24:00)
+                                        </h3>
+                                        <div class="space-y-2">
+                                            <template x-for="appointment in getAppointmentsByTimeRange(17, 24)" :key="appointment.id">
+                                                <div 
+                                                    @click="showDetails(appointment)"
+                                                    class="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md cursor-pointer transition-all duration-200"
+                                                    :class="{'border-l-4 border-l-green-500': appointment.status === 'completed',
+                                                            'border-l-4 border-l-blue-500': appointment.status === 'confirmed',
+                                                            'border-l-4 border-l-amber-500': appointment.status === 'pending',
+                                                            'border-l-4 border-l-red-500': appointment.status === 'cancelled'}"
+                                                >
+                                                    <div class="flex flex-wrap items-center">
+                                                        <div class="mr-3 mb-2 sm:mb-0">
+                                                            <span 
+                                                                class="inline-block w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-medium text-gray-600"
+                                                                x-text="getPatientInitials(appointment)"
+                                                            ></span>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0 mb-2 sm:mb-0">
+                                                            <p class="font-medium truncate" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></p>
+                                                            <div class="flex flex-wrap items-center text-sm text-gray-500 gap-y-1">
+                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                </svg>
+                                                                <span class="mr-3" x-text="appointment.appointment_time_str"></span>
+                                                                <span 
+                                                                    class="px-2 py-0.5 text-xs rounded-full"
+                                                                    :class="getAppointmentTypeClasses(appointment)"
+                                                                    x-text="getAppointmentTypeDisplay(appointment)"
+                                                                ></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center space-x-2 ml-auto">
+                                                            <span 
+                                                                class="px-2 py-1 text-xs rounded-full capitalize whitespace-nowrap"
+                                                                :class="getStatusBadgeClass(appointment)"
+                                                                x-text="appointment.status"
+                                                            ></span>
+                                                            <button 
+                                                                @click.stop="showDetails(appointment)"
+                                                                class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-50"
+                                                            >
+                                                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
                         </template>
+                    </div>
+                </div>
+                
+                <!-- Weekly View (IMPROVED) -->
+                <div 
+                    x-show="viewMode === 'week'" 
+                    class="pb-4"
+                >
+                    <!-- Weekly view with horizontal scrolling on small screens -->
+                    <div class="overflow-x-auto">
+                        <div class="min-w-[768px] p-4">
+                            <div class="grid grid-cols-7 gap-2">
+                                <!-- Day headers -->
+                                <template x-for="(date, index) in weekDates" :key="index">
+                                    <div class="text-center">
+                                        <div 
+                                            class="font-semibold text-sm mb-1" 
+                                            :class="{'text-blue-600': isDateToday(date)}"
+                                            x-text="formatDayName(date)">
+                                        </div>
+                                        <div 
+                                            class="text-xs"
+                                            :class="{'text-blue-600': isDateToday(date)}"
+                                            x-text="formatDayNumber(date)">
+                                        </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Calendar cells -->
+                                <template x-for="(date, index) in weekDates" :key="`cell-${index}`">
+                                    <div 
+                                        :class="{'bg-blue-50 border-blue-200': isDateToday(date),
+                                                'bg-white border-gray-200': !isDateToday(date)}"
+                                        class="border rounded-lg p-2 h-[280px] overflow-y-auto relative"
+                                    >
+                                        <!-- Current day marker -->
+                                        <div 
+                                            x-show="isDateToday(date)" 
+                                            class="absolute top-0 right-0 w-0 h-0 border-t-8 border-r-8 border-blue-500 border-transparent"
+                                        ></div>
+                                        
+                                        <!-- Appointment count badge -->
+                                        <div class="text-center mb-2">
+                                            <span 
+                                                x-show="getAppointmentCountForDate(date) > 0"
+                                                class="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800"
+                                                x-text="`${getAppointmentCountForDate(date)} appointment(s)`">
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Appointments for this day -->
+                                        <div class="space-y-2">
+                                            <template x-for="appointment in getAppointmentsForDate(date)" :key="`week-apt-${appointment.id}`">
+                                                <div 
+                                                    @click="showDetails(appointment)"
+                                                    class="text-xs p-2 rounded-md cursor-pointer border-l-2 hover:shadow-md transition-all"
+                                                    :class="getWeekViewAppointmentClasses(appointment)"
+                                                >
+                                                    <div class="font-semibold" x-text="appointment.appointment_time_str"></div>
+                                                    <div class="truncate" x-text="`${appointment.patient_first_name} ${appointment.patient_last_name}`"></div>
+                                                    <div class="flex items-center justify-between mt-1">
+                                                        <span 
+                                                            class="px-1.5 py-0.5 text-xs rounded-full"
+                                                            :class="getAppointmentTypeClasses(appointment)"
+                                                            x-text="getAppointmentTypeDisplay(appointment)"
+                                                        ></span>
+                                                        <span 
+                                                            class="capitalize text-xs"
+                                                            :class="getStatusTextClass(appointment)"
+                                                            x-text="appointment.status"
+                                                        ></span>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -418,12 +683,12 @@
                 <div 
                     x-show="showModal" 
                     @keydown.escape.window="showModal = false"
-                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 "
                     x-cloak
                 >
                     <div 
                         @click.away="showModal = false"
-                        class="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+                        class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
                     >
                         <div class="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
                             <h3 class="text-lg font-medium text-gray-900">Appointment Details</h3>
@@ -434,10 +699,10 @@
                             </button>
                         </div>
                         <div class="px-6 py-4" x-show="selectedAppointment">
-                            <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <p class="text-xs text-gray-500">Date</p>
-                                    <p class="font-medium" x-text="selectedAppointment?.appointment_date"></p>
+                                    <p class="font-medium" x-text="formatDetailDate(selectedAppointment?.appointment_date)"></p>
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Time</p>
@@ -445,7 +710,11 @@
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Status</p>
-                                    <p class="font-medium capitalize" x-text="selectedAppointment?.status"></p>
+                                    <span
+                                        class="inline-block px-2 py-1 text-xs rounded-full font-medium mt-1 capitalize"
+                                        :class="getStatusBadgeClass(selectedAppointment)"
+                                        x-text="selectedAppointment?.status"
+                                    ></span>
                                 </div>
                             </div>
                             
@@ -456,13 +725,17 @@
                             
                             <div class="mb-4">
                                 <p class="text-xs text-gray-500">Appointment Type</p>
-                                <p class="font-medium" x-text="getAppointmentTypeDisplay(selectedAppointment)"></p>
+                                <span 
+                                    class="inline-block px-2 py-1 text-xs rounded-full font-medium mt-1"
+                                    :class="getAppointmentTypeClasses(selectedAppointment)"
+                                    x-text="getAppointmentTypeDisplay(selectedAppointment)"
+                                ></span>
                             </div>
                             
                             <template x-if="selectedAppointment?.reason">
                                 <div class="mb-4">
                                     <p class="text-xs text-gray-500">Reason</p>
-                                    <p class="text-sm" x-text="selectedAppointment?.reason"></p>
+                                    <p class="text-sm mt-1 bg-gray-50 p-3 rounded-md" x-text="selectedAppointment?.reason"></p>
                                 </div>
                             </template>
                             
@@ -472,7 +745,7 @@
                                     <a 
                                         :href="selectedAppointment?.file" 
                                         target="_blank"
-                                        class="text-blue-600 hover:underline flex items-center mt-1"
+                                        class="text-blue-600 hover:underline flex items-center mt-1 p-2 bg-blue-50 rounded-md inline-block"
                                     >
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -485,11 +758,11 @@
                             </template>
                         </div>
                         <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex justify-end">
-                            <div class="space-x-2">
+                            <div class="flex flex-wrap gap-2">
                                 <template x-if="selectedAppointment?.status !== 'completed'">
                                     <button 
                                         @click="changeAppointmentStatus('completed')"
-                                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium"
+                                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
                                     >
                                         Mark as Completed
                                     </button>
@@ -497,7 +770,7 @@
                                 <template x-if="['pending', 'confirmed'].includes(selectedAppointment?.status)">
                                     <button 
                                         @click="changeAppointmentStatus('cancelled')"
-                                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm font-medium"
+                                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm font-medium transition-colors"
                                     >
                                         Cancel Appointment
                                     </button>
@@ -505,7 +778,7 @@
                                 <template x-if="selectedAppointment?.status === 'pending'">
                                     <button 
                                         @click="changeAppointmentStatus('confirmed')"
-                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
                                     >
                                         Confirm Appointment
                                     </button>
@@ -516,16 +789,17 @@
                 </div>
             </div>
         </div>
+    </section>
 
+<script id="appointment-data" type="application/json">
+    {{ all_appointments_json|safe }}
+</script>
 
+<script id="week-dates" type="application/json">
+    {{ week_dates_json|safe }}
+</script>
 
-
-        <script id="appointment-data" type="application/json">
-            {{ all_appointments_json|safe }}
-        </script>
-
-
-        <!-- Alpine.js -->
+<!-- Alpine.js -->
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
 <script>
@@ -536,10 +810,13 @@
             currentDate: '',
             selectedStatus: '',
             searchTerm: '',
-            hourList: Array.from({ length: 12 }, (_, i) => String(i + 8).padStart(2, '0')), // 8am to 7pm
+            hourList: JSON.parse('{{ hour_list|safe }}'),
+            weekDates: [],
+            viewMode: 'timeline', // 'timeline', 'list', or 'week'
             showModal: false,
             selectedAppointment: null,
             isToday: false,
+            nowIndicatorInterval: null,
             
             init() {
                 try {
@@ -550,6 +827,12 @@
                     } else {
                         console.error('Appointment data element not found');
                         this.appointments = [];
+                    }
+                    
+                    // Get week dates
+                    const weekDatesElement = document.getElementById('week-dates');
+                    if (weekDatesElement) {
+                        this.weekDates = JSON.parse(weekDatesElement.textContent.trim());
                     }
                 } catch (error) {
                     console.error('Failed to parse appointment data:', error);
@@ -590,8 +873,95 @@
                     });
                 }
                 
+                // Connect view toggle buttons
+                const timelineBtn = document.getElementById('timeline-view-btn');
+                const listBtn = document.getElementById('list-view-btn');
+                const weekBtn = document.getElementById('week-view-btn');
+                
+                if (timelineBtn) {
+                    timelineBtn.addEventListener('click', () => this.setViewMode('timeline'));
+                }
+                
+                if (listBtn) {
+                    listBtn.addEventListener('click', () => this.setViewMode('list'));
+                }
+                
+                if (weekBtn) {
+                    weekBtn.addEventListener('click', () => this.setViewMode('week'));
+                }
+                
                 this.checkIfToday();
                 this.filterAppointments();
+                
+                // Start now indicator update interval when it's today
+                if (this.isToday) {
+                    this.startNowIndicatorInterval();
+                }
+                
+                // Add event listener for window resize to handle responsive layout adjustments
+                window.addEventListener('resize', () => {
+                    // This helps ensure layouts adapt when window size changes
+                    this.$nextTick(() => {
+                        if (this.viewMode === 'timeline' && this.isToday) {
+                            // Force recalculation of "now" indicator position
+                            this.updateNowIndicator();
+                        }
+                    });
+                });
+            },
+            
+            startNowIndicatorInterval() {
+                // Clear existing interval if any
+                if (this.nowIndicatorInterval) {
+                    clearInterval(this.nowIndicatorInterval);
+                }
+                
+                // Update now indicator every minute
+                this.nowIndicatorInterval = setInterval(() => {
+                    this.updateNowIndicator();
+                }, 60000); // Update every minute
+                
+                // Initial update
+                this.updateNowIndicator();
+            },
+            
+            updateNowIndicator() {
+                // This function will be called by the interval to update the now indicator position
+                // For Alpine, changing the return value of getCurrentTimePosition will update the indicator
+                // We need to force a reactivity update
+                this.$nextTick(() => {
+                    const timelineContainer = document.querySelector('.timeline-container');
+                    if (timelineContainer) {
+                        // This trivial update forces Alpine to recalculate the position
+                        this.isToday = this.isToday;
+                    }
+                });
+            },
+            
+            setViewMode(mode) {
+                this.viewMode = mode;
+                
+                // Update button styles
+                const buttons = document.querySelectorAll('.view-toggle-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('bg-blue-500', 'text-white');
+                    btn.classList.add('bg-white', 'text-gray-700');
+                });
+                
+                // Highlight the active button
+                const activeBtn = document.getElementById(`${mode}-view-btn`);
+                if (activeBtn) {
+                    activeBtn.classList.remove('bg-white', 'text-gray-700');
+                    activeBtn.classList.add('bg-blue-500', 'text-white');
+                }
+                
+                // Initialize special behaviors for different view modes
+                this.$nextTick(() => {
+                    if (mode === 'timeline' && this.isToday) {
+                        // Reset the now indicator interval when switching to timeline
+                        this.startNowIndicatorInterval();
+                    }
+                });
             },
             
             get formattedCurrentDate() {
@@ -612,31 +982,103 @@
                 }
             },
             
+            formatDetailDate(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return dateStr;
+                    
+                    return date.toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                } catch (e) {
+                    console.error('Error formatting detail date:', e);
+                    return dateStr;
+                }
+            },
+            
+            formatDayName(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return '';
+                    
+                    return date.toLocaleDateString('en-US', { weekday: 'short' });
+                } catch (e) {
+                    return '';
+                }
+            },
+            
+            formatDayNumber(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return '';
+                    
+                    return date.getDate();
+                } catch (e) {
+                    return '';
+                }
+            },
+            
             checkIfToday() {
                 try {
                     const today = new Date().toISOString().split('T')[0];
+                    const wasToday = this.isToday;
                     this.isToday = this.currentDate === today;
+                    
+                    // Start or stop the now indicator interval based on whether it's today
+                    if (!wasToday && this.isToday && this.viewMode === 'timeline') {
+                        this.startNowIndicatorInterval();
+                    } else if (wasToday && !this.isToday && this.nowIndicatorInterval) {
+                        clearInterval(this.nowIndicatorInterval);
+                        this.nowIndicatorInterval = null;
+                    }
                 } catch (error) {
                     console.error('Error in checkIfToday:', error);
                     this.isToday = false;
                 }
             },
             
+            isDateToday(dateStr) {
+                if (!dateStr) return false;
+                try {
+                    const today = new Date().toISOString().split('T')[0];
+                    return dateStr === today;
+                } catch (e) {
+                    return false;
+                }
+            },
+            
             previousDay() {
                 try {
-                    const date = new Date(this.currentDate);
-                    if (isNaN(date.getTime())) {
-                        throw new Error('Invalid date');
+                    if (this.viewMode === 'week') {
+                        // Go back one week
+                        this.weekDates = this.weekDates.map(date => {
+                            const d = new Date(date);
+                            d.setDate(d.getDate() - 7);
+                            return d.toISOString().split('T')[0];
+                        });
+                        this.currentDate = this.weekDates[0]; // Set current date to first day of week
+                    } else {
+                        // Go back one day
+                        const date = new Date(this.currentDate);
+                        if (isNaN(date.getTime())) {
+                            throw new Error('Invalid date');
+                        }
+                        
+                        date.setDate(date.getDate() - 1);
+                        
+                        // Format as YYYY-MM-DD
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        
+                        this.currentDate = `${year}-${month}-${day}`;
                     }
-                    
-                    date.setDate(date.getDate() - 1);
-                    
-                    // Format as YYYY-MM-DD
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    
-                    this.currentDate = `${year}-${month}-${day}`;
                     
                     // Update the date input
                     const dateInput = document.getElementById('filter-date');
@@ -653,19 +1095,30 @@
             
             nextDay() {
                 try {
-                    const date = new Date(this.currentDate);
-                    if (isNaN(date.getTime())) {
-                        throw new Error('Invalid date');
+                    if (this.viewMode === 'week') {
+                        // Go forward one week
+                        this.weekDates = this.weekDates.map(date => {
+                            const d = new Date(date);
+                            d.setDate(d.getDate() + 7);
+                            return d.toISOString().split('T')[0];
+                        });
+                        this.currentDate = this.weekDates[0]; // Set current date to first day of week
+                    } else {
+                        // Go forward one day
+                        const date = new Date(this.currentDate);
+                        if (isNaN(date.getTime())) {
+                            throw new Error('Invalid date');
+                        }
+                        
+                        date.setDate(date.getDate() + 1);
+                        
+                        // Format as YYYY-MM-DD
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        
+                        this.currentDate = `${year}-${month}-${day}`;
                     }
-                    
-                    date.setDate(date.getDate() + 1);
-                    
-                    // Format as YYYY-MM-DD without using toISOString
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    
-                    this.currentDate = `${year}-${month}-${day}`;
                     
                     // Update the date input
                     const dateInput = document.getElementById('filter-date');
@@ -680,6 +1133,26 @@
                 }
             },
             
+            getWeekRangeText() {
+                if (!Array.isArray(this.weekDates) || this.weekDates.length < 2) {
+                    return 'Week View';
+                }
+                
+                try {
+                    const firstDay = new Date(this.weekDates[0]);
+                    const lastDay = new Date(this.weekDates[6]);
+                    
+                    const formatOptions = { month: 'short', day: 'numeric' };
+                    const start = firstDay.toLocaleDateString('en-US', formatOptions);
+                    const end = lastDay.toLocaleDateString('en-US', formatOptions);
+                    
+                    return `${start} - ${end}, ${firstDay.getFullYear()}`;
+                } catch (e) {
+                    console.error('Error formatting week range:', e);
+                    return 'Week View';
+                }
+            },
+            
             filterAppointments() {
                 try {
                     if (!Array.isArray(this.appointments)) {
@@ -688,33 +1161,102 @@
                         return;
                     }
                     
-                    this.filteredAppointments = this.appointments.filter(app => {
-                        if (!app) return false;
-                        
-                        const matchesDate = app.appointment_date === this.currentDate;
-                        const matchesStatus = !this.selectedStatus || app.status === this.selectedStatus;
-                        const matchesSearch = !this.searchTerm || 
-                            `${app.patient_first_name || ''} ${app.patient_last_name || ''}`.toLowerCase().includes(this.searchTerm.toLowerCase());
-                        
-                        return matchesDate && matchesStatus && matchesSearch;
-                    });
+                    // For week view, don't filter by date
+                    if (this.viewMode === 'week') {
+                        const matchingAppointments = this.appointments.filter(app => {
+                            if (!app) return false;
+                            const matchesStatus = !this.selectedStatus || app.status === this.selectedStatus;
+                            const matchesSearch = !this.searchTerm || 
+                                `${app.patient_first_name || ''} ${app.patient_last_name || ''}`.toLowerCase().includes(this.searchTerm.toLowerCase());
+                            
+                            return matchesStatus && matchesSearch;
+                        });
+                        this.filteredAppointments = matchingAppointments;
+                    } else {
+                        // For day views, filter by the current date
+                        this.filteredAppointments = this.appointments.filter(app => {
+                            if (!app) return false;
+                            
+                            const matchesDate = app.appointment_date === this.currentDate;
+                            const matchesStatus = !this.selectedStatus || app.status === this.selectedStatus;
+                            const matchesSearch = !this.searchTerm || 
+                                `${app.patient_first_name || ''} ${app.patient_last_name || ''}`.toLowerCase().includes(this.searchTerm.toLowerCase());
+                            
+                            return matchesDate && matchesStatus && matchesSearch;
+                        });
+                    }
                 } catch (error) {
                     console.error('Error filtering appointments:', error);
                     this.filteredAppointments = [];
                 }
             },
             
+            getDisplayHours() {
+                // If there are appointments, only show hours that have appointments
+                if (this.filteredAppointments.length > 0) {
+                    // Extract unique hours from filtered appointments
+                    const uniqueHours = [...new Set(
+                        this.filteredAppointments
+                            .filter(app => app && app.hour !== undefined)
+                            .map(app => app.hour)
+                    )].sort((a, b) => a - b);
+                    
+                    // Format hours with leading zeros
+                    return uniqueHours.map(hour => String(hour).padStart(2, '0'));
+                }
+                
+                // Fallback to default hour range
+                return this.hourList;
+            },
+            
             getAppointmentsByHour(hour) {
                 try {
                     if (!Array.isArray(this.filteredAppointments)) return [];
                     
+                    const hourInt = parseInt(hour, 10);
                     return this.filteredAppointments.filter(app => 
-                        app && app.appointment_time_str && app.appointment_time_str.slice(0, 2) === hour
+                        app && app.hour !== undefined && app.hour === hourInt
                     );
                 } catch (error) {
                     console.error('Error getting appointments by hour:', error);
                     return [];
                 }
+            },
+            
+            hasAppointmentsInTimeRange(startHour, endHour) {
+                return this.filteredAppointments.some(app => {
+                    if (!app || app.hour === undefined) return false;
+                    return app.hour >= startHour && app.hour < endHour;
+                });
+            },
+            
+            getAppointmentsByTimeRange(startHour, endHour) {
+                return this.filteredAppointments.filter(app => {
+                    if (!app || app.hour === undefined) return false;
+                    return app.hour >= startHour && app.hour < endHour;
+                }).sort((a, b) => a.hour - b.hour || a.appointment_time_str.localeCompare(b.appointment_time_str));
+            },
+            
+            getAppointmentsForDate(date) {
+                if (!Array.isArray(this.appointments) || !date) return [];
+                
+                return this.appointments.filter(app => 
+                    app && app.appointment_date === date
+                ).sort((a, b) => a.hour - b.hour || a.appointment_time_str.localeCompare(b.appointment_time_str));
+            },
+            
+            getAppointmentCountForDate(date) {
+                const appointments = this.getAppointmentsForDate(date);
+                return appointments.length;
+            },
+            
+            getPatientInitials(appointment) {
+                if (!appointment) return '';
+                
+                const firstInitial = appointment.patient_first_name ? appointment.patient_first_name.charAt(0).toUpperCase() : '';
+                const lastInitial = appointment.patient_last_name ? appointment.patient_last_name.charAt(0).toUpperCase() : '';
+                
+                return `${firstInitial}${lastInitial}`;
             },
             
             getAppointmentCardClasses(appointment) {
@@ -743,6 +1285,47 @@
                 };
                 
                 return typeClasses[appointment.appointment_type] || 'bg-gray-100 text-gray-700';
+            },
+            
+            getWeekViewAppointmentClasses(appointment) {
+                if (!appointment) return '';
+                
+                const baseClasses = 'border-l-2';
+                
+                const statusClasses = {
+                    'pending': 'border-amber-500 bg-amber-50',
+                    'confirmed': 'border-blue-500 bg-blue-50',
+                    'completed': 'border-green-500 bg-green-50',
+                    'cancelled': 'border-red-500 bg-red-50'
+                };
+                
+                return `${baseClasses} ${statusClasses[appointment.status] || 'border-gray-300 bg-gray-50'}`;
+            },
+            
+            getStatusBadgeClass(appointment) {
+                if (!appointment) return '';
+                
+                const statusClasses = {
+                    'pending': 'bg-amber-100 text-amber-800',
+                    'confirmed': 'bg-blue-100 text-blue-800',
+                    'completed': 'bg-green-100 text-green-800',
+                    'cancelled': 'bg-red-100 text-red-800'
+                };
+                
+                return statusClasses[appointment.status] || 'bg-gray-100 text-gray-800';
+            },
+            
+            getStatusTextClass(appointment) {
+                if (!appointment) return '';
+                
+                const statusClasses = {
+                    'pending': 'text-amber-600',
+                    'confirmed': 'text-blue-600',
+                    'completed': 'text-green-600',
+                    'cancelled': 'text-red-600'
+                };
+                
+                return statusClasses[appointment.status] || 'text-gray-600';
             },
             
             getAppointmentTypeDisplay(appointment) {
@@ -836,9 +1419,38 @@
                     // For demo purposes, let's just update it locally
                     this.updateAppointmentInArray(this.selectedAppointment.id, { status: newStatus });
                     this.showModal = false;
+                    
+                    // Show a success notification
+                    this.showNotification(`Appointment status updated to ${newStatus}`);
                 } catch (error) {
                     console.error('Error updating appointment status:', error);
                 }
+            },
+            
+            showNotification(message) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-2 z-50 max-w-xs sm:max-w-sm';
+                notification.textContent = message;
+                
+                // Add to the DOM
+                document.body.appendChild(notification);
+                
+                // Show notification
+                setTimeout(() => {
+                    notification.classList.remove('opacity-0', 'translate-y-2');
+                    notification.classList.add('opacity-100', 'translate-y-0');
+                }, 100);
+                
+                // Hide and remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('opacity-100', 'translate-y-0');
+                    notification.classList.add('opacity-0', 'translate-y-2');
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
             },
             
             updateAppointmentInArray(appointmentId, updates) {
@@ -872,15 +1484,33 @@
                     const hours = now.getHours();
                     const minutes = now.getMinutes();
                     
-                    // Start time (8am) = 0px
-                    // End time (8pm) = 100% of width
-                    // Calculate position based on current time
-                    const startHour = 8;
-                    const totalHours = 12; // 8am to 8pm
+                    // Find min and max hours in the current display
+                    const displayHours = this.getDisplayHours().map(h => parseInt(h, 10));
                     
-                    const hourPosition = hours - startHour;
+                    if (displayHours.length === 0) {
+                        return 0; // No hours to display, fallback to start
+                    }
+                    
+                    const minHour = Math.min(...displayHours);
+                    const maxHour = Math.max(...displayHours) + 1;
+                    
+                    // Calculate position percentage
+                    const totalHours = maxHour - minHour;
+                    if (totalHours <= 0) return 0;
+                    
+                    const hourPosition = hours - minHour;
                     const minutePosition = minutes / 60;
-                    const position = (hourPosition + minutePosition) / totalHours * 100;
+                    let position = (hourPosition + minutePosition) / totalHours * 100;
+                    
+                    // If current time is before the first appointment hour, position at beginning
+                    if (hours < minHour) {
+                        position = 0;
+                    }
+                    
+                    // If current time is after the last appointment hour, position at end
+                    if (hours >= maxHour) {
+                        position = 100;
+                    }
                     
                     // Return a percentage value, clamped to reasonable range
                     return Math.max(0, Math.min(100, position));
@@ -903,8 +1533,6 @@
     });
 </script>
 
-
-    </section>
 
     
 
