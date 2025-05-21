@@ -14,11 +14,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 
 def doctorDashboard(request):
-
     profile = request.user.profile
-
-
-
     doctor = DoctorProfile.objects.get(profile=profile)
     today = timezone.now().date()
     
@@ -36,14 +32,28 @@ def doctorDashboard(request):
             'patient_last_name': appointment.profile.user.last_name,
             'appointment_date': appointment.appointment_date.isoformat(),
             'appointment_time_str': appointment.appointment_time_str,
+            # Extract hour as integer for easier grouping
+            'hour': int(appointment.appointment_time_str.split(':')[0]),
             'appointment_type': appointment.appointment_type,
             'status': appointment.status,
             'reason': appointment.reason,
             'file': appointment.file.url if appointment.file and hasattr(appointment.file, 'url') else None
         })
     
-    # Generate hour list (8am to 7pm)
-    hour_list = [f"{h:02d}" for h in range(8, 20)]
+    # Get all unique hours that have appointments
+    all_hours = set()
+    for appointment in appointment_data:
+        if 'hour' in appointment:
+            all_hours.add(appointment['hour'])
+    
+    # Generate hour list sorted (for timeline view)
+    hour_list = sorted(list(all_hours)) if all_hours else [f"{h}" for h in range(8, 20)]
+    
+    # Get the week's dates (for weekly view)
+    week_dates = []
+    start_of_week = today - timedelta(days=today.weekday())
+    for i in range(7):
+        week_dates.append((start_of_week + timedelta(days=i)).isoformat())
     
     # Get counts for summary section
     today_count = all_appointments.filter(appointment_date=today).count()
@@ -54,21 +64,26 @@ def doctorDashboard(request):
     
     # Serialize to JSON here to avoid template issues
     appointment_json = json.dumps(appointment_data, cls=DjangoJSONEncoder)
+    week_dates_json = json.dumps(week_dates)
     
     context = {
         'all_appointments_json': appointment_json,  # Send the serialized JSON
         'hour_list': hour_list,
+        'week_dates_json': week_dates_json,
         'today': today.isoformat(),
         'today_count': today_count,
         'confirmed_count': confirmed_count,
         'pending_count': pending_count,
-        'week_count': week_count,
+            'week_count': week_count,
+
+        'counts': {
+            'total_patients': all_appointments.count(),
+            'pending_patients': all_appointments.filter(status='pending').count(),
+            'todays_appointments': all_appointments.filter(appointment_date=date.today()).count(),
+        },
     }
     
     return render(request, 'pages/doctor/dashboard.html', context)
-
-
-
 
 
 def d_edit_schedules(request):
