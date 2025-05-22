@@ -27,7 +27,7 @@ def doctorDashboard(request):
     appointment_data = []
     for appointment in all_appointments:
         appointment_data.append({
-            'id': appointment.id,
+            'id': str(appointment.uuid),
             'patient_first_name': appointment.profile.user.first_name,
             'patient_last_name': appointment.profile.user.last_name,
             'appointment_date': appointment.appointment_date.isoformat(),
@@ -315,16 +315,22 @@ def Action_Appointment(request):
 
     appointment: Appointment = Appointment.objects.get(uuid=app_id)
 
-    if action == 'confirm':
+    if action == 'confirm' or action == 'confirmed':
         appointment.status = 'confirmed'
         appointment.confirm_by = doctor.profile
         appointment.save()
-    elif action == 'cancel':
+    elif action == 'cancel' or action == 'cancelled':
         appointment.status = 'cancelled'
         appointment.cancled_by = doctor.profile
         appointment.cancel_reason = request.POST.get('cancel_reason', '')
         appointment.save()
 
+    elif action == 'complete' or action == 'completed':
+        appointment.status = 'completed'
+        appointment.completed_by = doctor.profile
+        appointment.save()
+
+    print(action, appointment.status)
     return JsonResponse({'success': True, 'message': f'Appointment {action}ed successfully'})
 
 

@@ -22,8 +22,8 @@
             <p class="text-muted-foreground">Welcome back, Dr. Smith. Here's your overview for today.</p>
         </div>
         <!-- Status Card -->
-        <div class="bg-purple-50 rounded-lg shadow-md p-6 mb-6">
-            <div class="flex justify-between items-center">
+        {% comment %} <div class="bg-purple-50 rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4 ">
                 <div>
                     <h2 class="text-lg font-semibold text-gray-800">Your Current Status</h2>
                     <p class="text-gray-600 mt-1">You are available for online consultations</p>
@@ -38,12 +38,12 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 
         <!-- Summary Cards Section -->
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="flex justify-between overflow-x-auto gap-6 px-3 py-4 custom-scrollbar pb-4">
             <!-- Total Patients Card -->
-            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <div class="min-w-[250px] rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
                 <div class="flex flex-row items-center justify-between mb-4">
                     <h3 class="text-sm font-semibold text-gray-700">Total Patients</h3>
                     <div class="p-2 bg-blue-50 rounded-lg">
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Today's Appointments Card -->
-            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <div class="min-w-[250px] rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
                 <div class="flex flex-row items-center justify-between mb-4">
                     <h3 class="text-sm font-semibold text-gray-700">Today's Appointments</h3>
                     <div class="p-2 bg-purple-50 rounded-lg">
@@ -83,7 +83,7 @@
             </div>
 
             <!-- Unread Messages Card -->
-            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <div class="min-w-[250px] rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
                 <div class="flex flex-row items-center justify-between mb-4">
                     <h3 class="text-sm font-semibold text-gray-700">Unread Messages</h3>
                     <div class="p-2 bg-green-50 rounded-lg">
@@ -103,7 +103,7 @@
             </div>
 
             <!-- Pending Lab Results Card -->
-            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <div class="min-w-[250px] rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
                 <div class="flex flex-row items-center justify-between mb-4">
                     <h3 class="text-sm font-semibold text-gray-700">Pending Lab Results</h3>
                     <div class="p-2 bg-red-50 rounded-lg">
@@ -157,7 +157,7 @@
                                 class="w-full appearance-none pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                 <option value="">All Statuses</option>
                                 <option value="pending">Pending</option>
-                                <option value="confirmed">Confirmed</option>
+                                <option value="confirmed" selected>Confirmed</option>
                                 <option value="completed">Completed</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
@@ -374,17 +374,7 @@
                                                                 </path>
                                                             </svg>
                                                         </button>
-                                                        <button 
-                                                            @click.stop="updateStatus(appointment)"
-                                                            class="p-1 text-gray-500 hover:text-green-600 rounded-full hover:bg-green-50"
-                                                            title="Update status"
-                                                        >
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
+                                                     
                                                     </div>
                                                 </div>
                                                 
@@ -759,12 +749,12 @@
                         </div>
                         <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex justify-end">
                             <div class="flex flex-wrap gap-2">
-                                <template x-if="selectedAppointment?.status !== 'completed'">
+                                <template x-if="selectedAppointment?.status == 'confirmed'">
                                     <button 
-                                        @click="changeAppointmentStatus('completed')"
+                                        @click=""
                                         class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
                                     >
-                                        Mark as Completed
+                                        Begin Appointment/ Check in
                                     </button>
                                 </template>
                                 <template x-if="['pending', 'confirmed'].includes(selectedAppointment?.status)">
@@ -808,7 +798,7 @@
             appointments: [],
             filteredAppointments: [],
             currentDate: '',
-            selectedStatus: '',
+            selectedStatus: 'Confirmed',
             searchTerm: '',
             hourList: JSON.parse('{{ hour_list|safe }}'),
             weekDates: [],
@@ -825,7 +815,11 @@
                     if (appointmentDataElement) {
                         this.appointments = JSON.parse(appointmentDataElement.textContent.trim());
                     } else {
-                        console.error('Appointment data element not found');
+                        showNotification({
+                            color: "bg-red-500",
+                            title: "Error Occured",
+                            message: `Appointment data element not found`
+                        });
                         this.appointments = [];
                     }
                     
@@ -835,7 +829,12 @@
                         this.weekDates = JSON.parse(weekDatesElement.textContent.trim());
                     }
                 } catch (error) {
-                    console.error('Failed to parse appointment data:', error);
+                    
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Failed to parse appointment data: ${error}`
+                    });
                     this.appointments = [];
                 }
                 
@@ -847,6 +846,8 @@
                 const dateInput = document.getElementById('filter-date');
                 const statusSelect = document.getElementById('filter-status');
                 const searchInput = document.getElementById('search-patient');
+
+                
                 
                 if (dateInput) {
                     dateInput.addEventListener('change', (e) => {
@@ -977,7 +978,11 @@
                         day: 'numeric'
                     });
                 } catch (e) {
-                    console.error('Error formatting date:', e);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error formatting date: ${e}`
+                    });
                     return this.currentDate; // Fallback
                 }
             },
@@ -995,7 +1000,11 @@
                         day: 'numeric'
                     });
                 } catch (e) {
-                    console.error('Error formatting detail date:', e);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error formatting detail date: ${e}`
+                    });
                     return dateStr;
                 }
             },
@@ -1089,7 +1098,11 @@
                     this.checkIfToday();
                     this.filterAppointments();
                 } catch (e) {
-                    console.error('Error navigating to previous day:', e);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `'Error navigating to previous day: ${e}`
+                    });
                 }
             },
             
@@ -1129,7 +1142,11 @@
                     this.checkIfToday();
                     this.filterAppointments();
                 } catch (e) {
-                    console.error('Error navigating to next day:', e);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error navigating to next day: ${e}`
+                    });
                 }
             },
             
@@ -1157,9 +1174,22 @@
                 try {
                     if (!Array.isArray(this.appointments)) {
                         console.error('Appointments is not an array:', this.appointments);
+
+                        showNotification({
+                            color: "bg-red-500",
+                            title: "Error Occured",
+                            message: `Appointments data is not an array`
+                        });
+
                         this.filteredAppointments = [];
                         return;
                     }
+
+                    console.log('Filtering appointments:', {
+                        currentDate: this.currentDate,
+                        selectedStatus: this.selectedStatus,
+                        searchTerm: this.searchTerm
+                    });
                     
                     // For week view, don't filter by date
                     if (this.viewMode === 'week') {
@@ -1187,6 +1217,8 @@
                     }
                 } catch (error) {
                     console.error('Error filtering appointments:', error);
+
+
                     this.filteredAppointments = [];
                 }
             },
@@ -1382,27 +1414,21 @@
                 this.showModal = true;
             },
             
-            updateStatus(appointment) {
-                this.selectedAppointment = appointment;
-                this.showModal = true;
-            },
-            
             async changeAppointmentStatus(newStatus) {
                 if (!this.selectedAppointment) return;
+
+                console.log('Changing status to:', newStatus);
                 
                 try {
-                    // Here you would make an API call to update the status
-                    // For example:
-                    /*
-                    const response = await fetch('/api/appointments/update-status/', {
+                    const response = await fetch('/d/actions-appointment/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                            'X-CSRFToken': "{{ csrf_token }}"
                         },
                         body: JSON.stringify({
-                            appointment_id: this.selectedAppointment.id,
-                            status: newStatus
+                            app_id: this.selectedAppointment.id,
+                            action: newStatus
                         })
                     });
                     
@@ -1411,47 +1437,31 @@
                         // Update the appointment in the local array
                         this.updateAppointmentInArray(this.selectedAppointment.id, { status: newStatus });
                         this.showModal = false;
+
+                         // Show a success notification
+                        showNotification({
+                            color: "bg-green-500",
+                            title: "Updated Appointment",
+                            message: `Appointment status updated to ${newStatus}`
+                        });
                     } else {
-                        console.error('Failed to update appointment status');
+                        showNotification({
+                            color: "bg-red-500",
+                            title: "Error Occured",
+                            message: `Failed to update appointment status`
+                        });
                     }
-                    */
-                    
-                    // For demo purposes, let's just update it locally
-                    this.updateAppointmentInArray(this.selectedAppointment.id, { status: newStatus });
-                    this.showModal = false;
-                    
-                    // Show a success notification
-                    this.showNotification(`Appointment status updated to ${newStatus}`);
+                   
                 } catch (error) {
-                    console.error('Error updating appointment status:', error);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error updating appointment status: ${error}`
+                    });
                 }
             },
             
-            showNotification(message) {
-                // Create notification element
-                const notification = document.createElement('div');
-                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-2 z-50 max-w-xs sm:max-w-sm';
-                notification.textContent = message;
-                
-                // Add to the DOM
-                document.body.appendChild(notification);
-                
-                // Show notification
-                setTimeout(() => {
-                    notification.classList.remove('opacity-0', 'translate-y-2');
-                    notification.classList.add('opacity-100', 'translate-y-0');
-                }, 100);
-                
-                // Hide and remove after 3 seconds
-                setTimeout(() => {
-                    notification.classList.remove('opacity-100', 'translate-y-0');
-                    notification.classList.add('opacity-0', 'translate-y-2');
-                    
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
-                }, 3000);
-            },
+           
             
             updateAppointmentInArray(appointmentId, updates) {
                 try {
@@ -1472,7 +1482,11 @@
                         this.selectedAppointment = { ...this.selectedAppointment, ...updates };
                     }
                 } catch (error) {
-                    console.error('Error updating appointment in array:', error);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error updating appointment in array: ${error}`
+                    });
                 }
             },
             
@@ -1515,7 +1529,11 @@
                     // Return a percentage value, clamped to reasonable range
                     return Math.max(0, Math.min(100, position));
                 } catch (error) {
-                    console.error('Error calculating current time position:', error);
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error Occured",
+                        message: `Error calculating current time position: ${error}`
+                    });
                     return 0;
                 }
             },
@@ -1547,7 +1565,7 @@
 <script>
 
     dashboard_nav_all = document.querySelectorAll('.dashboard-nav a');
-    console.log(dashboard_nav_all);
+    
     dashboard_nav_all.forEach((nav) => {
         nav_innertab =
             nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
