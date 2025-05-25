@@ -335,6 +335,22 @@ def Action_Appointment(request):
 
 
 
+def SessionMng(request):
+    profile: Profile = request.user.profile
+    doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
+
+    all_appointment = Appointment.objects.filter(doctor=doctor).order_by('-appointment_date')
+    context = {
+        'all_appointment': all_appointment,
+        'doctor': doctor,
+        'todays_appointments': all_appointment.filter(appointment_date=date.today()),
+    }
+    return render(request, 'pages/doctor/session_mng.html', context)
+
+
+
+
+
 def OnlineSession(request):
     return render(request, 'pages/doctor/online_session.html')
 
