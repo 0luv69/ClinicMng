@@ -1,0 +1,12 @@
+[
+    {"id": 4,
+     "name": "Dr. Aenna backer",
+      "specialty": "Radiology",
+       "experience": 21,
+        "rating": 5.0,
+         "reviews": 12,
+          "fees": 2222.0,
+           "image": "/media/profile_pictures/37657547-7cab-4ed7-a057-823fefcd1989-removebg-preview.png",
+            "availability": {"2025-07-16": {"12:09 -- 13:09": [8, "60", ["general_consultation"]]}} 
+    }
+]

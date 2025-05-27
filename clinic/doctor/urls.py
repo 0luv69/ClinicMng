@@ -6,6 +6,14 @@ app_name = 'doctor'
 
 
 urlpatterns = [
+    
+    path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
+    path('d/view-doctors/', ViewPatients, name='ViewDoctors_m'),
+
+
+
+
+
     path('', doctorDashboard, name='doctor_dashboard'),
     path('dashboard/', doctorDashboard, name='doctor_dashboard'),
 
@@ -24,15 +32,13 @@ urlpatterns = [
     path('actions-appointment/', Action_Appointment, name='Action_Appointment_from_Doc'),
 
     path('session-mng/', SessionMng, name='SessionMng'),
+    path('availability/<uuid:app_uuid>/', get_doctor_availability_json, name='doctor-availability-json'),
 
 
-    path('online-session/', OnlineSession, name='OnlineSession'),
-    path('d/view-patients/', ViewPatients, name='ViewPatients_m'),
-    path('d/view-doctors/', ViewPatients, name='ViewDoctors_m'),
+
     
 
 
 
-    path('setting/', dSetting, name='dSetting'),
     path('profile/', d_profile, name='profile'),
 ]

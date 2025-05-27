@@ -265,13 +265,14 @@ def BookAppointment(request: HttpRequest):
             date_json = {}
             for each_date_slot in date_slots:
                 date_str = each_date_slot.date.strftime('%Y-%m-%d')
-
                 times_slots = AppointmentTimeSlot.objects.filter(appointment_date_slot=each_date_slot)
+
                 for each_time_slot in times_slots:
+
                     time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
                     all_selected_types = list(each_time_slot.appointment_type)
 
-                    if not each_time_slot.status == 'booked' and not each_time_slot.status == 'unavailable':
+                    if each_time_slot.status not in ['booked', 'unavailable', 'break']:
                         if date_str not in date_json:
                             date_json[date_str] = {}
                         date_json[date_str][time_str] = [each_time_slot.id, each_time_slot.duration, all_selected_types]

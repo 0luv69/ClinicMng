@@ -3,179 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Sessions Management</title>
+    <title>Calendar Skeleton Loader</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
 </head>
-<body class="bg-gray-50 p-4">
-    <!-- Demo wrapper to show the template in action -->
-    <div class="max-w-7xl mx-auto">
-        <!-- Upcoming Session Section -->
-        <div id="upcoming-session" class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6 border-l-4 border-yellow-500">
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-2 sm:space-y-0">
-                <h2 class="text-lg font-semibold text-gray-800">Upcoming Session</h2>
-                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-start sm:self-auto">
-                    Starting in 5 minutes
-                </span>
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-                <img src="https://via.placeholder.com/64x64" alt="Patient Avatar"
-                    class="h-16 w-16 rounded-full object-cover avatar self-center sm:self-auto sm:mr-4">
-                
-                <div class="flex-1 text-center sm:text-left">
-                    <h3 class="font-medium text-gray-800 patient-name">John Doe</h3>
-                    <p class="text-gray-600 text-sm type-time">Video Consultation • 10:00 AM - 10:30 AM</p>
-                    <p class="text-gray-500 text-sm mt-1 complaint">Follow-up consultation for chronic pain management</p>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm join-button transition-colors duration-200">
-                        Join Session
-                    </button>
-                    <button class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm reschedule-button transition-colors duration-200">
-                        Reschedule
-                    </button>
-                </div>
-            </div>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
+        <!-- Calendar Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="skeleton h-6 w-16 rounded"></div>
+            <div class="skeleton h-6 w-12 rounded"></div>
+            <div class="skeleton h-6 w-6 rounded"></div>
         </div>
 
-        <!-- Today's Sessions Section -->
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Sessions</h2>
-        <div id="today-sessions" class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-            <!-- Session Item 1 -->
-            <div class="p-4 sm:p-6 border-l-4 border-yellow-500 border-b border-gray-100">
-                <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-                    <div class="relative self-center sm:self-auto sm:mr-4">
-                        <img src="https://via.placeholder.com/48x48" alt="Patient Avatar" class="h-12 w-12 rounded-full object-cover">
-                    </div>
-                    
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-2 sm:space-y-0">
-                            <div class="text-center sm:text-left">
-                                <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
-                                <p class="text-gray-600 text-sm">Follow-up • 10:30 AM - 11:00 AM</p>
-                            </div>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-center sm:self-auto">
-                                Up Next
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <button class="session-button border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm transition-colors duration-200 w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4">
-                        View Details
-                    </button>
-                </div>
-            </div>
-
-            <!-- Session Item 2 -->
-            <div class="p-4 sm:p-6 border-l-4 border-blue-500 border-b border-gray-100">
-                <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-                    <div class="relative self-center sm:self-auto sm:mr-4">
-                        <img src="https://via.placeholder.com/48x48" alt="Patient Avatar" class="h-12 w-12 rounded-full object-cover">
-                    </div>
-                    
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-2 sm:space-y-0">
-                            <div class="text-center sm:text-left">
-                                <h3 class="font-medium text-gray-800">Michael Chen</h3>
-                                <p class="text-gray-600 text-sm">Initial Consultation • 11:00 AM - 11:30 AM</p>
-                            </div>
-                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium self-center sm:self-auto">
-                                Scheduled
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <button class="session-button border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm transition-colors duration-200 w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4">
-                        View Details
-                    </button>
-                </div>
-            </div>
-
-            <!-- Empty State -->
-            <div x-data="{ showEmpty: false }" x-show="showEmpty" class="flex flex-col items-center justify-center py-12 px-4">
-                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z">
-                    </path>
-                </svg>
-                <p class="text-gray-500 text-lg mb-1 text-center">No appointments found</p>
-                <p class="text-gray-400 text-sm text-center">Try adjusting your filters or checking a different date</p>
-            </div>
+        <!-- Calendar Days Header -->
+        <div class="grid grid-cols-7 gap-2 mb-4">
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-4 w-8 rounded mx-auto"></div>
         </div>
-    </div>
 
-    <!-- Django Template Version Below (Copy this part) -->
-    <div class="max-w-7xl mx-auto mt-12 p-6 bg-gray-100 rounded-lg">
-        <h3 class="text-lg font-semibold mb-4 text-gray-700">Django Template Code:</h3>
-        <pre class="bg-gray-800 text-green-400 p-4 rounded-lg text-sm overflow-x-auto"><code>{% if all_appointment %}
-    &lt;div id="upcoming-session" class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6 border-l-4 border-yellow-500"&gt;
-        &lt;div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-2 sm:space-y-0"&gt;
-            &lt;h2 class="text-lg font-semibold text-gray-800"&gt;Upcoming Session&lt;/h2&gt;
-            &lt;span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-start sm:self-auto"&gt;
-                Starting in 5 minutes
-            &lt;/span&gt;
-        &lt;/div&gt;
+        <!-- Calendar Days Grid -->
+        <div class="grid grid-cols-7 gap-2 mb-6">
+            <!-- Week 1 -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            
+            <!-- Week 2 -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            
+            <!-- Week 3 -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            
+            <!-- Week 4 -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            
+            <!-- Week 5 -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto bg-blue-200"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            
+            <!-- Week 6 partial -->
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+            <div class="skeleton h-8 w-8 rounded mx-auto"></div>
+        </div>
 
-        &lt;div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0"&gt;
-            &lt;img src="{{ all_appointment.0.profile.profile_pic.url }}" alt="Patient Avatar"
-                class="h-16 w-16 rounded-full object-cover avatar self-center sm:self-auto sm:mr-4"&gt;
-            
-            &lt;div class="flex-1 text-center sm:text-left"&gt;
-                &lt;h3 class="font-medium text-gray-800 patient-name"&gt;{{ all_appointment.0.profile.user.first_name }}&lt;/h3&gt;
-                &lt;p class="text-gray-600 text-sm type-time"&gt;{{ all_appointment.0.appointment_type }} Consultation • {{ all_appointment.0.appointment_time_str }}&lt;/p&gt;
-                &lt;p class="text-gray-500 text-sm mt-1 complaint"&gt;{{ all_appointment.0.reason }}&lt;/p&gt;
-            &lt;/div&gt;
-            
-            &lt;div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto"&gt;
-                &lt;button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm join-button transition-colors duration-200"&gt;
-                    Join Session
-                &lt;/button&gt;
-                &lt;button class="border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm reschedule-button transition-colors duration-200"&gt;
-                    Reschedule
-                &lt;/button&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-{% endif %}
+        <!-- Available Time Slots Header -->
+        <div class="mb-4">
+            <div class="skeleton h-5 w-64 rounded mb-2"></div>
+        </div>
 
-&lt;h2 class="text-xl font-semibold text-gray-800 mb-4"&gt;Today's Sessions&lt;/h2&gt;
-&lt;div id="today-sessions" class="bg-white rounded-lg shadow-md overflow-hidden mb-6"&gt;
-    {% for each_app in todays_appointments %}
-    &lt;div class="p-4 sm:p-6 border-l-4 border-yellow-500 border-b border-gray-100"&gt;
-        &lt;div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0"&gt;
-            &lt;div class="relative self-center sm:self-auto sm:mr-4"&gt;
-                &lt;img src="{{ each_app.profile.profile_pic.url }}" alt="Patient Avatar" class="h-12 w-12 rounded-full object-cover"&gt;
-            &lt;/div&gt;
+        <!-- Time Slots Grid -->
+        <div class="grid grid-cols-3 gap-3">
+            <!-- Row 1 -->
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div class="skeleton h-10 w-full rounded-lg"></div>
             
-            &lt;div class="flex-1"&gt;
-                &lt;div class="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-2 sm:space-y-0"&gt;
-                    &lt;div class="text-center sm:text-left"&gt;
-                        &lt;h3 class="font-medium text-gray-800"&gt;{{ each_app.profile.user.first_name }} {{ each_app.profile.user.last_name }}&lt;/h3&gt;
-                        &lt;p class="text-gray-600 text-sm"&gt;{{ each_app.appointment_type }} • {{ each_app.appointment_time_str }}&lt;/p&gt;
-                    &lt;/div&gt;
-                    &lt;span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-center sm:self-auto"&gt;
-                        Up Next
-                    &lt;/span&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            <!-- Row 2 -->
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div class="skeleton h-10 w-full rounded-lg"></div>
             
-            &lt;button class="session-button border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm transition-colors duration-200 w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4"&gt;
-                View Details
-            &lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    {% empty %}
-    &lt;div class="flex flex-col items-center justify-center py-12 px-4"&gt;
-        &lt;svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
-            &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z"&gt;
-            &lt;/path&gt;
-        &lt;/svg&gt;
-        &lt;p class="text-gray-500 text-lg mb-1 text-center"&gt;No appointments found&lt;/p&gt;
-        &lt;p class="text-gray-400 text-sm text-center"&gt;Try adjusting your filters or checking a different date&lt;/p&gt;
-    &lt;/div&gt;
-    {% endfor %}
-&lt;/div&gt;</code></pre>
+            <!-- Row 3 -->
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div class="skeleton h-10 w-full rounded-lg"></div>
+            <div></div>
+        </div>
     </div>
 </body>
 </html>

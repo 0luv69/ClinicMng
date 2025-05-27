@@ -106,8 +106,8 @@ class AppointmentTimeSlot(models.Model):
     ])
 
     def save(self, *args, **kwargs):
-        if not self.unique_id:
-            self.unique_id = f"{self.pk}--{self.appointment_date_slot.id}-{self.from_time.strftime('%H:%M')}-{self.to_time.strftime('%H:%M')}"
+        # if not self.unique_id:
+        self.unique_id = f"{self.pk}--{self.appointment_date_slot.id}-{self.from_time.strftime('%H:%M')}-{self.to_time.strftime('%H:%M')}"
         super().save(*args, **kwargs)
 
     def __str__(self):
