@@ -12,8 +12,11 @@ import json
 from django.utils import timezone
 
 from django.core.serializers.json import DjangoJSONEncoder
-# Create your views here.
+from account.views import login_required_with_message
 
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.")
 def doctorDashboard(request):
     profile = request.user.profile
     doctor = DoctorProfile.objects.get(profile=profile)
@@ -87,6 +90,95 @@ def doctorDashboard(request):
     return render(request, 'pages/doctor/dashboard.html', context)
 
 
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to Manage the session.")
+def SessionMng(request):
+    if request.method == 'GET':    
+        profile: Profile = request.user.profile
+        doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
+    
+    
+        today = timezone.localdate()
+        all_appointment = Appointment.objects.filter(doctor=doctor, appointment_date__gte=today).order_by('-appointment_date')
+        context = {
+            'all_appointment': all_appointment,
+            'doctor': doctor,
+            'todays_appointments': all_appointment.filter(appointment_date=date.today()),
+        }
+        return render(request, 'pages/doctor/session_mng.html', context)
+    
+    elif request.method == 'POST':
+        app_id = request.POST.get('appoint_Id')
+        slot_id = request.POST.get('slotId')
+
+        if not app_id or not slot_id:
+            messages.error(request, "Incomplete Data.")
+            return redirect('doctor:SessionMng')
+        
+        try:
+            appointment = Appointment.objects.get(uuid=app_id)
+            new_slot = AppointmentTimeSlot.objects.get(unique_id=slot_id)
+        except (Appointment.DoesNotExist, AppointmentTimeSlot.DoesNotExist):
+            messages.error(request, "Appointment or slot not found.")
+            return redirect('doctor:SessionMng')
+
+        # Assign the new new_slot to the appointment
+        new_date_slot = new_slot.appointment_date_slot
+
+        appointment.time_slot = new_slot
+        appointment.appointment_date = new_date_slot.date
+        time_str = f"{new_slot.from_time.strftime('%H:%M')} -- {new_slot.to_time.strftime('%H:%M')}"
+        appointment.appointment_time_str = time_str
+
+        appointment.appointment_type = new_slot.appointment_type[0] if new_slot.appointment_type else 'general_consultation'
+        appointment.status = 'pending'  # Reset status to pending or as needed
+        appointment.save()
+
+        # Optionally, update new_slot status if needed
+        new_slot.status = 'booked'
+        new_slot.save()
+        messages.success(request, "Appointment slot updated successfully.")
+        return redirect('doctor:SessionMng')
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to Doctor Data.")
+def get_doctor_availability_json(request, app_uuid):
+    """
+    Returns available slots (not booked or unavailable) for the given doctor as JSON.
+    """
+    try:
+        appointment = Appointment.objects.get(uuid=app_uuid)
+        doc = appointment.doctor
+    except Appointment.DoesNotExist:
+        return JsonResponse({'error': 'Url Missmatch'}, status=404)
+
+    today = timezone.localdate()
+    date_slots = AppointmentDateSlot.objects.filter(doctor=doc, date__gte=today)
+
+    date_json = {}
+    for each_date_slot in date_slots:
+        date_str = each_date_slot.date.strftime('%Y-%m-%d')
+        times_slots = AppointmentTimeSlot.objects.filter(appointment_date_slot=each_date_slot)
+        for each_time_slot in times_slots:
+            if each_time_slot.status not in ['booked', 'unavailable', 'break']:
+                time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
+                all_selected_types = list(each_time_slot.appointment_type)
+                if date_str not in date_json:
+                    date_json[date_str] = {}
+                date_json[date_str][time_str] = [
+                    each_time_slot.unique_id, each_time_slot.duration, all_selected_types
+                ]
+    
+    
+    return JsonResponse({'availability': date_json})
+
+
+
+
+
+ 
+@login_required_with_message(login_url='account:login', message="You need to log in to Edit Date Schedules.")
 def d_edit_schedules(request):
     profile: Profile = request.user.profile
     doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
@@ -97,7 +189,6 @@ def d_edit_schedules(request):
         'all_date_slots': date_slots
     }
     return render(request, 'pages/doctor/edit_schedules.html', context)
-
 
 def get_dateTime_slots(request, start_date=None):
     profile: Profile = request.user.profile
@@ -162,7 +253,7 @@ def get_dateTime_slots(request, start_date=None):
         "scheduleData": appointment_data
     }, safe=False)
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.")
 def submit_dateTime_slots(request):
     if request.method != 'POST':
         return JsonResponse({'success': False,
@@ -229,8 +320,10 @@ def submit_dateTime_slots(request):
     return JsonResponse({'success': True, 'message': 'Schedule updated successfully'})
 
 
- 
 
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Patient Details .")
 def ViewPatients(request):
     profile: Profile = request.user.profile
     doctor: DoctorProfile = DoctorProfile.objects.get(profile = profile)
@@ -272,8 +365,7 @@ def ViewPatients(request):
 
     return render(request, 'pages/doctor/view_patients.html', context)
 
-
-
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Patient Details .")
 def ViewPatientsRecords(request, patient_id):
 
     profile: Profile = request.user.profile
@@ -297,6 +389,8 @@ def ViewPatientsRecords(request, patient_id):
 
 
 
+
+@login_required_with_message(login_url='account:login', message="You need to log in to Change the Status.")
 def Action_Appointment(request):
     if request.method != 'POST':
         return JsonResponse({'success': False,
@@ -336,94 +430,9 @@ def Action_Appointment(request):
 
 
 
-def SessionMng(request):
-    if request.method == 'GET':    
-        profile: Profile = request.user.profile
-        doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
-
-        all_appointment = Appointment.objects.filter(doctor=doctor).order_by('-appointment_date')
-        context = {
-            'all_appointment': all_appointment,
-            'doctor': doctor,
-            'todays_appointments': all_appointment.filter(appointment_date=date.today()),
-        }
-        return render(request, 'pages/doctor/session_mng.html', context)
-    
-    elif request.method == 'POST':
-        app_id = request.POST.get('appoint_Id')
-        slot_id = request.POST.get('slotId')
-
-        if not app_id or not slot_id:
-            messages.error(request, "Incomplete Data.")
-            return redirect('doctor:SessionMng')
-        
-        try:
-            appointment = Appointment.objects.get(uuid=app_id)
-            slot = AppointmentTimeSlot.objects.get(unique_id=slot_id)
-        except (Appointment.DoesNotExist, AppointmentTimeSlot.DoesNotExist):
-            messages.error(request, "Appointment or slot not found.")
-            return redirect('doctor:SessionMng')
-
-        # Assign the new slot to the appointment
-        date_slot = slot.appointment_date_slot
-        appointment.appointment_date = date_slot.date
-        appointment.time_slot = slot
-        appointment.appointment_time_str = slot.from_time.strftime("%H:%M")
-        appointment.save()
-
-        # Optionally, update slot status if needed
-        slot.status = 'booked'
-        slot.save()
-        messages.success(request, "Appointment slot updated successfully.")
-        return redirect('doctor:SessionMng')
-
-
-        
-        
-
-
-
-def get_doctor_availability_json(request, app_uuid):
-    """
-    Returns available slots (not booked or unavailable) for the given doctor as JSON.
-    """
-    try:
-        appointment = Appointment.objects.get(uuid=app_uuid)
-        doc = appointment.doctor
-    except Appointment.DoesNotExist:
-        return JsonResponse({'error': 'Url Missmatch'}, status=404)
-
-    today = timezone.localdate()
-    date_slots = AppointmentDateSlot.objects.filter(doctor=doc, date__gte=today)
-
-    date_json = {}
-    for each_date_slot in date_slots:
-        date_str = each_date_slot.date.strftime('%Y-%m-%d')
-        times_slots = AppointmentTimeSlot.objects.filter(appointment_date_slot=each_date_slot)
-        for each_time_slot in times_slots:
-            if each_time_slot.status not in ['booked', 'unavailable', 'break']:
-                time_str = f"{each_time_slot.from_time.strftime('%H:%M')} -- {each_time_slot.to_time.strftime('%H:%M')}"
-                all_selected_types = list(each_time_slot.appointment_type)
-                if date_str not in date_json:
-                    date_json[date_str] = {}
-                date_json[date_str][time_str] = [
-                    each_time_slot.unique_id, each_time_slot.duration, all_selected_types
-                ]
-    
-    
-    return JsonResponse({'availability': date_json})
-
-
-
-
-
-
-
-
-
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Profile.")
 def d_profile(request):
     profile: Profile = request.user.profile
-
     context = {
             'profile': profile,
     }

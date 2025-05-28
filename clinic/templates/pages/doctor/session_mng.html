@@ -32,7 +32,7 @@
 
 {% block content %}
 
-<div class="min-h-screen flex flex-col">
+<div class="flex flex-col">
     <div class="flex flex-1">
         <main class="flex-1 p-6">
             <div class="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-6">
@@ -57,34 +57,34 @@
                 </div>
             </div>
 
-            {% if all_appointment %}
+            {% if todays_appointments %}
             <div id="upcoming-session" class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6 border-l-4 border-yellow-500">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-2 sm:space-y-0">
                     <h2 class="text-lg font-semibold text-gray-800">Upcoming Session</h2>
-                    <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-start sm:self-auto">
-                        Starting in 5 minutes
+                    <span class=" bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium self-start sm:self-auto">
+                        Next session
                     </span>
                 </div>
         
                 <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-                    <img src="{{ all_appointment.0.profile.profile_pic.url }}" alt="Patient Avatar"
+                    <img src="{{ todays_appointments.0.profile.profile_pic.url }}" alt="Patient Avatar"
                         class="h-16 w-16 rounded-full object-cover avatar self-center sm:self-auto sm:mr-4">
                     
                     <div class="flex-1 text-center sm:text-left">
-                        <h3 class="font-medium text-gray-800 patient-name">{{ all_appointment.0.profile.user.first_name }}</h3>
-                        <p class="text-gray-600 text-sm type-time">{{ all_appointment.0.appointment_type }} Consultation • {{ all_appointment.0.appointment_time_str }}</p>
-                        <p class="text-gray-500 text-sm mt-1 complaint">{{ all_appointment.0.reason }}</p>
+                        <h3 class="font-medium text-gray-800 patient-name">{{ todays_appointments.0.profile.user.first_name }}</h3>
+                        <p class="text-gray-600 text-sm type-time">{{ todays_appointments.0.appointment_type }} Consultation • {{ todays_appointments.0.appointment_time_str }}</p>
+                        <p class="text-gray-500 text-sm mt-1 complaint">{{ todays_appointments.0.reason }}</p>
                     </div>
                     
                     <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm join-button transition-colors duration-200">
                             Join Session
                         </button>
-                        <button data-aapid="{{ all_appointment.0.uuid }}" class="view-details border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm reschedule-button transition-colors duration-200">
+                        <button data-aapid="{{ todays_appointments.0.uuid }}" class="view-details border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 px-4 rounded-lg text-sm reschedule-button transition-colors duration-200">
                             View Details
                         </button>
                             <!-- Appointment details modal -->
-                            <div id="showModal" data-aapid="{{ all_appointment.0.uuid }}" class="fixed hidden inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30 p-4 ">
+                            <div id="showModal" data-aapid="{{ todays_appointments.0.uuid }}" class="fixed hidden inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30 p-4 ">
                                 <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
                                     <div class="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
                                         <h3 class="text-lg font-medium text-gray-900">Appointment Details</h3>
@@ -98,17 +98,17 @@
                                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                             <div>
                                                 <p class="text-xs text-gray-500">Date</p>
-                                                <p class="font-medium" >{{ all_appointment.0.appointment_date }}</p>
+                                                <p class="font-medium" >{{ todays_appointments.0.appointment_date }}</p>
                                             </div>
                                             <div>
                                                 <p class="text-xs text-gray-500">Time</p>
-                                                <p class="font-medium" >{{ all_appointment.0.appointment_time_str }}</p>
+                                                <p class="font-medium" >{{ todays_appointments.0.appointment_time_str }}</p>
                                             </div>
                                             <div>
                                                 <p class="text-xs text-gray-500">Status</p>
                                                 <span
-                                                    class="{% get_status_type_color all_appointment.0.status %} inline-block px-2 py-1 text-xs rounded-full font-medium mt-1 capitalize"
-                                                >{{ all_appointment.0.status }}</span>
+                                                    class="{% get_status_type_color todays_appointments.0.status %} inline-block px-2 py-1 text-xs rounded-full font-medium mt-1 capitalize"
+                                                >{{ todays_appointments.0.status }}</span>
                                             </div>
                                         </div>
                                         
@@ -116,19 +116,19 @@
                                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                                                 <div>
                                                     <p class="text-xs text-gray-500">Patient</p>
-                                                    <p class="text-sm">{{ all_appointment.0.profile.user.first_name }}</p>
+                                                    <p class="text-sm">{{ todays_appointments.0.profile.user.first_name }}</p>
                                                 </div>
 
                                                 <div>
                                                     <p class="text-xs text-gray-500">Appointment Type</p>
                                                     <span 
                                                         class="bg-violet-50 text-violet-700 border border-violet-100 inline-block px-2 py-1 text-xs rounded-full font-medium mt-1"
-                                                    >{{ all_appointment.0.appointment_type }}</span>
+                                                    >{{ todays_appointments.0.appointment_type }}</span>
                                                 </div>
 
                                                 <div class="col-span-2 my-3 border-y border-gray-200 py-2">
                                                     <p class="text-xs text-gray-500">Reason For Appointment</p>
-                                                    <p class="text-sm">{{ all_appointment.0.reason }}</p>
+                                                    <p class="text-sm">{{ todays_appointments.0.reason }}</p>
                                                 </div>
 
                                                 
@@ -136,9 +136,9 @@
 
                                             <!-- buttons -->
                                             <div class="mt-4 flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2">
-                                                <a href='/d/view-patients-records/{{ all_appointment.0.profile.user.username }}' target="_blank" class="text-center bg-sky-200 text-sky-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-sky-300 transition-colors duration-200">View Medical Records</a>
-                                                {% if all_appointment.0.profile.file %}
-                                                <a href='{{ all_appointment.0.profile.file }}' target="_blank"  class="text-center bg-amber-200 text-amber-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-amber-300 transition-colors duration-200 flex items-center">
+                                                <a href='/d/view-patients-records/{{ todays_appointments.0.profile.user.username }}' target="_blank" class="text-center bg-sky-200 text-sky-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-sky-300 transition-colors duration-200">View Medical Records</a>
+                                                {% if todays_appointments.0.profile.file %}
+                                                <a href='{{ todays_appointments.0.profile.file }}' target="_blank"  class="text-center bg-amber-200 text-amber-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-amber-300 transition-colors duration-200 flex items-center">
                                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                                             d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
@@ -152,12 +152,12 @@
 
                                         <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex justify-end">
                                             <div class="flex flex-wrap gap-2">
-                                                    <button  onclick="rescheduleBtn('{{ all_appointment.0.uuid }}')"
+                                                    <button  onclick="rescheduleBtn('{{ todays_appointments.0.uuid }}')"
                                                         class="px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 text-sm font-medium transition-colors"
                                                     >
                                                         Reschedule
                                                     </button> 
-                                                    <button  onclick="cancelPatient('{{ all_appointment.0.uuid }}')"
+                                                    <button  onclick="cancelPatient('{{ todays_appointments.0.uuid }}')"
                                                         class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 text-sm font-medium transition-colors"
                                                     >
                                                         Cancel Appointment

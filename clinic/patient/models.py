@@ -48,9 +48,9 @@ class Appointment(models.Model):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments", help_text=" Patient Profile")
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
-    time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
-
     appointment_type = models.CharField(max_length=50, choices=APPOINTMENT_TYPES, default='general_consultation')
+    
+    time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
     appointment_date = models.DateField()
     appointment_time_str = models.CharField(max_length=50, blank=True)
 
