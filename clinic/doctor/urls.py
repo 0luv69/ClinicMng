@@ -19,6 +19,9 @@ urlpatterns = [
 
 
 
+    path('session-mng/', SessionMng, name='SessionMng'),
+    path('availability/<uuid:app_uuid>/', get_doctor_availability_json, name='doctor-availability-json'),
+
 
     path('edit-schedules/', d_edit_schedules, name='d_edit_schedules'),
     path('get-dateTime-slots/', get_dateTime_slots, name='get_dateTime_slots_default'),
@@ -31,13 +34,24 @@ urlpatterns = [
 
     path('actions-appointment/', Action_Appointment, name='Action_Appointment_from_Doc'),
 
-    path('session-mng/', SessionMng, name='SessionMng'),
-    path('availability/<uuid:app_uuid>/', get_doctor_availability_json, name='doctor-availability-json'),
 
-
+    path('message/', message, name='message'),
 
     
-
+    # Specific conversation view
+    path('msg/<int:conversation_id>/', conversation_view, name='conversation_view'),
+    
+    # Send message
+    path('<int:conversation_id>/send/', send_message, name='send_message'),
+    
+    # Check for new messages
+    path('msg/<int:conversation_id>/check/', check_new_messages, name='check_new_messages'),
+    
+    # Start new conversation
+    path('start/', start_conversation, name='start_conversation'),
+    
+    # Search conversations
+    path('search/', search_conversations, name='search_conversations'),
 
 
     path('profile/', d_profile, name='profile'),

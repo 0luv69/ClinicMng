@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from doctor.models import *
 from account.models import *
 from patient.models import Appointment
@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from django.core.serializers.json import DjangoJSONEncoder
 from account.views import login_required_with_message
-
+from django.db.models import Q, Max, Count, Case, When, BooleanField
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.")
@@ -437,3 +437,226 @@ def d_profile(request):
             'profile': profile,
     }
     return render(request, 'pages/doctor/profile.html', context)
+
+
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
+def message(request):
+    user_profile = request.user.profile
+    
+    # Get all conversations for the current user
+    conversations = Conversation.objects.filter(
+        participants=user_profile
+    ).annotate(
+        last_message_time=Max('messages__timestamp'),
+        has_unread=Count(
+            Case(
+                When(
+                    Q(messages__read=False) & ~Q(messages__sender=user_profile),
+                    then=1
+                ),
+                default=0
+            )
+        )
+    ).order_by('-last_message_time')
+    
+    # Add additional data to each conversation
+    for conversation in conversations:
+        # Get the other participant (not the current user)
+        conversation.other_participant = conversation.participants.exclude(
+            id=user_profile.id
+        ).first()
+        
+        # Get the last message
+        conversation.last_message = conversation.messages.last()
+        
+        # Check if there are unread messages
+        conversation.has_unread = conversation.messages.filter(
+            read=False
+        ).exclude(sender=user_profile).exists()
+    context = {
+        'conversations': conversations,
+        'active_conversation_id': None,
+        'active_conversation': None,
+        'messages': [],
+    }
+    print(conversations)
+    return render(request, 'pages/doctor/message.html', context)
+
+
+def conversation_view(request, conversation_id):
+    """View for a specific conversation"""
+    user_profile = request.user.profile
+    
+    # Get the specific conversation
+    conversation = get_object_or_404(
+        Conversation,
+        id=conversation_id,
+        participants=user_profile
+    )
+    
+    # Get all conversations for the sidebar
+    conversations = Conversation.objects.filter(
+        participants=user_profile
+    ).annotate(
+        last_message_time=Max('messages__timestamp'),
+        has_unread=Count(
+            Case(
+                When(
+                    Q(messages__read=False) & ~Q(messages__sender=user_profile),
+                    then=1
+                ),
+                default=0
+            )
+        )
+    ).order_by('-last_message_time')
+    
+    # Add additional data to each conversation
+    for conv in conversations:
+        conv.other_participant = conv.participants.exclude(
+            id=user_profile.id
+        ).first()
+        conv.last_message = conv.messages.last()
+        conv.has_unread = conv.messages.filter(
+            read=False
+        ).exclude(sender=user_profile).exists()
+    
+    # Get messages for the active conversation
+    messages_list = conversation.messages.all().order_by('timestamp')
+    
+    # Mark messages as read
+    conversation.messages.filter(
+        read=False
+    ).exclude(sender=user_profile).update(read=True)
+    
+    # Get the other participant
+    other_participant = conversation.participants.exclude(
+        id=user_profile.id
+    ).first()
+    
+    context = {
+        'conversations': conversations,
+        'active_conversation_id': conversation.id,
+        'active_conversation': conversation,
+        'messages': messages_list,
+        'other_participant': other_participant,
+    }
+    
+    return render(request, 'pages/doctor/message.html', context)
+
+
+def send_message(request, conversation_id):
+    """Send a new message in a conversation"""
+    if request.method == 'POST':
+        user_profile = request.user.profile
+        conversation = get_object_or_404(
+            Conversation,
+            id=conversation_id,
+            participants=user_profile
+        )
+        
+        content = request.POST.get('content', '').strip()
+        
+        if content:
+            message = Message.objects.create(
+                conversation=conversation,
+                sender=user_profile,
+                content=content
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'message_id': message.id,
+                'timestamp': message.timestamp.isoformat()
+            })
+        
+        return JsonResponse({'success': False, 'error': 'Message content is required'})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+def check_new_messages(request, conversation_id):
+    """Check for new messages in a conversation"""
+    user_profile = request.user.profile
+    conversation = get_object_or_404(
+        Conversation,
+        id=conversation_id,
+        participants=user_profile
+    )
+    
+    message_count = conversation.messages.count()
+    unread_count = conversation.messages.filter(
+        read=False,
+        sender__ne=user_profile
+    ).count()
+    
+    return JsonResponse({
+        'message_count': message_count,
+        'unread_count': unread_count,
+        'has_new_messages': unread_count > 0
+    })
+
+def start_conversation(request):
+    """Start a new conversation with a user"""
+    if request.method == 'POST':
+        user_profile = request.user.profile
+        other_user_id = request.POST.get('user_id')
+        
+        try:
+            from django.contrib.auth.models import User
+            other_user = User.objects.get(id=other_user_id)
+            other_profile = other_user.profile
+            
+            # Check if conversation already exists
+            existing_conversation = Conversation.objects.filter(
+                participants=user_profile
+            ).filter(
+                participants=other_profile
+            ).first()
+            
+            if existing_conversation:
+                return redirect('conversation_view', conversation_id=existing_conversation.id)
+            
+            # Create new conversation
+            conversation = Conversation.objects.create()
+            conversation.participants.add(user_profile, other_profile)
+            
+            return redirect('conversation_view', conversation_id=conversation.id)
+            
+        except User.DoesNotExist:
+            messages.error(request, 'User not found')
+            return redirect('doctor:message')
+    messages.error(request, 'Invalid request method')
+    return redirect('doctor:message')
+
+def search_conversations(request):
+    """Search conversations and messages"""
+    query = request.GET.get('q', '').strip()
+    user_profile = request.user.profile
+    
+    if not query:
+        return JsonResponse({'results': []})
+    
+    # Search in conversation participants and message content
+    conversations = Conversation.objects.filter(
+        participants=user_profile
+    ).filter(
+        Q(participants__user__first_name__icontains=query) |
+        Q(participants__user__last_name__icontains=query) |
+        Q(messages__content__icontains=query)
+    ).distinct()
+    
+    results = []
+    for conversation in conversations:
+        other_participant = conversation.participants.exclude(
+            id=user_profile.id
+        ).first()
+        
+        if other_participant:
+            results.append({
+                'id': conversation.id,
+                'name': f"{other_participant.user.first_name} {other_participant.user.last_name}",
+                'specialty': getattr(other_participant, 'specialty', 'Healthcare Provider'),
+                'last_message': conversation.messages.last().content if conversation.messages.exists() else '',
+                'timestamp': conversation.messages.last().timestamp.isoformat() if conversation.messages.exists() else ''
+            })
+    
+    return JsonResponse({'results': results})
