@@ -66,7 +66,7 @@
                     <div class="relative">
                         <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                             <span class="text-sm font-medium text-gray-600">
-                                {{ conversation.other_participant.user.first_name.0 }}{{ conversation.other_participant.user.last_name.0 }}
+                                {{ conversation.other_participant.user.first_name }}
                             </span>
                         </div>
                         {% if conversation.other_participant.is_online %}
@@ -76,7 +76,7 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-medium text-gray-900 truncate">
-                                Dr. {{ conversation.other_participant.user.first_name }} {{ conversation.other_participant.user.last_name }}
+                                Dr. {{ conversation.other_participant.user.first_name }}
                             </h3>
                             <span class="text-xs text-gray-500">{{ conversation.last_message.timestamp|date:"j M" }}</span>
                         </div>

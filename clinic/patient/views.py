@@ -20,7 +20,7 @@ from account.views import login_required_with_message
 from django.contrib import messages
 from datetime import datetime
 
-from account.models import Profile, MedicalInfo, ActivityLog
+from account.models import Profile, MedicalInfo, ActivityLog, Conversation, Message
 from doctor.models import DoctorProfile, AppointmentDateSlot, AppointmentTimeSlot
 from patient.models import *
 
@@ -459,8 +459,33 @@ def join_v_call(request: HttpRequest):
     return render(request, 'pages/patient/join-v-call.html')
 
 def message(request: HttpRequest):
+    profile : Profile = request.user.profile
+
+    conversations = Conversation.objects.filter(
+        participants=profile
+    )
     
-    return render(request, 'pages/patient/message.html')
+        # Add additional data to each conversation
+    for conversation in conversations:
+        # Get the other participant (not the current user)
+        conversation.other_participant = conversation.participants.exclude(
+            id=profile.id
+        ).first()
+        
+        # Get the last message
+        conversation.last_message = conversation.messages.last()
+        
+        # Check if there are unread messages
+        conversation.has_unread = conversation.messages.filter(
+            read=False
+        ).exclude(sender=profile).exists()
+
+    context = {
+        'profile': profile,
+        'conversations': conversations,
+    }
+
+    return render(request, 'pages/patient/message.html', context)
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access your Lab Reports.")
