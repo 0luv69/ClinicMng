@@ -480,12 +480,53 @@ def message(request: HttpRequest):
             read=False
         ).exclude(sender=profile).exists()
 
+    messages_list = conversation.messages.all().order_by('timestamp')
+
+
+    # Mark messages as read
+    conversation.messages.filter(
+        read=False
+    ).exclude(sender=profile).update(read=True)
+
     context = {
         'profile': profile,
         'conversations': conversations,
+        'active_conversation_id': conversation.id,
+        'active_conversation': conversation,
+        'message_lists': None,
     }
 
     return render(request, 'pages/patient/message.html', context)
+
+
+def get_msg_list(request: HttpRequest, conversation_id: int):
+    """Fetch messages for a specific conversation."""
+    profile: Profile = request.user.profile
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+
+    # Ensure the user is part of the conversation
+    if profile not in conversation.participants.all():
+        return JsonResponse({'error': 'You are not part of this conversation.'}, status=403)
+
+    # Fetch messages for the conversation
+    messages_list = conversation.messages.all().order_by('timestamp')
+
+    # Mark messages as read
+    messages_list.filter(read=False).exclude(sender=profile).update(read=True)
+
+    payload = []
+    for message in messages_list:
+        payload.append({
+            'id': message.id,
+            'sender': message.sender.user.get_full_name(),
+            'content': message.content,
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'read': message.read,
+        })
+
+    return JsonResponse({'messages': payload})
+
+
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to access your Lab Reports.")

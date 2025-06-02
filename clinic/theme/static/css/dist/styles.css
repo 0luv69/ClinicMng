@@ -2277,12 +2277,25 @@ select {
   white-space: nowrap;
 }
 
+.hyphens-auto {
+  -webkit-hyphens: auto;
+          hyphens: auto;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
 
 .text-nowrap {
   text-wrap: nowrap;
+}
+
+.break-words {
+  overflow-wrap: break-word;
+}
+
+.break-all {
+  word-break: break-all;
 }
 
 .rounded {
@@ -3051,11 +3064,6 @@ select {
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
 }
 
-.bg-slate-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
-}
-
 .bg-opacity-40 {
   --tw-bg-opacity: 0.4;
 }
@@ -3601,6 +3609,11 @@ select {
   line-height: 1;
 }
 
+.text-6xl {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
 .text-\[0\.8rem\] {
   font-size: 0.8rem;
 }
@@ -3632,11 +3645,6 @@ select {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-6xl {
-  font-size: 3.75rem;
-  line-height: 1;
 }
 
 .font-bold {
@@ -4014,11 +4022,6 @@ select {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
-}
-
-.text-slate-800 {
-  --tw-text-opacity: 1;
-  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
 }
 
 .underline {
@@ -4506,6 +4509,21 @@ select {
 .hover\:bg-yellow-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-slate-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(148 163 184 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-slate-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-slate-300:hover {
