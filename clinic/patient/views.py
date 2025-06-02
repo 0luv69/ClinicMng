@@ -493,14 +493,20 @@ def message(request: HttpRequest):
         'conversations': conversations,
         'active_conversation_id': conversation.id,
         'active_conversation': conversation,
-        'message_lists': None,
+        'message_lists': messages_list,
     }
 
     return render(request, 'pages/patient/message.html', context)
 
 
 def get_msg_list(request: HttpRequest, conversation_id: int):
+
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
     """Fetch messages for a specific conversation."""
+
+
+
     profile: Profile = request.user.profile
     conversation = get_object_or_404(Conversation, id=conversation_id)
 
@@ -514,9 +520,12 @@ def get_msg_list(request: HttpRequest, conversation_id: int):
     # Mark messages as read
     messages_list.filter(read=False).exclude(sender=profile).update(read=True)
 
-    payload = []
+    other_participant = conversation.participants.exclude(id=profile.id).first()
+
+    all_msg = []
     for message in messages_list:
-        payload.append({
+        all_msg.append({
+            'msg_by_me': message.sender == profile,
             'id': message.id,
             'sender': message.sender.user.get_full_name(),
             'content': message.content,
@@ -524,7 +533,14 @@ def get_msg_list(request: HttpRequest, conversation_id: int):
             'read': message.read,
         })
 
-    return JsonResponse({'messages': payload})
+    payload = {
+            'other_participant_name': other_participant.user.get_full_name(),
+            'other_participant_pic' : other_participant.profile_pic.url,
+            'conversation_id': conversation.id,
+            'messages': all_msg,
+    }
+
+    return JsonResponse(payload, safe=False, json_dumps_params={'indent': 2})
 
 
 

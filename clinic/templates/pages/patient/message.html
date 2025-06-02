@@ -87,7 +87,7 @@
                     <button  data-unread="{{ conversation.has_unread }}" data-conversation-id="{{ conversation.id }}" class="conversation-item flex items-start gap-3 p-2 rounded-md w-full text-left transition-colors font-medium border-gray-100 hover:bg-gray-50 {% if conversation.id == active_conversation_id %}bg-blue-50 {% endif %}">
                         <div class="relative">
                             <div class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-primary/10">
-                                <img class="aspect-square h-full w-full" src=" {{ conversation.other_participant.profile_pic.url }}" alt="{{ conversation.other_participant.user.first_name }}">
+                                <img class="aspect-square h-full w-full conversation-avatar" src=" {{ conversation.other_participant.profile_pic.url }}" alt="{{ conversation.other_participant.user.first_name }}">
                             </div>
                             {% if conversation.other_participant.is_online %}
                                 <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
@@ -95,10 +95,10 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-center">
-                                <p class="text-sm font-medium truncate first_name_conv">Dr. {{ conversation.other_participant.user.first_name }}</p>
+                                <p class="text-sm font-medium truncate conversation-name">Dr. {{ conversation.other_participant.user.first_name }}</p>
                                 <span class="text-xs text-muted-foreground">{{ conversation.last_message.timestamp|date:"j M" }}</span>
                             </div>
-                            <p class="text-xs text-muted-foreground">{{ conversation.other_participant.specialty|default:"Healthcare Provider" }}</p>
+                            <p class="text-xs text-muted-foreground conversation-role">{{ conversation.other_participant.specialty|default:"Healthcare Provider" }}</p>
                             <p class="text-xs truncate mt-1 last-chat">{{ conversation.last_message.content|truncatechars:50 }}</p>
                         </div>
                     </button>
@@ -158,7 +158,7 @@
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <div class="relative">
+                            <div class="relative hidden">
                                 <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
                                     <svg class="h-4 w-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <g transform="matrix(1.43 0 0 1.43 12 12)">
@@ -592,6 +592,7 @@
     const tabButtons = document.querySelectorAll('.tab-button');
     const overlaySidebar = document.getElementById('overlaySidebar');
 
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
     // Current active conversation
     let activeConversation = null;
@@ -600,7 +601,20 @@
     AllConversationsItems.forEach(item => {
         item.addEventListener('click', function() {
             const conversationId = this.dataset.conversationId;
-            window.location.href = `/p/message/${conversationId}/`;
+            url = `/p/get-msg/${conversationId}/`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    renderMessages(data);
+                    {% comment %} const convo = conversations.find(c => c.id === conversationId);
+                    if (convo) {
+                        setActiveConversation(convo);
+                    } {% endcomment %}
+                })
+                .catch(error => {
+                    console.error('Error fetching messages:', error);
+                });
         });
     });
     
@@ -608,11 +622,15 @@
    
 
     // Set active conversation
-    function setActiveConversation(convo) {
-        activeConversation = convo;
+    function setActiveConversation(convoID) {
+        activeConversationElement = document.querySelector(`.conversation-item[data-conversation-id="${convoID}"]`);
+
+        activePersonName = activeConversationElement.querySelector('.conversation-name').textContent;
+        activePersonAvatar = activeConversationElement.querySelector('.conversation-avatar').src;
+        activePersonRole = activeConversationElement.querySelector('.conversation-role').textContent;
 
         document.querySelectorAll('.conversation-item').forEach(item => {
-            if (item.dataset.conversationId === convo.id) {
+            if (item.dataset.conversationId === convoID) {
                 item.classList.add('bg-muted');
                 item.classList.remove('hover:bg-muted/50');
             } else {
@@ -622,7 +640,9 @@
         });
 
         // Show conversation content and hide empty state
-        emptyState.classList.add('hidden');
+        if (emptyState && !emptyState.classList.contains('hidden')) {
+            emptyState.classList.add('hidden');
+        }
         conversationContent.classList.remove('hidden');
         conversationContent.classList.add('flex');
 
@@ -654,26 +674,16 @@
                 </button>
                 <div class="relative">
                     <div class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-primary/10">
-                        <img class="aspect-square h-full w-full" src="${convo.contact.avatar}" alt="${convo.contact.name}">
-                        <span class="flex h-full w-full items-center justify-center rounded-full bg-primary/10 text-primary">${convo.contact.initials}</span>
+                        <img class="aspect-square h-full w-full" src="${activePersonAvatar}" alt="${activePersonName}">
                     </div>
-                    ${convo.contact.online ? `<span class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background"></span>` : ''}
                 </div>
                 <div>
-                    <h2 class="text-sm font-medium">${convo.contact.name}</h2>
-                    <p class="text-xs text-muted-foreground">${convo.contact.role}</p>
+                    <h2 class="text-sm font-medium">${activePersonName}</h2>
+                    <p class="text-xs text-muted-foreground">${activePersonRole}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                    <svg class="h-5 w-5" fill="currentColor" stroke="currentColor" viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-                        <g transform="matrix(0.77 0 0 0.77 12 12)" >
-                        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-16, -16.01)" d="M 8.65625 3 C 8.132813 3 7.617188 3.1875 7.1875 3.53125 L 7.125 3.5625 L 7.09375 3.59375 L 3.96875 6.8125 L 4 6.84375 C 3.035156 7.734375 2.738281 9.066406 3.15625 10.21875 C 3.160156 10.226563 3.152344 10.242188 3.15625 10.25 C 4.003906 12.675781 6.171875 17.359375 10.40625 21.59375 C 14.65625 25.84375 19.402344 27.925781 21.75 28.84375 L 21.78125 28.84375 C 22.996094 29.25 24.3125 28.960938 25.25 28.15625 L 28.40625 25 C 29.234375 24.171875 29.234375 22.734375 28.40625 21.90625 L 24.34375 17.84375 L 24.3125 17.78125 C 23.484375 16.953125 22.015625 16.953125 21.1875 17.78125 L 19.1875 19.78125 C 18.464844 19.433594 16.742188 18.542969 15.09375 16.96875 C 13.457031 15.40625 12.621094 13.609375 12.3125 12.90625 L 14.3125 10.90625 C 15.152344 10.066406 15.167969 8.667969 14.28125 7.84375 L 14.3125 7.8125 L 14.21875 7.71875 L 10.21875 3.59375 L 10.1875 3.5625 L 10.125 3.53125 C 9.695313 3.1875 9.179688 3 8.65625 3 Z M 8.65625 5 C 8.730469 5 8.804688 5.035156 8.875 5.09375 L 12.875 9.1875 L 12.96875 9.28125 C 12.960938 9.273438 13.027344 9.378906 12.90625 9.5 L 10.40625 12 L 9.9375 12.4375 L 10.15625 13.0625 C 10.15625 13.0625 11.304688 16.136719 13.71875 18.4375 L 13.9375 18.625 C 16.261719 20.746094 19 21.90625 19 21.90625 L 19.625 22.1875 L 22.59375 19.21875 C 22.765625 19.046875 22.734375 19.046875 22.90625 19.21875 L 27 23.3125 C 27.171875 23.484375 27.171875 23.421875 27 23.59375 L 23.9375 26.65625 C 23.476563 27.050781 22.988281 27.132813 22.40625 26.9375 C 20.140625 26.046875 15.738281 24.113281 11.8125 20.1875 C 7.855469 16.230469 5.789063 11.742188 5.03125 9.5625 C 4.878906 9.15625 4.988281 8.554688 5.34375 8.25 L 5.40625 8.1875 L 8.4375 5.09375 C 8.507813 5.035156 8.582031 5 8.65625 5 Z" stroke-linecap="round" />
-                        </g>
-                    </svg>
-                </button>
-             
-                <div class="relative">
+                <div class="relative hidden">
                     <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
                         <svg  class="h-4 w-4" fill="currentColor" stroke="currentColor" viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                             <g transform="matrix(1.43 0 0 1.43 12 12)" >
@@ -695,8 +705,6 @@
             </div>
         `;
 
-        renderMessages(convo.messages);
-
         // Attach event listener to mobile-menu-button to show sidebar
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         if (mobileMenuButton) {
@@ -712,47 +720,48 @@
     }
 
     // Render messages (unchanged)
-    function renderMessages(messages) {
+    function renderMessages(payload) {
+        const messages = payload.messages || [];
+        setActiveConversation(payload.conversation_id);
         messagesContainer.innerHTML = messages.map(message => `
-            <div class="flex ${message.sender === 'patient' ? 'justify-end' : 'justify-start'}">
-                ${message.sender !== 'patient' ? `
-                    <div class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
-                        <img class="aspect-square h-full w-full" src="${activeConversation.contact.avatar}" alt="${activeConversation.contact.name}">
-                        <span class="flex h-full w-full items-center justify-center rounded-full bg-primary/10 text-primary">${activeConversation.contact.initials}</span>
-                    </div>
-                ` : ''}
-                <div class="${message.sender === 'patient' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3 max-w-[75%]">
-                    <p class="text-sm">${message.content}</p>
-                    <p class="text-xs mt-1 opacity-70 text-right">
-                        ${formatMessageDate(message.timestamp)}
-                        ${message.sender === 'patient' ? `
-                            <span class="ml-1">
-                                ${message.read ? `
-                                 <svg id='Checkmark_24' class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox='0 0 24 24'
-                                    xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-                                    <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                        <path
-                                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;"
-                                            transform=" translate(-12, -11.84)"
-                                            d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z"
-                                            stroke-linecap="round" />
-                                    </g>
-                                </svg>
-                                
-                                ` : `
-                                 <svg id='Checkmark_24' class="h-3 w-3 inline text-muted-foreground/50" fill="currentColor" stroke="currentColor" viewBox='0 0 24 24'
-                                    xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-                                    <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                        <path
-                                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;"
-                                            transform=" translate(-12, -11.84)"
-                                            d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z"
-                                            stroke-linecap="round" />
-                                    </g>
-                                </svg>`}
-                            </span>
-                        ` : ''}
-                    </p>
+            <div class="flex ${message.msg_by_me === true ? 'justify-end' : 'justify-start'}">
+                <div class="max-w-xs lg:max-w-md">
+                    ${message.msg_by_me != true ? `
+                        <div class="flex justify-start">
+                            <div class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
+                                <img class="aspect-square h-full w-full" src="${ payload.other_participant_pic }" alt="${ payload.other_participant_name }">
+                            </div>
+                            <div class="bg-muted rounded-lg p-3 max-w-[75%]">
+                                <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
+                                <p class="text-xs mt-1 opacity-70 text-right">
+                                    ${formatMessageDate(message.timestamp)}
+                                </p>
+                            </div>
+                        </div>
+                    ` : 
+                    `
+                        <div class="flex justify-end">
+                            <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[75%]">
+                                <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
+                                <p class="text-xs mt-1 opacity-70 text-right">
+                                    ${formatMessageDate(message.timestamp)}
+                                    <span class="ml-1">
+                                        ${message.read ? `
+                                            <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <g transform="matrix(1.15 0 0 1.15 12 12)">
+                                                    <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
+                                                </g>
+                                            </svg>` : `
+                                            <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <g transform="matrix(1.15 0 0 1.15 12 12)">
+                                                    <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
+                                                </g>
+                                            </svg>`}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    `}
                 </div>
             </div>
         `).join('');
