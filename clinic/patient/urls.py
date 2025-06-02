@@ -33,7 +33,7 @@ urlpatterns = [
     path('message/', message, name='message'),
     # path('message/<int:conversation_id>/', conversation_view, name='conversation_view'),
     path('get-msg/<int:conversation_id>/', get_msg_list, name='conversation_view'),
-
+    path('send-msg/', post_msg, name='send_msg'),
 
 
     

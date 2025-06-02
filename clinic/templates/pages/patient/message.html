@@ -190,17 +190,16 @@
                                             <div class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
                                                 <img class="aspect-square h-full w-full" src="{{ message.sender.profile_pic.url }}" alt="{{ message.sender.user.first_name.0 }}">
                                             </div>
-                                        <div class="bg-muted rounded-lg p-3 max-w-[75%]">
+                                        <div class="bg-muted rounded-lg p-3 max-w-[100%]">
                                             <p class="text-sm break-words overflow-wrap-anywhere">{{ message.content }}</p>
                                             <p class="text-xs mt-1 opacity-70 text-right">
                                                 {{ message.timestamp|date:"j M, g:i A" }}
                                             </p>
                                         </div>
                                     </div>
-
                                     {% else %}
                                     <div class="flex justify-end">
-                                        <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[75%]">
+                                        <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
                                             <p class="text-sm break-words overflow-wrap-anywhere">{{ message.content }}</p>
                                             <p class="text-xs mt-1 opacity-70 text-right">
                                                 {{ message.timestamp|date:"j M, g:i A" }}
@@ -208,13 +207,13 @@
                                                     {% if message.is_read %}
                                                         <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                                             <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                                                <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
+                                                                <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
                                                             </g>
                                                         </svg>
                                                     {% else %}
-                                                        <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                            <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                                                <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
+                                                        <svg id="Checkmark_24" class="h-4 w-4 inline text-green-400" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <g transform="matrix(0.4 0 0 0.4 12 12)" >
+                                                                <path style=" stroke-width: 5; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-25.01, -24.99)" d="M 37.90625 8.96875 C 37.863281 8.976563 37.820313 8.988281 37.78125 9 C 37.554688 9.054688 37.355469 9.1875 37.21875 9.375 L 12.9375 38.5 L 1.71875 27.28125 C 1.320313 26.882813 0.679688 26.882813 0.28125 27.28125 C -0.117188 27.679688 -0.117188 28.320313 0.28125 28.71875 L 12.28125 40.71875 C 12.484375 40.921875 12.765625 41.03125 13.050781 41.011719 C 13.339844 40.992188 13.605469 40.851563 13.78125 40.625 L 38.78125 10.625 C 39.058594 10.3125 39.113281 9.863281 38.917969 9.492188 C 38.722656 9.125 38.320313 8.914063 37.90625 8.96875 Z M 48.90625 8.96875 C 48.863281 8.976563 48.820313 8.988281 48.78125 9 C 48.554688 9.054688 48.355469 9.1875 48.21875 9.375 L 23.9375 38.5 L 21.375 35.96875 C 21.132813 35.671875 20.746094 35.535156 20.371094 35.621094 C 20 35.707031 19.707031 36 19.621094 36.371094 C 19.535156 36.746094 19.671875 37.132813 19.96875 37.375 L 23.28125 40.71875 C 23.484375 40.921875 23.765625 41.03125 24.050781 41.011719 C 24.339844 40.992188 24.605469 40.851563 24.78125 40.625 L 49.78125 10.625 C 50.058594 10.3125 50.113281 9.863281 49.917969 9.492188 C 49.722656 9.125 49.320313 8.914063 48.90625 8.96875 Z" stroke-linecap="round" />
                                                             </g>
                                                         </svg>
                                                     {% endif %}
@@ -567,16 +566,46 @@
     
     const conversations = []
 
-    // Format date for display (unchanged)
-    const formatMessageDate = (dateString) => {
+    // Format date for display (improved, always shows time too)
+    function formatMessageDate(dateString) {
+        if (!dateString) return '';
         const date = new Date(dateString);
+
+        if (isNaN(date)) return dateString; // fallback if invalid
+
         const now = new Date();
+        const isToday = date.toDateString() === now.toDateString();
+
+        // Yesterday
+        const yesterday = new Date(now);
+        yesterday.setDate(now.getDate() - 1);
+        const isYesterday = date.toDateString() === yesterday.toDateString();
+
+        // Format time as "2:05 PM"
+        const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+        if (isToday) {
+            // Show time: 2:05 PM
+            return timeStr;
+        }
+        if (isYesterday) {
+            return `Yesterday, ${timeStr}`;
+        }
+
+        // If within this week (but not today/yesterday), show weekday and time
         const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        if (diffDays === 1) return 'Yesterday';
-        if (diffDays < 7) return date.toLocaleDateString([], { weekday: 'long' });
-        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    };
+        if (diffDays < 7 && diffDays > 1 && now.getDay() > date.getDay()) {
+            return `${date.toLocaleDateString([], { weekday: 'long' })}, ${timeStr}`;
+        }
+
+        // If this year, show "Mar 5, 2:05 PM"
+        if (date.getFullYear() === now.getFullYear()) {
+            return `${date.toLocaleDateString([], { month: 'short', day: 'numeric' })}, ${timeStr}`;
+        }
+
+        // Else, show "Mar 5, 2023, 2:05 PM"
+        return `${date.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })}, ${timeStr}`;
+    }
 
     // DOM elements
     const conversationList = document.getElementById('conversation-list');
@@ -592,7 +621,24 @@
     const tabButtons = document.querySelectorAll('.tab-button');
     const overlaySidebar = document.getElementById('overlaySidebar');
 
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Event listeners
+        messageInput.addEventListener('input', () => {
+            sendButton.disabled = !messageInput.value.trim();
+        });
+
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', handleSendMessage);
+        searchInput.addEventListener('input', (e) => filterSearchConversations(e.target.value));
+    }
 
     // Current active conversation
     let activeConversation = null;
@@ -617,25 +663,24 @@
                 });
         });
     });
-    
-
-   
+       
 
     // Set active conversation
     function setActiveConversation(convoID) {
         activeConversationElement = document.querySelector(`.conversation-item[data-conversation-id="${convoID}"]`);
+        
+        activeConversation = activeConversationElement;
+
 
         activePersonName = activeConversationElement.querySelector('.conversation-name').textContent;
         activePersonAvatar = activeConversationElement.querySelector('.conversation-avatar').src;
         activePersonRole = activeConversationElement.querySelector('.conversation-role').textContent;
 
         document.querySelectorAll('.conversation-item').forEach(item => {
-            if (item.dataset.conversationId === convoID) {
-                item.classList.add('bg-muted');
-                item.classList.remove('hover:bg-muted/50');
+            if (item.dataset.conversationId == convoID) {
+                item.classList.add('bg-blue-50');
             } else {
-                item.classList.remove('bg-muted');
-                item.classList.add('hover:bg-muted/50');
+                item.classList.remove('bg-blue-50');
             }
         });
 
@@ -713,12 +758,6 @@
         overlaySidebar.addEventListener('click', close_open_SidebarConvList);
     }
 
-
-    function close_open_SidebarConvList() {
-        sidebarConvList.classList.toggle('hidden');
-        overlaySidebar.classList.toggle('hidden');
-    }
-
     // Render messages (unchanged)
     function renderMessages(payload) {
         const messages = payload.messages || [];
@@ -731,7 +770,7 @@
                             <div class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
                                 <img class="aspect-square h-full w-full" src="${ payload.other_participant_pic }" alt="${ payload.other_participant_name }">
                             </div>
-                            <div class="bg-muted rounded-lg p-3 max-w-[75%]">
+                            <div class="bg-muted rounded-lg p-3 max-w-[100%]">
                                 <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
                                 <p class="text-xs mt-1 opacity-70 text-right">
                                     ${formatMessageDate(message.timestamp)}
@@ -741,7 +780,7 @@
                     ` : 
                     `
                         <div class="flex justify-end">
-                            <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[75%]">
+                            <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
                                 <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
                                 <p class="text-xs mt-1 opacity-70 text-right">
                                     ${formatMessageDate(message.timestamp)}
@@ -752,10 +791,10 @@
                                                     <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
                                                 </g>
                                             </svg>` : `
-                                            <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                                    <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
-                                                </g>
+                                            <svg id="Checkmark_24" class="h-4 w-4 inline text-green-400" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <g transform="matrix(0.4 0 0 0.4 12 12)" >
+                                                                <path style=" stroke-width: 5; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-25.01, -24.99)" d="M 37.90625 8.96875 C 37.863281 8.976563 37.820313 8.988281 37.78125 9 C 37.554688 9.054688 37.355469 9.1875 37.21875 9.375 L 12.9375 38.5 L 1.71875 27.28125 C 1.320313 26.882813 0.679688 26.882813 0.28125 27.28125 C -0.117188 27.679688 -0.117188 28.320313 0.28125 28.71875 L 12.28125 40.71875 C 12.484375 40.921875 12.765625 41.03125 13.050781 41.011719 C 13.339844 40.992188 13.605469 40.851563 13.78125 40.625 L 38.78125 10.625 C 39.058594 10.3125 39.113281 9.863281 38.917969 9.492188 C 38.722656 9.125 38.320313 8.914063 37.90625 8.96875 Z M 48.90625 8.96875 C 48.863281 8.976563 48.820313 8.988281 48.78125 9 C 48.554688 9.054688 48.355469 9.1875 48.21875 9.375 L 23.9375 38.5 L 21.375 35.96875 C 21.132813 35.671875 20.746094 35.535156 20.371094 35.621094 C 20 35.707031 19.707031 36 19.621094 36.371094 C 19.535156 36.746094 19.671875 37.132813 19.96875 37.375 L 23.28125 40.71875 C 23.484375 40.921875 23.765625 41.03125 24.050781 41.011719 C 24.339844 40.992188 24.605469 40.851563 24.78125 40.625 L 49.78125 10.625 C 50.058594 10.3125 50.113281 9.863281 49.917969 9.492188 C 49.722656 9.125 49.320313 8.914063 48.90625 8.96875 Z" stroke-linecap="round" />
+                                                            </g>
                                             </svg>`}
                                     </span>
                                 </p>
@@ -768,39 +807,88 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    // Handle sending a new message (unchanged)
+       // Handle sending a new message (unchanged)
     function handleSendMessage() {
+        console.log("Handling send message...");
         const content = messageInput.value.trim();
         if (!content || !activeConversation) return;
+
+        convID = activeConversation.getAttribute('data-conversation-id');
+        timestamp = new Date().toDateString();
         const newMessage = {
-            id: `m${activeConversation.messages.length + 1}`,
-            sender: 'patient',
+            conversation_id: convID,
             content: content,
-            timestamp: new Date().toISOString(),
-            read: false
         };
-        activeConversation.messages.push(newMessage);
-        activeConversation.lastMessage = { content, timestamp: newMessage.timestamp, unread: false };
-        renderMessages(activeConversation.messages);
+        sendMessage(newMessage);
+
+        console.log("New message content:", newMessage);
+
+        messagesContainer.innerHTML += `
+            <div class="flex justify-end">
+                <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
+                    <p class="text-sm break-words overflow-wrap-anywhere">${content}</p>
+                    <p class="text-xs mt-1 opacity-70 text-right">
+                        ${timestamp}
+                        <span class="ml-1">
+                                <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g transform="matrix(1.15 0 0 1.15 12 12)">
+                                        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                        </span>
+                    </p>
+                </div>
+            </div>`
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        
         messageInput.value = '';
         sendButton.disabled = true;
-        console.log("Sending message:", content);
+
+
     }
 
-    // Event listeners
-    messageInput.addEventListener('input', () => {
-        sendButton.disabled = !messageInput.value.trim();
-    });
+    function sendMessage(msg) {
+        const convID = activeConversation.getAttribute('data-conversation-id');
+        const url = `/p/send-msg/`;
 
-    messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSendMessage();
-        }
-    });
+        console.log(msg)
 
-    sendButton.addEventListener('click', handleSendMessage);
-    searchInput.addEventListener('input', (e) => filterSearchConversations(e.target.value));
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'  // Ensure CSRF token is included
+            },
+            body: JSON.stringify(msg)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Message sent successfully:', data);
+            
+            payload = data.payload;
+            renderMessages(payload);
+        })
+        .catch(error => {
+            console.error('Error sending message:', error);
+            // Optionally, you can show an error message to the user
+            alert('Failed to send message. Please try again later.');
+        });
+
+        
+    }
+
+
+    function close_open_SidebarConvList() {
+        sidebarConvList.classList.toggle('hidden');
+        overlaySidebar.classList.toggle('hidden');
+    }
+  
 
     // Tab functionality (unchanged)
     tabButtons.forEach(each_btn => {
