@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
 
     'daphne', 
+    'channels',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,6 +61,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'clinic_base.urls'
 # WSGI_APPLICATION = 'clinic_base.wsgi.application'
 ASGI_APPLICATION = 'clinic_base.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 TEMPLATES = [
     {

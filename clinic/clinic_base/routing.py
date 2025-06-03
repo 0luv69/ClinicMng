@@ -1,6 +1,7 @@
-from django.urls import path
-from clinic_base.consumers import *
+from django.urls import re_path
+from . import consumers
 
-# websocket_urlpatterns = [
-#     path("ws/chatroom/<chatroom_name>", ChatroomConsumer.as_asgi()),
-# ]
+websocket_urlpatterns = [
+    # e.g. ws://<host>/ws/chat/123/
+    re_path(r"^ws/chat/(?P<conversation_id>\d+)/$", consumers.ChatConsumer.as_asgi()),
+]
