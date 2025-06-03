@@ -84,7 +84,7 @@
                 <!-- Conversation List -->
                 <div id="conversation-list" class="space-y-1 px-1 py-2">
                     {% for conversation in conversations %}
-                    <button  data-unread="{{ conversation.has_unread }}" data-conversation-id="{{ conversation.id }}" class="conversation-item flex items-start gap-3 p-2 rounded-md w-full text-left transition-colors font-medium border-gray-100 hover:bg-gray-50 {% if conversation.id == active_conversation_id %}bg-blue-50 {% endif %}">
+                    <button  data-unread="{{ conversation.has_unread }}" data-conversation-id="{{ conversation.id }}" class="conversation-item flex items-start gap-3 p-2 rounded-md w-full text-left transition-colors font-medium border-b-2 border-gray-100 hover:bg-gray-50 {% if conversation.id == active_conversation_id %}bg-blue-50 {% endif %}">
                         <div class="relative">
                             <div class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-primary/10">
                                 <img class="aspect-square h-full w-full conversation-avatar" src=" {{ conversation.other_participant.profile_pic.url }}" alt="{{ conversation.other_participant.user.first_name }}">
@@ -116,9 +116,9 @@
 
         <!-- Main Content - Conversation -->
         <section id="conversation-view" class=" flex flex-col h-[calc(100vh-4rem)]">
-            {% if active_conversation %}
+            
                 <!-- Conversation content will be populated here by JavaScript -->
-                <div id="conversation-content" class="flex-col h-full flex">
+                <div id="conversation-content" class="flex-col h-full flex {% if not active_conversation %} hidden {% endif %}">
                     <!-- Conversation Header -->
                     <div id="conversation-header" class="flex items-center justify-between p-4 border-b">
                         <div class="flex items-center gap-3">
@@ -275,7 +275,7 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
+                {% if not active_conversation %}
                 <!-- Empty state will be shown initially -->
                 <div id="empty-state" class="flex flex-col items-center justify-center h-full text-center p-4">
                     <svg class="h-16 w-16 text-muted-foreground/30 mb-4" fill="currentColor" stroke="currentColor"
@@ -332,12 +332,7 @@
                     </button>
                 </div>
             {% endif %}
-
         </section>
-
-        
-
-
     </div>
 </section>
 
@@ -347,222 +342,6 @@
 {% block scripts %}
 
 <script>
-
-
-    {% comment %} // Sample data for messages (unchanged)
-    const conversations = [
-        {
-            id: "1",
-            contact: {
-                name: "Dr. Sarah Smith",
-                role: "Primary Care",
-                avatar: "https://ui.shadcn.com/placeholder.svg?height=40&width=40",
-                initials: "DS",
-                online: true
-            },
-            messages: [
-                {
-                    id: "m1",
-                    sender: "doctor",
-                    content: "Hello John, I've reviewed your recent lab results and everything looks good. Your cholesterol levels have improved since your last visit.",
-                    timestamp: "2025-03-14T10:30:00",
-                    read: true
-                },
-                {
-                    id: "m2",
-                    sender: "patient",
-                    content: "That's great news! I've been following the diet plan you recommended and exercising regularly.",
-                    timestamp: "2025-03-14T10:35:00",
-                    read: true
-                },
-                {
-                    id: "m3",
-                    sender: "doctor",
-                    content: "Excellent work! Keep it up. I'd like to schedule a follow-up appointment in 3 months to monitor your progress.",
-                    timestamp: "2025-03-14T10:40:00",
-                    read: true
-                },
-                {
-                    id: "m4",
-                    sender: "patient",
-                    content: "That sounds good. Should I continue with the same medication dosage?",
-                    timestamp: "2025-03-14T10:45:00",
-                    read: true
-                },
-                {
-                    id: "m5",
-                    sender: "doctor",
-                    content: "Yes, please continue with the current dosage. If you experience any side effects, let me know immediately.",
-                    timestamp: "2025-03-14T10:50:00",
-                    read: false
-                }
-            ],
-            lastMessage: {
-                content: "Yes, please continue with the current dosage. If you experience any side effects, let me know immediately.",
-                timestamp: "2025-03-14T10:50:00",
-                unread: true
-            }
-        },
-        {
-            id: "2",
-            contact: {
-                name: "Dr. Robert Johnson",
-                role: "Cardiologist",
-                avatar: "https://ui.shadcn.com/placeholder.svg?height=40&width=40",
-                initials: "RJ",
-                online: false
-            },
-            messages: [
-                {
-                    id: "m1",
-                    sender: "doctor",
-                    content: "Hello John, I wanted to follow up on your heart health. Have you been monitoring your blood pressure as we discussed?",
-                    timestamp: "2025-03-12T14:20:00",
-                    read: true
-                },
-                {
-                    id: "m2",
-                    sender: "patient",
-                    content: "Yes, I've been taking readings twice daily. My average is around 122/78.",
-                    timestamp: "2025-03-12T14:25:00",
-                    read: true
-                },
-                {
-                    id: "m3",
-                    sender: "doctor",
-                    content: "That's within the normal range, which is excellent. Keep up with the monitoring and I'll see you at your next appointment.",
-                    timestamp: "2025-03-12T14:30:00",
-                    read: true
-                }
-            ],
-            lastMessage: {
-                content: "That's within the normal range, which is excellent. Keep up with the monitoring and I'll see you at your next appointment.",
-                timestamp: "2025-03-12T14:30:00",
-                unread: false
-            }
-        },
-        {
-            id: "3",
-            contact: {
-                name: "Dr. Lisa Chen",
-                role: "Dentist",
-                avatar: "https://ui.shadcn.com/placeholder.svg?height=40&width=40",
-                initials: "LC",
-                online: true
-            },
-            messages: [
-                {
-                    id: "m1",
-                    sender: "doctor",
-                    content: "Hi John, this is a reminder about your upcoming dental cleaning appointment on March 20th at 2:00 PM.",
-                    timestamp: "2025-03-13T09:15:00",
-                    read: true
-                },
-                {
-                    id: "m2",
-                    sender: "patient",
-                    content: "Thanks for the reminder. I'll be there.",
-                    timestamp: "2025-03-13T09:20:00",
-                    read: true
-                },
-                {
-                    id: "m3",
-                    sender: "doctor",
-                    content: "Great! Please remember to bring your insurance card and arrive 15 minutes early to complete any necessary paperwork.",
-                    timestamp: "2025-03-13T09:25:00",
-                    read: true
-                }
-            ],
-            lastMessage: {
-                content: "Great! Please remember to bring your insurance card and arrive 15 minutes early to complete any necessary paperwork.",
-                timestamp: "2025-03-13T09:25:00",
-                unread: false
-            }
-        },
-        {
-            id: "4",
-            contact: {
-                name: "Nurse Jennifer",
-                role: "Primary Care Nurse",
-                avatar: "https://ui.shadcn.com/placeholder.svg?height=40&width=40",
-                initials: "JN",
-                online: false
-            },
-            messages: [
-                {
-                    id: "m1",
-                    sender: "doctor",
-                    content: "Hello John, I'm following up on your recent flu shot. Have you experienced any side effects?",
-                    timestamp: "2025-03-10T11:00:00",
-                    read: true
-                },
-                {
-                    id: "m2",
-                    sender: "patient",
-                    content: "Hi Jennifer, I had some mild soreness at the injection site, but it went away after a day. No other side effects.",
-                    timestamp: "2025-03-10T11:10:00",
-                    read: true
-                },
-                {
-                    id: "m3",
-                    sender: "doctor",
-                    content: "That's normal and nothing to worry about. Thank you for the update!",
-                    timestamp: "2025-03-10T11:15:00",
-                    read: true
-                }
-            ],
-            lastMessage: {
-                content: "That's normal and nothing to worry about. Thank you for the update!",
-                timestamp: "2025-03-10T11:15:00",
-                unread: false
-            }
-        },
-        {
-            id: "5",
-            contact: {
-                name: "Pharmacy Services",
-                role: "Medication Support",
-                avatar: "https://ui.shadcn.com/placeholder.svg?height=40&width=40",
-                initials: "PS",
-                online: true
-            },
-            messages: [
-                {
-                    id: "m1",
-                    sender: "doctor",
-                    content: "Your prescription for Lisinopril has been refilled and is ready for pickup at your local pharmacy.",
-                    timestamp: "2025-03-11T15:30:00",
-                    read: true
-                },
-                {
-                    id: "m2",
-                    sender: "patient",
-                    content: "Thank you. What are your hours today?",
-                    timestamp: "2025-03-11T15:40:00",
-                    read: true
-                },
-                {
-                    id: "m3",
-                    sender: "doctor",
-                    content: "We're open until 9:00 PM today. Your prescription will be held for 7 days.",
-                    timestamp: "2025-03-11T15:45:00",
-                    read: true
-                },
-                {
-                    id: "m4",
-                    sender: "patient",
-                    content: "Perfect, I'll pick it up this evening. Thanks!",
-                    timestamp: "2025-03-11T15:50:00",
-                    read: true
-                }
-            ],
-            lastMessage: {
-                content: "Perfect, I'll pick it up this evening. Thanks!",
-                timestamp: "2025-03-11T15:50:00",
-                unread: false
-            }
-        }
-    ]; {% endcomment %}
     
     const conversations = []
 
@@ -761,6 +540,9 @@
     // Render messages (unchanged)
     function renderMessages(payload) {
         const messages = payload.messages || [];
+        {% comment %} conversation_content_init(); {% endcomment %}
+
+
         setActiveConversation(payload.conversation_id);
         messagesContainer.innerHTML = messages.map(message => `
             <div class="flex ${message.msg_by_me === true ? 'justify-end' : 'justify-start'}">

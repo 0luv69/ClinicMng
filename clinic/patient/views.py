@@ -497,9 +497,9 @@ def message(request: HttpRequest):
     context = {
         'profile': profile,
         'conversations': conversations,
-        'active_conversation_id': conversation.id,
-        'active_conversation': conversation,
-        'message_lists': messages_list,
+        # 'active_conversation_id': conversation.id,
+        # 'active_conversation': conversation,
+        # 'message_lists': messages_list,
     }
 
     return render(request, 'pages/patient/message.html', context)
