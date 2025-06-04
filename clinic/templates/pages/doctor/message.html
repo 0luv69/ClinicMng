@@ -422,51 +422,52 @@
     let chatSocket = null;
 
     // -----------------------------
-// 4. Open (or re‐open) the WebSocket for live updates
-// -----------------------------
-function openChatWebSocket(conversationId) {
-    // If there is already an open socket, close it cleanly
-    if (chatSocket) {
-        chatSocket.onmessage = null;
-        chatSocket.onclose = null;
-        chatSocket.onerror = null;
-        chatSocket.close();
-        chatSocket = null;
+    // 4. Open (or re‐open) the WebSocket for live updates
+    // -----------------------------
+    function openChatWebSocket(conversationId) {
+        // If there is already an open socket, close it cleanly
+        if (chatSocket) {
+            chatSocket.onmessage = null;
+            chatSocket.onclose = null;
+            chatSocket.onerror = null;
+            chatSocket.close();
+            chatSocket = null;
+        }
+
+        // Build the URL dynamically
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const wsUrl = `${protocol}://${window.location.host}/ws/chat/${conversationId}/`;
+
+        chatSocket = new WebSocket(wsUrl);
+
+        chatSocket.onopen = function(event) {
+            console.log(`WebSocket connected to ${wsUrl}`);
+        };
+
+        chatSocket.onmessage = function(event) {
+            // Parse the JSON payload ChatConsumer is sending
+            const data = JSON.parse(event.data);
+            console.log('Message received:', data.msg_by_me);
+
+            // Only append if msg_by_me is true (sent by me)
+            // OR if msg_by_me is false AND the username is not the sender's username
+            if (data.msg_by_me === true || (data.msg_by_me === false && data.username !== "{{ request.user.username }}")) {
+                appendSingleMessage(data);
+            }
+
+
+        };
+
+        chatSocket.onclose = function(event) {
+            console.warn("Chat socket closed unexpectedly:", event);
+            // If you want, you can attempt a very basic reconnect:
+            // setTimeout(() => openChatWebSocket(conversationId), 2000);
+        };
+
+        chatSocket.onerror = function(error) {
+            console.error("WebSocket error:", error);
+        };
     }
-
-    // Build the URL dynamically
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const wsUrl = `${protocol}://${window.location.host}/ws/chat/${conversationId}/`;
-
-    chatSocket = new WebSocket(wsUrl);
-
-    chatSocket.onopen = function(event) {
-        console.log(`WebSocket connected to ${wsUrl}`);
-    };
-
-    chatSocket.onmessage = function(event) {
-        // Parse the JSON payload ChatConsumer is sending
-        const data = JSON.parse(event.data);
-        // data should look like:
-        // {
-        //   conversation_id, msg_by_me, id, sender, content, timestamp, read
-        // }
-        // We append just this one new message:
-
- 
-            appendSingleMessage(data);
-    };
-
-    chatSocket.onclose = function(event) {
-        console.warn("Chat socket closed unexpectedly:", event);
-        // If you want, you can attempt a very basic reconnect:
-        // setTimeout(() => openChatWebSocket(conversationId), 2000);
-    };
-
-    chatSocket.onerror = function(error) {
-        console.error("WebSocket error:", error);
-    };
-}
 
 
 
@@ -608,8 +609,6 @@ function openChatWebSocket(conversationId) {
     // Render messages (unchanged)
     function renderMessages(payload) {
         const messages = payload.messages || [];
-        {% comment %} conversation_content_init(); {% endcomment %}
-
 
         setActiveConversation(payload.conversation_id);
         messagesContainer.innerHTML = messages.map(message => `
@@ -672,7 +671,7 @@ function openChatWebSocket(conversationId) {
                 <div class="max-w-xs lg:max-w-md">
                     <div class="flex justify-start">
                         <div class="relative flex h-8 w-8 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
-                            <img class="aspect-square h-full w-full" src="${message.other_participant_pic}" alt="${message.other_participant_name}">
+                            <img class="aspect-square h-full w-full" ${message.sender_pic}" alt="${message.sender}">
                         </div>
                         <div class="bg-muted rounded-lg p-3 max-w-[100%]">
                             <p class="text-sm break-words">${message.content}</p>

@@ -400,49 +400,114 @@
     const tabButtons = document.querySelectorAll('.tab-button');
     const overlaySidebar = document.getElementById('overlaySidebar');
 
-    if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    // Event listeners
+    messageInput.addEventListener('input', () => {
+        sendButton.disabled = !messageInput.value.trim();
+    });
 
-        // Event listeners
-        messageInput.addEventListener('input', () => {
-            sendButton.disabled = !messageInput.value.trim();
-        });
+    messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
 
-        messageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage();
-            }
-        });
-
-        sendButton.addEventListener('click', handleSendMessage);
-        searchInput.addEventListener('input', (e) => filterSearchConversations(e.target.value));
-    }
+    sendButton.addEventListener('click', handleSendMessage);
+    searchInput.addEventListener('input', (e) => filterSearchConversations(e.target.value));
 
     // Current active conversation
     let activeConversation = null;
+    let chatSocket = null;
+
+    // -----------------------------
+    // 4. Open (or re‐open) the WebSocket for live updates
+    // -----------------------------
+    function openChatWebSocket(conversationId) {
+        // If there is already an open socket, close it cleanly
+        if (chatSocket) {
+            chatSocket.onmessage = null;
+            chatSocket.onclose = null;
+            chatSocket.onerror = null;
+            chatSocket.close();
+            chatSocket = null;
+        }
+
+        // Build the URL dynamically
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const wsUrl = `${protocol}://${window.location.host}/ws/chat/${conversationId}/`;
+
+        chatSocket = new WebSocket(wsUrl);
+
+        chatSocket.onopen = function(event) {
+            console.log(`WebSocket connected to ${wsUrl}`);
+        };
+
+        chatSocket.onmessage = function(event) {
+            // Parse the JSON payload ChatConsumer is sending
+            const data = JSON.parse(event.data);
+            console.log('Message received:', data.msg_by_me);
+            // Only append if msg_by_me is true (sent by me)
+            // OR if msg_by_me is false AND the username is not the sender's username
+            if (data.msg_by_me === true || (data.msg_by_me === false && data.username !== "{{ request.user.username }}")) {
+                appendSingleMessage(data);
+            }
+        };
+
+        chatSocket.onclose = function(event) {
+            console.warn("Chat socket closed unexpectedly:", event);
+            // If you want, you can attempt a very basic reconnect:
+            // setTimeout(() => openChatWebSocket(conversationId), 2000);
+        };
+
+        chatSocket.onerror = function(error) {
+            console.error("WebSocket error:", error);
+        };
+    }
+
+
+
+
 
     // Conversation click handler
     AllConversationsItems.forEach(item => {
         item.addEventListener('click', function() {
             const conversationId = this.dataset.conversationId;
-            url = `/p/get-msg/${conversationId}/`;
-
-            fetch(url)
+            activeConversationId = conversationId;
+    
+            // Close existing WebSocket connection if any
+            if (chatSocket) {
+                chatSocket.close();
+            }
+    
+            // Establish new WebSocket connection
+            chatSocket = new WebSocket(
+                'ws://' + window.location.host + '/ws/chat/' + conversationId + '/'
+            );
+    
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                console.log('Message received:', data);
+                renderMessages(data);
+            };
+    
+            chatSocket.onclose = function(e) {
+                console.log(chatSocket);
+                console.error('Chat socket closed unexpectedly');
+            };
+    
+            // Fetch existing messages for inital conversation load
+            fetch(`/p/get-msg/${conversationId}/`)
                 .then(response => response.json())
                 .then(data => {
                     renderMessages(data);
-                    {% comment %} const convo = conversations.find(c => c.id === conversationId);
-                    if (convo) {
-                        setActiveConversation(convo);
-                    } {% endcomment %}
+                    openChatWebSocket(conversationId); // Open WebSocket after fetching messages
                 })
                 .catch(error => {
                     console.error('Error fetching messages:', error);
-                });
+                }); 
         });
     });
-       
 
     // Set active conversation
     function setActiveConversation(convoID) {
@@ -540,8 +605,6 @@
     // Render messages (unchanged)
     function renderMessages(payload) {
         const messages = payload.messages || [];
-        {% comment %} conversation_content_init(); {% endcomment %}
-
 
         setActiveConversation(payload.conversation_id);
         messagesContainer.innerHTML = messages.map(message => `
@@ -589,6 +652,57 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    function appendSingleMessage(message) {
+        // If the incoming message belongs to a different conversation, ignore it
+        if (String(message.conversation_id) !== String(activeConversationId)) {
+            return;
+        }
+    
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("flex", message.msg_by_me ? "justify-end" : "justify-start");
+    
+        if (!message.msg_by_me) {
+            // incoming
+            wrapper.innerHTML = `
+                <div class="max-w-xs lg:max-w-md">
+                    <div class="flex justify-start">
+                        <div class="relative flex h-8 w-8 overflow-hidden rounded-full border-2 border-primary/10 mr-2 mt-1">
+                            <img class="aspect-square h-full w-full" src="${message.sender_pic}" alt="${message.sender}">
+                        </div>
+                        <div class="bg-muted rounded-lg p-3 max-w-[100%]">
+                            <p class="text-sm break-words">${message.content}</p>
+                            <p class="text-xs mt-1 opacity-70 text-right">
+                                ${formatMessageDate(message.timestamp)}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // outgoing
+            wrapper.innerHTML = `
+                <div class="max-w-xs lg:max-w-md">
+                    <div class="flex justify-end">
+                        <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
+                            <p class="text-sm break-words">${message.content}</p>
+                            <p class="text-xs mt-1 opacity-70 text-right">
+                                ${formatMessageDate(message.timestamp)}
+                                <span class="ml-1">
+                                    ${message.read 
+                                        ? `<svg class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path d="M19.28 5.28L9 15.56L4.72 11.28L3.28 12.72L8.28 17.72L9 18.41L9.72 17.72L20.72 6.72Z"/></svg>` 
+                                        : `<svg class="h-4 w-4 inline text-green-400" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path d="M37.91 8.97C37.86 8.98 37.82 8.99 37.78 9C37.55 9.05 37.36 9.19 37.22 9.38L12.94 38.5L1.72 27.28C1.32 26.88 0.68 26.88 0.28 27.28C-0.12 27.68 -0.12 28.32 0.28 28.72L12.28 40.72C12.48 40.92 12.77 41.03 13.05 41.01C13.34 40.99 13.61 40.85 13.78 40.63L38.78 10.63C39.06 10.31 39.11 9.86 38.92 9.49C38.72 9.13 38.32 8.91 37.91 8.97ZM48.91 8.97C48.86 8.98 48.82 8.99 48.78 9C48.55 9.05 48.36 9.19 48.22 9.38L23.94 38.5L21.38 35.97C21.13 35.67 20.75 35.54 20.37 35.62C20 35.71 19.71 36 19.62 36.37C19.54 36.75 19.67 37.13 19.97 37.38L23.28 40.72C23.48 40.92 23.77 41.03 24.05 41.01C24.34 40.99 24.61 40.85 24.78 40.63L49.78 10.63C50.06 10.31 50.11 9.86 49.92 9.49C49.72 9.13 49.32 8.91 48.91 8.97Z"/></svg>`}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    
+        messagesContainer.appendChild(wrapper);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
        // Handle sending a new message (unchanged)
     function handleSendMessage() {
         console.log("Handling send message...");
@@ -598,73 +712,23 @@
         convID = activeConversation.getAttribute('data-conversation-id');
         timestamp = new Date().toDateString();
         const newMessage = {
-            conversation_id: convID,
             content: content,
         };
-        sendMessage(newMessage);
+        
+        // sending the msg to the server via WebSocket
+        if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+            chatSocket.send(JSON.stringify(newMessage));
+        } else {
+            console.error('WebSocket is not open. Unable to send message.');
+        }
 
         console.log("New message content:", newMessage);
-
-        messagesContainer.innerHTML += `
-            <div class="flex justify-end">
-                <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
-                    <p class="text-sm break-words overflow-wrap-anywhere">${content}</p>
-                    <p class="text-xs mt-1 opacity-70 text-right">
-                        ${timestamp}
-                        <span class="ml-1">
-                                <svg id="Checkmark_24" class="h-4 w-4 inline" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g transform="matrix(1.15 0 0 1.15 12 12)">
-                                        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -11.84)" d="M 19.28125 5.28125 L 9 15.5625 L 4.71875 11.28125 L 3.28125 12.71875 L 8.28125 17.71875 L 9 18.40625 L 9.71875 17.71875 L 20.71875 6.71875 Z" stroke-linecap="round"></path>
-                                    </g>
-                                </svg>
-                        </span>
-                    </p>
-                </div>
-            </div>`
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-        
+            
         messageInput.value = '';
         sendButton.disabled = true;
 
 
     }
-
-    function sendMessage(msg) {
-        const convID = activeConversation.getAttribute('data-conversation-id');
-        const url = `/p/send-msg/`;
-
-        console.log(msg)
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'  // Ensure CSRF token is included
-            },
-            body: JSON.stringify(msg)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Message sent successfully:', data);
-            
-            payload = data.payload;
-            renderMessages(payload);
-        })
-        .catch(error => {
-            console.error('Error sending message:', error);
-            // Optionally, you can show an error message to the user
-            alert('Failed to send message. Please try again later.');
-        });
-
-        
-    }
-
 
     function close_open_SidebarConvList() {
         sidebarConvList.classList.toggle('hidden');

@@ -95,13 +95,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Safely access related fields for the payload
         sender_full_name = await database_sync_to_async(lambda: profile.user.first_name)()
         sender_username = await database_sync_to_async(lambda: profile.user.username)()
+        sender_pic = await database_sync_to_async(lambda: profile.profile_pic.url if profile.profile_pic else None)()
         message_content = await database_sync_to_async(lambda: message_obj.content)()
         message_id = await database_sync_to_async(lambda: message_obj.id)()
         message_read = await database_sync_to_async(lambda: message_obj.read)()
         message_timestamp = await database_sync_to_async(lambda: message_obj.timestamp)()
-
-
         timestamp_local = timezone.localtime(message_timestamp).strftime("%I:%M %p, %d %b %Y")
+
+        
 
         # Prepare payload
         payload = {
@@ -109,11 +110,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "msg_by_me": True,
             "id": message_id,
             "sender": sender_full_name,
+            "sender_pic" : sender_pic,
             "username": sender_username,
             "content": message_content,
             "timestamp": timestamp_local,
             "read": message_read,
         }
+
+        # Send message to the sender only with msg_by_me=True
+        await self.send(text_data=json.dumps(payload))
+
+        # Prepare payload for others (msg_by_me=False)
+        payload["msg_by_me"] = False
+
 
         # Broadcast to the group
         await self.channel_layer.group_send(
