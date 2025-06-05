@@ -3,45 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Box with Text Wrapping</title>
+    <title>Premium User Selection Dialog</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+        }
+        .dialog-enter {
+            animation: dialogEnter 0.3s ease-out;
+        }
+        @keyframes dialogEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
 </head>
-<body class="p-8 bg-gray-100">
-    <div class="max-w-md mx-auto space-y-4">
-        <h2 class="text-lg font-semibold mb-4">Message Box Examples</h2>
-        
-        <!-- Original (overflowing) -->
-        <div class="mb-6">
-            <h3 class="text-sm font-medium mb-2 text-red-600">Before (Overflowing):</h3>
-            <div class="bg-muted bg-gray-200 rounded-lg p-3 max-w-[75%]">
-                <p class="text-sm">dffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsd</p>
-                <p class="text-xs mt-1 opacity-70 text-right">
-                    31 May
-                </p>
-            </div>
-        </div>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    
+    <!-- Trigger Button -->
+    <button id="openDialog" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg">
+        Start New Conversation
+    </button>
 
-        <!-- Fixed version -->
-        <div>
-            <h3 class="text-sm font-medium mb-2 text-green-600">After (Fixed with word wrapping):</h3>
-            <div class="bg-muted bg-gray-200 rounded-lg p-3 max-w-[75%]">
-                <p class="text-sm break-words overflow-wrap-anywhere">dffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsd</p>
-                <p class="text-xs mt-1 opacity-70 text-right">
-                    31 May
-                </p>
+    <!-- Dialog Overlay -->
+    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <i data-lucide="users" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Start Conversation</h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Choose someone to chat with</p>
+                    </div>
+                </div>
+                <button id="closeDialog" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+                </button>
             </div>
-        </div>
 
-        <!-- Alternative with hyphens -->
-        <div>
-            <h3 class="text-sm font-medium mb-2 text-blue-600">Alternative (with hyphens):</h3>
-            <div class="bg-muted bg-gray-200 rounded-lg p-3 max-w-[75%]">
-                <p class="text-sm break-all hyphens-auto" lang="en">dffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsddffffsasfasfdsfsd</p>
-                <p class="text-xs mt-1 opacity-70 text-right">
-                    31 May
-                </p>
+            <!-- Search -->
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search users..."
+                        class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 dark:text-white placeholder-gray-500 outline-none"
+                    />
+                </div>
+            </div>
+
+            <!-- User List -->
+            <div class="max-h-80 overflow-y-auto">
+                <div id="userList" class="p-2">
+                    <!-- Users will be populated by JavaScript -->
+                </div>
+                <div id="noResults" class="p-8 text-center hidden">
+                    <i data-lucide="users" class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3"></i>
+                    <p class="text-gray-500 dark:text-gray-400">No users found</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
+                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                    <span id="userCount">6 users available</span>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Online</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Away</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Sample user data
+        const users = [
+            {
+                id: 1,
+                name: "Sarah Chen",
+                title: "Product Designer",
+                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+                status: "online",
+                lastSeen: "Active now",
+                isVerified: true
+            },
+            {
+                id: 2,
+                name: "Marcus Johnson",
+                title: "Senior Developer",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                status: "online",
+                lastSeen: "Active now",
+                isVerified: true
+            },
+            {
+                id: 3,
+                name: "Elena Rodriguez",
+                title: "Marketing Director",
+                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+                status: "away",
+                lastSeen: "2 minutes ago",
+                isVerified: false
+            },
+            {
+                id: 4,
+                name: "David Kim",
+                title: "UX Researcher",
+                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+                status: "offline",
+                lastSeen: "1 hour ago",
+                isVerified: true
+            },
+            {
+                id: 5,
+                name: "Priya Patel",
+                title: "Data Scientist",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+                status: "online",
+                lastSeen: "Active now",
+                isVerified: true
+            },
+            {
+                id: 6,
+                name: "Alex Thompson",
+                title: "Project Manager",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+                status: "busy",
+                lastSeen: "In a meeting",
+                isVerified: false
+            }
+        ];
+
+        // DOM elements
+        const openDialogBtn = document.getElementById('openDialog');
+        const closeDialogBtn = document.getElementById('closeDialog');
+        const dialogOverlay = document.getElementById('dialogOverlay');
+        const searchInput = document.getElementById('searchInput');
+        const userList = document.getElementById('userList');
+        const noResults = document.getElementById('noResults');
+        const userCount = document.getElementById('userCount');
+
+        let filteredUsers = [...users];
+        let selectedUser = null;
+
+        // Helper functions
+        function getStatusColor(status) {
+            switch (status) {
+                case 'online': return 'bg-green-500';
+                case 'away': return 'bg-yellow-500';
+                case 'busy': return 'bg-red-500';
+                default: return 'bg-gray-400';
+            }
+        }
+
+        function createUserElement(user) {
+            const isSelected = selectedUser && selectedUser.id === user.id;
+            const userDiv = document.createElement('div');
+            userDiv.className = `flex items-center p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all cursor-pointer group ${
+                isSelected ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''
+            }`;
+            userDiv.dataset.userId = user.id;
+
+            userDiv.innerHTML = `
+                <div class="relative">
+                    <img
+                        src="${user.avatar}"
+                        alt="${user.name}"
+                        class="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                    />
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 ${getStatusColor(user.status)} rounded-full border-2 border-white dark:border-gray-900"></div>
+                </div>
+                
+                <div class="flex-1 ml-4 min-w-0">
+                    <div class="flex items-center space-x-2">
+                        <h3 class="font-semibold text-gray-900 dark:text-white truncate">${user.name}</h3>
+                        ${user.isVerified ? `
+                            <div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                                <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${user.title}</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500">${user.lastSeen}</p>
+                </div>
+
+                <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="video">
+                        <i data-lucide="video" class="w-4 h-4 text-gray-500"></i>
+                    </button>
+                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="phone">
+                        <i data-lucide="phone" class="w-4 h-4 text-gray-500"></i>
+                    </button>
+                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="more">
+                        <i data-lucide="more-horizontal" class="w-4 h-4 text-gray-500"></i>
+                    </button>
+                </div>
+
+                ${isSelected ? `
+                    <div class="ml-3">
+                        <div class="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ` : ''}
+            `;
+
+            return userDiv;
+        }
+
+        function renderUsers() {
+            userList.innerHTML = '';
+            
+            if (filteredUsers.length === 0) {
+                noResults.classList.remove('hidden');
+                userList.classList.add('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                userList.classList.remove('hidden');
+                
+                filteredUsers.forEach(user => {
+                    const userElement = createUserElement(user);
+                    userList.appendChild(userElement);
+                });
+            }
+            
+            userCount.textContent = `${filteredUsers.length} users available`;
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+        }
+
+        function filterUsers(searchTerm) {
+            filteredUsers = users.filter(user =>
+                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            renderUsers();
+        }
+
+        function handleStartConversation(user) {
+            selectedUser = user;
+            renderUsers();
+            
+            // Simulate conversation start
+            setTimeout(() => {
+                closeDialog();
+                selectedUser = null;
+                console.log(`Starting conversation with ${user.name}`);
+            }, 800);
+        }
+
+        function openDialog() {
+            dialogOverlay.classList.remove('hidden');
+            searchInput.focus();
+            renderUsers();
+        }
+
+        function closeDialog() {
+            dialogOverlay.classList.add('hidden');
+            searchInput.value = '';
+            selectedUser = null;
+            filteredUsers = [...users];
+        }
+
+        // Event listeners
+        openDialogBtn.addEventListener('click', openDialog);
+        closeDialogBtn.addEventListener('click', closeDialog);
+
+        dialogOverlay.addEventListener('click', (e) => {
+            if (e.target === dialogOverlay) {
+                closeDialog();
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            filterUsers(e.target.value);
+        });
+
+        userList.addEventListener('click', (e) => {
+            const userDiv = e.target.closest('[data-user-id]');
+            if (userDiv && !e.target.closest('.action-btn')) {
+                const userId = parseInt(userDiv.dataset.userId);
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    handleStartConversation(user);
+                }
+            }
+        });
+
+        // Handle action buttons
+        userList.addEventListener('click', (e) => {
+            const actionBtn = e.target.closest('.action-btn');
+            if (actionBtn) {
+                e.stopPropagation();
+                const action = actionBtn.dataset.action;
+                const userDiv = actionBtn.closest('[data-user-id]');
+                const userId = parseInt(userDiv.dataset.userId);
+                const user = users.find(u => u.id === userId);
+                
+                console.log(`${action} action for user:`, user.name);
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !dialogOverlay.classList.contains('hidden')) {
+                closeDialog();
+            }
+        });
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>

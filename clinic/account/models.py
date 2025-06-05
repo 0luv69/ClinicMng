@@ -96,9 +96,6 @@ class MedicalInfo(models.Model):
     def __str__(self):
         return f"{self.profile.user.username}'s Medical Info"
     
-    
-
-
 
 class ActivityLog(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="activity_logs")

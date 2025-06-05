@@ -473,13 +473,16 @@ def message(request):
         conversation.has_unread = conversation.messages.filter(
             read=False
         ).exclude(sender=user_profile).exists()
+
+    all_Profile = Profile.objects.all()
+    
     context = {
         'conversations': conversations,
         'active_conversation_id': None,
         'active_conversation': None,
         'messages': [],
+        'all_profiles': all_Profile,
     }
-    print(conversations)
     return render(request, 'pages/doctor/message.html', context)
 
 

@@ -32,8 +32,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Load Profile instance
         try:
             profile = await database_sync_to_async(Profile.objects.get)(user=user)
-            
-            print(f"Profile found for {user}")
         except Profile.DoesNotExist:
             print("Profile does not exist for the user, closing connection.")
             await self.close()
@@ -41,9 +39,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         try:
             conv = await database_sync_to_async(Conversation.objects.get)(id=self.conversation_id)
-            print(f"Conversation found  {self.conversation_id}")
-
-
         except Conversation.DoesNotExist:
             print(f"Conversation with id {self.conversation_id} does not exist, closing connection.")
             await self.close()
@@ -84,8 +79,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         content = data.get("content", "").strip()
 
-        print(f"Received message content: {content}")
-
         if not content:
             return  # Ignore empty messages
 
@@ -102,7 +95,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message_timestamp = await database_sync_to_async(lambda: message_obj.timestamp)()
         timestamp_local = timezone.localtime(message_timestamp).strftime("%I:%M %p, %d %b %Y")
 
-        
+        print(message_read, "message_read")
 
         # Prepare payload
         payload = {
@@ -122,7 +115,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Prepare payload for others (msg_by_me=False)
         payload["msg_by_me"] = False
-
 
         # Broadcast to the group
         await self.channel_layer.group_send(

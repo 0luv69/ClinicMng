@@ -494,9 +494,13 @@ def message(request: HttpRequest):
     #     'active_conversation': conversation,
     #     'message_lists': messages_list,}
 
+    all_Profile = Profile.objects.all()
+
+
     context = {
         'profile': profile,
         'conversations': conversations,
+        'all_profiles': all_Profile,
         # 'active_conversation_id': conversation.id,
         # 'active_conversation': conversation,
         # 'message_lists': messages_list,
@@ -604,12 +608,12 @@ def post_msg(request: HttpRequest):
 
 
 
-
 @login_required_with_message(login_url='account:login', message="You need to log in to access your Lab Reports.")
 def labReport(request: HttpRequest):
     profile: Profile = request.user.profile
     reports: LabReport = LabReport.objects.filter(patient_profile=profile)
 
+    
     abnormal_reports = 0
     pending_reports = 0
 
@@ -646,9 +650,7 @@ def labReport(request: HttpRequest):
             'abnormal_reports': abnormal_reports, 
             'pending_reports': pending_reports,
         }
-
-
-
+    
     return render(request, 'pages/patient/lab_report.html', context)
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Download PDF.")

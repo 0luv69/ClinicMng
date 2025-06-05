@@ -6,8 +6,6 @@ app_name = 'patient'
 
 
 urlpatterns = [
-
-    
     path('', patientDashboard, name='patientDashboard'),
     path('dashboard/', patientDashboard, name='patient_dashboard2'),
     path('view-appointment/', viewAppointment, name='viewAppointment'),
