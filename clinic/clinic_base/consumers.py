@@ -17,9 +17,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         Called when a WebSocket connection is opened.
         We expect the URL pattern to include a conversation_id.
         """
+        print("fasdfasdkfhaslkdjfasjdkl")
         self.conversation_id = self.scope["url_route"]["kwargs"]["conversation_id"]
         self.room_group_name = f"chat_{self.conversation_id}"
 
+        print(f"Connecting to conversation {self.conversation_id} with group {self.room_group_name}")
 
         # Verify that the user belongs to this conversation
         user = self.scope["user"]
@@ -28,7 +30,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             print("User is not authenticated, closing connection.")
             await self.close()
             return
-        
+
         # Load Profile instance
         try:
             profile = await database_sync_to_async(Profile.objects.get)(user=user)
