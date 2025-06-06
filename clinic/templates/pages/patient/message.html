@@ -29,8 +29,8 @@
             <div class="p-4 border-b">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-bold">Messages</h2>
-                    <button id ="openDialog"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
+                    <button
+                        class="openRequestDialog inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
                         <svg id='Add_Circle_24' class="w-5 h-5" fill="currentColor" viewBox='0 0 24 24'
                             xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                             <g transform="matrix(1.43 0 0 1.43 12 12)">
@@ -305,7 +305,7 @@
                         healthcare providers.
                     </p>
                     <button
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                        class="openRequestDialog inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                         <svg id='Add_Circle_24' class="w-4 h-4 mr-2" fill="currentColor" viewBox='0 0 24 24'
                             xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                             <g transform="matrix(1.43 0 0 1.43 12 12)">
@@ -341,7 +341,7 @@
 
 
     <!-- Dialog Overlay -->
-    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 ">
+    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
             
             <!-- Header -->
@@ -599,8 +599,9 @@
             }
     
             // Establish new WebSocket connection
+            const protocol = window.location.protocol === "https:" ? "wss" : "ws";
             chatSocket = new WebSocket(
-                'ws://' + window.location.host + '/ws/chat/' + conversationId + '/'
+                `${protocol}://` + window.location.host + '/ws/chat/' + conversationId + '/'
             );
     
             chatSocket.onmessage = function(e) {
@@ -935,42 +936,29 @@
 
 
 
-// --------------------------------------------------------------------------------------------------------  \\
+    // --------------------------------------------------------------------------------------------------------  \\
 
-const openDialogBtn = document.getElementById('openDialog');
-const closeDialogBtn = document.getElementById('closeDialog');
-const dialogOverlay = document.getElementById('dialogOverlay');
-{% comment %} const searchInput = document.getElementById('searchInput'); {% endcomment %}
-const userList = document.getElementById('userList');
-const noResults = document.getElementById('noResults');
-const userCount = document.getElementById('userCount');
+    const openDialogBtn = document.querySelectorAll('.openRequestDialog');
+    const closeDialogBtn = document.getElementById('closeDialog');
+    const dialogOverlay = document.getElementById('dialogOverlay');
 
 
-
-
-
-    function openDialog() {
-        dialogOverlay.classList.remove('hidden');
-        searchInput.focus();
-        renderUsers();
+    // Event listeners
+    for (const button of openDialogBtn) {
+        button.addEventListener('click', () => {
+            dialogOverlay.classList.toggle('hidden');
+        });
     }
 
-    function closeDialog() {
-        dialogOverlay.classList.add('hidden');
-        searchInput.value = '';
-        selectedUser = null;
-    }
+    closeDialogBtn.addEventListener('click', () => {
+        dialogOverlay.classList.toggle('hidden');
+    });
 
-
-            // Event listeners
-            openDialogBtn.addEventListener('click', openDialog);
-            closeDialogBtn.addEventListener('click', closeDialog);
-    
-            dialogOverlay.addEventListener('click', (e) => {
-                if (e.target === dialogOverlay) {
-                    closeDialog();
-                }
-            });
+    dialogOverlay.addEventListener('click', (e) => {
+        if (e.target === dialogOverlay) {
+            dialogOverlay.classList.toggle('hidden');
+        }
+    });
 
 
 </script>
