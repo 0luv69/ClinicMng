@@ -78,7 +78,7 @@
                     <div class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-3">
                         <button class=" tab-button px-3 py-1 text-sm font-medium rounded-lg active bg-blue-50 text-blue-700" data-filter="all">All</button>
                         <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="unread">Unread</button>
-                        <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="flagged">Flagged</button>
+                        <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="flagged">Request</button>
                     </div>
                 </div>
 
@@ -117,7 +117,6 @@
 
         <!-- Main Content - Conversation -->
         <section id="conversation-view" class=" flex flex-col h-[calc(100vh-4rem)]">
-            
                 <!-- Conversation content will be populated here by JavaScript -->
                 <div id="conversation-content" class="flex-col h-full flex {% if not active_conversation %} hidden {% endif %}">
                     <!-- Conversation Header -->
@@ -342,7 +341,7 @@
 
 
     <!-- Dialog Overlay -->
-    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-40 hidden">
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
             
             <!-- Header -->
@@ -383,20 +382,20 @@
             </div>
 
             <!-- User List -->
-            <div class="max-h-80 overflow-y-auto">
-                    {% for profile in all_profiles %}
-                        <div id="userList" class=" border-gray-300 border-b-2  p-2 flex items-center space-x-4 hover:bg-gray-100 cursor-pointer group transition-colors">
+            <div class="max-h-80 overflow-y-auto" id="userList">
+                    {% for each_profile in not_connected_usr %}
+                        <div  class=" border-gray-300 border-b-2  p-2 flex items-center space-x-4 hover:bg-gray-100 cursor-pointer group transition-colors">
                                 <img
-                                    src="{{profile.profile_pic.url}}"
-                                    alt="{{profile.user.first_name}}"
-                                    class="w-10 h-10 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                                    src="{{each_profile.profile_pic.url}}"
+                                    alt="{{each_profile.user.first_name}}"
+                                    class="w-10 h-10 rounded-full object-cover ring-2 ring-white/90 dark:ring-gray-800"
                                 />
                             
                             <div class="flex-1 ml-4 min-w-0">
                                 <div class="flex items-center space-x-2">
-                                    <h3 class=" text-gray-900 dark:text-white truncate">{{profile.user.first_name}}</h3>
+                                    <h3 class=" text-gray-900 dark:text-white truncate _name-user_">{{each_profile.user.first_name}}</h3>
 
-                                    {% if profile.is_verified %}
+                                    {% if each_profile.is_verified %}
                                         <div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
                                             <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -404,37 +403,40 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                                {% if profile.role == 'doctor'%}
-                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{profile.doctor_profile.specialization}}</p>
+                                {% if each_profile.role == 'doctor'%}
+                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{each_profile.doctor_profile.specialization}}</p>
                                 {% else %}
                                 <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Patient</p>
                                 {% endif %}
                             </div>
             
                             <div class="flex items-center space-x-2">
-                                <button class="action-btn p-2 hover:bg-blue-100  rounded-lg transition-colors flex items-center gap-1" data-action="send-request">
+                                <button data-profile-id="{{ each_profile.user.username }}" data-profile-name="{{ each_profile.user.first_name }}" 
+                                 class="send-req-btn p-2 text-2xs hover:bg-blue-100  rounded-lg transition-colors flex items-center gap-1" data-action="send-request">
                                     <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13"></path>
                                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                                     </svg>
-                                    <span class="text-2xs">Request</span>
+                                    <span class=" send-req-txt">Request</span>
                                 </button>
                             </div>
                         </div>
-                    {% empty %}
-                        <div id="noResults" class="p-8 text-center hidden">
-                            <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" fill="none" viewBox="0 0 48 48" stroke="currentColor">
-                                <circle cx="24" cy="18" r="8" stroke-width="2" />
-                                <path stroke-width="2" d="M8 40c0-5.5 7.16-10 16-10s16 4.5 16 10" />
-                            </svg>
-                            <p class="text-gray-500 dark:text-gray-400">No users found</p>
-                        </div>
+                        
                     {% endfor %}
+                    
+                    <div id="noResults" class="p-8 text-center {% if not not_connected_usr %}{% else %} hidden{% endif %}">
+                        <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" fill="none" viewBox="0 0 48 48" stroke="currentColor">
+                            <circle cx="24" cy="18" r="8" stroke-width="2" />
+                            <path stroke-width="2" d="M8 40c0-5.5 7.16-10 16-10s16 4.5 16 10" />
+                        </svg>
+                        <p class="text-gray-500 dark:text-gray-400">No users found</p>
+                    </div>
             </div>
+
             <!-- Footer -->
             <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
-                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                    <span id="userCount">6 users Related</span>
+                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span id="userCount" class="text-blue-600">{{ not_connected_usr|length }} </span> users Related
                 </div>
             </div>
         </div>
@@ -580,10 +582,6 @@
         };
     }
 
-
-
-
-
     // Conversation click handler
     AllConversationsItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -711,14 +709,11 @@
                 </div>
             </div>
         `;
+        // Attach event listener to mobile-menu-button to show sidebar
+        const mobileMenuButton = document.getElementById('e-mobile-menu-button');
 
-
-
-            // Attach event listener to mobile-menu-button to show sidebar
-    const mobileMenuButton = document.getElementById('e-mobile-menu-button');
-
-    mobileMenuButton.addEventListener('click', close_open_SidebarConvList);
-    overlaySidebar.addEventListener('click', close_open_SidebarConvList);
+        mobileMenuButton.addEventListener('click', close_open_SidebarConvList);
+        overlaySidebar.addEventListener('click', close_open_SidebarConvList);
 
     }
 
@@ -939,6 +934,73 @@
     const closeDialogBtn = document.getElementById('closeDialog');
     const dialogOverlay = document.getElementById('dialogOverlay');
 
+    const userList = document.getElementById('userList');
+    const noResults = document.getElementById('noResults');
+    const searchuser_toreq = document.getElementById('searchInput');
+
+    const sendReqBtn = document.querySelectorAll('.send-req-btn');
+
+    // Function to handle sending a request
+    function sendRequest(user_name_, profileName) {
+        console.log(`Sending request to ${profileName} (${user_name_})`);
+
+        fetch(`/p/req-conv/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}' // Ensure CSRF token is included
+            },  
+            body: JSON.stringify({ 'userID': user_name_ })
+        })
+        .then(response => {
+            if (response.ok) {
+                showNotification({
+                    color: "bg-green-500",
+                    title: "Request Sent Successfully",
+                    message: `Your request to ${profileName} has been sent successfully.`,
+                });
+
+                // Optionally, you can update the UI to reflect the sent request
+                const button = document.querySelector(`button[data-profile-id="${user_name_}"]`)
+                if (button) {
+                    button.disabled = true; // Disable the button after sending
+                    button.textContent = 'Requested ✅'; // Change button text
+                    button.classList.add('bg-gray-300', 'text-gray-700'); // Change button style
+                }
+                 dialogOverlay.classList.add('hidden'); // Close the dialog after sending the request
+
+            } else {
+                response.json().then(data => {
+                    const error_message = data.error || 'Unknown error';
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Failed to send request",
+                        message: `${error_message}`, 
+                    });
+                });
+            }
+        })
+        .catch(error => {
+
+            showNotification({
+                color: "bg-red-500",
+                title: "Error",
+                message: `Failed to send request to ${profileName}. Please try again later.`,
+            });
+            console.error('Error sending request:', error);
+        });
+    }
+
+    // Attach event listeners to send request buttons
+    sendReqBtn.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent dialog from closing
+            const user_name_ = button.getAttribute('data-profile-id');
+            const profileName = button.getAttribute('data-profile-name');
+            sendRequest(user_name_, profileName);
+        });
+    });
+
 
     // Event listeners
     for (const button of openDialogBtn) {
@@ -957,7 +1019,49 @@
         }
     });
 
+    // Search functionality
+    searchuser_toreq.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.trim();
+        if (searchTerm) {
+            filterUsers(searchTerm);
+        } else {
+            // If search term is empty, show all users
+            const userItems = document.querySelectorAll('#userList > div');
+            userItems.forEach(user => {
+                user.classList.remove('hidden');
+                user.classList.add('flex');
+            });
+            noResults.classList.add('hidden');
+        }
+    });
 
+
+    function filterUsers(searchTerm) {
+        const filter = searchTerm.toLowerCase();
+        const userItems = document.querySelectorAll('#userList > div');
+        let hasResults = false;
+
+        userItems.forEach(user => {
+            const nameElem = user.querySelector('._name-user_');
+            const userName = nameElem ? nameElem.textContent.toLowerCase() : '';
+            if (userName.includes(filter)) {
+                user.classList.remove('hidden');
+                user.classList.add('flex');
+                hasResults = true;
+            } else {
+                user.classList.add('hidden');
+                user.classList.remove('flex');
+            }
+        });
+
+        // Show or hide no results message
+        if (hasResults) {
+            noResults.classList.add('hidden');
+        } else {
+            noResults.classList.remove('hidden');
+        }
+
+    }
 </script>
 
 

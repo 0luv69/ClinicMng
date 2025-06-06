@@ -34,6 +34,7 @@ urlpatterns = [
     path('send-msg/', post_msg, name='send_msg'),
 
 
+    path('req-conv/', req_conv, name='req_conv'),
     
 
 ]

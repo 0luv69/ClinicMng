@@ -468,13 +468,18 @@ def message(request: HttpRequest):
     conversations = Conversation.objects.filter(
         participants=profile
     )
+
+    connected_paritcipants = []
     
-        # Add additional data to each conversation
+    # Add additional data to each conversation
     for conversation in conversations:
         # Get the other participant (not the current user)
         conversation.other_participant = conversation.participants.exclude(
             id=profile.id
         ).first()
+
+        if conversation.other_participant:
+            connected_paritcipants.append(conversation.other_participant)
         
         # Get the last message
         conversation.last_message = conversation.messages.last()
@@ -485,22 +490,30 @@ def message(request: HttpRequest):
         ).exclude(sender=profile).exists()
 
     # # Mark messages as read
-    conversation.messages.filter(
-        read=False
-    ).exclude(sender=profile).update(read=True)
+    # conversation.messages.filter(
+    #     read=False
+    # ).exclude(sender=profile).update(read=True)
 
-    messages_list = conversation.messages.all().order_by('timestamp')
+    # messages_list = conversation.messages.all().order_by('timestamp')
     # concept_data = {'active_conversation_id': conversation.id,
     #     'active_conversation': conversation,
     #     'message_lists': messages_list,}
 
-    all_Profile = Profile.objects.all()
 
+
+
+    # Get all other not connected participants excluding the current user
+    connected_ids = [p.id for p in connected_paritcipants]
+    connected_ids.append(profile.id)
+    if profile.role == 'doctor':
+        not_connected_usr = Profile.objects.exclude(id__in=connected_ids).filter(role='patient')
+    else:
+        not_connected_usr = Profile.objects.exclude(id__in=connected_ids).filter(role='doctor')
 
     context = {
         'profile': profile,
         'conversations': conversations,
-        'all_profiles': all_Profile,
+        'not_connected_usr': not_connected_usr,
         # 'active_conversation_id': conversation.id,
         # 'active_conversation': conversation,
         # 'message_lists': messages_list,
@@ -509,13 +522,59 @@ def message(request: HttpRequest):
     return render(request, 'pages/patient/message.html', context)
 
 
+def req_conv(request: HttpRequest):
+    """Create a new conversation with another user."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+    profile: Profile = request.user.profile
+    data = json.loads(request.body)
+    other_username = data.get('userID')
+
+    if not other_username:
+        return JsonResponse({'error': 'Other user ID is required.'}, status=400)
+
+    other_profile = get_object_or_404(Profile, user__username=other_username)
+
+    if other_profile == profile:
+        return JsonResponse({'error': 'You cannot start a conversation with yourself.'}, status=400)
+
+    print(f"Profile: {profile}, Other Profile: {other_profile}")
+
+    # Check if a conversation already exists between the two users
+    # Find if a conversation exists with exactly these two participants (no more, no less)
+    conversation = (
+        Conversation.objects
+        .filter(participants=profile)
+        .filter(participants=other_profile)
+        .distinct()
+    )
+    # Check if any conversation has exactly these two participants (and no more)
+    for conv in conversation:
+        if conv.participants.count() == 2:
+            return JsonResponse({'error': 'Conversation already exists.'}, status=400)
+
+    else:
+        conversation = Conversation.objects.create(status='requested')
+        conversation.participants.add(profile, other_profile)
+
+    # Add both profiles to the conversation
+    # conversation.participants.add(profile, other_profile)
+    
+    payload = {
+        'conversation_id': conversation.id,
+        'other_participant_name': other_profile.user.get_full_name(),
+        'other_participant_pic': other_profile.profile_pic.url,
+    }
+
+    return JsonResponse({'success': True, 'payload': payload}, safe=False, json_dumps_params={'indent': 2})
+
+
 def get_msg_list(request: HttpRequest, conversation_id: int):
 
     if request.method != 'GET':
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
     """Fetch messages for a specific conversation."""
-
-
 
     profile: Profile = request.user.profile
     conversation = get_object_or_404(Conversation, id=conversation_id)

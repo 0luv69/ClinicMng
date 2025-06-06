@@ -53,7 +53,18 @@ class Profile(models.Model):
 
 class Conversation(models.Model):
     participants = models.ManyToManyField(Profile, related_name='conversations')
+
+    status_choices = (
+        ('active', 'Active'),
+        ('requested', 'Requested'),
+        ('archived', 'Archived'),
+        ('deleted', 'Deleted'),
+    )
+
+    status = models.CharField(max_length=10, choices=status_choices, default='requested')
+
     created_at = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f"Conv Participants: {', '.join([p.user.username for p in self.participants.all()])}"

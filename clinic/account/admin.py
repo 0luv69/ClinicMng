@@ -24,7 +24,7 @@ class ConversationAdmin(admin.ModelAdmin):
     list_filter = ('created_at',)
     fieldsets = (
         (None, {
-            'fields': ('participants',),
+            'fields': ('participants','status'),
         }),
         ('Timestamps', {
             'fields': ('created_at',),
