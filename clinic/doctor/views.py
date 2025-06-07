@@ -441,49 +441,62 @@ def d_profile(request):
 
 @login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request):
-    user_profile = request.user.profile
-    
-    # Get all conversations for the current user
+    profile : Profile = request.user.profile
+
     conversations = Conversation.objects.filter(
-        participants=user_profile
-    ).annotate(
-        last_message_time=Max('messages__timestamp'),
-        has_unread=Count(
-            Case(
-                When(
-                    Q(messages__read=False) & ~Q(messages__sender=user_profile),
-                    then=1
-                ),
-                default=0
-            )
-        )
-    ).order_by('-last_message_time')
+        participants=profile
+    )
+
+    connected_paritcipants = []
     
     # Add additional data to each conversation
     for conversation in conversations:
         # Get the other participant (not the current user)
         conversation.other_participant = conversation.participants.exclude(
-            id=user_profile.id
+            id=profile.id
         ).first()
+
+        if conversation.other_participant:
+            connected_paritcipants.append(conversation.other_participant)
         
         # Get the last message
         conversation.last_message = conversation.messages.last()
-        
         # Check if there are unread messages
         conversation.has_unread = conversation.messages.filter(
             read=False
-        ).exclude(sender=user_profile).exists()
+        ).exclude(sender=profile).exists()
 
-    all_Profile = Profile.objects.all()
-    
+    # # Mark messages as read
+    # conversation.messages.filter(
+    #     read=False
+    # ).exclude(sender=profile).update(read=True)
+
+    # messages_list = conversation.messages.all().order_by('timestamp')
+    # concept_data = {'active_conversation_id': conversation.id,
+    #     'active_conversation': conversation,
+    #     'message_lists': messages_list,}
+
+
+
+
+    # Get all other not connected participants excluding the current user
+    connected_ids = [p.id for p in connected_paritcipants]
+    connected_ids.append(profile.id)
+    if profile.role == 'doctor':
+        not_connected_usr = Profile.objects.exclude(id__in=connected_ids).filter(role='patient')
+    else:
+        not_connected_usr = Profile.objects.exclude(id__in=connected_ids).filter(role='doctor')
+
     context = {
+        'profile': profile,
         'conversations': conversations,
-        'active_conversation_id': None,
-        'active_conversation': None,
-        'messages': [],
-        'all_profiles': all_Profile,
+        'not_connected_usr': not_connected_usr,
+        # 'active_conversation_id': conversation.id,
+        # 'active_conversation': conversation,
+        # 'message_lists': messages_list,
     }
-    return render(request, 'pages/doctor/message.html', context)
+
+    return render(request, 'pages/patient/message.html', context)
 
 
 def conversation_view(request, conversation_id):

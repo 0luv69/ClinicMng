@@ -462,6 +462,7 @@ def delete_document(request, doc_id):
 def join_v_call(request: HttpRequest):
     return render(request, 'pages/patient/join-v-call.html')
 
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request: HttpRequest):
     profile : Profile = request.user.profile
 
@@ -483,10 +484,6 @@ def message(request: HttpRequest):
         
         # Get the last message
         conversation.last_message = conversation.messages.last()
-
-        print (conversation.status )
-
-        
         # Check if there are unread messages
         conversation.has_unread = conversation.messages.filter(
             read=False
