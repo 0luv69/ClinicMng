@@ -87,6 +87,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Save the message to the database
         message_obj = await self.create_message(profile, content)
 
+
+
         # Safely access related fields for the payload
         sender_full_name = await database_sync_to_async(lambda: profile.user.first_name)()
         sender_username = await database_sync_to_async(lambda: profile.user.username)()
@@ -143,6 +145,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         Create and return a Message instance in the DB.
         """
         conv = Conversation.objects.get(id=self.conversation_id)
+
+        # if conv status is requested, then change to 'active'
+        if conv.status == 'requested':
+            conv.status = 'active'
+            conv.save() 
+
         # By default, read=False for the newly created message
         msg = Message.objects.create(
             conversation=conv,
@@ -151,3 +159,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
             read=False
         )
         return msg
+
+
+
+class SignalingConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room = self.scope["url_route"]["kwargs"]["room_name"]
+        self.group_name = f"webrtc_{self.room}"
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
+    async def receive(self, text_data):
+        # Broadcast signaling messages to all peers in the room
+        message = json.loads(text_data)
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                "type": "signal.message",
+                "message": message,
+                "sender": self.channel_name,
+            }
+        )
+
+    async def signal_message(self, event):
+        # Don’t echo back to sender
+        if event["sender"] != self.channel_name:
+            await self.send(text_data=json.dumps(event["message"]))

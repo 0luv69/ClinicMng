@@ -483,6 +483,9 @@ def message(request: HttpRequest):
         
         # Get the last message
         conversation.last_message = conversation.messages.last()
+
+        print (conversation.status )
+
         
         # Check if there are unread messages
         conversation.has_unread = conversation.messages.filter(

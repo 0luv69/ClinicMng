@@ -78,14 +78,14 @@
                     <div class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-3">
                         <button class=" tab-button px-3 py-1 text-sm font-medium rounded-lg active bg-blue-50 text-blue-700" data-filter="all">All</button>
                         <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="unread">Unread</button>
-                        <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="flagged">Request</button>
+                        <button class="hover:bg-slate-300 tab-button px-3 py-1 text-sm font-medium rounded-lg" data-filter="requested">Request</button>
                     </div>
                 </div>
 
                 <!-- Conversation List -->
                 <div id="conversation-list" class="space-y-1 px-1 py-2">
                     {% for conversation in conversations %}
-                    <button  data-unread="{{ conversation.has_unread }}" data-conversation-id="{{ conversation.id }}" class="conversation-item flex items-start gap-3 p-2 rounded-md w-full text-left transition-colors font-medium border-b-2 border-gray-100 hover:bg-gray-50 {% if conversation.id == active_conversation_id %}bg-blue-50 {% endif %}">
+                    <button data-status="{{ conversation.status }}"  data-unread="{{ conversation.has_unread }}" data-conversation-id="{{ conversation.id }}" class="conversation-item flex items-start gap-3 p-2 rounded-md w-full text-left transition-colors font-medium border-b-2 border-gray-100 hover:bg-gray-50 {% if conversation.status == "requested"%}hidden {% endif %}    {% if conversation.id == active_conversation_id %}bg-blue-50 {% endif %}">
                         <div class="relative">
                             <div class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-primary/10">
                                 <img class="aspect-square h-full w-full conversation-avatar" src=" {{ conversation.other_participant.profile_pic.url }}" alt="{{ conversation.other_participant.user.first_name }}">
@@ -421,9 +421,7 @@
                                 </button>
                             </div>
                         </div>
-                        
                     {% endfor %}
-                    
                     <div id="noResults" class="p-8 text-center {% if not not_connected_usr %}{% else %} hidden{% endif %}">
                         <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" fill="none" viewBox="0 0 48 48" stroke="currentColor">
                             <circle cx="24" cy="18" r="8" stroke-width="2" />
@@ -868,7 +866,13 @@
             if (tabName === 'flagged') {
                 document.getElementById('no-conversation').classList.remove('hidden');
                 document.getElementById('conversation-list').classList.add('hidden');
-            } else{
+            }
+            else if (tabName === 'requested') {
+                document.getElementById('no-conversation').classList.add('hidden');
+                document.getElementById('conversation-list').classList.remove('hidden');
+                filterConversations(tabName);
+            }
+            else{
                 document.getElementById('no-conversation').classList.add('hidden');
                 document.getElementById('conversation-list').classList.remove('hidden');
                 filterConversations(tabName);
@@ -881,6 +885,8 @@
         AllConversationsItems.forEach(conv => {
             const isUnread = conv.dataset.unread === 'True';
             const isFlagged = conv.dataset.flagged === 'True';
+            const isRequested = conv.dataset.status == 'requested';
+            console.log(conv.dataset.status, isRequested)
             switch(filter) {
                 case 'unread':
                     if (isUnread) {
@@ -891,6 +897,16 @@
                         conv.classList.remove('flex');
                     }
                     break;
+                case 'requested':
+                    if (isRequested) {
+                        conv.classList.remove('hidden');
+                        conv.classList.add('flex');
+                    } else {
+                        conv.classList.add('hidden');
+                        conv.classList.remove('flex');
+                    }
+                    break;
+
                 case 'flagged':
                     if (isFlagged) {
                         conv.classList.remove('hidden');
@@ -900,6 +916,16 @@
                         conv.classList.remove('flex');
                     }
                     break;
+                case 'all':
+                    if (isRequested) {
+                        conv.classList.add('hidden');
+                        conv.classList.remove('flex');
+                    } else {
+                        conv.classList.remove('hidden');
+                        conv.classList.add('flex');
+                    }
+                    break;
+
                 default:
                     conv.classList.remove('hidden');
                     conv.classList.add('flex');
