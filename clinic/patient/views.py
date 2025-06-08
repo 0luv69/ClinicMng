@@ -465,7 +465,7 @@ def join_v_call(request: HttpRequest):
 @login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request: HttpRequest):
     profile : Profile = request.user.profile
-
+    
     conversations = Conversation.objects.filter(
         participants=profile
     )

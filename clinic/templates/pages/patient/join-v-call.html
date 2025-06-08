@@ -178,7 +178,7 @@
     </div>
 </div>
 
-<script>
+{% comment %} <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Update current time
         function updateTime() {
@@ -270,7 +270,69 @@
 
         startVideoStream();
     });
+</script> {% endcomment %}
+
+<script>
+    // Display current time
+    function updateCurrentTime() {
+        const now = new Date();
+        const formatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('current-time').textContent = formatted;
+    }
+    setInterval(updateCurrentTime, 1000);
+    updateCurrentTime();
+
+    // Toggle Mic
+    const micButton = document.getElementById('mute-audio');
+    const micOnIcon = document.getElementById('mic_on');
+    const micOffIcon = document.getElementById('mic_off');
+    let micMuted = false;
+
+    micButton.addEventListener('click', () => {
+        micMuted = !micMuted;
+        micOnIcon.classList.toggle('hidden', micMuted);
+        micOffIcon.classList.toggle('hidden', !micMuted);
+
+        // Example: Mute/unmute local media stream
+        const localStream = window.localStream;
+        if (localStream) {
+            localStream.getAudioTracks().forEach(track => track.enabled = !micMuted);
+        }
+    });
+
+    // Toggle Video
+    const videoButton = document.getElementById('stop-video');
+    const videoOnIcon = document.getElementById('video_on');
+    const videoOffIcon = document.getElementById('video_off');
+    let videoStopped = false;
+
+    videoButton.addEventListener('click', () => {
+        videoStopped = !videoStopped;
+        videoOnIcon.classList.toggle('hidden', videoStopped);
+        videoOffIcon.classList.toggle('hidden', !videoStopped);
+
+        // Example: Stop/resume video in local media stream
+        const localStream = window.localStream;
+        if (localStream) {
+            localStream.getVideoTracks().forEach(track => track.enabled = !videoStopped);
+        }
+    });
+
+    // Initialize local video stream (basic setup using getUserMedia)
+    async function initLocalVideo() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('local-video').srcObject = stream;
+            window.localStream = stream; // Make accessible globally
+        } catch (err) {
+            console.error("Failed to get local media stream:", err);
+        }
+    }
+
+    // Call initialization on page load
+    window.addEventListener('load', initLocalVideo);
 </script>
+
 
 {% endblock content %}
 
