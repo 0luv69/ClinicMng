@@ -3,344 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium User Selection Dialog</title>
+    <title>MediConsult - Video Consultation</title>
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
-    <style>
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .backdrop-blur-sm {
-            backdrop-filter: blur(4px);
-        }
-        .dialog-enter {
-            animation: dialogEnter 0.3s ease-out;
-        }
-        @keyframes dialogEnter {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a73e8',
+                        'primary-dark': '#0d47a1',
+                        secondary: '#4285f4',
+                        success: '#34a853',
+                        warning: '#fbbc05',
+                        error: '#ea4335',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    
-    <!-- Trigger Button -->
-    <button id="openDialog" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg">
-        Start New Conversation
-    </button>
-
-    <!-- Dialog Overlay -->
-    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
-            
-            <!-- Header -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                        <i data-lucide="users" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+<body class="bg-gray-50 font-inter text-gray-800">
+    <div class="flex flex-col md:flex-row max-w-7xl h-screen mx-auto bg-white shadow-xl">
+        <!-- Left Panel -->
+        <div class="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
+            <div class="mb-6 md:mb-8">
+                <img src="https://via.placeholder.com/150x50?text=MediConsult" alt="MediConsult Logo" class="h-10 md:h-12">
+            </div>
+            <div class="flex-grow flex flex-col">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-dark mb-4 md:mb-6">Video Consultation</h1>
+                
+                <div class="mb-4 md:mb-6 p-3 md:p-4 bg-white rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2 font-medium text-sm md:text-base">
+                        <i class="far fa-clock text-primary mr-2"></i>
+                        <span>Today, 1:00 PM - 1:30 PM</span>
+                    </div>
+                    <div class="mt-1 md:mt-2">
+                        <span class="bg-secondary text-white px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium">Follow-up</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center bg-white p-4 md:p-6 rounded-lg shadow-sm mb-6 md:mb-8">
+                    <div class="mr-3 md:mr-4">
+                        <img src="https://via.placeholder.com/60x60" alt="Dr. Sarah Johnson" class="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover border-2 md:border-3 border-primary">
                     </div>
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Start Conversation</h2>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Choose someone to chat with</p>
-                    </div>
-                </div>
-                <button id="closeDialog" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
-                </button>
-            </div>
-
-            <!-- Search -->
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <div class="relative">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search users..."
-                        class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 dark:text-white placeholder-gray-500 outline-none"
-                    />
-                </div>
-            </div>
-
-            <!-- User List -->
-            <div class="max-h-80 overflow-y-auto">
-                <div id="userList" class="p-2">
-                    <!-- Users will be populated by JavaScript -->
-                </div>
-                <div id="noResults" class="p-8 text-center hidden">
-                    <i data-lucide="users" class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3"></i>
-                    <p class="text-gray-500 dark:text-gray-400">No users found</p>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
-                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                    <span id="userCount">6 users available</span>
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center space-x-1">
-                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span>Online</span>
-                        </div>
-                        <div class="flex items-center space-x-1">
-                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                            <span>Away</span>
+                        <h3 class="text-lg md:text-xl font-medium text-gray-800 mb-0.5 md:mb-1">Dr. Sarah Johnson</h3>
+                        <p class="text-gray-600 text-xs md:text-sm mb-1 md:mb-2">Cardiologist</p>
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
+                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
+                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
+                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
+                            <i class="fas fa-star-half-alt text-warning text-xs md:text-sm"></i>
+                            <span class="ml-1.5 md:ml-2 font-semibold text-xs md:text-sm">4.8</span>
                         </div>
                     </div>
+                </div>
+                
+                <div class="mt-auto flex flex-col gap-3 md:gap-4">
+                    <button id="join-btn" class="bg-primary hover:bg-primary-dark text-white py-3 md:py-4 px-4 rounded-lg font-semibold transition transform hover:-translate-y-0.5 text-sm md:text-base">Join Consultation</button>
+                    <button class="bg-transparent border border-gray-300 text-gray-600 py-3 md:py-4 px-4 rounded-lg font-semibold hover:bg-gray-50 transition text-sm md:text-base">Cancel Appointment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Video Preview -->
+        <div class="w-full md:w-3/5 p-4 sm:p-6 lg:p-8 bg-white flex flex-col">
+            <div class="relative w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] bg-gray-100 rounded-xl overflow-hidden mb-4 md:mb-6">
+                <div id="video-preview" class="w-full h-full bg-gray-900 flex items-center justify-center">
+                    <div class="video-placeholder text-center text-white">
+                        <i class="fas fa-video-slash text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4"></i>
+                        <p class="text-sm md:text-base">Camera is turned off</p>
+                    </div>
+                </div>
+                <div class="absolute top-2 md:top-4 right-2 md:right-4 flex items-center">
+                    <div class="flex items-center px-2 py-1 md:px-4 md:py-2 rounded-full bg-success bg-opacity-10 text-success text-xs md:text-sm font-medium">
+                        <i class="fas fa-wifi mr-1 md:mr-2"></i>
+                        <span>Connection stable</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-4 md:mb-6 lg:mb-8">
+                <div class="control-item flex flex-col items-center" id="mic-control">
+                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <span class="text-xs md:text-sm">Microphone</span>
+                </div>
+                <div class="control-item flex flex-col items-center" id="video-control">
+                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition">
+                        <i class="fas fa-video-slash"></i>
+                    </div>
+                    <span class="text-xs md:text-sm">Camera</span>
+                </div>
+                <div class="control-item flex flex-col items-center" id="settings-control">
+                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <span class="text-xs md:text-sm">Settings</span>
+                </div>
+            </div>
+            
+            <div class="mb-3 md:mb-4">
+                <select id="audio-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
+                    <option value="default">Default Microphone</option>
+                </select>
+            </div>
+            
+            <div class="mb-3 md:mb-4">
+                <select id="video-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
+                    <option value="default">Default Camera</option>
+                </select>
+            </div>
+
+            <div class="mb-4 md:mb-6">
+                <div class="flex justify-between items-center mb-1 md:mb-2">
+                    <div class="text-xs md:text-sm text-gray-600">Audio level</div>
+                    <div id="mic-status" class="text-xs text-primary font-medium">Active</div>
+                </div>
+                <div class="h-2 md:h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full w-[30%] bg-primary rounded-full transition-all" id="audio-level"></div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6 lg:mb-8">
+                <div class="flex items-center text-xs md:text-sm">
+                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                    <span>System compatibility</span>
+                </div>
+                <div class="flex items-center text-xs md:text-sm">
+                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                    <span>Browser supported</span>
+                </div>
+                <div class="flex items-center text-xs md:text-sm">
+                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                    <span>Internet connection</span>
+                </div>
+            </div>
+            
+            <div class="mt-auto bg-gray-50 p-4 md:p-6 rounded-lg">
+                <h3 class="text-sm md:text-base font-medium text-gray-800 mb-3 md:mb-4">Before you join</h3>
+                <div class="flex items-start md:items-center mb-2 md:mb-3">
+                    <input type="checkbox" id="consent" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
+                    <label for="consent" class="text-xs md:text-sm">I consent to the terms of telemedicine consultation</label>
+                </div>
+                <div class="flex items-start md:items-center">
+                    <input type="checkbox" id="privacy" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
+                    <label for="privacy" class="text-xs md:text-sm">I understand the privacy policy</label>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script >
 
-    <script>
-        // Sample user data
-        const users = [
-            {
-                id: 1,
-                name: "Sarah Chen",
-                title: "Product Designer",
-                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-                status: "online",
-                lastSeen: "Active now",
-                isVerified: true
-            },
-            {
-                id: 2,
-                name: "Marcus Johnson",
-                title: "Senior Developer",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-                status: "online",
-                lastSeen: "Active now",
-                isVerified: true
-            },
-            {
-                id: 3,
-                name: "Elena Rodriguez",
-                title: "Marketing Director",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-                status: "away",
-                lastSeen: "2 minutes ago",
-                isVerified: false
-            },
-            {
-                id: 4,
-                name: "David Kim",
-                title: "UX Researcher",
-                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-                status: "offline",
-                lastSeen: "1 hour ago",
-                isVerified: true
-            },
-            {
-                id: 5,
-                name: "Priya Patel",
-                title: "Data Scientist",
-                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-                status: "online",
-                lastSeen: "Active now",
-                isVerified: true
-            },
-            {
-                id: 6,
-                name: "Alex Thompson",
-                title: "Project Manager",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-                status: "busy",
-                lastSeen: "In a meeting",
-                isVerified: false
-            }
-        ];
-
-        // DOM elements
-        const openDialogBtn = document.getElementById('openDialog');
-        const closeDialogBtn = document.getElementById('closeDialog');
-        const dialogOverlay = document.getElementById('dialogOverlay');
-        const searchInput = document.getElementById('searchInput');
-        const userList = document.getElementById('userList');
-        const noResults = document.getElementById('noResults');
-        const userCount = document.getElementById('userCount');
-
-        let filteredUsers = [...users];
-        let selectedUser = null;
-
-        // Helper functions
-        function getStatusColor(status) {
-            switch (status) {
-                case 'online': return 'bg-green-500';
-                case 'away': return 'bg-yellow-500';
-                case 'busy': return 'bg-red-500';
-                default: return 'bg-gray-400';
-            }
-        }
-
-        function createUserElement(user) {
-            const isSelected = selectedUser && selectedUser.id === user.id;
-            const userDiv = document.createElement('div');
-            userDiv.className = `flex items-center p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all cursor-pointer group ${
-                isSelected ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''
-            }`;
-            userDiv.dataset.userId = user.id;
-
-            userDiv.innerHTML = `
-                <div class="relative">
-                    <img
-                        src="${user.avatar}"
-                        alt="${user.name}"
-                        class="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
-                    />
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 ${getStatusColor(user.status)} rounded-full border-2 border-white dark:border-gray-900"></div>
-                </div>
-                
-                <div class="flex-1 ml-4 min-w-0">
-                    <div class="flex items-center space-x-2">
-                        <h3 class="font-semibold text-gray-900 dark:text-white truncate">${user.name}</h3>
-                        ${user.isVerified ? `
-                            <div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                                <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        ` : ''}
-                    </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${user.title}</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500">${user.lastSeen}</p>
-                </div>
-
-                <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="video">
-                        <i data-lucide="video" class="w-4 h-4 text-gray-500"></i>
-                    </button>
-                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="phone">
-                        <i data-lucide="phone" class="w-4 h-4 text-gray-500"></i>
-                    </button>
-                    <button class="action-btn p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" data-action="more">
-                        <i data-lucide="more-horizontal" class="w-4 h-4 text-gray-500"></i>
-                    </button>
-                </div>
-
-                ${isSelected ? `
-                    <div class="ml-3">
-                        <div class="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                ` : ''}
-            `;
-
-            return userDiv;
-        }
-
-        function renderUsers() {
-            userList.innerHTML = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const videoPreview = document.getElementById('video-preview');
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            const micControl = document.getElementById('mic-control');
+            const videoControl = document.getElementById('video-control');
+            const settingsControl = document.getElementById('settings-control');
+            const audioSelect = document.getElementById('audio-select');
+            const videoSelect = document.getElementById('video-select');
+            const audioLevel = document.getElementById('audio-level');
+            const micStatus = document.getElementById('mic-status');
+            const joinBtn = document.getElementById('join-btn');
             
-            if (filteredUsers.length === 0) {
-                noResults.classList.remove('hidden');
-                userList.classList.add('hidden');
-            } else {
-                noResults.classList.add('hidden');
-                userList.classList.remove('hidden');
-                
-                filteredUsers.forEach(user => {
-                    const userElement = createUserElement(user);
-                    userList.appendChild(userElement);
-                });
-            }
+            // State variables
+            let stream = null;
+            let audioTrack = null;
+            let videoTrack = null;
+            let micEnabled = true;
+            let videoEnabled = false;
+            let audioContext = null;
+            let analyser = null;
+            let microphone = null;
+            let javascriptNode = null;
             
-            userCount.textContent = `${filteredUsers.length} users available`;
+            // Initialize devices
+            initializeDevices();
             
-            // Re-initialize Lucide icons
-            lucide.createIcons();
-        }
-
-        function filterUsers(searchTerm) {
-            filteredUsers = users.filter(user =>
-                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.title.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            renderUsers();
-        }
-
-        function handleStartConversation(user) {
-            selectedUser = user;
-            renderUsers();
-            
-            // Simulate conversation start
-            setTimeout(() => {
-                closeDialog();
-                selectedUser = null;
-                console.log(`Starting conversation with ${user.name}`);
-            }, 800);
-        }
-
-        function openDialog() {
-            dialogOverlay.classList.remove('hidden');
-            searchInput.focus();
-            renderUsers();
-        }
-
-        function closeDialog() {
-            dialogOverlay.classList.add('hidden');
-            searchInput.value = '';
-            selectedUser = null;
-            filteredUsers = [...users];
-        }
-
-        // Event listeners
-        openDialogBtn.addEventListener('click', openDialog);
-        closeDialogBtn.addEventListener('click', closeDialog);
-
-        dialogOverlay.addEventListener('click', (e) => {
-            if (e.target === dialogOverlay) {
-                closeDialog();
-            }
-        });
-
-        searchInput.addEventListener('input', (e) => {
-            filterUsers(e.target.value);
-        });
-
-        userList.addEventListener('click', (e) => {
-            const userDiv = e.target.closest('[data-user-id]');
-            if (userDiv && !e.target.closest('.action-btn')) {
-                const userId = parseInt(userDiv.dataset.userId);
-                const user = users.find(u => u.id === userId);
-                if (user) {
-                    handleStartConversation(user);
+            // Function to initialize devices
+            async function initializeDevices() {
+                try {
+                    // Get available audio and video devices
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    
+                    // Clear previous options
+                    while (audioSelect.firstChild) {
+                        audioSelect.removeChild(audioSelect.firstChild);
+                    }
+                    
+                    while (videoSelect.firstChild) {
+                        videoSelect.removeChild(videoSelect.firstChild);
+                    }
+                    
+                    // Add default option
+                    const defaultAudioOption = document.createElement('option');
+                    defaultAudioOption.value = 'default';
+                    defaultAudioOption.text = 'Default Microphone';
+                    audioSelect.appendChild(defaultAudioOption);
+                    
+                    const defaultVideoOption = document.createElement('option');
+                    defaultVideoOption.value = 'default';
+                    defaultVideoOption.text = 'Default Camera';
+                    videoSelect.appendChild(defaultVideoOption);
+                    
+                    // Populate audio devices
+                    const audioDevices = devices.filter(device => device.kind === 'audioinput');
+                    audioDevices.forEach(device => {
+                        const option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.text = device.label || `Microphone ${audioSelect.length}`;
+                        audioSelect.appendChild(option);
+                    });
+                    
+                    // Populate video devices
+                    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                    videoDevices.forEach(device => {
+                        const option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.text = device.label || `Camera ${videoSelect.length}`;
+                        videoSelect.appendChild(option);
+                    });
+                    
+                    // Start with audio only by default
+                    startAudioOnly();
+                    
+                } catch (error) {
+                    console.error('Error initializing devices:', error);
+                    alert('Unable to access media devices. Please check permissions and try again.');
                 }
             }
-        });
-
-        // Handle action buttons
-        userList.addEventListener('click', (e) => {
-            const actionBtn = e.target.closest('.action-btn');
-            if (actionBtn) {
-                e.stopPropagation();
-                const action = actionBtn.dataset.action;
-                const userDiv = actionBtn.closest('[data-user-id]');
-                const userId = parseInt(userDiv.dataset.userId);
-                const user = users.find(u => u.id === userId);
+            
+            // Start audio only with actual volume detection
+            async function startAudioOnly() {
+                try {
+                    // Request access to the microphone
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: true, 
+                        video: false 
+                    });
+                    
+                    audioTrack = stream.getAudioTracks()[0];
+                    updateMicUI(true);
+                    
+                    // Set up audio context for volume metering
+                    setupAudioMeter();
+                    
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    updateMicUI(false);
+                    micStatus.textContent = 'Not available';
+                    micStatus.className = 'text-xs text-error font-medium';
+                }
+            }
+            
+            // Set up audio meter with Web Audio API
+            function setupAudioMeter() {
+                // Create audio context
+                try {
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                    audioContext = new AudioContext();
+                    
+                    // Create analyzer
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 256;
+                    analyser.minDecibels = -90;
+                    analyser.maxDecibels = -10;
+                    analyser.smoothingTimeConstant = 0.85;
+                    
+                    // Create microphone input
+                    microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    
+                    // Create a node to detect volume
+                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+                    analyser.connect(javascriptNode);
+                    javascriptNode.connect(audioContext.destination);
+                    
+                    // Setup volume detection
+                    javascriptNode.onaudioprocess = function() {
+                        const array = new Uint8Array(analyser.frequencyBinCount);
+                        analyser.getByteFrequencyData(array);
+                        let values = 0;
+                        
+                        const length = array.length;
+                        for (let i = 0; i < length; i++) {
+                            values += array[i];
+                        }
+                        
+                        const average = values / length;
+                        const volume = Math.min(100, Math.round(average * 2.5));
+                        
+                        // Update UI with volume level
+                        updateAudioMeter(volume);
+                    };
+                    
+                    micStatus.textContent = 'Active';
+                    micStatus.className = 'text-xs text-primary font-medium';
+                    
+                } catch (e) {
+                    console.error("Web Audio API not supported:", e);
+                    // Fall back to simulated audio meter
+                    simulateAudioLevel();
+                }
+            }
+            
+            // Update audio meter with real volume
+            function updateAudioMeter(volume) {
+                if (!micEnabled) {
+                    volume = 0;
+                }
                 
-                console.log(`${action} action for user:`, user.name);
+                audioLevel.style.width = `${volume}%`;
+                
+                // Change color based on level
+                if (volume > 60) {
+                    audioLevel.className = 'h-full bg-error rounded-full transition-all';
+                } else if (volume > 30) {
+                    audioLevel.className = 'h-full bg-primary rounded-full transition-all';
+                } else if (volume > 5) {
+                    audioLevel.className = 'h-full bg-success rounded-full transition-all';
+                } else {
+                    audioLevel.className = 'h-full bg-gray-300 rounded-full transition-all';
+                }
             }
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !dialogOverlay.classList.contains('hidden')) {
-                closeDialog();
+            
+            // Fallback simulated audio meter
+            function simulateAudioLevel() {
+                setInterval(() => {
+                    if (micEnabled) {
+                        const level = Math.random() * 60 + 10;
+                        updateAudioMeter(level);
+                    } else {
+                        updateAudioMeter(0);
+                    }
+                }, 200);
             }
+            
+            // Toggle microphone
+            micControl.addEventListener('click', function() {
+                toggleMicrophone();
+            });
+            
+            function toggleMicrophone() {
+                if (audioTrack) {
+                    micEnabled = !micEnabled;
+                    audioTrack.enabled = micEnabled;
+                    updateMicUI(micEnabled);
+                    
+                    // Update status text
+                    if (micEnabled) {
+                        micStatus.textContent = 'Active';
+                        micStatus.className = 'text-xs text-primary font-medium';
+                    } else {
+                        micStatus.textContent = 'Muted';
+                        micStatus.className = 'text-xs text-error font-medium';
+                    }
+                } else {
+                    startAudioOnly();
+                }
+            }
+            
+            // Toggle camera
+            videoControl.addEventListener('click', function() {
+                toggleVideo();
+            });
+            
+            async function toggleVideo() {
+                if (videoEnabled) {
+                    // Disable video
+                    if (videoTrack) {
+                        videoTrack.stop();
+                        videoTrack = null;
+                    }
+                    videoEnabled = false;
+                    updateVideoUI(false);
+                } else {
+                    // Enable video
+                    try {
+                        const videoStream = await navigator.mediaDevices.getUserMedia({ 
+                            video: {
+                                deviceId: videoSelect.value !== 'default' ? { exact: videoSelect.value } : undefined,
+                                width: { ideal: 1280 },
+                                height: { ideal: 720 }
+                            } 
+                        });
+                        videoTrack = videoStream.getVideoTracks()[0];
+                        
+                        // Create video element
+                        const videoElement = document.createElement('video');
+                        videoElement.srcObject = videoStream;
+                        videoElement.autoplay = true;
+                        videoElement.muted = true; // Mute to avoid feedback
+                        videoElement.className = 'w-full h-full object-cover';
+                        
+                        // Clear placeholder and add video element
+                        videoPreview.innerHTML = '';
+                        videoPreview.appendChild(videoElement);
+                        
+                        videoEnabled = true;
+                        updateVideoUI(true);
+                    } catch (error) {
+                        console.error('Error accessing camera:', error);
+                        alert('Unable to access camera. Please check permissions and try again.');
+                    }
+                }
+            }
+            
+            // Update UI based on microphone state
+            function updateMicUI(enabled) {
+                const micButton = micControl.querySelector('div');
+                const micIcon = micButton.querySelector('i');
+                
+                if (enabled) {
+                    micButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition';
+                    micIcon.className = 'fas fa-microphone';
+                } else {
+                    micButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition';
+                    micIcon.className = 'fas fa-microphone-slash';
+                }
+            }
+            
+            // Update UI based on video state
+            function updateVideoUI(enabled) {
+                const videoButton = videoControl.querySelector('div');
+                const videoIcon = videoButton.querySelector('i');
+                
+                if (enabled) {
+                    videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition';
+                    videoIcon.className = 'fas fa-video';
+                } else {
+                    videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition';
+                    videoIcon.className = 'fas fa-video-slash';
+                    
+                    // Show placeholder if video is disabled
+                    videoPreview.innerHTML = '';
+                    const newPlaceholder = document.createElement('div');
+                    newPlaceholder.className = 'video-placeholder text-center text-white';
+                    newPlaceholder.innerHTML = `
+                        <i class="fas fa-video-slash text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4"></i>
+                        <p class="text-sm md:text-base">Camera is turned off</p>
+                    `;
+                    videoPreview.appendChild(newPlaceholder);
+                }
+            }
+            
+            // Handle device selection changes
+            audioSelect.addEventListener('change', function() {
+                // Restart audio with selected device
+                if (audioTrack) {
+                    audioTrack.stop();
+                    
+                    if (javascriptNode) {
+                        javascriptNode.disconnect();
+                    }
+                    if (microphone) {
+                        microphone.disconnect();
+                    }
+                    if (analyser) {
+                        analyser.disconnect();
+                    }
+                    if (audioContext) {
+                        audioContext.close();
+                    }
+                    
+                    navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            deviceId: audioSelect.value !== 'default' ? { exact: audioSelect.value } : undefined
+                        }
+                    }).then(newStream => {
+                        stream = newStream;
+                        audioTrack = stream.getAudioTracks()[0];
+                        setupAudioMeter();
+                    }).catch(error => {
+                        console.error('Error switching audio device:', error);
+                        micStatus.textContent = 'Error';
+                        micStatus.className = 'text-xs text-error font-medium';
+                    });
+                }
+            });
+            
+            videoSelect.addEventListener('change', function() {
+                // If video is enabled, restart it with the new device
+                if (videoEnabled) {
+                    toggleVideo();
+                    setTimeout(() => {
+                        toggleVideo();
+                    }, 500);
+                }
+            });
+            
+            // Join button
+            joinBtn.addEventListener('click', function() {
+                const consentChecked = document.getElementById('consent').checked;
+                const privacyChecked = document.getElementById('privacy').checked;
+                
+                if (!consentChecked || !privacyChecked) {
+                    alert('Please accept the terms and privacy policy before joining.');
+                    return;
+                }
+                
+                // In a real app, this would initiate the actual call connection
+                alert('Joining consultation...');
+            });
+            
+            // Settings button
+            settingsControl.addEventListener('click', function() {
+                // In a real app, this would open a settings panel
+                alert('Advanced settings would appear here.');
+            });
+            
+            // Clean up resources when page is closed
+            window.addEventListener('beforeunload', function() {
+                if (stream) {
+                    stream.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                }
+                
+                if (javascriptNode) {
+                    javascriptNode.disconnect();
+                }
+                if (microphone) {
+                    microphone.disconnect();
+                }
+                if (analyser) {
+                    analyser.disconnect();
+                }
+                if (audioContext) {
+                    audioContext.close();
+                }
+            });
         });
-
-        // Initialize Lucide icons
-        lucide.createIcons();
     </script>
 </body>
 </html>

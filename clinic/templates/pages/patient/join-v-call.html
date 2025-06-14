@@ -30,15 +30,156 @@
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="grid grid-cols-12 gap-6 p-6">
+        <!-- joining preview section -->
+        <div class="flex flex-col md:flex-row max-w-7xl h-screen mx-auto bg-white shadow-xl">
+            <!-- Left Panel -->
+            <div class="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
+                <div class="flex-grow flex flex-col">
+                    <div class="mb-4 md:mb-6 p-3 md:p-4 bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center mb-2 font-medium text-sm md:text-base">
+                            <svg class="w-6 h-6 text-primary mr-2" viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                <g transform="matrix(0.83 0 0 0.83 12 12)" >
+                                    <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: currentColor; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -12)" d="M 12 0 C 5.371094 0 0 5.371094 0 12 C 0 18.628906 5.371094 24 12 24 C 18.628906 24 24 18.628906 24 12 C 24 5.371094 18.628906 0 12 0 Z M 12 2 C 17.523438 2 22 6.476563 22 12 C 22 17.523438 17.523438 22 12 22 C 6.476563 22 2 17.523438 2 12 C 2 6.476563 6.476563 2 12 2 Z M 10.9375 3.875 L 10.5 12.0625 L 10.59375 12.9375 L 16.75 18.375 L 17.71875 17.375 L 12.625 11.96875 L 12.1875 3.875 Z" stroke-linecap="round" />
+                                </g>
+                            </svg>
+                            <span>Today, 1:00 PM - 1:30 PM</span>
+                        </div>
+                        <div class="mt-1 md:mt-2">
+                            <span class="bg-blue-500 text-white px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium">Follow-up</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center bg-white p-4 md:p-6 rounded-lg shadow-sm mb-6 md:mb-8">
+                        <div class="mr-3 md:mr-4">
+                            <img src="https://via.placeholder.com/60x60" alt="Dr. Sarah Johnson" class="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover border-2 md:border-3 border-primary">
+                        </div>
+                        <div>
+                            <h3 class="text-lg md:text-xl font-medium text-gray-800 mb-0.5 md:mb-1">Dr. Sarah Johnson</h3>
+                            <p class="text-gray-600 text-xs md:text-sm mb-1 md:mb-2">Cardiologist</p>
+                            <div class="flex items-center">
+                                <span class="ml-1.5 md:ml-2 font-semibold text-xs md:text-sm">4.8 ⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto flex flex-col gap-3 md:gap-4">
+                        <button id="join-btn" class="bg-primary hover:bg-primary-dark text-white py-3 md:py-4 px-4 rounded-lg font-semibold transition transform hover:-translate-y-0.5 text-sm md:text-base">Join Consultation</button>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Right Panel - Video Preview -->
+            <div class="w-full md:w-3/5 p-4 sm:p-6 lg:p-8 bg-white flex flex-col">
+                <div class="relative w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] bg-gray-100 rounded-xl overflow-hidden mb-4 md:mb-6">
+                    <div id="video-preview" class="w-full h-full bg-gray-900 flex items-center justify-center">
+                        <div class="video-placeholder flex flex-col justify-center items-center text-white">
+                            <svg class="text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4 w-12 h-12" fill="currentColor" stroke="currentColor"  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                <g transform="matrix(1.43 0 0 1.43 12 12)" >
+                                    <g style="" >
+                                        <g transform="matrix(1 0 0 1 0 0)" >
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 13.5 13.5 L 0.5 0.5" stroke-linecap="round" />
+                                        </g>
+                                        <g transform="matrix(1 0 0 1 0 0)" >
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 2.5 2.5 L 9 2.5 C 9.26522 2.5 9.51957 2.60536 9.70711 2.79289 C 9.89464 2.98043 10 3.23478 10 3.5 L 10 5 L 12.82 3.75 C 12.896 3.72066 12.9781 3.71035 13.059 3.71996 C 13.1399 3.72958 13.2173 3.75882 13.2843 3.80516 C 13.3513 3.85149 13.406 3.91351 13.4436 3.98581 C 13.4812 4.05811 13.5006 4.13851 13.5 4.22 L 13.5 9.78 C 13.5006 9.86149 13.4812 9.94189 13.4436 10.0142 C 13.406 10.0865 13.3513 10.1485 13.2843 10.1948 C 13.2173 10.2412 13.1399 10.2704 13.059 10.28 C 12.9781 10.2897 12.896 10.2793 12.82 10.25 L 10 9 L 10 10 M 0.5 3.5 L 0.5 10.5 C 0.5 10.7652 0.605357 11.0196 0.792893 11.2071 C 0.98043 11.3946 1.23478 11.5 1.5 11.5 L 8.5 11.5" stroke-linecap="round" />
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                            <p class="text-sm md:text-base">Camera is turned off</p>
+                        </div>
+                    </div>
+                    <div class="absolute top-2 md:top-4 right-2 md:right-4 flex items-center">
+                        <div class="flex items-center px-2 py-1 md:px-4 md:py-2 rounded-full bg-success bg-opacity-10 text-success text-xs md:text-sm font-medium">
+                            <i class="fas fa-wifi mr-1 md:mr-2"></i>
+                            <span>Connection stable</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-4 md:mb-6 lg:mb-8">
+                    <div class="control-item flex flex-col items-center" id="mic-control">
+                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <span class="text-xs md:text-sm">Microphone</span>
+                    </div>
+                    <div class="control-item flex flex-col items-center" id="video-control">
+                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition">
+                            <i class="fas fa-video-slash"></i>
+                        </div>
+                        <span class="text-xs md:text-sm">Camera</span>
+                    </div>
+                    <div class="control-item flex flex-col items-center" id="settings-control">
+                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <span class="text-xs md:text-sm">Settings</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3 md:mb-4">
+                    <select id="audio-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
+                        <option value="default">Default Microphone</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3 md:mb-4">
+                    <select id="video-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
+                        <option value="default">Default Camera</option>
+                    </select>
+                </div>
+    
+                <div class="mb-4 md:mb-6">
+                    <div class="flex justify-between items-center mb-1 md:mb-2">
+                        <div class="text-xs md:text-sm text-gray-600">Audio level</div>
+                        <div id="mic-status" class="text-xs text-primary font-medium">Active</div>
+                    </div>
+                    <div class="h-2 md:h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[30%] bg-primary rounded-full transition-all" id="audio-level"></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6 lg:mb-8">
+                    <div class="flex items-center text-xs md:text-sm">
+                        <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                        <span>System compatibility</span>
+                    </div>
+                    <div class="flex items-center text-xs md:text-sm">
+                        <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                        <span>Browser supported</span>
+                    </div>
+                    <div class="flex items-center text-xs md:text-sm">
+                        <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
+                        <span>Internet connection</span>
+                    </div>
+                </div>
+                
+                <div class="mt-auto bg-gray-50 p-4 md:p-6 rounded-lg">
+                    <h3 class="text-sm md:text-base font-medium text-gray-800 mb-3 md:mb-4">Before you join</h3>
+                    <div class="flex items-start md:items-center mb-2 md:mb-3">
+                        <input type="checkbox" id="consent" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
+                        <label for="consent" class="text-xs md:text-sm">I consent to the terms of telemedicine consultation</label>
+                    </div>
+                    <div class="flex items-start md:items-center">
+                        <input type="checkbox" id="privacy" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
+                        <label for="privacy" class="text-xs md:text-sm">I understand the privacy policy</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- video call section -->
+        <div class="grid grid-cols-12 gap-6 p-6 hidden">
             <!-- Video Consultation Area -->
             <div class="col-span-12 lg:col-span-8">
                 <div class="bg-gray-100 rounded-xl overflow-hidden aspect-video relative shadow-inner">
                     <!-- Local Video -->
                     <div
                         class="absolute bottom-4 right-4 w-[30%] rounded-lg overflow-hidden shadow-lg border-2 border-white/20">
-                        <video id="local-video" class="w-full h-full object-cover" autoplay muted></video>
+                        <video id="local-video" class="w-full h-full object-cover" playsinline autoplay muted></video>
                         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-2">
                             <span class="text-sm font-medium text-white">You</span>
                         </div>
@@ -46,7 +187,7 @@
 
                     <!-- Remote Video -->
                     <div class="w-full h-full bg-black">
-                        <video id="remote-video" class="w-full h-full object-cover" autoplay></video>
+                        <video id="remote-video" class="w-full h-full object-cover" playsinline autoplay></video>
                         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
                             <span class="text-lg font-semibold text-white">Dr. Emily Smith</span>
                         </div>
@@ -141,7 +282,7 @@
                 </div>
 
                 <!-- Chat Section -->
-                <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm hidden">
                     <h3 class="font-semibold mb-3 text-gray-700">Chat</h3>
                     <div id="chat-messages" class="h-48 overflow-y-auto space-y-2 pr-2 mb-3 custom-scrollbar">
                         <!-- Chat messages will be dynamically added here -->
@@ -178,109 +319,118 @@
     </div>
 </div>
 
-{% comment %} <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Update current time
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('consultation-date').textContent = now.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        // Audio Mute Toggle
-        const muteAudioBtn = document.getElementById('mute-audio');
-        const mic_off = document.getElementById('mic_off');
-        const mic_on = document.getElementById('mic_on');
-        muteAudioBtn.addEventListener('click', () => {
-            mic_off.classList.toggle('hidden');
-            mic_on.classList.toggle('hidden');
-        });
-
-        // Video Stop Toggle
-        const stopVideoBtn = document.getElementById('stop-video');
-        const video_off = document.getElementById('video_off');
-        const video_on = document.getElementById('video_on');
-        stopVideoBtn.addEventListener('click', () => {
-            video_off.classList.toggle('hidden');
-            video_on.classList.toggle('hidden');
-
-        });
-
-
-
-
-        // Chat Functionality
-        const chatInput = document.getElementById('chat-input');
-        const sendChatBtn = document.getElementById('send-chat');
-        const chatMessages = document.getElementById('chat-messages');
-
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement('div');
-                messageElement.className = 'bg-white p-3 rounded-lg shadow-sm text-sm border border-gray-100';
-                messageElement.innerHTML = `
-                    <div class="font-medium text-blue-600">You:</div>
-                    <div class="text-gray-700 mt-1">${message}</div>
-                    <div class="text-xs text-gray-400 text-right mt-2">${new Date().toLocaleTimeString()}</div>
-                `;
-                chatMessages.appendChild(messageElement);
-                chatInput.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        }
-
-        sendChatBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        // End Call Confirmation
-        const endCallBtn = document.getElementById('end-call');
-        endCallBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to end the call?')) {
-                // Add call termination logic here
-                alert('Call ended');
-            }
-        });
-
-        // Media Stream Handling
-        async function startVideoStream() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: 1280, height: 720 },
-                    audio: true
-                });
-                const localVideo = document.getElementById('local-video');
-                localVideo.srcObject = stream;
-            } catch (error) {
-                console.error('Error accessing media devices:', error);
-                alert('Could not access camera or microphone');
-            }
-        }
-
-        startVideoStream();
-    });
-</script> {% endcomment %}
-
+<!-- Call Controls -->
 <script>
-    // Display current time
-    function updateCurrentTime() {
-        const now = new Date();
-        const formatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        document.getElementById('current-time').textContent = formatted;
+    const localVideo = document.getElementById('local-video');
+    const remoteVideo = document.getElementById('remote-video');
+
+    const roomName = "{{ room_name }}";
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const isCaller = window.location.hash === "#caller";
+
+    let remoteDescriptionSet = false;
+    let pendingCandidates = [];
+
+    let localStream, peerConnection, signalingSocket;
+
+    async function initLocalVideo() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            localVideo.srcObject = stream;
+            localStream = stream;
+
+            signalingSocket = new WebSocket(`${wsScheme}://${window.location.host}/ws/webrtc/${roomName}/`);
+
+            signalingSocket.onopen = async () => {
+                startPeerConnection();
+
+                if (isCaller) {
+                    const offer = await peerConnection.createOffer();
+                    await peerConnection.setLocalDescription(offer);
+                    signalingSocket.send(JSON.stringify({ type: 'offer', offer }));
+                }
+            };
+
+            signalingSocket.onmessage = async ({ data }) => {
+                const message = JSON.parse(data);
+
+                switch (message.type) {
+                    case 'offer':
+                        if (!isCaller) {
+                            await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+                            remoteDescriptionSet = true;
+                            const answer = await peerConnection.createAnswer();
+                            await peerConnection.setLocalDescription(answer);
+                            signalingSocket.send(JSON.stringify({ type: 'answer', answer }));
+
+
+                            // Apply any queued candidates
+                            for (const candidate of pendingCandidates) {
+                                await peerConnection.addIceCandidate(candidate);
+                            }
+                            pendingCandidates = [];
+                        }
+                        break;
+
+                    case 'answer':
+                        if (isCaller) {
+                                await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+
+                                remoteDescriptionSet = true;
+                                // Apply any queued candidates
+                                for (const candidate of pendingCandidates) {
+                                    await peerConnection.addIceCandidate(candidate);
+                                }
+                                pendingCandidates = [];
+                        
+                        }
+                        break;
+
+                    case 'ice-candidate':
+                        if (remoteDescriptionSet) {
+                            try {
+                                await peerConnection.addIceCandidate(message.candidate);
+                            } catch (e) {
+                                console.error('Error adding received ICE candidate', e);
+                            }
+                        } else {
+                            pendingCandidates.push(message.candidate);
+                        }
+                        break;
+                }
+            };
+
+        } catch (err) {
+            console.error("Failed to get local media stream:", err);
+        }
     }
-    setInterval(updateCurrentTime, 1000);
-    updateCurrentTime();
+
+    // window.addEventListener('load', initLocalVideo);
+
+    function startPeerConnection() {
+        const configuration = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' }
+            ]
+        };
+
+        peerConnection = new RTCPeerConnection(configuration);
+
+        peerConnection.onicecandidate = ({ candidate }) => {
+            if (candidate) {
+                signalingSocket.send(JSON.stringify({ type: 'ice-candidate', candidate }));
+            }
+        };
+
+        peerConnection.ontrack = ({ streams: [stream] }) => {
+            remoteVideo.srcObject = stream;
+            console.log('Remote stream added:', stream);
+        };
+
+        localStream.getTracks().forEach(track => {
+            peerConnection.addTrack(track, localStream);
+        });
+    }
 
     // Toggle Mic
     const micButton = document.getElementById('mute-audio');
@@ -298,6 +448,7 @@
         if (localStream) {
             localStream.getAudioTracks().forEach(track => track.enabled = !micMuted);
         }
+
     });
 
     // Toggle Video
@@ -312,27 +463,21 @@
         videoOffIcon.classList.toggle('hidden', !videoStopped);
 
         // Example: Stop/resume video in local media stream
-        const localStream = window.localStream;
         if (localStream) {
             localStream.getVideoTracks().forEach(track => track.enabled = !videoStopped);
         }
     });
 
-    // Initialize local video stream (basic setup using getUserMedia)
-    async function initLocalVideo() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            document.getElementById('local-video').srcObject = stream;
-            window.localStream = stream; // Make accessible globally
-        } catch (err) {
-            console.error("Failed to get local media stream:", err);
-        }
+
+      // Display current time
+    function updateCurrentTime() {
+        const now = new Date();
+        const formatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('current-time').textContent = formatted;
     }
-
-    // Call initialization on page load
-    window.addEventListener('load', initLocalVideo);
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
 </script>
-
 
 {% endblock content %}
 

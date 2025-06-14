@@ -161,30 +161,42 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return msg
 
 
-
 class SignalingConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room = self.scope["url_route"]["kwargs"]["room_name"]
-        self.group_name = f"webrtc_{self.room}"
-        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        # Group name must be alphanumeric
+        self.room_group_name = f'webrtc_{self.room_name}'
+
+        # Join room group
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
         await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
 
+    # Receive message from WebSocket (client → server)
     async def receive(self, text_data):
-        # Broadcast signaling messages to all peers in the room
-        message = json.loads(text_data)
+        data = json.loads(text_data)
+
+        # You can enforce data['type'] in ['offer','answer','ice-candidate']
+        # Broadcast to group (all other participants)
         await self.channel_layer.group_send(
-            self.group_name,
+            self.room_group_name,
             {
-                "type": "signal.message",
-                "message": message,
-                "sender": self.channel_name,
+                'type': 'signal_message',
+                'message': data
             }
         )
 
+    # Receive message from room group (server → client)
     async def signal_message(self, event):
-        # Don’t echo back to sender
-        if event["sender"] != self.channel_name:
-            await self.send(text_data=json.dumps(event["message"]))
+        message = event['message']
+        # Send JSON back to WebSocket
+        await self.send(text_data=json.dumps(message))

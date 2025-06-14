@@ -460,7 +460,8 @@ def delete_document(request, doc_id):
 
 
 def join_v_call(request: HttpRequest):
-    return render(request, 'pages/patient/join-v-call.html')
+    room_name  = "sdasW1"
+    return render(request, 'pages/patient/join-v-call.html', {'room_name': room_name})
 
 @login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request: HttpRequest):
