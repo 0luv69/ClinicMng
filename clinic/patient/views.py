@@ -327,7 +327,6 @@ def BookAppointment(request: HttpRequest):
 
             time_slot_instance.status = 'booked'
             time_slot_instance.save()   
-            print(f"Time slot booked: {appointment_date}")
             appointment_date_foramt = datetime.strptime(appointment_date, '%Y-%m-%d').date()
             # Create a new appointment
             appointment = Appointment.objects.create(
@@ -342,6 +341,25 @@ def BookAppointment(request: HttpRequest):
                 reason = appointment_reason,
                 status='pending'
             )
+
+            # build the connections conversation
+            # Check if a conversation already exists between the patient and doctor
+            existing_conversation = Conversation.objects.filter(
+                participants=profile
+            ).filter(
+                participants=doctor.profile
+            ).distinct()
+            
+            # Only create new conversation if one doesn't exist
+            if not existing_conversation.exists():
+                conversation: Conversation = Conversation.objects.create()
+                conversation.participants.add(profile, doctor.profile)
+                conversation.status = 'initiated'
+                conversation.conv_type = 'video'  # Assuming video call for appointments
+                conversation.save()
+
+
+
 
             if appointment_file:
                 is_valid, error_msg = is_valid_file(appointment_file, ALLOWED_FILE_TYPES_APPOINTMENT, 20)
@@ -470,7 +488,21 @@ def req_v_call(request: HttpRequest):
             'user_pic': profile.profile_pic.url,
         }
 
-    return render(request, 'pages/patient/list-v-call.html', )
+    convs =  Conversation.objects.filter(
+        participants=request.user.profile
+    )
+    for conversation in convs:
+        # Get the other participant (not the current user)
+        conversation.other_participant = conversation.participants.exclude(
+            id=profile.id
+        ).first()
+
+    payload = {
+            'conv': convs,
+        }    
+
+
+    return render(request, 'pages/patient/list-v-call.html',payload )
 
 
 
