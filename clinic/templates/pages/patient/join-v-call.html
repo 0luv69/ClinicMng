@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="absolute top-2 md:top-4 right-2 md:right-4 flex items-center">
-                        <div class=" flex items-center px-2 py-1 md:px-4 md:py-2 rounded-full text-green-400 bg-slate-400 bg-opacity-10 text-xs md:text-sm font-medium">
+                        <div class="hidden flex items-center px-2 py-1 md:px-4 md:py-2 rounded-full text-green-400 bg-slate-400 bg-opacity-10 text-xs md:text-sm font-medium">
                             <svg class="mr-1 md:mr-2 w-5 h-5 " stroke="currentColor" viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
                                 <g transform="matrix(1 0 0 1 12 12)" >
                                     <g style="" >
@@ -132,7 +132,7 @@
     
                 <div class="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-4 md:mb-6 lg:mb-8">
                     <div class="control-item flex flex-col items-center" id="mic-control">
-                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition"> 
+                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white  transition"> 
                             <svg class="w-5 h-5" fill="currentColor" viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                                 <g transform="matrix(0.83 0 0 0.83 12 12)" >
                                     <line style="stroke: currentColor; stroke-width: 2; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" x1="-9" y1="-9" x2="9" y2="9" />
@@ -149,15 +149,15 @@
 
                     
                     <div class="control-item flex flex-col items-center" id="video-control">
-                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-red-500 text-white hover:bg-red-700 transition">
+                        <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary bg-red-600 text-white transition">
                             <svg class="w-5 h-5" fill="currentColor" stroke="currentColor"  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
                                 <g transform="matrix(1.43 0 0 1.43 12 12)" >
-                                        <g transform="matrix(1 0 0 1 0 0)" >
-                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 13.5 13.5 L 0.5 0.5" stroke-linecap="round" />
-                                        </g>
-                                        <g transform="matrix(0.70 0 0 .60 0 0)" >
-                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -12)" d="M 3 5 C 1.897 5 1 5.897 1 7 L 1 17 C 1 18.103 1.897 19 3 19 L 16 19 C 17.103 19 18 18.103 18 17 L 18 14.080078 L 23 18.080078 L 23 5.9199219 L 18 9.9199219 L 18 7 C 18 5.897 17.103 5 16 5 L 3 5 z" stroke-linecap="round" />
-                                        </g>
+                                    <g transform="matrix(1 0 0 1 0 0)" >
+                                        <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 13.5 13.5 L 0.5 0.5" stroke-linecap="round" />
+                                    </g>
+                                    <g transform="matrix(0.70 0 0 .60 0 0)"  >
+                                        <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -12)" d="M 3 5 C 1.897 5 1 5.897 1 7 L 1 17 C 1 18.103 1.897 19 3 19 L 16 19 C 17.103 19 18 18.103 18 17 L 18 14.080078 L 23 18.080078 L 23 5.9199219 L 18 9.9199219 L 18 7 C 18 5.897 17.103 5 16 5 L 3 5 z" stroke-linecap="round" />
+                                    </g>
                                 </g>
                             </svg>
                         </div>
@@ -183,7 +183,7 @@
                         <div id="mic-status" class="text-xs text-primary font-medium">Active</div>
                     </div>
                     <div class="h-2 md:h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full w-[30%] bg-primary rounded-full transition-all" id="audio-level"></div>
+                        <div class="h-full w-[2%] bg-primary rounded-full transition-all" id="audio-level"></div>
                     </div>
                 </div>
             </div>
@@ -342,7 +342,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         // DOM elements
         const videoPreview = document.getElementById('video-preview');
-        const videoPlaceholder = document.querySelector('.video-placeholder');
         const micControl = document.getElementById('mic-control');
         const videoControl = document.getElementById('video-control');
         const audioSelect = document.getElementById('audio-select');
@@ -396,7 +395,7 @@
                 audioDevices.forEach(device => {
                     const option = document.createElement('option');
                     option.value = device.deviceId;
-                    option.text = device.label || `Microphone ${audioSelect.length}`;
+                    option.text = device.label || `D: Microphone ${audioSelect.length}`;
                     audioSelect.appendChild(option);
                 });
                 
@@ -405,7 +404,7 @@
                 videoDevices.forEach(device => {
                     const option = document.createElement('option');
                     option.value = device.deviceId;
-                    option.text = device.label || `Camera ${videoSelect.length}`;
+                    option.text = device.label || `D: Camera ${videoSelect.length}`;
                     videoSelect.appendChild(option);
                 });
                 
@@ -413,8 +412,12 @@
                 startAudioOnly();
                 
             } catch (error) {
-                console.error('Error initializing devices:', error);
-                alert('Unable to access media devices. Please check permissions and try again.');
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Error initializing devices",
+                    message: `${error}`, 
+                });
+                console.log('Unable to access media devices. Please check permissions and try again.')
             }
         }
         
@@ -434,6 +437,12 @@
                 setupAudioMeter();
                 
             } catch (error) {
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Error accessing microphone",
+                    message: `${error.message}, Plz Enable Microphone Access.`, 
+                });
+
                 console.error('Error accessing microphone:', error);
                 updateMicUI(false);
                 micStatus.textContent = 'Not available';
@@ -486,6 +495,11 @@
                 micStatus.className = 'text-xs text-primary font-medium';
                 
             } catch (e) {
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Web Audio API not supported",
+                    message: "Your browser does not support the Web Audio API. Using simulated audio level.",
+                });
                 console.error("Web Audio API not supported:", e);
                 // Fall back to simulated audio meter
                 simulateAudioLevel();
@@ -588,8 +602,12 @@
                     videoEnabled = true;
                     updateVideoUI(true);
                 } catch (error) {
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error accessing camera",
+                        message: `${error.message}, Plz Enable Camera Access.`,
+                    });
                     console.error('Error accessing camera:', error);
-                    alert('Unable to access camera. Please check permissions and try again.');
                 }
             }
         }
@@ -611,24 +629,34 @@
         // Update UI based on video state
         function updateVideoUI(enabled) {
             const videoButton = videoControl.querySelector('div');
-            const videoIcon = videoButton.querySelector('i');
+            const videoSlash = videoControl.querySelector('svg > g > g');
             
             if (enabled) {
-                videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition';
-                videoIcon.className = 'fas fa-video';
-            } else {
-                videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition';
-                videoIcon.className = 'fas fa-video-slash';
+                videoButton.classList.remove('bg-red-600');
+                videoSlash.classList.add('hidden');
                 
-                // Show placeholder if video is disabled
-                videoPreview.innerHTML = '';
-                const newPlaceholder = document.createElement('div');
-                newPlaceholder.className = 'video-placeholder text-center text-white';
-                newPlaceholder.innerHTML = `
-                    <i class="fas fa-video-slash text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4"></i>
-                    <p class="text-sm md:text-base">Camera is turned off</p>
-                `;
-                videoPreview.appendChild(newPlaceholder);
+            } else {
+                videoButton.classList.add('bg-red-600');
+                videoSlash.classList.remove('hidden');
+                
+
+                videoPreviewELE = `
+                        <div class="video-placeholder flex flex-col justify-center items-center text-white">
+                            <svg class="text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4 w-12 h-12" fill="currentColor" stroke="currentColor"  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                <g transform="matrix(1.43 0 0 1.43 12 12)" >
+                                    <g style="" >
+                                        <g transform="matrix(1 0 0 1 0 0)" >
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 13.5 13.5 L 0.5 0.5" stroke-linecap="round" />
+                                        </g>
+                                        <g transform="matrix(1 0 0 1 0 0)" >
+                                            <path style=" stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;" transform=" translate(-7, -7)" d="M 2.5 2.5 L 9 2.5 C 9.26522 2.5 9.51957 2.60536 9.70711 2.79289 C 9.89464 2.98043 10 3.23478 10 3.5 L 10 5 L 12.82 3.75 C 12.896 3.72066 12.9781 3.71035 13.059 3.71996 C 13.1399 3.72958 13.2173 3.75882 13.2843 3.80516 C 13.3513 3.85149 13.406 3.91351 13.4436 3.98581 C 13.4812 4.05811 13.5006 4.13851 13.5 4.22 L 13.5 9.78 C 13.5006 9.86149 13.4812 9.94189 13.4436 10.0142 C 13.406 10.0865 13.3513 10.1485 13.2843 10.1948 C 13.2173 10.2412 13.1399 10.2704 13.059 10.28 C 12.9781 10.2897 12.896 10.2793 12.82 10.25 L 10 9 L 10 10 M 0.5 3.5 L 0.5 10.5 C 0.5 10.7652 0.605357 11.0196 0.792893 11.2071 C 0.98043 11.3946 1.23478 11.5 1.5 11.5 L 8.5 11.5" stroke-linecap="round" />
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                            <p class="text-sm md:text-base">Camera is turned off</p>
+                        </div>`
+                videoPreview.innerHTML = videoPreviewELE;
             }
         }
         

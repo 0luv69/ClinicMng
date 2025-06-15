@@ -17,6 +17,7 @@ urlpatterns = [
     path('document/', ViewDocument, name='viewDocument'),
     path('delete-document/<int:doc_id>/', delete_document, name='deleteDocument'),
 
+    path('req-v-call/', req_v_call, name='req_v_call'),
     path('join-v-call/', join_v_call, name='join_v_call'),
     path('lab-report/', labReport, name='labReport'),
     path('lab-report/<uuid:uuid>/download/', lab_report_pdf, name='lab_report_pdf'),

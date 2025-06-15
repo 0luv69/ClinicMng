@@ -458,6 +458,21 @@ def delete_document(request, doc_id):
     return redirect('patient:viewDocument')
 
 
+def req_v_call(request: HttpRequest):
+    """Request a video call with a doctor."""
+    if request.method != 'POST':
+        profile: Profile = request.user.profile
+        room_name = ''
+
+        payload = {
+            'room_name': room_name,
+            'user_name': profile.user.get_full_name(),
+            'user_pic': profile.profile_pic.url,
+        }
+
+    return render(request, 'pages/patient/list-v-call.html', )
+
+
 
 def join_v_call(request: HttpRequest):
     room_name  = "sdasW1"
