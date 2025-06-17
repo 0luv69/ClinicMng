@@ -31,7 +31,7 @@ class DoctorProfile(models.Model):
     languages_spoken = models.JSONField(blank=True, null=True)
 
     #rating & reviews
-    star_rating = models.FloatField(null=True, blank=True)
+    star_rating = models.FloatField(null=True, blank=True, default=3)
     total_reviews =  models.IntegerField(null=True)
 
 
