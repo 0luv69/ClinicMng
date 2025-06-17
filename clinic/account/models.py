@@ -71,7 +71,6 @@ class Conversation(models.Model):
         ('audio', 'Audio'),
         ('video', 'Video'),
     )
-
     
     status = models.CharField(max_length=10, choices=status_choices, default='requested')
     conv_type = models.CharField(max_length=10, choices=conv_type_choices, default='audio')
@@ -85,20 +84,23 @@ class Conversation(models.Model):
 
 class Calls(models.Model):
     uuid = models.UUIDField(unique=True, editable=False, null=True, blank=True)
+
+    appointment = models.ForeignKey('patient.Appointment', on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
     connection = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='convosation_calls')
     caller = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='calls_made')
     receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='calls_received')
 
-    timestamp = models.DateTimeField(auto_now_add=True)
-    duration = models.DurationField(null=True, blank=True)  # Duration of the call
+    last_req = models.DateTimeField(null=True, blank=True)
 
     status_choices = (
+        ('requested', 'Requested'),
+        ('active', 'Active'),
         ('ongoing', 'Ongoing'),
         ('completed', 'Completed'),
-        ('missed', 'Missed'),
         ('cancelled', 'Cancelled'),
-        
     )
+
+    status = models.CharField(max_length=10, choices=status_choices, default='requested')
 
     def __str__(self):
         return f"Call {self.pk} - Caller: {self.caller.user.username} - Receiver: {self.receiver.user.username}"
