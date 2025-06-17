@@ -21,7 +21,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.utils import timezone
 
-from account.models import Profile, MedicalInfo, ActivityLog, Conversation, Message
+from account.models import Profile, MedicalInfo, ActivityLog, Conversation, Message, Calls
 from doctor.models import DoctorProfile, AppointmentDateSlot, AppointmentTimeSlot
 from patient.models import *
 
@@ -305,7 +305,7 @@ def BookAppointment(request: HttpRequest):
         return render(request, 'pages/patient/book_appointment.html', context)
 
     elif request.method == 'POST':
-        try:
+        # try:
             # Fetch the user's profile information
             profile: Profile = Profile.objects.get(user=request.user)
 
@@ -344,22 +344,34 @@ def BookAppointment(request: HttpRequest):
 
             # build the connections conversation
             # Check if a conversation already exists between the patient and doctor
-            existing_conversation = Conversation.objects.filter(
+            existing_conversation: Conversation = Conversation.objects.filter(
                 participants=profile
             ).filter(
                 participants=doctor.profile
-            ).distinct()
+            ).distinct().first()
             
             # Only create new conversation if one doesn't exist
-            if not existing_conversation.exists():
-                conversation: Conversation = Conversation.objects.create()
+            if not existing_conversation:
+                conversation = Conversation.objects.create(
+                    uuid=uuid.uuid4(),
+                    status='initiated',
+                )
                 conversation.participants.add(profile, doctor.profile)
-                conversation.status = 'initiated'
-                conversation.conv_type = 'video'  # Assuming video call for appointments
                 conversation.save()
+                existing_conversation = conversation
 
-
-
+            if appointment.appointment_type == 'online_consultation':
+                # Create a new call record for the appointment
+                call = Calls.objects.create(
+                    uuid=uuid.uuid4(),
+                    appointment=appointment,
+                    connection=existing_conversation,
+                    caller=profile,
+                    receiver=doctor.profile,
+                    last_req=timezone.now(),
+                    status='requested'
+                )
+                call.save()
 
             if appointment_file:
                 is_valid, error_msg = is_valid_file(appointment_file, ALLOWED_FILE_TYPES_APPOINTMENT, 20)
@@ -384,11 +396,11 @@ def BookAppointment(request: HttpRequest):
 
             messages.success(request, _("Appointment booked successfully."))
             return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppointment')})
-        except Exception as e:
-            messages.error(request, _("An error occurred while booking the appointment."))
-            error_msg = str(e)
-            print(f"Error: {error_msg}")
-        return JsonResponse({'error': error_msg})
+        # except Exception as e:
+        #     messages.error(request, _("An error occurred while booking the appointment."))
+        #     error_msg = str(e)
+        #     print(f"Error: {error_msg}")
+        # return JsonResponse({'error': error_msg})
 
     return redirect('patient:bookAppointment')
 
@@ -476,7 +488,7 @@ def delete_document(request, doc_id):
     return redirect('patient:viewDocument')
 
 
-def req_v_call(request: HttpRequest):
+def view_v_call(request: HttpRequest):
     """Request a video call with a doctor."""
     if request.method != 'POST':
         profile: Profile = request.user.profile
@@ -506,9 +518,57 @@ def req_v_call(request: HttpRequest):
 
 
 
+def send_req_calls(request: HttpRequest, convo_uuid: uuid):
+    """Send a request for a video call."""
+    try:
+        profile: Profile = request.user.profile
+        conversation: Conversation = get_object_or_404(Conversation, uuid=convo_uuid)
+
+        # Ensure the user is part of the conversation
+        if profile not in conversation.participants.all():
+            messages.error(request, _("You are not part of this conversation."))
+            return redirect('patient:view_v_call')
+
+        # create a call object
+        call = Calls.objects.create(
+            uuid=uuid.uuid4(),
+            connection=conversation,
+            caller=profile,
+            last_req=timezone.now(),
+            status='requested',
+            receiver=conversation.participants.exclude(id=profile.id).first()
+        )
+
+        messages.success(request, _("Video call request sent successfully."))
+        return redirect('patient:waiting_room', calls_uuid=call.uuid)
+    except Exception as e:
+        print(f"Error: {e}")
+        messages.error(request, _("An error occurred while sending the video call request."))
+        return redirect('patient:view_v_call')
+
 def join_v_call(request: HttpRequest):
     room_name  = "sdasW1"
     return render(request, 'pages/patient/join-v-call.html', {'room_name': room_name})
+
+
+def waiting_room(request: HttpRequest, calls_uuid: uuid):
+    """Join a video call with a specific conversation ID."""
+    profile: Profile = request.user.profile
+    calls: Calls = get_object_or_404(Calls, uuid=calls_uuid)
+    conversation: Conversation = calls.connection
+
+    # Ensure the user is part of the conversation
+    if profile not in conversation.participants.all():
+        messages.error(request, _("You are not part of this conversation."))
+        return redirect('patient:view_v_call')
+    
+
+    conversation.other_participant = conversation.participants.exclude(
+        id=profile.id
+    ).first()
+    
+    return render(request, 'pages/patient/waiting-room.html', {'conversation': conversation,
+                                                                'call_obj': calls,})
 
 @login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request: HttpRequest):
