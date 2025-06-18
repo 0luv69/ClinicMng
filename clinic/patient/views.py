@@ -546,9 +546,24 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
         messages.error(request, _("An error occurred while sending the video call request."))
         return redirect('patient:view_v_call')
 
-def join_v_call(request: HttpRequest):
+def join_v_call(request: HttpRequest, calls_uuid: uuid):
+
+    profile: Profile = request.user.profile
+    calls: Calls = get_object_or_404(Calls, uuid=calls_uuid)
+    conversation: Conversation = calls.connection
+
+    # Ensure the user is part of the conversation
+    if profile not in conversation.participants.all():
+        messages.error(request, _("You are not part of this conversation."))
+        return redirect('patient:view_v_call')
+    
+    conversation.other_participant = conversation.participants.exclude(
+        id=profile.id
+    ).first()
+
     room_name  = "sdasW1"
-    return render(request, 'pages/patient/join-v-call.html', {'room_name': room_name})
+    return render(request, 'pages/patient/join-v-call.html', {'conversation': conversation,
+                                                                'call_obj': calls,})
 
 
 def waiting_room(request: HttpRequest, calls_uuid: uuid):

@@ -354,7 +354,7 @@
 
     // Function to join the consultation
     function joinConsultation() {
-        url = `/patient/call/join/{{call_obj.uuid}}/`;
+        url = `/p/join-v-call/{{call_obj.uuid}}/`;
         window.location = url;
     }
 
@@ -437,6 +437,8 @@
                 `;
 
                 // Initialize the join button
+                setTimeout(joinConsultation, 5000);
+                
 
 
 
