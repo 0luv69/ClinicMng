@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from channels.db import database_sync_to_async
 
-from account.models import Conversation, Message, Profile
+from account.models import Conversation, Message, Profile, Calls
 
 User = get_user_model()
 
@@ -17,11 +17,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         Called when a WebSocket connection is opened.
         We expect the URL pattern to include a conversation_id.
         """
-        print("fasdfasdkfhaslkdjfasjdkl")
         self.conversation_id = self.scope["url_route"]["kwargs"]["conversation_id"]
         self.room_group_name = f"chat_{self.conversation_id}"
-
-        print(f"Connecting to conversation {self.conversation_id} with group {self.room_group_name}")
 
         # Verify that the user belongs to this conversation
         user = self.scope["user"]
@@ -200,3 +197,127 @@ class SignalingConsumer(AsyncWebsocketConsumer):
         message = event['message']
         # Send JSON back to WebSocket
         await self.send(text_data=json.dumps(message))
+
+
+
+
+class WaitingRoomConsumer(AsyncWebsocketConsumer):
+    # Shared user storage for all rooms
+    all_connected_users = {}
+
+    async def connect(self):
+        self.calls_uuid = self.scope['url_route']['kwargs']['calls_uuid']
+        self.room_group_name = f'waiting_room_{self.calls_uuid}'
+        self.user = self.scope["user"]
+
+        if not self.user.is_authenticated:
+            await self.close()
+            return
+
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+
+        # Track this user
+        username = self.user.username
+        room_users = WaitingRoomConsumer.all_connected_users.setdefault(self.room_group_name, [])
+
+        if username not in room_users:
+            room_users.append(username)
+
+        self.connected_users = room_users
+
+        print(f"User {username} connected to waiting room {self.room_group_name}. Connected users: {self.connected_users}")
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'waiting_room_message',
+                'message': {
+                    'request_type': 'user_joined',
+                    'connected_users': self.connected_users,
+                    'new_user': username,
+                }
+            }
+        )
+        await self.accept()
+
+
+    async def disconnect(self, close_code):
+        username = self.user.username
+        room_users = WaitingRoomConsumer.all_connected_users.get(self.room_group_name, [])
+
+        if username in room_users:
+            room_users.remove(username)
+
+        if not room_users:
+            WaitingRoomConsumer.all_connected_users.pop(self.room_group_name, None)
+
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'waiting_room_message',
+                'message': {
+                    'request_type': 'user_left',
+                    'disconnected_user': username,
+                    'connected_users': room_users,
+                }
+            }
+        )
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        request_type = data.get('request_type')
+        if request_type == 'request_to_active':
+            call_uuid = data.get('call_uuid')
+            call_obj = await database_sync_to_async(Calls.objects.get)(uuid=call_uuid)
+            call_obj.status = 'active'
+            await database_sync_to_async(lambda: call_obj.save())()
+
+        elif request_type == 'request_to_join':
+            call_uuid = data.get('call_uuid')
+            call_obj = await database_sync_to_async(Calls.objects.get)(uuid=call_uuid)
+            call_obj.last_req = timezone.now()
+            await database_sync_to_async(lambda: call_obj.save())()
+            # Send notification to doctor
+            # await self.channel_layer.group_send(
+            #     f'notification_{call_obj.doctor.id}',
+            #     {
+            #         'type': 'send_notification',
+            #         'notification': {
+            #             'type': 'join_request',
+            #             'message': f'{self.user.username} wants to join the call',
+            #             'call_uuid': str(call_uuid)
+            #         }
+            #     }
+            # )
+
+
+
+    async def waiting_room_message(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps(message))
+
+
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope["user"]
+        if not self.user.is_authenticated:
+            await self.close()
+            return
+
+        self.room_group_name = f'notification_{self.user.id}'
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    async def receive(self, text_data):
+        # This consumer is for receiving notifications, so we don't expect to receive messages
+        pass
+
+    async def send_notification(self, event):
+        notification = event['notification']
+        await self.send(text_data=json.dumps(notification))

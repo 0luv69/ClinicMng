@@ -7,4 +7,6 @@ websocket_urlpatterns = [
 
      # Clients connect to ws://…/ws/webrtc/<room_name>/
     re_path(r'ws/webrtc/(?P<room_name>\w+)/$', consumers.SignalingConsumer.as_asgi()),
+
+    re_path(r"^ws/waiting-room/(?P<calls_uuid>[0-9a-f-]+)/$", consumers.WaitingRoomConsumer.as_asgi()),
 ]
