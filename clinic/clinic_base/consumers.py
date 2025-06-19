@@ -159,45 +159,85 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 class SignalingConsumer(AsyncWebsocketConsumer):
+    # Shared user storage for all rooms
+    all_connected_users = {}
+
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        # Group name must be alphanumeric
-        self.room_group_name = f'webrtc_{self.room_name}'
+        self.calls_uuid = self.scope['url_route']['kwargs']['calls_uuid']
+        self.room_group_name = f'webrtc_{self.calls_uuid}'
+        self.user = self.scope["user"]
 
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-        await self.accept()
+        if not self.user.is_authenticated:
+            await self.close()
+            return
 
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
-    # Receive message from WebSocket (client → server)
-    async def receive(self, text_data):
-        data = json.loads(text_data)
+        # Track this user
+        username = self.user.username
+        room_users = SignalingConsumer.all_connected_users.setdefault(self.room_group_name, [])
 
-        # You can enforce data['type'] in ['offer','answer','ice-candidate']
-        # Broadcast to group (all other participants)
+        if username not in room_users:
+            print(f"User {username} connected to room {self.room_group_name}.")
+            room_users.append(username)
+
+        self.connected_users = room_users
+        print(f"Connected users in room {self.room_group_name}: {self.connected_users}")
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'signal_message',
-                'message': data
+                'sender_channel': self.channel_name,
+                'message': {
+                    'request_type': 'user_joined',
+                    'connected_users': self.connected_users,
+                    'new_user': username,
+                }
             }
         )
 
-    # Receive message from room group (server → client)
-    async def signal_message(self, event):
-        message = event['message']
-        # Send JSON back to WebSocket
-        await self.send(text_data=json.dumps(message))
 
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+        username = self.user.username
+        if username in self.connected_users:
+            self.connected_users.remove(username)
+            print(f"User {username} disconnected from room {self.room_group_name}.")
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'signal_message',
+                'sender_channel': self.channel_name,
+                'message': {
+                    'request_type': 'user_left',
+                    'connected_users': self.connected_users,
+                    'left_user': username,
+                }
+            }
+        )
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        message_type = data.get('type')
+
+        if message_type in ['offer', 'answer', 'ice-candidate']:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'signal_message',
+                    'sender_channel': self.channel_name,
+                    'message': data
+                }
+            )
+
+    async def signal_message(self, event):
+        if event['sender_channel'] != self.channel_name:
+            await self.send(text_data=json.dumps(event['message']))
 
 
 

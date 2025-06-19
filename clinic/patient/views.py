@@ -561,9 +561,11 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
         id=profile.id
     ).first()
 
-    room_name  = "sdasW1"
+    is_caller = calls.caller == profile
+
     return render(request, 'pages/patient/join-v-call.html', {'conversation': conversation,
-                                                                'call_obj': calls,})
+                                                                'call_obj': calls,
+                                                                'is_caller': is_caller,})
 
 
 def waiting_room(request: HttpRequest, calls_uuid: uuid):

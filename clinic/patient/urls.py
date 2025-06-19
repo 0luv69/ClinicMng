@@ -17,13 +17,10 @@ urlpatterns = [
     path('document/', ViewDocument, name='viewDocument'),
     path('delete-document/<int:doc_id>/', delete_document, name='deleteDocument'),
 
-    path('view-v-call/', view_v_call, name='view_v_call'), # view calls 
-    path('send-req-calls/<uuid:convo_uuid>/', send_req_calls, name='send_req_calls'),
-    path('waiting-room/<uuid:calls_uuid>/', waiting_room, name='waiting_room'),
 
 
 
-    path('join-v-call/<uuid:calls_uuid>/', join_v_call, name='join_v_call'),
+
     path('lab-report/', labReport, name='labReport'),
     path('lab-report/<uuid:uuid>/download/', lab_report_pdf, name='lab_report_pdf'),
 
