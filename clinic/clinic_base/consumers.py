@@ -159,7 +159,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 class SignalingConsumer(AsyncWebsocketConsumer):
-    # Shared user storage for all rooms
     all_connected_users = {}
 
     async def connect(self):
@@ -173,22 +172,20 @@ class SignalingConsumer(AsyncWebsocketConsumer):
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
-        # Track this user
         username = self.user.username
         room_users = SignalingConsumer.all_connected_users.setdefault(self.room_group_name, [])
-
         if username not in room_users:
-            print(f"User {username} connected to room {self.room_group_name}.")
             room_users.append(username)
-
         self.connected_users = room_users
-        print(f"Connected users in room {self.room_group_name}: {self.connected_users}")
+
+        await self.accept()
 
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'signal_message',
                 'sender_channel': self.channel_name,
+                'sendToSender': True,
                 'message': {
                     'request_type': 'user_joined',
                     'connected_users': self.connected_users,
@@ -197,17 +194,15 @@ class SignalingConsumer(AsyncWebsocketConsumer):
             }
         )
 
-
-        await self.accept()
-
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-
         username = self.user.username
-        if username in self.connected_users:
-            self.connected_users.remove(username)
-            print(f"User {username} disconnected from room {self.room_group_name}.")
+        room_users = SignalingConsumer.all_connected_users.get(self.room_group_name, [])
+        if username in room_users:
+            room_users.remove(username)
+        if not room_users:
+            SignalingConsumer.all_connected_users.pop(self.room_group_name, None)
 
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -215,7 +210,7 @@ class SignalingConsumer(AsyncWebsocketConsumer):
                 'sender_channel': self.channel_name,
                 'message': {
                     'request_type': 'user_left',
-                    'connected_users': self.connected_users,
+                    'connected_users': room_users,
                     'left_user': username,
                 }
             }
@@ -224,7 +219,9 @@ class SignalingConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         message_type = data.get('type')
+        print(f"Received message type: {message_type}")
 
+        # Forward SDP and ICE messages to everyone else
         if message_type in ['offer', 'answer', 'ice-candidate']:
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -234,12 +231,29 @@ class SignalingConsumer(AsyncWebsocketConsumer):
                     'message': data
                 }
             )
+        elif message_type == 'call-ended':
+            # Handle call ended message
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'signal_message',
+                    'sender_channel': self.channel_name,
+                    'message': {
+                        'request_type': 'call-ended',
+                        'message': f'{data.get('username')} has ended the call.'
+                    }
+                }
+            )
 
     async def signal_message(self, event):
-        if event['sender_channel'] != self.channel_name:
+        sendToSender = event.get('sendToSender', False)
+        if not sendToSender:
+            # Don't send to the sender
+            if event['sender_channel'] != self.channel_name:
+                await self.send(text_data=json.dumps(event['message']))
+        else:
+            # Send to the sender
             await self.send(text_data=json.dumps(event['message']))
-
-
 
 class WaitingRoomConsumer(AsyncWebsocketConsumer):
     # Shared user storage for all rooms
