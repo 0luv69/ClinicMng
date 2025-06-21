@@ -54,6 +54,25 @@
 
                     <!-- Remote Video -->
                     <div class="w-full h-full bg-black">
+                        
+                        <div id="connection-template" class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+                            <!-- Small connection indicator -->
+                            <div class="flex items-center justify-center space-x-1 mb-2">
+                                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                            </div>
+                            
+                            <!-- Clean status text -->
+                            <p class="text-sm text-white bg-black/30 px-3 py-1 rounded-full">
+                                <span class="connecting-dots">.. connecting ..</span>
+                            </p>
+                            <p class="text-xs text-white mt-1 bg-black/30 px-2 py-0.5 rounded-full">
+                                .. waiting for the other participant to join ..
+                            </p>
+                        </div>
+
+
                         <video id="remote-video" class="w-full h-full object-cover" playsinline autoplay></video>
                         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
                             <span class="text-lg font-semibold text-white">{{ conversation.other_participant.user.first_name }}</span>
@@ -215,7 +234,7 @@
                 </div>
 
                 <!-- Medical Notes -->
-                <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm hidden">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm ">
                     <h3 class="font-semibold mb-3 text-gray-700">Quick Notes</h3>
                     <textarea id="medical-notes"
                         class="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent smooth-transition"
@@ -358,29 +377,13 @@
     updateCurrentTime();
     setInterval(updateCurrentTime, 1000);
 
-
-    // setting button functionality
-    document.getElementById('settings-btn').addEventListener('click', () => {
-        document.getElementById('setting_overlay').classList.remove('hidden');
-        initSettings();
-    });
-
-    // Close settings overlay
-    document.getElementById('close-settings').addEventListener('click', () => {
-        document.getElementById('setting_overlay').classList.add('hidden');
-    });
-
-
-
-
-
     const localVideo = document.getElementById('local-video');
     const remoteVideo = document.getElementById('remote-video');
     const endCallBtn = document.getElementById('end-call');
 
     const roomName = "{{ call_obj.uuid }}";
     const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
-    // const isCaller = {{ is_caller|lower }};
+
     const currentUsr = "{{ user.username }}";
     const anotherUsr = "{{ conversation.other_participant.user.username }}";
 
@@ -393,55 +396,261 @@
         ]
     };
 
-    function initVideoevents(){
-        // Toggle Mic
-            const micButton = document.getElementById('mute-audio');
-            const micOnIcon = document.getElementById('mic_on');
-            const micOffIcon = document.getElementById('mic_off');
-            let micMuted = false;
-
-            micButton.addEventListener('click', () => {
-                micMuted = !micMuted;
-                micOnIcon.classList.toggle('hidden', micMuted);
-                micOffIcon.classList.toggle('hidden', !micMuted);
-
-                console.log('Mic muted:', micMuted);
 
 
-                // Example: Mute/unmute local media stream
-                if (localStream) {
-                    localStream.getAudioTracks().forEach(track => {
-                    track.enabled = !micMuted;
-                    console.log('Audio track enabled:', track.enabled); // Debug log
-                    });
-                } else {
-                    console.warn('No local stream available'); // Debug warning
+
+    // setting button functionality
+    document.getElementById('settings-btn').addEventListener('click', () => {
+        document.getElementById('setting_overlay').classList.remove('hidden');
+        initSettings();
+    });
+
+    // Close settings overlay
+    document.getElementById('close-settings').addEventListener('click', () => {
+        document.getElementById('setting_overlay').classList.add('hidden');
+    });
+
+    // setting to chage the video and audio tracks
+    async function initSettings() {
+        const audioSelect = document.getElementById('audio-select');
+        const videoSelect = document.getElementById('video-select');
+        const micStatus = document.getElementById('mic-status');
+        const audioLevel = document.getElementById('audio-level');
+        const settingsPreview = document.getElementById('settings-preview');
+        const applySettingsButton = document.getElementById('save-settings');
+        let audioContext, analyser, dataArray, localStream;
+    
+        // Initialize audio context and analyser
+        function initializeAudioAnalyser(stream) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaStreamSource(stream);
+            analyser = audioContext.createAnalyser();
+            source.connect(analyser);
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+    
+            function updateAudioLevel() {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
                 }
-
+                const avgLevel = sum / dataArray.length / 255;
+                const levelPercentage = Math.min(100, Math.max(2, avgLevel * 300));
+                audioLevel.style.width = `${levelPercentage}%`;
+                requestAnimationFrame(updateAudioLevel);
+            }
+            updateAudioLevel();
+        }
+    
+        async function updateVideoPreview(deviceId) {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            localStream = await navigator.mediaDevices.getUserMedia({
+                video: { deviceId },
+                audio: false
             });
-
-            // Toggle Video
-            const videoButton = document.getElementById('stop-video');
-            const videoOnIcon = document.getElementById('video_on');
-            const videoOffIcon = document.getElementById('video_off');
-            let videoStopped = false;
-
-            videoButton.addEventListener('click', () => {
-                videoStopped = !videoStopped;
-                videoOnIcon.classList.toggle('hidden', videoStopped);
-                videoOffIcon.classList.toggle('hidden', !videoStopped);
-
-                // Example: Stop/resume video in local media stream
+            settingsPreview.srcObject = localStream;
+        }
+    
+        async function updateAudioStream(deviceId) {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            const audioStream = await navigator.mediaDevices.getUserMedia({
+                audio: { deviceId },
+                video: false
+            });
+            initializeAudioAnalyser(audioStream);
+        }
+    
+        const devices = await navigator.mediaDevices.enumerateDevices();
+    
+        while (audioSelect.firstChild) {
+            audioSelect.removeChild(audioSelect.firstChild);
+        }
+        while (videoSelect.firstChild) {
+            videoSelect.removeChild(videoSelect.firstChild);
+        }
+    
+        const defaultAudioOption = document.createElement('option');
+        defaultAudioOption.value = '';
+        defaultAudioOption.text = 'Default Microphone';
+        audioSelect.appendChild(defaultAudioOption);
+    
+        const defaultVideoOption = document.createElement('option');
+        defaultVideoOption.value = '';
+        defaultVideoOption.text = 'Default Camera';
+        videoSelect.appendChild(defaultVideoOption);
+    
+        const audioDevices = devices.filter(device => device.kind === 'audioinput');
+        audioDevices.forEach(device => {
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.text = device.label || `Microphone ${audioSelect.length}`;
+            audioSelect.appendChild(option);
+        });
+    
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        videoDevices.forEach(device => {
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.text = device.label || `Camera ${videoSelect.length}`;
+            videoSelect.appendChild(option);
+        });
+    
+        audioSelect.addEventListener('change', (e) => {
+            const deviceId = e.target.value;
+            updateAudioStream(deviceId);
+        });
+    
+        videoSelect.addEventListener('change', (e) => {
+            const deviceId = e.target.value;
+            updateVideoPreview(deviceId);
+        });
+    
+        if (audioDevices.length > 0) {
+            updateAudioStream(audioDevices[0].deviceId);
+        } else {
+            micStatus.textContent = 'No Microphone Found';
+            audioLevel.style.width = '0%';
+    
+            showNotification({
+                color: "bg-orange-500",
+                title: "Microphone Error",
+                message: "No microphone found. Please connect a microphone.",
+            });
+        }
+        if (videoDevices.length > 0) {
+            updateVideoPreview(videoDevices[0].deviceId);
+        } else {
+            settingsPreview.srcObject = null;
+            settingsPreview.classList.add('hidden');
+    
+            showNotification({
+                color: "bg-orange-500",
+                title: "Camera Error",
+                message: "No camera found. Please connect a camera.",
+            });
+        }
+    
+        // Apply settings to actual video and audio streams
+        applySettingsButton.addEventListener('click', async () => {
+            const selectedAudioDeviceId = audioSelect.value;
+            const selectedVideoDeviceId = videoSelect.value;
+    
+            try {
+                // Stop the current tracks
                 if (localStream) {
-                    localStream.getVideoTracks().forEach(track => track.enabled = !videoStopped);
+                    localStream.getTracks().forEach(track => track.stop());
                 }
-            });
+    
+                // Get new stream with selected devices
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    audio: { deviceId: selectedAudioDeviceId || undefined },
+                    video: { deviceId: selectedVideoDeviceId || undefined },
+                });
+    
+                // Update video element
+                localVideo.srcObject = localStream;
+    
+                // Reinitialize audio analyser for selected microphone
+                initializeAudioAnalyser(localStream);
+    
+                showNotification({
+                    color: "bg-green-500",
+                    title: "Settings Applied",
+                    message: "Your video and audio settings have been updated successfully.",
+                });
+
+                document.getElementById('setting_overlay').classList.add('hidden');
+
+            } catch (error) {
+                console.error('Error applying settings:', error);
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Settings Error",
+                    message: "An error occurred while applying your settings. Please try again.",
+                });
+            }
+        });
     }
 
     
+
+    // Initialize devices and start video connections
+    async function initializeDevices(){
+        try{
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            localVideo.srcObject = localStream;
+
+            localVideo.play().catch(error => {
+                console.error('Error playing local video:', error);
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Video Playback Error",
+                    message: "Unable to play local video. Please check your browser settings.",
+                });
+            });
+        } catch (error) {
+            console.error('Error accessing media devices:', error);
+            showNotification({
+                color: "bg-red-500",
+                title: "Media Device Error",
+                message: "Unable to access camera or microphone. Please check your device settings.",
+            });
+        }
+
+        // Initialize video connections
+        await initVideoConnections();
+
+
+        // Toggle Mic
+        const micButton = document.getElementById('mute-audio');
+        const micOnIcon = document.getElementById('mic_on');
+        const micOffIcon = document.getElementById('mic_off');
+        let micMuted = false;
+
+        micButton.addEventListener('click', () => {
+            micMuted = !micMuted;
+            micOnIcon.classList.toggle('hidden', micMuted);
+            micOffIcon.classList.toggle('hidden', !micMuted);
+
+            // Example: Mute/unmute local media stream
+            if (localStream) {
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = !micMuted;
+                    console.log('Audio track enabled:', track.enabled); // Debug log
+                });
+            } else {
+                console.warn('No local stream available'); // Debug warning
+            }
+
+        });
+
+        // Toggle Video
+        const videoButton = document.getElementById('stop-video');
+        const videoOnIcon = document.getElementById('video_on');
+        const videoOffIcon = document.getElementById('video_off');
+        let videoStopped = false;
+
+        videoButton.addEventListener('click', () => {
+            videoStopped = !videoStopped;
+            videoOnIcon.classList.toggle('hidden', videoStopped);
+            videoOffIcon.classList.toggle('hidden', !videoStopped);
+
+            // Example: Stop/resume video in local media stream
+            if (localStream) {
+                localStream.getVideoTracks().forEach(track => track.enabled = !videoStopped);
+            }
+        });
+    }
+
     
-    async function initLocalVideo() {
-        initVideoevents();
+    // Initialize WebSocket connection 
+    async function initVideoConnections() {
         // Check if the browser supports WebRTC
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('WebRTC is not supported by this browser.');
@@ -449,9 +658,6 @@
         }
 
         try {
-            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            localVideo.srcObject = localStream;
-    
             signalingSocket = new WebSocket(`${wsScheme}://${window.location.host}/ws/webrtc/${roomName}/`);
     
             signalingSocket.onopen = () => {
@@ -463,6 +669,7 @@
                 const connected_users = data.connected_users || [];
                 const activeUsrElement = document.getElementById('active_usr');
                 const notactiveUsrElement = document.getElementById('n_active_usr');
+                const connection_template = document.getElementById('connection-template');
     
                 if (data.request_type === 'user_joined') {
                     if (connected_users.length > 1) {
@@ -482,14 +689,18 @@
                             activeUsrElement.classList.remove('hidden');
                             notactiveUsrElement.classList.add('hidden');
                         }
+                        connection_template.classList.add('hidden');
+
                     } else {
                         // Only one user in the call
                         isCaller = true; // The first user is always a caller
+                        connection_template.classList.remove('hidden');
                         activeUsrElement.classList.add('hidden');
                         notactiveUsrElement.classList.remove('hidden');
                     }
                 } else if (data.request_type === 'user_left') {
                     if (connected_users.length > 1) {
+                        connection_template.classList.add('hidden');
                         activeUsrElement.classList.remove('hidden');
                         notactiveUsrElement.classList.add('hidden');
                     } else {
@@ -500,6 +711,7 @@
                         });
                         activeUsrElement.classList.add('hidden');
                         notactiveUsrElement.classList.remove('hidden');
+                        connection_template.classList.remove('hidden');
                         // Optionally: close peerConnection, remote video, etc.
                         if (peerConnection) {
                             peerConnection.close();
@@ -545,10 +757,6 @@
             console.error('Error accessing media devices:', err);
         }
     }
-
-
-
-
 
     // Function to create a new RTCPeerConnection and set up event handlers
     async function createPeerConnection() {
@@ -663,15 +871,8 @@
 
 
     
-    window.addEventListener('load', initLocalVideo);
+    window.addEventListener('load', initializeDevices);
 
-  
-    
- 
-    
-
-
-    
 </script>
 
 {% endblock content %}

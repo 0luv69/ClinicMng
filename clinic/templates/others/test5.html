@@ -3,547 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediConsult - Video Consultation</title>
-    <!-- Tailwind CSS via CDN -->
+    <title>Remote Connection</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1a73e8',
-                        'primary-dark': '#0d47a1',
-                        secondary: '#4285f4',
-                        success: '#34a853',
-                        warning: '#fbbc05',
-                        error: '#ea4335',
-                    },
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    },
-                }
-            }
+    
+
+    <style>
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
         }
-    </script>
+        
+        @keyframes connecting-dots::after {
+            content: '';
+            display: inline-block;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .connecting-dots::after {
+            content: '';
+            display: inline-block;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-inter text-gray-800">
-    <div class="flex flex-col md:flex-row max-w-7xl h-screen mx-auto bg-white shadow-xl">
-        <!-- Left Panel -->
-        <div class="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
-            <div class="mb-6 md:mb-8">
-                <img src="https://via.placeholder.com/150x50?text=MediConsult" alt="MediConsult Logo" class="h-10 md:h-12">
-            </div>
-            <div class="flex-grow flex flex-col">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-dark mb-4 md:mb-6">Video Consultation</h1>
-                
-                <div class="mb-4 md:mb-6 p-3 md:p-4 bg-white rounded-lg shadow-sm">
-                    <div class="flex items-center mb-2 font-medium text-sm md:text-base">
-                        <i class="far fa-clock text-primary mr-2"></i>
-                        <span>Today, 1:00 PM - 1:30 PM</span>
-                    </div>
-                    <div class="mt-1 md:mt-2">
-                        <span class="bg-secondary text-white px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium">Follow-up</span>
-                    </div>
-                </div>
-                
-                <div class="flex items-center bg-white p-4 md:p-6 rounded-lg shadow-sm mb-6 md:mb-8">
-                    <div class="mr-3 md:mr-4">
-                        <img src="https://via.placeholder.com/60x60" alt="Dr. Sarah Johnson" class="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover border-2 md:border-3 border-primary">
-                    </div>
-                    <div>
-                        <h3 class="text-lg md:text-xl font-medium text-gray-800 mb-0.5 md:mb-1">Dr. Sarah Johnson</h3>
-                        <p class="text-gray-600 text-xs md:text-sm mb-1 md:mb-2">Cardiologist</p>
-                        <div class="flex items-center">
-                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
-                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
-                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
-                            <i class="fas fa-star text-warning text-xs md:text-sm"></i>
-                            <i class="fas fa-star-half-alt text-warning text-xs md:text-sm"></i>
-                            <span class="ml-1.5 md:ml-2 font-semibold text-xs md:text-sm">4.8</span>
+<body class="bg-black text-white overflow-hidden">
+    <div class="relative w-full h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+        <!-- Video Container (Simulated) -->
+        <div class="w-full h-full bg-black relative">
+            <!-- Placeholder for remote video -->
+            <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
+                <!-- Connection Status Overlay -->
+                <div id="connection-overlay" class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <div class="text-center space-y-8">
+                        <!-- Animated Connection Icon -->
+                        <div class="relative flex items-center justify-center">
+                            <!-- Outer Ring -->
+                            <div class="absolute w-32 h-32 border-2 border-blue-400/30 rounded-full pulse-ring"></div>
+                            <div class="absolute w-32 h-32 border-2 border-blue-400/20 rounded-full pulse-ring" style="animation-delay: 0.5s;"></div>
+                            <div class="absolute w-32 h-32 border-2 border-blue-400/10 rounded-full pulse-ring" style="animation-delay: 1s;"></div>
+                            
+                            <!-- Center Icon -->
+                            <div class="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl float">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Status Text -->
+                        <div class="space-y-4">
+                            <h2 class="text-3xl font-light text-white">
+                                <span class="connecting-dots">Connecting</span>
+                            </h2>
+                            <p class="text-lg text-gray-300 font-light">
+                                Another participant is joining the call
+                            </p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-64 mx-auto">
+                                <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shimmer"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Info -->
+                        <div class="text-sm text-gray-400 space-y-2">
+                            <p>Please wait while we establish the connection</p>
+                            <div class="flex items-center justify-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <span>Secure connection</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="mt-auto flex flex-col gap-3 md:gap-4">
-                    <button id="join-btn" class="bg-primary hover:bg-primary-dark text-white py-3 md:py-4 px-4 rounded-lg font-semibold transition transform hover:-translate-y-0.5 text-sm md:text-base">Join Consultation</button>
-                    <button class="bg-transparent border border-gray-300 text-gray-600 py-3 md:py-4 px-4 rounded-lg font-semibold hover:bg-gray-50 transition text-sm md:text-base">Cancel Appointment</button>
+            </div>
+            
+            <!-- Bottom User Info Bar (Hidden during connection) -->
+            <div id="user-info" class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 opacity-30 transition-opacity duration-500">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <span class="text-lg font-semibold">JS</span>
+                    </div>
+                    <div>
+                        <span class="text-xl font-medium text-white">John Smith</span>
+                        <p class="text-sm text-gray-300">Waiting to connect...</p>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Right Panel - Video Preview -->
-        <div class="w-full md:w-3/5 p-4 sm:p-6 lg:p-8 bg-white flex flex-col">
-            <div class="relative w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] bg-gray-100 rounded-xl overflow-hidden mb-4 md:mb-6">
-                <div id="video-preview" class="w-full h-full bg-gray-900 flex items-center justify-center">
-                    <div class="video-placeholder text-center text-white">
-                        <i class="fas fa-video-slash text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4"></i>
-                        <p class="text-sm md:text-base">Camera is turned off</p>
-                    </div>
+        
+        <!-- Top Status Bar -->
+        <div class="absolute top-0 left-0 right-0 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-medium text-gray-300">Establishing Connection</span>
                 </div>
-                <div class="absolute top-2 md:top-4 right-2 md:right-4 flex items-center">
-                    <div class="flex items-center px-2 py-1 md:px-4 md:py-2 rounded-full bg-success bg-opacity-10 text-success text-xs md:text-sm font-medium">
-                        <i class="fas fa-wifi mr-1 md:mr-2"></i>
-                        <span>Connection stable</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-4 md:mb-6 lg:mb-8">
-                <div class="control-item flex flex-col items-center" id="mic-control">
-                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <span class="text-xs md:text-sm">Microphone</span>
-                </div>
-                <div class="control-item flex flex-col items-center" id="video-control">
-                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition">
-                        <i class="fas fa-video-slash"></i>
-                    </div>
-                    <span class="text-xs md:text-sm">Camera</span>
-                </div>
-                <div class="control-item flex flex-col items-center" id="settings-control">
-                    <div class="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    <span class="text-xs md:text-sm">Settings</span>
-                </div>
-            </div>
-            
-            <div class="mb-3 md:mb-4">
-                <select id="audio-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
-                    <option value="default">Default Microphone</option>
-                </select>
-            </div>
-            
-            <div class="mb-3 md:mb-4">
-                <select id="video-select" class="w-full py-2 md:py-3 px-3 md:px-4 rounded-lg border border-gray-300 text-xs md:text-sm text-gray-800 bg-white">
-                    <option value="default">Default Camera</option>
-                </select>
-            </div>
-
-            <div class="mb-4 md:mb-6">
-                <div class="flex justify-between items-center mb-1 md:mb-2">
-                    <div class="text-xs md:text-sm text-gray-600">Audio level</div>
-                    <div id="mic-status" class="text-xs text-primary font-medium">Active</div>
-                </div>
-                <div class="h-2 md:h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full w-[30%] bg-primary rounded-full transition-all" id="audio-level"></div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6 lg:mb-8">
-                <div class="flex items-center text-xs md:text-sm">
-                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
-                    <span>System compatibility</span>
-                </div>
-                <div class="flex items-center text-xs md:text-sm">
-                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
-                    <span>Browser supported</span>
-                </div>
-                <div class="flex items-center text-xs md:text-sm">
-                    <i class="fas fa-check-circle text-success mr-1.5 md:mr-2"></i>
-                    <span>Internet connection</span>
-                </div>
-            </div>
-            
-            <div class="mt-auto bg-gray-50 p-4 md:p-6 rounded-lg">
-                <h3 class="text-sm md:text-base font-medium text-gray-800 mb-3 md:mb-4">Before you join</h3>
-                <div class="flex items-start md:items-center mb-2 md:mb-3">
-                    <input type="checkbox" id="consent" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
-                    <label for="consent" class="text-xs md:text-sm">I consent to the terms of telemedicine consultation</label>
-                </div>
-                <div class="flex items-start md:items-center">
-                    <input type="checkbox" id="privacy" class="w-4 h-4 md:w-5 md:h-5 text-primary mr-2 md:mr-3 accent-primary mt-0.5 md:mt-0">
-                    <label for="privacy" class="text-xs md:text-sm">I understand the privacy policy</label>
+                <div class="text-sm text-gray-400">
+                    <span id="timer">00:00</span>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script >
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM elements
-            const videoPreview = document.getElementById('video-preview');
-            const videoPlaceholder = document.querySelector('.video-placeholder');
-            const micControl = document.getElementById('mic-control');
-            const videoControl = document.getElementById('video-control');
-            const settingsControl = document.getElementById('settings-control');
-            const audioSelect = document.getElementById('audio-select');
-            const videoSelect = document.getElementById('video-select');
-            const audioLevel = document.getElementById('audio-level');
-            const micStatus = document.getElementById('mic-status');
-            const joinBtn = document.getElementById('join-btn');
+    <script>
+        // Simulate connection process
+        let seconds = 0;
+        const timer = document.getElementById('timer');
+        const overlay = document.getElementById('connection-overlay');
+        const userInfo = document.getElementById('user-info');
+        
+        // Update timer
+        const timerInterval = setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+        
+        // Simulate successful connection after 5 seconds
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            userInfo.style.opacity = '1';
             
-            // State variables
-            let stream = null;
-            let audioTrack = null;
-            let videoTrack = null;
-            let micEnabled = true;
-            let videoEnabled = false;
-            let audioContext = null;
-            let analyser = null;
-            let microphone = null;
-            let javascriptNode = null;
+            // Update status
+            document.querySelector('.flex.items-center.space-x-3').innerHTML = `
+                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                <span class="text-sm font-medium text-gray-300">Connected</span>
+            `;
             
-            // Initialize devices
-            initializeDevices();
-            
-            // Function to initialize devices
-            async function initializeDevices() {
-                try {
-                    // Get available audio and video devices
-                    const devices = await navigator.mediaDevices.enumerateDevices();
-                    
-                    // Clear previous options
-                    while (audioSelect.firstChild) {
-                        audioSelect.removeChild(audioSelect.firstChild);
-                    }
-                    
-                    while (videoSelect.firstChild) {
-                        videoSelect.removeChild(videoSelect.firstChild);
-                    }
-                    
-                    // Add default option
-                    const defaultAudioOption = document.createElement('option');
-                    defaultAudioOption.value = 'default';
-                    defaultAudioOption.text = 'Default Microphone';
-                    audioSelect.appendChild(defaultAudioOption);
-                    
-                    const defaultVideoOption = document.createElement('option');
-                    defaultVideoOption.value = 'default';
-                    defaultVideoOption.text = 'Default Camera';
-                    videoSelect.appendChild(defaultVideoOption);
-                    
-                    // Populate audio devices
-                    const audioDevices = devices.filter(device => device.kind === 'audioinput');
-                    audioDevices.forEach(device => {
-                        const option = document.createElement('option');
-                        option.value = device.deviceId;
-                        option.text = device.label || `Microphone ${audioSelect.length}`;
-                        audioSelect.appendChild(option);
-                    });
-                    
-                    // Populate video devices
-                    const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                    videoDevices.forEach(device => {
-                        const option = document.createElement('option');
-                        option.value = device.deviceId;
-                        option.text = device.label || `Camera ${videoSelect.length}`;
-                        videoSelect.appendChild(option);
-                    });
-                    
-                    // Start with audio only by default
-                    startAudioOnly();
-                    
-                } catch (error) {
-                    console.error('Error initializing devices:', error);
-                    alert('Unable to access media devices. Please check permissions and try again.');
-                }
+            // Update user info
+            document.querySelector('#user-info p').textContent = 'Connected';
+        }, 5000);
+        
+        // Add some interactive elements
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#connection-overlay')) {
+                // Add ripple effect on click
+                const ripple = document.createElement('div');
+                ripple.className = 'absolute w-4 h-4 bg-white/20 rounded-full animate-ping';
+                ripple.style.left = e.clientX - 8 + 'px';
+                ripple.style.top = e.clientY - 8 + 'px';
+                document.body.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 1000);
             }
-            
-            // Start audio only with actual volume detection
-            async function startAudioOnly() {
-                try {
-                    // Request access to the microphone
-                    stream = await navigator.mediaDevices.getUserMedia({ 
-                        audio: true, 
-                        video: false 
-                    });
-                    
-                    audioTrack = stream.getAudioTracks()[0];
-                    updateMicUI(true);
-                    
-                    // Set up audio context for volume metering
-                    setupAudioMeter();
-                    
-                } catch (error) {
-                    console.error('Error accessing microphone:', error);
-                    updateMicUI(false);
-                    micStatus.textContent = 'Not available';
-                    micStatus.className = 'text-xs text-error font-medium';
-                }
-            }
-            
-            // Set up audio meter with Web Audio API
-            function setupAudioMeter() {
-                // Create audio context
-                try {
-                    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                    audioContext = new AudioContext();
-                    
-                    // Create analyzer
-                    analyser = audioContext.createAnalyser();
-                    analyser.fftSize = 256;
-                    analyser.minDecibels = -90;
-                    analyser.maxDecibels = -10;
-                    analyser.smoothingTimeConstant = 0.85;
-                    
-                    // Create microphone input
-                    microphone = audioContext.createMediaStreamSource(stream);
-                    microphone.connect(analyser);
-                    
-                    // Create a node to detect volume
-                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
-                    analyser.connect(javascriptNode);
-                    javascriptNode.connect(audioContext.destination);
-                    
-                    // Setup volume detection
-                    javascriptNode.onaudioprocess = function() {
-                        const array = new Uint8Array(analyser.frequencyBinCount);
-                        analyser.getByteFrequencyData(array);
-                        let values = 0;
-                        
-                        const length = array.length;
-                        for (let i = 0; i < length; i++) {
-                            values += array[i];
-                        }
-                        
-                        const average = values / length;
-                        const volume = Math.min(100, Math.round(average * 2.5));
-                        
-                        // Update UI with volume level
-                        updateAudioMeter(volume);
-                    };
-                    
-                    micStatus.textContent = 'Active';
-                    micStatus.className = 'text-xs text-primary font-medium';
-                    
-                } catch (e) {
-                    console.error("Web Audio API not supported:", e);
-                    // Fall back to simulated audio meter
-                    simulateAudioLevel();
-                }
-            }
-            
-            // Update audio meter with real volume
-            function updateAudioMeter(volume) {
-                if (!micEnabled) {
-                    volume = 0;
-                }
-                
-                audioLevel.style.width = `${volume}%`;
-                
-                // Change color based on level
-                if (volume > 60) {
-                    audioLevel.className = 'h-full bg-error rounded-full transition-all';
-                } else if (volume > 30) {
-                    audioLevel.className = 'h-full bg-primary rounded-full transition-all';
-                } else if (volume > 5) {
-                    audioLevel.className = 'h-full bg-success rounded-full transition-all';
-                } else {
-                    audioLevel.className = 'h-full bg-gray-300 rounded-full transition-all';
-                }
-            }
-            
-            // Fallback simulated audio meter
-            function simulateAudioLevel() {
-                setInterval(() => {
-                    if (micEnabled) {
-                        const level = Math.random() * 60 + 10;
-                        updateAudioMeter(level);
-                    } else {
-                        updateAudioMeter(0);
-                    }
-                }, 200);
-            }
-            
-            // Toggle microphone
-            micControl.addEventListener('click', function() {
-                toggleMicrophone();
-            });
-            
-            function toggleMicrophone() {
-                if (audioTrack) {
-                    micEnabled = !micEnabled;
-                    audioTrack.enabled = micEnabled;
-                    updateMicUI(micEnabled);
-                    
-                    // Update status text
-                    if (micEnabled) {
-                        micStatus.textContent = 'Active';
-                        micStatus.className = 'text-xs text-primary font-medium';
-                    } else {
-                        micStatus.textContent = 'Muted';
-                        micStatus.className = 'text-xs text-error font-medium';
-                    }
-                } else {
-                    startAudioOnly();
-                }
-            }
-            
-            // Toggle camera
-            videoControl.addEventListener('click', function() {
-                toggleVideo();
-            });
-            
-            async function toggleVideo() {
-                if (videoEnabled) {
-                    // Disable video
-                    if (videoTrack) {
-                        videoTrack.stop();
-                        videoTrack = null;
-                    }
-                    videoEnabled = false;
-                    updateVideoUI(false);
-                } else {
-                    // Enable video
-                    try {
-                        const videoStream = await navigator.mediaDevices.getUserMedia({ 
-                            video: {
-                                deviceId: videoSelect.value !== 'default' ? { exact: videoSelect.value } : undefined,
-                                width: { ideal: 1280 },
-                                height: { ideal: 720 }
-                            } 
-                        });
-                        videoTrack = videoStream.getVideoTracks()[0];
-                        
-                        // Create video element
-                        const videoElement = document.createElement('video');
-                        videoElement.srcObject = videoStream;
-                        videoElement.autoplay = true;
-                        videoElement.muted = true; // Mute to avoid feedback
-                        videoElement.className = 'w-full h-full object-cover';
-                        
-                        // Clear placeholder and add video element
-                        videoPreview.innerHTML = '';
-                        videoPreview.appendChild(videoElement);
-                        
-                        videoEnabled = true;
-                        updateVideoUI(true);
-                    } catch (error) {
-                        console.error('Error accessing camera:', error);
-                        alert('Unable to access camera. Please check permissions and try again.');
-                    }
-                }
-            }
-            
-            // Update UI based on microphone state
-            function updateMicUI(enabled) {
-                const micButton = micControl.querySelector('div');
-                const micIcon = micButton.querySelector('i');
-                
-                if (enabled) {
-                    micButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition';
-                    micIcon.className = 'fas fa-microphone';
-                } else {
-                    micButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition';
-                    micIcon.className = 'fas fa-microphone-slash';
-                }
-            }
-            
-            // Update UI based on video state
-            function updateVideoUI(enabled) {
-                const videoButton = videoControl.querySelector('div');
-                const videoIcon = videoButton.querySelector('i');
-                
-                if (enabled) {
-                    videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-primary text-white hover:bg-primary-dark transition';
-                    videoIcon.className = 'fas fa-video';
-                } else {
-                    videoButton.className = 'w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px] rounded-full flex items-center justify-center cursor-pointer mb-1 md:mb-2 bg-error text-white hover:bg-red-700 transition';
-                    videoIcon.className = 'fas fa-video-slash';
-                    
-                    // Show placeholder if video is disabled
-                    videoPreview.innerHTML = '';
-                    const newPlaceholder = document.createElement('div');
-                    newPlaceholder.className = 'video-placeholder text-center text-white';
-                    newPlaceholder.innerHTML = `
-                        <i class="fas fa-video-slash text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4"></i>
-                        <p class="text-sm md:text-base">Camera is turned off</p>
-                    `;
-                    videoPreview.appendChild(newPlaceholder);
-                }
-            }
-            
-            // Handle device selection changes
-            audioSelect.addEventListener('change', function() {
-                // Restart audio with selected device
-                if (audioTrack) {
-                    audioTrack.stop();
-                    
-                    if (javascriptNode) {
-                        javascriptNode.disconnect();
-                    }
-                    if (microphone) {
-                        microphone.disconnect();
-                    }
-                    if (analyser) {
-                        analyser.disconnect();
-                    }
-                    if (audioContext) {
-                        audioContext.close();
-                    }
-                    
-                    navigator.mediaDevices.getUserMedia({
-                        audio: {
-                            deviceId: audioSelect.value !== 'default' ? { exact: audioSelect.value } : undefined
-                        }
-                    }).then(newStream => {
-                        stream = newStream;
-                        audioTrack = stream.getAudioTracks()[0];
-                        setupAudioMeter();
-                    }).catch(error => {
-                        console.error('Error switching audio device:', error);
-                        micStatus.textContent = 'Error';
-                        micStatus.className = 'text-xs text-error font-medium';
-                    });
-                }
-            });
-            
-            videoSelect.addEventListener('change', function() {
-                // If video is enabled, restart it with the new device
-                if (videoEnabled) {
-                    toggleVideo();
-                    setTimeout(() => {
-                        toggleVideo();
-                    }, 500);
-                }
-            });
-            
-            // Join button
-            joinBtn.addEventListener('click', function() {
-                const consentChecked = document.getElementById('consent').checked;
-                const privacyChecked = document.getElementById('privacy').checked;
-                
-                if (!consentChecked || !privacyChecked) {
-                    alert('Please accept the terms and privacy policy before joining.');
-                    return;
-                }
-                
-                // In a real app, this would initiate the actual call connection
-                alert('Joining consultation...');
-            });
-            
-            // Settings button
-            settingsControl.addEventListener('click', function() {
-                // In a real app, this would open a settings panel
-                alert('Advanced settings would appear here.');
-            });
-            
-            // Clean up resources when page is closed
-            window.addEventListener('beforeunload', function() {
-                if (stream) {
-                    stream.getTracks().forEach(track => {
-                        track.stop();
-                    });
-                }
-                
-                if (javascriptNode) {
-                    javascriptNode.disconnect();
-                }
-                if (microphone) {
-                    microphone.disconnect();
-                }
-                if (analyser) {
-                    analyser.disconnect();
-                }
-                if (audioContext) {
-                    audioContext.close();
-                }
-            });
         });
     </script>
 </body>
