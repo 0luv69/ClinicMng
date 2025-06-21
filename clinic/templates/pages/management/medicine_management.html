@@ -1,0 +1,452 @@
+{% extends "pages/management/M_base.html" %}
+{% load static %}
+
+{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+
+{% block styles %}{% endblock styles %}
+
+{% block pageof %} View Patients{% endblock pageof %}
+{% block linkPageof %} /m/view-patients/ {% endblock linkPageof %}
+
+{% block content %}
+
+<div x-data="{ 
+    showAddDialog: false, 
+    showDetailsDialog: false,
+    currentMedicine: null,
+    searchQuery: '',
+    selectedMedicine: null,
+    sortColumn: 'name',
+    sortDirection: 'asc',
+    
+    sortBy(column) {
+        if (this.sortColumn === column) {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortColumn = column;
+            this.sortDirection = 'asc';
+        }
+    },
+    
+    showDetails(medicine) {
+        this.selectedMedicine = medicine;
+        this.showDetailsDialog = true;
+    }
+}">
+    <!-- Header Section -->
+    <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold">Medicine Management</h1>
+                <button @click="showAddDialog = true" 
+                        class="bg-white text-blue-700 px-5 py-2 rounded-md shadow-md hover:bg-blue-50 transition duration-300 flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Add New Medicine
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Search and Filter Bar -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="relative w-full md:w-1/3">
+                    <input type="text" x-model="searchQuery" 
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="Search medicines...">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="mt-3 md:mt-0 flex items-center space-x-2">
+                    <span class="text-gray-600">Show:</span>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="10">10 per page</option>
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                        <option value="100">100 per page</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicine List -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th @click="sortBy('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200">
+                                <div class="flex items-center">
+                                    Name
+                                    <span x-show="sortColumn === 'name' && sortDirection === 'asc'"><i class="fas fa-sort-up ml-1"></i></span>
+                                    <span x-show="sortColumn === 'name' && sortDirection === 'desc'"><i class="fas fa-sort-down ml-1"></i></span>
+                                </div>
+                            </th>
+                            <th @click="sortBy('generic_name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200">
+                                <div class="flex items-center">
+                                    Generic Name
+                                    <span x-show="sortColumn === 'generic_name' && sortDirection === 'asc'"><i class="fas fa-sort-up ml-1"></i></span>
+                                    <span x-show="sortColumn === 'generic_name' && sortDirection === 'desc'"><i class="fas fa-sort-down ml-1"></i></span>
+                                </div>
+                            </th>
+                            <th @click="sortBy('brand_name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200">
+                                <div class="flex items-center">
+                                    Brand Name
+                                    <span x-show="sortColumn === 'brand_name' && sortDirection === 'asc'"><i class="fas fa-sort-up ml-1"></i></span>
+                                    <span x-show="sortColumn === 'brand_name' && sortDirection === 'desc'"><i class="fas fa-sort-down ml-1"></i></span>
+                                </div>
+                            </th>
+                            <th @click="sortBy('manufacturer')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200">
+                                <div class="flex items-center">
+                                    Manufacturer
+                                    <span x-show="sortColumn === 'manufacturer' && sortDirection === 'asc'"><i class="fas fa-sort-up ml-1"></i></span>
+                                    <span x-show="sortColumn === 'manufacturer' && sortDirection === 'desc'"><i class="fas fa-sort-down ml-1"></i></span>
+                                </div>
+                            </th>
+                            <th @click="sortBy('created_at')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200">
+                                <div class="flex items-center">
+                                    Created At
+                                    <span x-show="sortColumn === 'created_at' && sortDirection === 'asc'"><i class="fas fa-sort-up ml-1"></i></span>
+                                    <span x-show="sortColumn === 'created_at' && sortDirection === 'desc'"><i class="fas fa-sort-down ml-1"></i></span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for medicine in medicines %}
+                            <tr class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ medicine.name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ medicine.generic_name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ medicine.brand_name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ medicine.manufacturer }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ medicine.created_at|date:"M d, Y" }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button @click="showDetails({{ medicine|safe }})" class="text-blue-600 hover:text-blue-900 mr-3">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <i class="fas fa-prescription-bottle text-5xl text-gray-300 mb-3"></i>
+                                        <p class="text-lg">No medicines found</p>
+                                        <p class="text-sm">Add a new medicine to get started</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="bg-white rounded-lg shadow-md mt-4 p-4 flex items-center justify-between">
+            <div class="flex-1 flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing 
+                        <span class="font-medium">{{ medicines.start_index }}</span>
+                        to
+                        <span class="font-medium">{{ medicines.end_index }}</span>
+                        of
+                        <span class="font-medium">{{ medicines.paginator.count }}</span>
+                        results
+                    </p>
+                </div>
+                <div class="flex space-x-2">
+                    {% if medicines.has_previous %}
+                        <a href="?page={{ medicines.previous_page_number }}&per_page={{ per_page }}" 
+                           class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </a>
+                    {% else %}
+                        <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-300 bg-gray-50 cursor-not-allowed" disabled>
+                            Previous
+                        </button>
+                    {% endif %}
+                    
+                    <div class="hidden md:flex space-x-1">
+                        {% for i in medicines.paginator.page_range %}
+                            {% if i == medicines.number %}
+                                <span class="px-4 py-2 border border-blue-500 rounded-md text-sm font-medium text-white bg-blue-500">
+                                    {{ i }}
+                                </span>
+                            {% elif i > medicines.number|add:"-3" and i < medicines.number|add:"3" %}
+                                <a href="?page={{ i }}&per_page={{ per_page }}" 
+                                   class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    {{ i }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    {% if medicines.has_next %}
+                        <a href="?page={{ medicines.next_page_number }}&per_page={{ per_page }}" 
+                           class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </a>
+                    {% else %}
+                        <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-300 bg-gray-50 cursor-not-allowed" disabled>
+                            Next
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Medicine Dialog -->
+    <div x-show="showAddDialog" 
+         class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50 p-4"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div @click.away="showAddDialog = false" 
+             class="bg-white rounded-lg shadow-xl w-full max-w-3xl transform transition-all"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+            <div class="bg-blue-700 text-white py-4 px-6 rounded-t-lg flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Add New Medicine</h2>
+                <button @click="showAddDialog = false" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'management:medicineMng' %}" class="p-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="col-span-1">
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Medicine Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" required
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="generic_name" class="block text-sm font-medium text-gray-700 mb-1">Generic Name</label>
+                        <input type="text" id="generic_name" name="generic_name" 
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="brand_name" class="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
+                        <input type="text" id="brand_name" name="brand_name" 
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="manufacturer" class="block text-sm font-medium text-gray-700 mb-1">Manufacturer</label>
+                        <input type="text" id="manufacturer" name="manufacturer" 
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="default_dosage" class="block text-sm font-medium text-gray-700 mb-1">Default Dosage</label>
+                        <input type="text" id="default_dosage" name="default_dosage" 
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="default_frequency" class="block text-sm font-medium text-gray-700 mb-1">Default Frequency</label>
+                        <input type="text" id="default_frequency" name="default_frequency" 
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="description" name="description" rows="3"
+                                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="instructions" class="block text-sm font-medium text-gray-700 mb-1">Instructions</label>
+                        <textarea id="instructions" name="instructions" rows="2" placeholder="E.g. 'Take with food...'"
+                                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="side_effects" class="block text-sm font-medium text-gray-700 mb-1">Side Effects</label>
+                        <textarea id="side_effects" name="side_effects" rows="2" placeholder="E.g. 'May cause dizziness...'"
+                                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end space-x-3">
+                    <button type="button" @click="showAddDialog = false"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Add Medicine
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Medicine Details Dialog -->
+    <div x-show="showDetailsDialog" 
+         class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50 p-4"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div @click.away="showDetailsDialog = false" 
+             class="bg-white rounded-lg shadow-xl w-full max-w-3xl transform transition-all"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+            <div class="bg-indigo-700 text-white py-4 px-6 rounded-t-lg flex justify-between items-center">
+                <h2 class="text-xl font-semibold" x-text="selectedMedicine ? selectedMedicine.name : 'Medicine Details'"></h2>
+                <button @click="showDetailsDialog = false" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6" x-show="selectedMedicine">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="col-span-2 md:col-span-1">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Medicine Name</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.name"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Generic Name</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.generic_name || 'Not specified'"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Brand Name</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.brand_name || 'Not specified'"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Manufacturer</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.manufacturer || 'Not specified'"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-2 md:col-span-1">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Usage Information</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Default Dosage</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.default_dosage || 'Not specified'"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Default Frequency</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="selectedMedicine.default_frequency || 'Not specified'"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Created</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="new Date(selectedMedicine.created_at).toLocaleDateString()"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Last Updated</p>
+                                <p class="mt-1 text-base text-gray-900" x-text="new Date(selectedMedicine.updated_at).toLocaleDateString()"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Description</h3>
+                        <p class="text-gray-700" x-text="selectedMedicine.description || 'No description available.'"></p>
+                    </div>
+                    
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Instructions</h3>
+                        <p class="text-gray-700" x-text="selectedMedicine.instructions || 'No specific instructions provided.'"></p>
+                    </div>
+                    
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Side Effects</h3>
+                        <p class="text-gray-700" x-text="selectedMedicine.side_effects || 'No side effects listed.'"></p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-end space-x-3">
+                    <button type="button" @click="showDetailsDialog = false"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Close
+                    </button>
+                    <a :href="`/edit-medicine/${selectedMedicine.uuid}/`" 
+                       class="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Edit Medicine
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('medicineManagement', () => ({
+            showAddDialog: false,
+            showDetailsDialog: false,
+            currentMedicine: null,
+            searchQuery: '',
+            selectedMedicine: null,
+            sortColumn: 'name',
+            sortDirection: 'asc',
+
+            sortBy(column) {
+                if (this.sortColumn === column) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortColumn = column;
+                    this.sortDirection = 'asc';
+                }
+            },
+
+            showDetails(medicine) {
+                this.selectedMedicine = medicine;
+                this.showDetailsDialog = true;
+            }
+        }));
+    });
+</script>
+
+
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+{% endblock scripts %}

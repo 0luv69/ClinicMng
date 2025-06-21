@@ -47,7 +47,7 @@ class Appointment(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="patients_appointments", help_text=" Patient Profile")
-    doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, related_name="doctors_appointments", blank=True, null=True)
     appointment_type = models.CharField(max_length=50, choices=APPOINTMENT_TYPES, default='general_consultation')
     
     time_slot = models.ForeignKey(AppointmentTimeSlot, on_delete=models.SET_NULL, related_name="patients_appointments", blank=True, null=True)
@@ -87,7 +87,6 @@ class Medicine(models.Model):
     brand_name         = models.CharField(max_length=255, blank=True)
     manufacturer        = models.CharField(max_length=255, blank=True)
     description        = models.TextField(blank=True)
-
 
     default_dosage     = models.CharField(max_length=50, blank=True)
     default_frequency  = models.CharField(max_length=100, blank=True)

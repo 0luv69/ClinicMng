@@ -5,8 +5,8 @@
 
 {% block styles %}{% endblock styles %}
 
-{% block pageof %} View Patients{% endblock pageof %}
-{% block linkPageof %} /m/view-patients/ {% endblock linkPageof %}
+{% block pageof %} View Doctors{% endblock pageof %}
+{% block linkPageof %} /m/view-doctors/ {% endblock linkPageof %}
 
 {% block content %}
 
@@ -15,8 +15,8 @@
     <div class="flex-1 overflow-y-auto">
         <div class="p-6 lg:p-10 w-full">
             <div class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-800">Patient Management</h2>
-                <p class="text-gray-600">View and manage your patient appointments</p>
+                <h2 class="text-3xl font-bold text-gray-800">Doctor Management</h2>
+                <p class="text-gray-600">View and manage your Doctor appointments</p>
             </div>
 
             <!-- Search and Filters -->
@@ -42,10 +42,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Patient</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total Appointment Booked</th>
+                                    Doctor</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                    Contact</th>
@@ -74,13 +71,6 @@
                                                 </div>
                                             </div>
                                         </a>
-                                    </td>
-
-                                    <!-- total appoinment booked -->
-                                    <td class="table-cell px-4 py-4 whitespace-nowrap doctor-details">
-                                        <p class="text-sm font-medium text-gray-900" data-patient="{{ each_P.user.first_name }}" >
-                                            {{ each_P.patients_appointments.count }}
-                                        </p>
                                     </td>
 
                                     <!-- Contact Info -->
@@ -292,8 +282,7 @@
 </script>
 
 <script>
-
-    dashboard_nav_all = document.querySelectorAll('.ViewPatients-nav a');
+    dashboard_nav_all = document.querySelectorAll('.ViewDoctors-nav a');
     dashboard_nav_all.forEach((nav) => {
         nav_innertab =
             nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');

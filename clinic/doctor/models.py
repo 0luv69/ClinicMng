@@ -59,8 +59,7 @@ class DoctorProfile(models.Model):
 
 
 class AppointmentDateSlot(models.Model):
-    doctor = models.ForeignKey( DoctorProfile, on_delete=models.CASCADE, related_name='datetime_slots'
-    )
+    doctor = models.ForeignKey( DoctorProfile, on_delete=models.CASCADE, related_name='datetime_slots')
   
     date = models.DateField()
 
