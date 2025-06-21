@@ -7,8 +7,16 @@ app_name = 'management'
 
 
 urlpatterns = [
-    path('management/', management, name='management_dashboard'),
-    path('', management, name='management_dashboard'),
+    path('management/', management_dashboard, name='management_dashboard'),
+    path('', management_dashboard, name='management_dashboard'),
+    path('view-appointments/', ViewAppointmnets, name='viewAppointment'),
+
+    
+
+
+
+
+
     path('m/view-patients/', ViewPatients, name='ViewPatients_m'),
     path('m/view-doctors/', ViewPatients, name='ViewDoctors_m'),
 

@@ -369,27 +369,7 @@ def ViewPatients(request):
 
     return render(request, 'pages/doctor/view_patients.html', context)
 
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Patient Details .")
-def ViewPatientsRecords(request, patient_id):
 
-    profile: Profile = request.user.profile
-    doctor: DoctorProfile = DoctorProfile.objects.get(profile = profile)
-
-    patient: Profile = Profile.objects.get(user__username = patient_id)
-
-
-    lab_reports = patient.lab_reports_profile.all()
-    prescriptions = patient.prescriptions.all()
-
-    context = {
-        "patient": patient,
-        "doctor": doctor,
-        "patient_id": patient_id,
-        "lab_reports": lab_reports,
-        "prescriptions": prescriptions,
-    }
-
-    return render(request, 'pages/doctor/view_patients_records.html', context)
 
 
 
