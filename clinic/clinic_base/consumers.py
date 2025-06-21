@@ -219,7 +219,6 @@ class SignalingConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         message_type = data.get('type')
-        print(f"Received message type: {message_type}")
 
         # Forward SDP and ICE messages to everyone else
         if message_type in ['offer', 'answer', 'ice-candidate']:
@@ -232,6 +231,15 @@ class SignalingConsumer(AsyncWebsocketConsumer):
                 }
             )
         elif message_type == 'call-ended':
+            call_uuid = data.get('roomName')
+
+            # Update the call status to 'ended' in the database
+            call_obj = await database_sync_to_async(Calls.objects.get)(uuid=call_uuid)
+            call_obj.status = 'completed'
+            await database_sync_to_async(lambda: call_obj.save())()
+            
+
+
             # Handle call ended message
             await self.channel_layer.group_send(
                 self.room_group_name,

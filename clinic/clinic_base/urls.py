@@ -10,7 +10,7 @@ from patient.views import view_v_call, send_req_calls, waiting_room, join_v_call
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
-
+ 
     path('account/', include('account.urls')),
 
 

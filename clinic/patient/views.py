@@ -26,7 +26,6 @@ from doctor.models import DoctorProfile, AppointmentDateSlot, AppointmentTimeSlo
 from patient.models import *
 
 from account.utils import log_action
-
 from django.urls import reverse
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -509,14 +508,7 @@ def view_v_call(request: HttpRequest):
             id=profile.id
         ).first()
 
-    payload = {
-            'conv': convs,
-        }    
-
-
-    return render(request, 'pages/patient/list-v-call.html',payload )
-
-
+    return render(request, 'pages/patient/list-v-call.html',{ 'conv': convs,}  )
 
 def send_req_calls(request: HttpRequest, convo_uuid: uuid):
     """Send a request for a video call."""
@@ -540,7 +532,7 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
         )
 
         messages.success(request, _("Video call request sent successfully."))
-        return redirect('patient:waiting_room', calls_uuid=call.uuid)
+        return redirect('patient:join_v_call', calls_uuid=call.uuid)
     except Exception as e:
         print(f"Error: {e}")
         messages.error(request, _("An error occurred while sending the video call request."))
@@ -567,7 +559,6 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
                                                                 'call_obj': calls,
                                                                 'is_caller': is_caller,})
 
-
 def waiting_room(request: HttpRequest, calls_uuid: uuid):
     """Join a video call with a specific conversation ID."""
     profile: Profile = request.user.profile
@@ -586,6 +577,10 @@ def waiting_room(request: HttpRequest, calls_uuid: uuid):
     
     return render(request, 'pages/patient/waiting-room.html', {'conversation': conversation,
                                                                 'call_obj': calls,})
+
+
+
+
 
 @login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
 def message(request: HttpRequest):

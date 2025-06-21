@@ -235,7 +235,7 @@
 
                         <!-- Join Video call  -->
                         <li class="menuListItems joinVCall-nav">
-                            <a href="{% url 'view_v_call' %}"
+                            <a href="{% url 'doctor:view_v_call' %}"
                                 class=" flex items-center py-4 text-black hover:bg-blue-50 rounded px-2 no-underline  hover:border-l-4 border-blue-500 ">
                                 <span class="mr-3">
 
@@ -685,7 +685,7 @@
                 <div class="bg-white w-full max-w-md rounded-lg shadow-lg overflow-y-auto h-4/5  max-h-screen flex flex-col custom-scrollbar">
                     <!-- Simple Header -->
                     <div class="flex justify-between items-center p-4 border-b">
-                        <h3 class="text-lg font-medium text-gray-900">Patient ID</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Doctor ID</h3>
                         <button class="patientCardClose text-gray-400 hover:text-gray-500">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -771,7 +771,7 @@
                         <html>
                             <head>
                             <meta charset="utf-8">
-                            <title>Patient ID</title>
+                            <title>Doctor ID</title>
                             ${styles}
                             <style>@media print { body { margin: 0; } }</style>
                             </head>
