@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -6,14 +6,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from patient.models import *
 from account.models import Profile
 
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+from django.contrib import messages
 
 # Create your views here.
 def management_dashboard(request):
     profile = Profile.objects.get(user=request.user)
     appointments = Appointment.objects.all().order_by('-created_at')[:5]
-
-
-
     context = {
         'profile': profile,
         'appointments': appointments,
@@ -144,7 +145,7 @@ def medicineMng(request):
             instructions=instructions,
             side_effects=side_effects
         )
-        return redirect('medicineMng')  # Avoid resubmitting form on reload
+        return redirect('management:medicineMng')  # Avoid resubmitting form on reload
 
     context = {
         'medicines': page_obj,
@@ -153,3 +154,15 @@ def medicineMng(request):
         'per_page_options': per_page_options,
     }
     return render(request, 'pages/management/medicine_management.html', context)
+
+
+def delete_medicine(request, medicine_uuid):
+    try:
+        medicine = Medicine.objects.get(uuid=medicine_uuid)
+        medicine.delete()
+        messages.success(request, 'Medicine deleted successfully.')
+    except Medicine.DoesNotExist:
+        messages.error(request, 'Medicine not found.')
+    except Exception as e:
+        messages.error(request, f'An error occurred: {str(e)}')
+    return redirect('management:medicineMng')
