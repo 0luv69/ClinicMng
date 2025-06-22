@@ -14,6 +14,7 @@ urlpatterns = [
     path('view-doctors/', ViewDoctors, name='ViewDoctors'),
 
     path('medicine-mng/', medicineMng, name='medicineMng'),
+    path('medicine-mng/<uuid:medicine_uuid>/delete/', delete_medicine, name='deleteMedicine'),
 
     # path('m/d-profile/create/', create_doctor_profile, name='doctor_profile_create'),
     # path('m/d-profile/<slug:slug>/edit/', update_doctor_profile, name='doctor_profile_update'),
