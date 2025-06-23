@@ -1,12 +1,12 @@
 {% extends "pages/management/M_base.html" %}
 {% load static %}
 
-{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+{% block titles %}View Doctors || Nepal's Care {% endblock titles %}
 
 {% block styles %}{% endblock styles %}
 
-{% block pageof %} View Doctors{% endblock pageof %}
-{% block linkPageof %} /m/view-doctors/ {% endblock linkPageof %}
+{% block pageof %} View Doctors {% endblock pageof %}
+{% block linkPageof %} {% url 'management:ViewDoctors' %} {% endblock linkPageof %}
 
 {% block content %}
 
@@ -101,7 +101,6 @@
                                                 class="text-blue-600 hover:text-blue-800 transition-colors">
                                                 View Full Info
                                             </a>
-                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -252,6 +251,817 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Doctor Details Modal -->
+<div id="doctorDetailsModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300">
+    <div class="flex items-center justify-center min-h-screen p-4 text-center sm:block sm:p-0">
+      <!-- Modal panel -->
+      <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full animate-fadeIn">
+        <!-- Header with gradient background and doctor info -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 relative">
+          <div class="absolute top-4 right-4">
+            <button type="button" id="closeModal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-full p-1">
+              <span class="sr-only">Close</span>
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+  
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div class="relative">
+              <div class="h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden ring-4 ring-white shadow-lg">
+                <img id="modal-profile-pic" class="h-full w-full object-cover" src="" alt="Doctor profile">
+              </div>
+              <div class="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 border-2 border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            
+            <div class="text-center md:text-left">
+              <h3 class="text-xl md:text-2xl font-bold text-gray-900" id="modal-name">Dr. Name</h3>
+              <div class="flex items-center justify-center md:justify-start mt-1">
+                <span id="modal-specialization" class="px-3 py-1 text-sm font-medium text-indigo-700 bg-indigo-100 rounded-full">Specialization</span>
+              </div>
+              <div class="flex items-center justify-center md:justify-start mt-3">
+                <div id="modal-stars" class="flex text-amber-400"></div>
+                <span id="modal-rating" class="ml-2 text-sm font-semibold text-gray-900">4.5</span>
+                <span id="modal-reviews" class="ml-1 text-sm text-gray-600">(120 reviews)</span>
+              </div>
+            </div>
+  
+            <div class="md:ml-auto flex flex-col md:flex-row gap-2 mt-3 md:mt-0">
+              <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                </svg>
+                Book Appointment
+              </button>
+              <button class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                Contact
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Tabs navigation -->
+        <div class="border-b border-gray-200 bg-white">
+          <div class="px-6 -mb-px flex space-x-6 overflow-x-auto scrollbar-hide">
+            <button id="tab-basic-info" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 border-indigo-600 text-indigo-600" aria-current="page">
+              Basic Info
+            </button>
+            <button id="tab-professional-info" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 border-transparent text-gray-500 hover:text-indigo-600 hover:border-indigo-300">
+              Professional Info
+            </button>
+            <button id="tab-appointment-info" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 border-transparent text-gray-500 hover:text-indigo-600 hover:border-indigo-300">
+              Appointment Info
+            </button>
+            <button id="tab-date-time-slots" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 border-transparent text-gray-500 hover:text-indigo-600 hover:border-indigo-300">
+              Available Slots
+            </button>
+            <button id="tab-patients" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 border-transparent text-gray-500 hover:text-indigo-600 hover:border-indigo-300">
+              Patients
+            </button>
+          </div>
+        </div>
+  
+        <!-- Tab Content -->
+        <div class="px-6 py-6 bg-white">
+          <!-- Basic Info Tab -->
+          <div id="content-basic-info" class="tab-content block">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                  Contact Information
+                </h5>
+                <div class="space-y-4">
+                  <div class="flex items-center p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-xs font-medium text-gray-500">Email Address</p>
+                      <p id="modal-email" class="text-sm font-medium text-gray-800">email@example.com</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-xs font-medium text-gray-500">Phone Number</p>
+                      <p id="modal-phone" class="text-sm font-medium text-gray-800">+1234567890</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                  </svg>
+                  Personal Information
+                </h5>
+                <div class="space-y-4">
+                  <div class="flex items-center p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-xs font-medium text-gray-500">Gender</p>
+                      <p id="modal-gender" class="text-sm font-medium text-gray-800">Male</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-xs font-medium text-gray-500">Date of Birth</p>
+                      <p id="modal-dob" class="text-sm font-medium text-gray-800">January 1, 1980</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Professional Info Tab -->
+          <div id="content-professional-info" class="tab-content hidden">
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                  <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                    </svg>
+                    Qualifications & Experience
+                  </h5>
+                  <div class="space-y-4">
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Qualifications</p>
+                      <p id="modal-qualifications" class="text-sm text-gray-800">MD, Johns Hopkins University</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Experience</p>
+                      <p id="modal-experience" class="text-sm text-gray-800">10+ years specializing in Cardiology</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                  <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Certification
+                  </h5>
+                  <div class="space-y-4">
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">License Number</p>
+                      <p id="modal-license" class="text-sm text-gray-800">MD12345678</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Board Certification</p>
+                      <p id="modal-certification" class="text-sm text-gray-800">American Board of Medical Specialties</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7 2a1 1 0 011 1v1h3a1 1 0 110 2H9.20l-.867 5.204A4.002 4.002 0 0115 13a4 4 0 01-4 4H7a1 1 0 110-2h4a2 2 0 100-4h-.133l1.03-6.177A1 1 0 0112 5H8V3a1 1 0 011-1z" clip-rule="evenodd" />
+                  </svg>
+                  Languages
+                </h5>
+                <div class="p-3 bg-white rounded-lg shadow-sm">
+                  <p class="text-xs font-medium text-gray-500 mb-1">Languages Spoken</p>
+                  <div id="modal-languages" class="flex flex-wrap gap-2 mt-1">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">English</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Spanish</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Appointment Info Tab -->
+          <div id="content-appointment-info" class="tab-content hidden">
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                  <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    Fees & Availability
+                  </h5>
+                  <div class="space-y-4">
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Consultation Fee</p>
+                      <p id="modal-fees" class="text-sm font-semibold text-gray-800">$150 per session</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Accepting New Patients</p>
+                      <p id="modal-accepting" class="flex items-center text-sm font-medium text-emerald-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Yes
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+                  <h5 class="font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    Ratings & Reviews
+                  </h5>
+                  <div class="space-y-4">
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Overall Rating</p>
+                      <div class="flex items-center">
+                        <div id="modal-stars-detailed" class="flex text-amber-400">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        </div>
+                        <span id="modal-rating-detailed" class="ml-2 text-sm font-semibold text-gray-900">4.8</span>
+                      </div>
+                    </div>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">
+                      <p class="text-xs font-medium text-gray-500 mb-1">Total Reviews</p>
+                      <p id="modal-reviews-detailed" class="text-sm text-gray-800">120 patient reviews</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Date Time Slots Tab -->
+          <div id="content-date-time-slots" class="tab-content hidden">
+            <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <h5 class="font-semibold text-gray-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                  </svg>
+                  Schedule Availability
+                </h5>
+                <div class="mt-2 md:mt-0">
+                  <div class="flex items-center space-x-2">
+                    <span class="inline-block w-3 h-3 rounded-full bg-emerald-500"></span>
+                    <span class="text-xs text-gray-600">Available</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6">
+                <div class="hidden md:block"></div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Mon</div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Tue</div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Wed</div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Thu</div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Fri</div>
+                <div class="text-center font-medium text-gray-600 bg-white rounded-lg p-2 shadow-sm">Sat</div>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h6 class="font-medium text-gray-700 mb-3">Available Dates</h6>
+                  <div id="modal-date-slots" class="grid grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 bg-white rounded-lg shadow-sm">
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 24
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 25
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 26
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 27
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 28
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-emerald-200 bg-emerald-50 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors duration-200">
+                      Jun 29
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <h6 class="font-medium text-gray-700 mb-3">Available Time Slots</h6>
+                  <div id="modal-time-slots" class="grid grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 bg-white rounded-lg shadow-sm">
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      09:00 AM
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      10:00 AM
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      11:00 AM
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      02:00 PM
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      03:00 PM
+                    </button>
+                    <button class="py-2 px-1 rounded-lg border border-indigo-200 bg-indigo-50 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200">
+                      04:00 PM
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Patients Tab -->
+          <div id="content-patients" class="tab-content hidden">
+            <div class="bg-gray-50 rounded-xl p-5 shadow-sm">
+              <div class="flex justify-between items-center mb-4">
+                <h5 class="font-semibold text-gray-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                  </svg>
+                  Patient List
+                </h5>
+                <div class="relative">
+                  <input type="text" placeholder="Search patients..." class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full">
+                  <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="modal-patients" class="max-h-80 overflow-y-auto rounded-lg shadow-sm bg-white">
+                <div class="divide-y divide-gray-200">
+                  <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/24.jpg" alt="">
+                      </div>
+                      <div class="ml-4 flex-1">
+                        <div class="flex items-center justify-between">
+                          <h6 class="text-sm font-medium text-gray-900">Jane Cooper</h6>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Active
+                          </span>
+                        </div>
+                        <p class="text-sm text-gray-500">Last appointment: June 15, 2025</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/16.jpg" alt="">
+                      </div>
+                      <div class="ml-4 flex-1">
+                        <div class="flex items-center justify-between">
+                          <h6 class="text-sm font-medium text-gray-900">Robert Johnson</h6>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Active
+                          </span>
+                        </div>
+                        <p class="text-sm text-gray-500">Last appointment: June 10, 2025</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/67.jpg" alt="">
+                      </div>
+                      <div class="ml-4 flex-1">
+                        <div class="flex items-center justify-between">
+                          <h6 class="text-sm font-medium text-gray-900">Sarah Miller</h6>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Inactive
+                          </span>
+                        </div>
+                        <p class="text-sm text-gray-500">Last appointment: May 22, 2025</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-t border-gray-200">
+          <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200">Report an issue</a>
+          <div class="flex space-x-3">
+            <button type="button" id="closeModalBtn" class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+              Close
+            </button>
+            <button type="button" class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+              Book Appointment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add "View Details" button to each row
+        const patientRows = document.querySelectorAll('#patientTableBody tr:not(.col-span-full)');
+        
+        patientRows.forEach(row => {
+            const actionsCell = row.querySelector('td:last-child div');
+            
+            if (actionsCell) {
+                const viewDetailsBtn = document.createElement('button');
+                viewDetailsBtn.className = 'text-indigo-600 hover:text-indigo-800 transition-colors bg-transparent';
+                viewDetailsBtn.textContent = 'View Details';
+                viewDetailsBtn.dataset.username = row.querySelector('[data-specialization]')?.dataset.specialization || '';
+                viewDetailsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openDoctorModal(this.dataset.username);
+                });
+                
+                actionsCell.prepend(viewDetailsBtn);
+                
+                // Add separator between buttons
+                const separator = document.createElement('span');
+                separator.className = 'text-gray-300 mx-2';
+                separator.textContent = '|';
+                actionsCell.insertBefore(separator, actionsCell.children[1]);
+            }
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('doctorDetailsModal');
+        const closeModalBtns = [
+            document.getElementById('closeModal'),
+            document.getElementById('closeModalBtn')
+        ];
+        
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Set up tab switching
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active state from all tabs
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                    btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                });
+                
+                // Add active state to clicked tab
+                button.classList.add('border-indigo-500', 'text-indigo-600');
+                button.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show the corresponding tab content
+                const contentId = 'content-' + button.id.split('-').slice(1).join('-');
+                document.getElementById(contentId).classList.remove('hidden');
+            });
+        });
+        
+        // Close modal functionality
+        closeModalBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    modal.classList.add('hidden');
+                });
+            }
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+        
+        // Get doctor data and populate modal
+        function openDoctorModal(username) {
+            // Create doctor data from existing patients in the template
+            const doctorData = getDoctorData(username);
+            populateModal(doctorData);
+            
+            // Reset to the first tab
+            tabButtons[0].click();
+            
+            // Show modal
+            modal.classList.remove('hidden');
+        }
+        
+        // Generate doctor data based on the existing DOM structure
+        function getDoctorData(username) {
+            // This would normally come from your Django template context
+            // Here we're parsing it from the DOM as a workaround
+            const row = document.querySelector(`[data-specialization="${username}"]`).closest('tr');
+            
+            // Extract info from row
+            const name = row.querySelector('[data-doctor]')?.dataset.doctor || 'Unknown';
+            const profilePic = row.querySelector('img')?.src || '';
+            const email = row.querySelector('td:nth-child(2) div div:last-child span')?.textContent || '';
+            const phone = row.querySelector('td:nth-child(2) div div:first-child span')?.textContent || '';
+            
+            // Create example doctor data based on your DoctorProfile model
+            return {
+                basicInfo: {
+                    name: name,
+                    profilePic: profilePic,
+                    specialization: 'General Medicine', // Example data
+                    username: username
+                },
+                contactInfo: {
+                    email: email,
+                    phone: phone,
+                    gender: 'Male', // Example data
+                    dob: '1980-01-01' // Example data
+                },
+                professionalInfo: {
+                    qualifications: 'MD, MBBS', // Example data
+                    experience: '10 years', // Example data
+                    licenseNumber: 'MED12345', // Example data
+                    boardCertified: true, // Example data
+                    languages: ['English', 'Spanish'] // Example data
+                },
+                appointmentInfo: {
+                    fees: '$100', // Example data
+                    acceptingNewPatients: true // Example data
+                },
+                rating: {
+                    stars: 4.5, // Example data
+                    totalReviews: 120 // Example data
+                },
+                dateSlots: [
+                    { date: '2025-06-24' }, 
+                    { date: '2025-06-25' },
+                    { date: '2025-06-26' },
+                    { date: '2025-06-27' },
+                    { date: '2025-06-28' }
+                ],
+                timeSlots: [
+                    { date: '2025-06-24', from: '09:00', to: '10:00' },
+                    { date: '2025-06-24', from: '11:00', to: '12:00' },
+                    { date: '2025-06-25', from: '14:00', to: '15:00' },
+                    { date: '2025-06-25', from: '16:00', to: '17:00' },
+                    { date: '2025-06-26', from: '10:00', to: '11:00' }
+                ],
+                patients: getPatientsList()
+            };
+        }
+        
+        // Get patients list using Django template format
+        function getPatientsList() {
+            // This would normally be processed by Django template
+            // Here we're creating example data
+            const patientsList = [];
+            const patientRows = document.querySelectorAll('#patientTableBody tr:not(.col-span-full)');
+            
+            patientRows.forEach(row => {
+                const username = row.querySelector('[data-specialization]')?.dataset.specialization || '';
+                const name = row.querySelector('[data-doctor]')?.dataset.doctor || '';
+                
+                if (username && name) {
+                    patientsList.push({
+                        id: username,
+                        name: name,
+                        email: row.querySelector('td:nth-child(2) div div:last-child span')?.textContent || '',
+                        phone: row.querySelector('td:nth-child(2) div div:first-child span')?.textContent || ''
+                    });
+                }
+            });
+            
+            return patientsList;
+        }
+        
+        // Populate modal with doctor data
+        function populateModal(data) {
+            // Set header details
+            document.getElementById('modal-profile-pic').src = data.basicInfo.profilePic;
+            document.getElementById('modal-profile-pic').alt = data.basicInfo.name;
+            document.getElementById('modal-name').textContent = 'Dr. ' + data.basicInfo.name;
+            document.getElementById('modal-specialization').textContent = data.basicInfo.specialization;
+            
+            // Set rating in header
+            document.getElementById('modal-rating').textContent = data.rating.stars;
+            document.getElementById('modal-reviews').textContent = `(${data.rating.totalReviews} reviews)`;
+            
+            // Generate stars in header
+            const starsContainer = document.getElementById('modal-stars');
+            starsContainer.innerHTML = '';
+            generateStars(starsContainer, data.rating.stars);
+            
+            // Basic Info Tab
+            document.getElementById('modal-email').textContent = data.contactInfo.email;
+            document.getElementById('modal-phone').textContent = data.contactInfo.phone;
+            document.getElementById('modal-gender').textContent = data.contactInfo.gender;
+            document.getElementById('modal-dob').textContent = formatDate(data.contactInfo.dob);
+            
+            // Professional Info Tab
+            document.getElementById('modal-qualifications').textContent = data.professionalInfo.qualifications;
+            document.getElementById('modal-experience').textContent = data.professionalInfo.experience;
+            document.getElementById('modal-license').textContent = data.professionalInfo.licenseNumber;
+            document.getElementById('modal-certification').textContent = data.professionalInfo.boardCertified ? 'Yes' : 'No';
+            document.getElementById('modal-languages').textContent = data.professionalInfo.languages.join(', ');
+            
+            // Appointment Info Tab
+            document.getElementById('modal-fees').textContent = data.appointmentInfo.fees;
+            document.getElementById('modal-accepting').textContent = data.appointmentInfo.acceptingNewPatients ? 'Yes' : 'No';
+            document.getElementById('modal-rating-detailed').textContent = data.rating.stars;
+            document.getElementById('modal-reviews-detailed').textContent = `${data.rating.totalReviews} reviews`;
+            
+            // Generate stars in detailed view
+            const starsDetailedContainer = document.getElementById('modal-stars-detailed');
+            starsDetailedContainer.innerHTML = '';
+            generateStars(starsDetailedContainer, data.rating.stars);
+            
+            // Date slots Tab
+            const dateSlotsContainer = document.getElementById('modal-date-slots');
+            dateSlotsContainer.innerHTML = '';
+            
+            if (data.dateSlots.length > 0) {
+                data.dateSlots.forEach(slot => {
+                    const dateSlot = document.createElement('div');
+                    dateSlot.className = 'text-sm p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 cursor-pointer';
+                    dateSlot.textContent = formatDate(slot.date);
+                    dateSlotsContainer.appendChild(dateSlot);
+                });
+            } else {
+                dateSlotsContainer.innerHTML = '<p class="text-sm text-gray-500 col-span-2">No available date slots</p>';
+            }
+            
+            // Time slots Tab
+            const timeSlotsContainer = document.getElementById('modal-time-slots');
+            timeSlotsContainer.innerHTML = '';
+            
+            if (data.timeSlots.length > 0) {
+                // Group time slots by date
+                const timeSlotsByDate = {};
+                data.timeSlots.forEach(slot => {
+                    if (!timeSlotsByDate[slot.date]) {
+                        timeSlotsByDate[slot.date] = [];
+                    }
+                    timeSlotsByDate[slot.date].push(slot);
+                });
+                
+                // Create sections for each date
+                Object.keys(timeSlotsByDate).forEach(date => {
+                    const dateHeader = document.createElement('div');
+                    dateHeader.className = 'font-medium text-sm text-gray-700 mb-2 mt-3';
+                    dateHeader.textContent = formatDate(date);
+                    timeSlotsContainer.appendChild(dateHeader);
+                    
+                    const timeSlotGrid = document.createElement('div');
+                    timeSlotGrid.className = 'grid grid-cols-2 gap-2';
+                    
+                    timeSlotsByDate[date].forEach(slot => {
+                        const timeSlot = document.createElement('div');
+                        timeSlot.className = 'text-sm p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 cursor-pointer';
+                        timeSlot.textContent = `${slot.from} - ${slot.to}`;
+                        timeSlotGrid.appendChild(timeSlot);
+                    });
+                    
+                    timeSlotsContainer.appendChild(timeSlotGrid);
+                });
+            } else {
+                timeSlotsContainer.innerHTML = '<p class="text-sm text-gray-500">No available time slots</p>';
+            }
+            
+            // Patients Tab
+            const patientsContainer = document.getElementById('modal-patients');
+            patientsContainer.innerHTML = '';
+            
+            if (data.patients.length > 0) {
+                const table = document.createElement('table');
+                table.className = 'min-w-full divide-y divide-gray-200';
+                
+                // Table header
+                const thead = document.createElement('thead');
+                thead.className = 'bg-gray-50';
+                thead.innerHTML = `
+                    <tr>
+                        <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                        <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+                
+                // Table body
+                const tbody = document.createElement('tbody');
+                tbody.className = 'bg-white divide-y divide-gray-200';
+                
+                data.patients.forEach((patient, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                    
+                    tr.innerHTML = `
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">${patient.name}</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">${patient.id}</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">${patient.email || '-'}</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">${patient.phone || '-'}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                table.appendChild(tbody);
+                patientsContainer.appendChild(table);
+            } else {
+                patientsContainer.innerHTML = '<p class="text-sm text-gray-500">No patients listed</p>';
+            }
+        }
+        
+        // Helper function to generate star ratings
+        function generateStars(container, rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('span');
+                if (i < fullStars) {
+                    star.innerHTML = '★';
+                } else if (i === fullStars && halfStar) {
+                    star.innerHTML = '★';
+                    star.className = 'opacity-50';
+                } else {
+                    star.innerHTML = '☆';
+                }
+                container.appendChild(star);
+            }
+        }
+        
+        // Helper function to format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        // Create JSON data for patients using Django template format
+        // This is just a placeholder for the Django template code you provided
+        const patientsJsonTemplate = `
+            doc_info = [
+            {% for each_P in patients %}
+            {
+                id: "{{ each_P.user.username  }}",
+            }
+            {% endfor %}
+            ]
+        `;
+        
+        // This would be processed by Django in the real implementation
+        console.log("Django template example:", patientsJsonTemplate);
+    });
+</script>
+
+
 
 
 {% endblock content %}

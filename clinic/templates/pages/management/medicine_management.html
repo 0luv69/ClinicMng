@@ -1,12 +1,12 @@
 {% extends "pages/management/M_base.html" %}
 {% load static %}
 
-{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+{% block titles %}Medicine Mng || Nepal's Care {% endblock titles %}
 
 {% block styles %}{% endblock styles %}
 
-{% block pageof %} View Patients{% endblock pageof %}
-{% block linkPageof %} /m/view-patients/ {% endblock linkPageof %}
+{% block pageof %} Medicine Mng {% endblock pageof %}
+{% block linkPageof %} {% url 'management:medicineMng' %} {% endblock linkPageof %}
 
 {% block content %}
 
@@ -752,385 +752,392 @@
 
 <!-- JavaScript for the medicine management app -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Medicine data from Django template
-    const medicines = [
-        {% for medicine in medicines %}
-        {
-            id: "{{ medicine.id }}",
-            uuid: "{{ medicine.uuid }}",
-            name: "{{ medicine.name|escapejs }}",
-            generic_name: "{{ medicine.generic_name|escapejs }}",
-            brand_name: "{{ medicine.brand_name|escapejs }}",
-            manufacturer: "{{ medicine.manufacturer|escapejs }}",
-            description: "{{ medicine.description|escapejs }}",
-            default_dosage: "{{ medicine.default_dosage|escapejs }}",
-            default_frequency: "{{ medicine.default_frequency|escapejs }}",
-            instructions: "{{ medicine.instructions|escapejs }}",
-            side_effects: "{{ medicine.side_effects|escapejs }}",
-            created_at: "{{ medicine.created_at|date:'Y-m-d H:i:s' }}",
-            updated_at: "{{ medicine.updated_at|date:'Y-m-d H:i:s' }}"
-        },
-        {% endfor %}
-    ]; 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Medicine data from Django template
+        const medicines = [
+            {% for medicine in medicines %}
+            {
+                id: "{{ medicine.id }}",
+                uuid: "{{ medicine.uuid }}",
+                name: "{{ medicine.name|escapejs }}",
+                generic_name: "{{ medicine.generic_name|escapejs }}",
+                brand_name: "{{ medicine.brand_name|escapejs }}",
+                manufacturer: "{{ medicine.manufacturer|escapejs }}",
+                description: "{{ medicine.description|escapejs }}",
+                default_dosage: "{{ medicine.default_dosage|escapejs }}",
+                default_frequency: "{{ medicine.default_frequency|escapejs }}",
+                instructions: "{{ medicine.instructions|escapejs }}",
+                side_effects: "{{ medicine.side_effects|escapejs }}",
+                created_at: "{{ medicine.created_at|date:'Y-m-d H:i:s' }}",
+                updated_at: "{{ medicine.updated_at|date:'Y-m-d H:i:s' }}"
+            },
+            {% endfor %}
+        ]; 
 
-    
-    // Initialize dialog functionality
-    initializeDialogs();
-    
-    // Initialize search and filtering
-    initializeSearchAndFiltering();
-    
-    // Initialize sorting
-    initializeSorting();
-    
-    // Initialize tabs in details view
-    initializeTabs();
-    
-    // Initialize dialog functionality
-    function initializeDialogs() {
-        // Add Medicine Dialog
-        const addMedicineDialog = document.getElementById('addMedicineDialog');
-        const openAddDialogBtn = document.getElementById('openAddDialogBtn');
-        const closeAddDialogBtn = document.getElementById('closeAddDialogBtn');
-        const cancelAddMedicineBtn = document.getElementById('cancelAddMedicineBtn');
-        const emptyAddMedicineBtn = document.getElementById('emptyAddMedicineBtn');
         
-        // Open add dialog
-        openAddDialogBtn.addEventListener('click', () => {
-            addMedicineDialog.classList.remove('hidden');
-        });
+        // Initialize dialog functionality
+        initializeDialogs();
         
-        // Close add dialog
-        [closeAddDialogBtn, cancelAddMedicineBtn].forEach(btn => {
-            btn.addEventListener('click', () => {
-                addMedicineDialog.classList.add('hidden');
-            });
-        });
+        // Initialize search and filtering
+        initializeSearchAndFiltering();
         
-        // Empty state add button
-        if (emptyAddMedicineBtn) {
-            emptyAddMedicineBtn.addEventListener('click', () => {
+        // Initialize sorting
+        initializeSorting();
+        
+        // Initialize tabs in details view
+        initializeTabs();
+        
+        // Initialize dialog functionality
+        function initializeDialogs() {
+            // Add Medicine Dialog
+            const addMedicineDialog = document.getElementById('addMedicineDialog');
+            const openAddDialogBtn = document.getElementById('openAddDialogBtn');
+            const closeAddDialogBtn = document.getElementById('closeAddDialogBtn');
+            const cancelAddMedicineBtn = document.getElementById('cancelAddMedicineBtn');
+            const emptyAddMedicineBtn = document.getElementById('emptyAddMedicineBtn');
+            
+            // Open add dialog
+            openAddDialogBtn.addEventListener('click', () => {
                 addMedicineDialog.classList.remove('hidden');
             });
-        }
-        
-        // Medicine Details Dialog
-        const medicineDetailsDialog = document.getElementById('medicineDetailsDialog');
-        const closeDetailsDialogBtn = document.getElementById('closeDetailsDialogBtn');
-        const closeDetailsBtnBottom = document.getElementById('closeDetailsBtnBottom');
-        const viewMedicineBtns = document.querySelectorAll('.view-medicine-btn');
-        
-        // Close details dialog
-        [closeDetailsDialogBtn, closeDetailsBtnBottom].forEach(btn => {
-            btn.addEventListener('click', () => {
-                medicineDetailsDialog.classList.add('hidden');
+            
+            // Close add dialog
+            [closeAddDialogBtn, cancelAddMedicineBtn].forEach(btn => {
+                btn.addEventListener('click', () => {
+                    addMedicineDialog.classList.add('hidden');
+                });
             });
-        });
-        
-        // View medicine details
-        viewMedicineBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const medicineId = btn.getAttribute('data-medicine-id');
-                const medicine = medicines.find(m => m.id === medicineId);
-                if (medicine) {
-                    displayMedicineDetails(medicine);
-                    medicineDetailsDialog.classList.remove('hidden');
+            
+            // Empty state add button
+            if (emptyAddMedicineBtn) {
+                emptyAddMedicineBtn.addEventListener('click', () => {
+                    addMedicineDialog.classList.remove('hidden');
+                });
+            }
+            
+            // Medicine Details Dialog
+            const medicineDetailsDialog = document.getElementById('medicineDetailsDialog');
+            const closeDetailsDialogBtn = document.getElementById('closeDetailsDialogBtn');
+            const closeDetailsBtnBottom = document.getElementById('closeDetailsBtnBottom');
+            const viewMedicineBtns = document.querySelectorAll('.view-medicine-btn');
+            
+            // Close details dialog
+            [closeDetailsDialogBtn, closeDetailsBtnBottom].forEach(btn => {
+                btn.addEventListener('click', () => {
+                    medicineDetailsDialog.classList.add('hidden');
+                });
+            });
+            
+            // View medicine details
+            viewMedicineBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const medicineId = btn.getAttribute('data-medicine-id');
+                    const medicine = medicines.find(m => m.id === medicineId);
+                    if (medicine) {
+                        displayMedicineDetails(medicine);
+                        medicineDetailsDialog.classList.remove('hidden');
+                    }
+                });
+            });
+            
+            // Close dialogs when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target === addMedicineDialog) {
+                    addMedicineDialog.classList.add('hidden');
+                }
+                if (event.target === medicineDetailsDialog) {
+                    medicineDetailsDialog.classList.add('hidden');
                 }
             });
-        });
-        
-        // Close dialogs when clicking outside
-        window.addEventListener('click', (event) => {
-            if (event.target === addMedicineDialog) {
-                addMedicineDialog.classList.add('hidden');
-            }
-            if (event.target === medicineDetailsDialog) {
-                medicineDetailsDialog.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Display medicine details in the dialog
-    function displayMedicineDetails(medicine) {
-        // Update medicine name in title
-        document.getElementById('detailMedicineName').textContent = medicine.name;
-        
-        // Basic information tab
-        document.getElementById('detail-name').textContent = medicine.name;
-        document.getElementById('detail-generic-name').textContent = medicine.generic_name || '—';
-        document.getElementById('detail-brand-name').textContent = medicine.brand_name || '—';
-        document.getElementById('detail-manufacturer').textContent = medicine.manufacturer || '—';
-        document.getElementById('detail-uuid').textContent = medicine.uuid;
-        document.getElementById('detail-created-at').textContent = formatDate(medicine.created_at);
-        document.getElementById('detail-updated-at').textContent = formatDate(medicine.updated_at);
-        document.getElementById('detail-description').textContent = medicine.description || 'No description available.';
-        
-        // Usage tab
-        document.getElementById('detail-dosage').textContent = medicine.default_dosage || 'Not specified';
-        document.getElementById('detail-frequency').textContent = medicine.default_frequency || 'Not specified';
-        document.getElementById('detail-instructions').textContent = medicine.instructions || 'No specific instructions provided.';
-        
-        // Side effects tab
-        const sideEffectsElem = document.getElementById('detail-side-effects');
-        const sideEffectsContent = document.getElementById('detail-side-effects-content');
-        const sideEffectsEmpty = document.getElementById('detail-side-effects-empty');
-        
-        if (medicine.side_effects && medicine.side_effects.trim() !== '') {
-            sideEffectsElem.textContent = medicine.side_effects;
-            sideEffectsContent.classList.remove('hidden');
-            sideEffectsEmpty.classList.add('hidden');
-        } else {
-            sideEffectsContent.classList.add('hidden');
-            sideEffectsEmpty.classList.remove('hidden');
         }
         
-        // Set edit URL
-        const editBtn = document.getElementById('editMedicineBtn');
-        editBtn.setAttribute('href', `/edit-medicine/${medicine.uuid}/`);
-    }
-    
-    // Initialize search and filtering
-    function initializeSearchAndFiltering() {
-        const searchInput = document.getElementById('searchInput');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const medicineRows = document.querySelectorAll('.medicine-row');
-        const noMedicinesRow = document.getElementById('noMedicinesRow');
-        const emptySearchMessage = document.getElementById('emptySearchMessage');
-        const emptyDefaultMessage = document.getElementById('emptyDefaultMessage');
-        const resultCount = document.getElementById('resultCount');
-        const currentCount = document.getElementById('currentCount');
+        // Display medicine details in the dialog
+        function displayMedicineDetails(medicine) {
+            // Update medicine name in title
+            document.getElementById('detailMedicineName').textContent = medicine.name;
+            
+            // Basic information tab
+            document.getElementById('detail-name').textContent = medicine.name;
+            document.getElementById('detail-generic-name').textContent = medicine.generic_name || '—';
+            document.getElementById('detail-brand-name').textContent = medicine.brand_name || '—';
+            document.getElementById('detail-manufacturer').textContent = medicine.manufacturer || '—';
+            document.getElementById('detail-uuid').textContent = medicine.uuid;
+            document.getElementById('detail-created-at').textContent = formatDate(medicine.created_at);
+            document.getElementById('detail-updated-at').textContent = formatDate(medicine.updated_at);
+            document.getElementById('detail-description').textContent = medicine.description || 'No description available.';
+            
+            // Usage tab
+            document.getElementById('detail-dosage').textContent = medicine.default_dosage || 'Not specified';
+            document.getElementById('detail-frequency').textContent = medicine.default_frequency || 'Not specified';
+            document.getElementById('detail-instructions').textContent = medicine.instructions || 'No specific instructions provided.';
+            
+            // Side effects tab
+            const sideEffectsElem = document.getElementById('detail-side-effects');
+            const sideEffectsContent = document.getElementById('detail-side-effects-content');
+            const sideEffectsEmpty = document.getElementById('detail-side-effects-empty');
+            
+            if (medicine.side_effects && medicine.side_effects.trim() !== '') {
+                sideEffectsElem.textContent = medicine.side_effects;
+                sideEffectsContent.classList.remove('hidden');
+                sideEffectsEmpty.classList.add('hidden');
+            } else {
+                sideEffectsContent.classList.add('hidden');
+                sideEffectsEmpty.classList.remove('hidden');
+            }
+            
+            // Set edit URL
+            const editBtn = document.getElementById('editMedicineBtn');
+            editBtn.setAttribute('href', `/edit-medicine/${medicine.uuid}/`);
+        }
         
-        let activeFilter = 'all';
-        let searchTerm = '';
-        
-        // Search input event
-        searchInput.addEventListener('input', () => {
-            searchTerm = searchInput.value.toLowerCase();
-            filterMedicines();
-        });
-        
-        // Filter button clicks
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(b => {
-                    b.classList.remove('bg-indigo-100', 'text-indigo-800', 'border-indigo-300');
-                    b.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-200', 'hover:bg-gray-200');
-                });
-                
-                // Add active class to clicked button
-                btn.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-200', 'hover:bg-gray-200');
-                btn.classList.add('bg-indigo-100', 'text-indigo-800', 'border-indigo-300');
-                
-                // Set active filter
-                activeFilter = btn.getAttribute('data-filter');
+        // Initialize search and filtering
+        function initializeSearchAndFiltering() {
+            const searchInput = document.getElementById('searchInput');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const medicineRows = document.querySelectorAll('.medicine-row');
+            const noMedicinesRow = document.getElementById('noMedicinesRow');
+            const emptySearchMessage = document.getElementById('emptySearchMessage');
+            const emptyDefaultMessage = document.getElementById('emptyDefaultMessage');
+            const resultCount = document.getElementById('resultCount');
+            const currentCount = document.getElementById('currentCount');
+            
+            let activeFilter = 'all';
+            let searchTerm = '';
+            
+            // Search input event
+            searchInput.addEventListener('input', () => {
+                searchTerm = searchInput.value.toLowerCase();
                 filterMedicines();
             });
-        });
-        
-        // Filter medicines based on search term and active filter
-        function filterMedicines() {
-            let visibleCount = 0;
             
-            medicineRows.forEach(row => {
-                const name = row.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
-                const genericName = row.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
-                const brandName = row.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
-                const manufacturer = row.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
-                
-                const hasGeneric = row.getAttribute('data-generic') === 'true';
-                const hasBrand = row.getAttribute('data-brand') === 'true';
-                const createdDate = row.getAttribute('data-created');
-                
-                // Check if matches search term
-                const matchesSearch = searchTerm === '' || 
-                    name.includes(searchTerm) || 
-                    genericName.includes(searchTerm) || 
-                    brandName.includes(searchTerm) || 
-                    manufacturer.includes(searchTerm);
-                
-                // Check if matches active filter
-                let matchesFilter = true;
-                if (activeFilter === 'generic') {
-                    matchesFilter = hasGeneric;
-                } else if (activeFilter === 'brand') {
-                    matchesFilter = hasBrand;
-                } else if (activeFilter === 'recent') {
-                    const oneWeekAgo = new Date();
-                    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                    const createdDateTime = new Date(createdDate);
-                    matchesFilter = createdDateTime >= oneWeekAgo;
-                }
-                
-                // Show or hide row
-                if (matchesSearch && matchesFilter) {
-                    row.classList.remove('hidden');
-                    visibleCount++;
-                } else {
-                    row.classList.add('hidden');
-                }
-            });
-            
-            // Update result count
-            resultCount.textContent = `${visibleCount} results`;
-            currentCount.textContent = visibleCount;
-            
-            // Show/hide empty state
-            if (visibleCount === 0) {
-                if (noMedicinesRow) {
-                    noMedicinesRow.classList.remove('hidden');
+            // Filter button clicks
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(b => {
+                        b.classList.remove('bg-indigo-100', 'text-indigo-800', 'border-indigo-300');
+                        b.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-200', 'hover:bg-gray-200');
+                    });
                     
-                    if (searchTerm || activeFilter !== 'all') {
-                        emptySearchMessage.style.display = 'block';
-                        emptyDefaultMessage.style.display = 'none';
-                    } else {
-                        emptySearchMessage.style.display = 'none';
-                        emptyDefaultMessage.style.display = 'block';
+                    // Add active class to clicked button
+                    btn.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-200', 'hover:bg-gray-200');
+                    btn.classList.add('bg-indigo-100', 'text-indigo-800', 'border-indigo-300');
+                    
+                    // Set active filter
+                    activeFilter = btn.getAttribute('data-filter');
+                    filterMedicines();
+                });
+            });
+            
+            // Filter medicines based on search term and active filter
+            function filterMedicines() {
+                let visibleCount = 0;
+                
+                medicineRows.forEach(row => {
+                    const name = row.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
+                    const genericName = row.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
+                    const brandName = row.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
+                    const manufacturer = row.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
+                    
+                    const hasGeneric = row.getAttribute('data-generic') === 'true';
+                    const hasBrand = row.getAttribute('data-brand') === 'true';
+                    const createdDate = row.getAttribute('data-created');
+                    
+                    // Check if matches search term
+                    const matchesSearch = searchTerm === '' || 
+                        name.includes(searchTerm) || 
+                        genericName.includes(searchTerm) || 
+                        brandName.includes(searchTerm) || 
+                        manufacturer.includes(searchTerm);
+                    
+                    // Check if matches active filter
+                    let matchesFilter = true;
+                    if (activeFilter === 'generic') {
+                        matchesFilter = hasGeneric;
+                    } else if (activeFilter === 'brand') {
+                        matchesFilter = hasBrand;
+                    } else if (activeFilter === 'recent') {
+                        const oneWeekAgo = new Date();
+                        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                        const createdDateTime = new Date(createdDate);
+                        matchesFilter = createdDateTime >= oneWeekAgo;
                     }
-                }
-            } else if (noMedicinesRow) {
-                noMedicinesRow.classList.add('hidden');
-            }
-        }
-    }
-    
-    // Initialize sorting
-    function initializeSorting() {
-        const sortHeaders = document.querySelectorAll('.sort-header');
-        let currentSort = 'name';
-        let currentDirection = 'asc';
-        
-        // Set initial sort
-        updateSortIndicator('name', 'asc');
-        
-        sortHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                const column = header.getAttribute('data-sort');
-                
-                if (currentSort === column) {
-                    // Toggle direction
-                    currentDirection = currentDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    // New column
-                    currentSort = column;
-                    currentDirection = 'asc';
-                }
-                
-                sortMedicines(column, currentDirection);
-                updateSortIndicator(column, currentDirection);
-            });
-        });
-        
-        function sortMedicines(column, direction) {
-            const tbody = document.getElementById('medicineTableBody');
-            const rows = Array.from(tbody.querySelectorAll('tr.medicine-row'));
-            
-            // Sort rows
-            rows.sort((a, b) => {
-                let aValue, bValue;
-                
-                if (column === 'name') {
-                    aValue = a.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
-                    bValue = b.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
-                } else if (column === 'generic_name') {
-                    aValue = a.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
-                    bValue = b.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
-                } else if (column === 'brand_name') {
-                    aValue = a.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
-                    bValue = b.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
-                } else if (column === 'manufacturer') {
-                    aValue = a.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
-                    bValue = b.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
-                } else if (column === 'created_at') {
-                    aValue = a.getAttribute('data-created');
-                    bValue = b.getAttribute('data-created');
-                }
-                
-                if (direction === 'asc') {
-                    return aValue > bValue ? 1 : -1;
-                } else {
-                    return aValue < bValue ? 1 : -1;
-                }
-            });
-            
-            // Reorder rows
-            rows.forEach(row => {
-                tbody.appendChild(row);
-            });
-            
-            // Ensure "No medicines found" row is at the end
-            const noMedicinesRow = document.getElementById('noMedicinesRow');
-            if (noMedicinesRow) {
-                tbody.appendChild(noMedicinesRow);
-            }
-        }
-        
-        function updateSortIndicator(column, direction) {
-            // Hide all indicators
-            document.querySelectorAll('.sort-icon').forEach(icon => {
-                icon.classList.add('hidden');
-            });
-            
-            // Show the active indicator
-            const header = document.querySelector(`[data-sort="${column}"]`);
-            if (header) {
-                const indicator = header.querySelector(`.sort-${direction}`);
-                if (indicator) {
-                    indicator.classList.remove('hidden');
-                }
-            }
-        }
-    }
-    
-    // Initialize tabs in details view
-    function initializeTabs() {
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tab = button.getAttribute('data-tab');
-                
-                // Update tab buttons
-                tabButtons.forEach(btn => {
-                    if (btn.getAttribute('data-tab') === tab) {
-                        btn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                        btn.classList.add('border-indigo-500', 'text-indigo-600');
+                    
+                    // Show or hide row
+                    if (matchesSearch && matchesFilter) {
+                        row.classList.remove('hidden');
+                        visibleCount++;
                     } else {
-                        btn.classList.remove('border-indigo-500', 'text-indigo-600');
-                        btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        row.classList.add('hidden');
                     }
                 });
                 
-                // Update tab contents
-                tabContents.forEach(content => {
-                    if (content.id === `tabContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`) {
-                        content.classList.remove('hidden');
-                    } else {
-                        content.classList.add('hidden');
+                // Update result count
+                resultCount.textContent = `${visibleCount} results`;
+                currentCount.textContent = visibleCount;
+                
+                // Show/hide empty state
+                if (visibleCount === 0) {
+                    if (noMedicinesRow) {
+                        noMedicinesRow.classList.remove('hidden');
+                        
+                        if (searchTerm || activeFilter !== 'all') {
+                            emptySearchMessage.style.display = 'block';
+                            emptyDefaultMessage.style.display = 'none';
+                        } else {
+                            emptySearchMessage.style.display = 'none';
+                            emptyDefaultMessage.style.display = 'block';
+                        }
                     }
+                } else if (noMedicinesRow) {
+                    noMedicinesRow.classList.add('hidden');
+                }
+            }
+        }
+        
+        // Initialize sorting
+        function initializeSorting() {
+            const sortHeaders = document.querySelectorAll('.sort-header');
+            let currentSort = 'name';
+            let currentDirection = 'asc';
+            
+            // Set initial sort
+            updateSortIndicator('name', 'asc');
+            
+            sortHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const column = header.getAttribute('data-sort');
+                    
+                    if (currentSort === column) {
+                        // Toggle direction
+                        currentDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        // New column
+                        currentSort = column;
+                        currentDirection = 'asc';
+                    }
+                    
+                    sortMedicines(column, currentDirection);
+                    updateSortIndicator(column, currentDirection);
                 });
             });
-        });
-    }
-    
-    // Helper function to format dates
-    function formatDate(dateString) {
-        if (!dateString) return '—';
-        const date = new Date(dateString);
-        return date.toLocaleString();
-    }
-});
+            
+            function sortMedicines(column, direction) {
+                const tbody = document.getElementById('medicineTableBody');
+                const rows = Array.from(tbody.querySelectorAll('tr.medicine-row'));
+                
+                // Sort rows
+                rows.sort((a, b) => {
+                    let aValue, bValue;
+                    
+                    if (column === 'name') {
+                        aValue = a.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
+                        bValue = b.querySelector('td:first-child .text-sm.font-medium').textContent.toLowerCase();
+                    } else if (column === 'generic_name') {
+                        aValue = a.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
+                        bValue = b.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
+                    } else if (column === 'brand_name') {
+                        aValue = a.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
+                        bValue = b.querySelector('td:nth-child(3) .text-sm').textContent.toLowerCase();
+                    } else if (column === 'manufacturer') {
+                        aValue = a.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
+                        bValue = b.querySelector('td:nth-child(4) .text-sm').textContent.toLowerCase();
+                    } else if (column === 'created_at') {
+                        aValue = a.getAttribute('data-created');
+                        bValue = b.getAttribute('data-created');
+                    }
+                    
+                    if (direction === 'asc') {
+                        return aValue > bValue ? 1 : -1;
+                    } else {
+                        return aValue < bValue ? 1 : -1;
+                    }
+                });
+                
+                // Reorder rows
+                rows.forEach(row => {
+                    tbody.appendChild(row);
+                });
+                
+                // Ensure "No medicines found" row is at the end
+                const noMedicinesRow = document.getElementById('noMedicinesRow');
+                if (noMedicinesRow) {
+                    tbody.appendChild(noMedicinesRow);
+                }
+            }
+            
+            function updateSortIndicator(column, direction) {
+                // Hide all indicators
+                document.querySelectorAll('.sort-icon').forEach(icon => {
+                    icon.classList.add('hidden');
+                });
+                
+                // Show the active indicator
+                const header = document.querySelector(`[data-sort="${column}"]`);
+                if (header) {
+                    const indicator = header.querySelector(`.sort-${direction}`);
+                    if (indicator) {
+                        indicator.classList.remove('hidden');
+                    }
+                }
+            }
+        }
+        
+        // Initialize tabs in details view
+        function initializeTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.getAttribute('data-tab');
+                    
+                    // Update tab buttons
+                    tabButtons.forEach(btn => {
+                        if (btn.getAttribute('data-tab') === tab) {
+                            btn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                            btn.classList.add('border-indigo-500', 'text-indigo-600');
+                        } else {
+                            btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                            btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        }
+                    });
+                    
+                    // Update tab contents
+                    tabContents.forEach(content => {
+                        if (content.id === `tabContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Helper function to format dates
+        function formatDate(dateString) {
+            if (!dateString) return '—';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+    });
 </script>
-
-
-
-
 
 {% endblock content %}
 
 
 
 {% block scripts %}
+
+<script>
+
+    dashboard_nav_all = document.querySelectorAll('.medicine-nav a');
+    console.log(dashboard_nav_all);
+    
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
+    });
+</script>
 {% endblock scripts %}

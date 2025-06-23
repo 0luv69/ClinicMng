@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.contrib import messages
+from django.db.models import ProtectedError
 
 # Create your views here.
 def management_dashboard(request):
@@ -163,6 +164,8 @@ def delete_medicine(request, medicine_uuid):
         messages.success(request, 'Medicine deleted successfully.')
     except Medicine.DoesNotExist:
         messages.error(request, 'Medicine not found.')
+    except ProtectedError:
+        messages.error(request, 'Cannot delete this medicine as it is referenced in prescriptions.')
     except Exception as e:
-        messages.error(request, f'An error occurred: {str(e)}')
+        messages.error(request, 'An unexpected error occurred.')
     return redirect('management:medicineMng')

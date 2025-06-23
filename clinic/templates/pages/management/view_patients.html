@@ -1,12 +1,12 @@
 {% extends "pages/management/M_base.html" %}
 {% load static %}
 
-{% block titles %}Dashboard || Nepal's Care {% endblock titles %}
+{% block titles %}View Patients || Nepal's Care {% endblock titles %}
 
 {% block styles %}{% endblock styles %}
 
-{% block pageof %} View Patients{% endblock pageof %}
-{% block linkPageof %} /m/view-patients/ {% endblock linkPageof %}
+{% block pageof %} View Patients {% endblock pageof %}
+{% block linkPageof %} {% url 'management:ViewPatients' %} {% endblock linkPageof %}
 
 {% block content %}
 
