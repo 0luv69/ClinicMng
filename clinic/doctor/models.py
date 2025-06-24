@@ -20,8 +20,6 @@ class DoctorProfile(models.Model):
         ('other', 'Other'),
     ]
 
-   
-
     specialization = models.CharField(max_length=100, choices=SPECIALIZATIONS)
 
     qualifications = models.TextField(blank=True, null=True)
@@ -34,11 +32,8 @@ class DoctorProfile(models.Model):
     star_rating = models.FloatField(null=True, blank=True, default=3)
     total_reviews =  models.IntegerField(null=True)
 
-
-
     fees = models.DecimalField(max_digits=10, decimal_places=2)
     accepts_new_patients = models.BooleanField(default=True)
-
 
     slug = models.SlugField(unique=True, blank=True)
 

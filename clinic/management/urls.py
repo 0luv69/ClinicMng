@@ -11,7 +11,9 @@ urlpatterns = [
     path('', management_dashboard, name='management_dashboard'),
     path('view-appointments/', ViewAppointmnets, name='viewAppointment'),
     path('view-patients/', ViewPatients, name='ViewPatients'),
+
     path('view-doctors/', ViewDoctors, name='ViewDoctors'),
+    path('edit-doc/', EditDoctorInfo, name='edit_doctor_info'),
 
     path('medicine-mng/', medicineMng, name='medicineMng'),
     path('medicine-mng/<uuid:medicine_uuid>/delete/', delete_medicine, name='deleteMedicine'),
