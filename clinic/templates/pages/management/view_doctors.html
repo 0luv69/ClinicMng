@@ -819,8 +819,6 @@
   </div>
 </div>
 
-<!-- Success/Error Messages -->
-<div id="messageContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
 <script>
   class FastDoctorModalWithEdit {
@@ -1222,13 +1220,25 @@
           // Update display
           this.populateBasicInfo(this.currentDoctor);
           this.hidePersonalEditMode();
-          this.showMessage('Personal information updated successfully!', 'success');
+          showNotification({
+              color: "bg-green-500",
+              title: "Update success.",
+              message: "Personal information updated successfully!."
+          });
         } else {
-          this.showMessage(result.message || 'Failed to update personal information', 'error');
+          showNotification({
+            color: "bg-red-500",
+            title: "Update Error.",
+            message: result.message || 'Failed to update personal information'
+        });
         }
       } catch (error) {
         console.error('Error saving personal info:', error);
-        this.showMessage('An error occurred while saving', 'error');
+        showNotification({
+          color: "bg-red-500",
+          title: "Update Error.",
+          message: result.message || 'Failed to update personal information'
+      });
       }
     }
   
@@ -1338,13 +1348,25 @@
           // Update display
           this.populateProfessionalInfo(this.currentDoctor);
           this.hideProfessionalEditMode();
-          this.showMessage('Professional information updated successfully!', 'success');
+          showNotification({
+            color: "bg-green-500",
+            title: "Update Professional success.",
+            message: 'Professional information updated successfully!'
+        });
         } else {
-          this.showMessage(result.message || 'Failed to update professional information', 'error');
+            showNotification({
+              color: "bg-red-500",
+              title: "Update Professional Error.",
+              message: result.message || 'Failed to update professional information'
+          });
         }
       } catch (error) {
         console.error('Error saving professional info:', error);
-        this.showMessage('An error occurred while saving', 'error');
+        showNotification({
+          color: "bg-red-500",
+          title: "Update Professional Error.",
+          message: error || 'An error occurred while saving'
+      });
       }
     }
   
@@ -1396,13 +1418,25 @@
           // Update display
           this.populateAppointments(this.currentDoctor);
           this.hideFeesEditMode();
-          this.showMessage('Fees and availability updated successfully!', 'success');
+          showNotification({
+            color: "bg-green-500",
+            title: "Update Fees success.",
+            message: 'Fees and availability updated successfully!'
+          });
         } else {
-          this.showMessage(result.message || 'Failed to update fees information', 'error');
+          showNotification({
+            color: "bg-red-500",
+            title: "Update Fees Error.",
+            message: result.message || 'Failed to update fees information'
+          });
         }
       } catch (error) {
         console.error('Error saving fees info:', error);
-        this.showMessage('An error occurred while saving', 'error');
+        showNotification({
+          color: "bg-red-500",
+          title: "Update Fees Error.",
+          message: error || 'An error occurred while saving'
+        });
       }
     }
   
@@ -1429,42 +1463,7 @@
       return specializations[code] || code;
     }
   
-    showMessage(message, type = 'info') {
-      const container = document.getElementById('messageContainer');
-      const messageId = `message_${Date.now()}`;
-      
-      const bgColor = type === 'success' ? 'bg-green-500' : 
-                     type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-      
-      const messageHTML = `
-        <div id="${messageId}" class="${bgColor} text-white px-4 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300">
-          <div class="flex items-center justify-between">
-            <span class="text-sm font-medium">${message}</span>
-            <button onclick="document.getElementById('${messageId}').remove()" class="ml-3 text-white hover:text-gray-200">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      `;
-      
-      container.insertAdjacentHTML('beforeend', messageHTML);
-      
-      // Animate in
-      setTimeout(() => {
-        document.getElementById(messageId).classList.remove('translate-x-full');
-      }, 100);
-      
-      // Auto remove after 5 seconds
-      setTimeout(() => {
-        const messageEl = document.getElementById(messageId);
-        if (messageEl) {
-          messageEl.classList.add('translate-x-full');
-          setTimeout(() => messageEl.remove(), 300);
-        }
-      }, 5000);
-    }
+    
   
     populateData(doctor) {
       // Use batch DOM updates for better performance
