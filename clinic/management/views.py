@@ -103,6 +103,12 @@ def update_profile(request, username):
     profile = get_object_or_404(Profile, user=user)
     
     try:
+
+        if 'full_name' in request.POST:
+            full_name = request.POST.get('full_name', '').strip()
+            user.first_name = full_name
+            user.save()
+
         # Handle profile picture if provided
         if 'profile_pic' in request.FILES:
             profile.profile_pic = request.FILES['profile_pic']
@@ -124,6 +130,9 @@ def update_profile(request, username):
         profile.email_notification = 'email_notification' in request.POST
         profile.sms_notification = 'sms_notification' in request.POST
         profile.reminders = 'reminders' in request.POST
+
+        profile.is_active = 'is_active' in request.POST
+        profile.is_verified = 'is_verified' in request.POST
         
         # Save the profile
         profile.save()
