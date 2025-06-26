@@ -17,6 +17,10 @@ from decimal import Decimal, InvalidOperation
 
 from django.db import transaction
 
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 def management_dashboard(request):
@@ -81,6 +85,125 @@ def ViewPatients(request):
         'per_page_options': per_page_options,
     }
     return render(request, 'pages/management/view_patients.html', context)
+
+
+def update_profile(request, username):
+    """
+    View to update a patient's profile information
+    """
+    # Check permissions (only the user themselves or staff can update)
+    if request.user.username != username and not request.user.is_staff:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'You do not have permission to update this profile'
+        }, status=403)
+    
+    # Get the profile to update
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+    
+    try:
+        # Handle profile picture if provided
+        if 'profile_pic' in request.FILES:
+            profile.profile_pic = request.FILES['profile_pic']
+        
+        # Update profile fields
+        if 'ph_number' in request.POST:
+            profile.ph_number = request.POST.get('ph_number', '')
+        
+        if 'address' in request.POST:
+            profile.address = request.POST.get('address', '')
+        
+        if 'date_of_birth' in request.POST and request.POST.get('date_of_birth'):
+            profile.date_of_birth = request.POST.get('date_of_birth')
+        
+        if 'gender' in request.POST:
+            profile.gender = request.POST.get('gender', '')
+        
+        # Update notification settings
+        profile.email_notification = 'email_notification' in request.POST
+        profile.sms_notification = 'sms_notification' in request.POST
+        profile.reminders = 'reminders' in request.POST
+        
+        # Save the profile
+        profile.save()
+        
+        # Return success response with updated data
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Profile updated successfully',
+            'profile_pic_url': profile.profile_pic.url if profile.profile_pic else None
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Error updating profile: {str(e)}'
+        }, status=400)
+
+@require_POST
+def update_medical_info(request, username):
+    """
+    View to update a patient's medical information
+    """
+    # Check permissions (only the user themselves or staff can update)
+    if request.user.username != username and not request.user.is_staff:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'You do not have permission to update this medical information'
+        }, status=403)
+    
+    # Get the medical info to update
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+    
+    # Get or create medical info if it doesn't exist
+    medical_info, created = MedicalInfo.objects.get_or_create(profile=profile)
+    
+    try:
+        # Update medical info fields
+        if 'blood_group' in request.POST:
+            medical_info.blood_group = request.POST.get('blood_group', '')
+        
+        if 'allergies' in request.POST:
+            medical_info.allergies = request.POST.get('allergies', '')
+        
+        if 'medical_conditions' in request.POST:
+            medical_info.medical_conditions = request.POST.get('medical_conditions', '')
+        
+        if 'on_going_medications' in request.POST:
+            medical_info.on_going_medications = request.POST.get('on_going_medications', '')
+        
+        # Update emergency contact information
+        if 'emg_contact_name' in request.POST:
+            medical_info.emg_contact_name = request.POST.get('emg_contact_name', '')
+        
+        if 'emg_contact_number' in request.POST:
+            medical_info.emg_contact_number = request.POST.get('emg_contact_number', '')
+        
+        if 'emg_contact_relation' in request.POST:
+            medical_info.emg_contact_relation = request.POST.get('emg_contact_relation', '')
+        
+        if 'emg_contact_address' in request.POST:
+            medical_info.emg_contact_address = request.POST.get('emg_contact_address', '')
+        
+        # Save the medical info
+        medical_info.save()
+        
+        # Return success response
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Medical information updated successfully'
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Error updating medical information: {str(e)}'
+        }, status=400)
+
+
+
 
 
 def ViewDoctors(request):

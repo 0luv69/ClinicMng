@@ -95,13 +95,6 @@
                                     <!-- Actions Btns -->
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex space-x-2">
-                                            <!-- View Full Info A link-->
-
-                                            <a href="{% url 'ViewPatientsRecords' each_D.user.username %}" target="_blank"
-                                                class="text-blue-600 hover:text-blue-800 transition-colors">
-                                                View Full Info
-                                            </a>
-
                                             <button class="bg-blue-500 text-white px-3 py-1 rounded doctor-modal-trigger" data-slug="{{ each_D.doctor_profile.slug }}">
                                               View/Edit
                                             </button>

@@ -49,11 +49,6 @@ class Profile(models.Model):
         return f"{self.user.username} -- {self.role} -- {self.user.first_name}" 
 
 
-    
-
-
-
-
 class Conversation(models.Model):
     participants = models.ManyToManyField(Profile, related_name='conversations')
     uuid = models.UUIDField(unique=True, editable=True, null=True, blank=True)
