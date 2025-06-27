@@ -59,6 +59,8 @@ def ViewAppointmnets(request):
     return render(request, 'pages/management/view_appointments.html', context)
 
 
+# Patient Management View
+
 def ViewPatients(request):
     patients = Profile.objects.filter(role='patient').order_by('-created_at')
     
@@ -86,7 +88,7 @@ def ViewPatients(request):
     }
     return render(request, 'pages/management/view_patients.html', context)
 
-
+@require_POST
 def update_profile(request, username):
     """
     View to update a patient's profile information
@@ -213,8 +215,7 @@ def update_medical_info(request, username):
 
 
 
-
-
+#  Doctor Management View
 def ViewDoctors(request):
     doctors = Profile.objects.filter(role='doctor').order_by('-created_at')
     # pull per_page from GET, default 10
@@ -239,7 +240,6 @@ def ViewDoctors(request):
         'per_page_options': per_page_options,
     }
     return render(request, 'pages/management/view_doctors.html', context)
-
 
 def EditDoctorInfo(request):
     """
@@ -304,7 +304,6 @@ def EditDoctorInfo(request):
             'success': False,
             'message': f'An unexpected error occurred: {str(e)}'
         }, status=500)
-
 
 def handle_personal_update(doctor_profile, data, user):
     """Handle personal information updates with comprehensive validation"""
@@ -621,7 +620,6 @@ def handle_professional_update(doctor_profile, data, user):
             'message': f'Error updating professional information: {str(e)}'
         }, status=500)
 
-
 def handle_fees_update(doctor_profile, data, user):
     """Handle fees and availability updates with comprehensive validation"""
     try:
@@ -702,6 +700,9 @@ def handle_fees_update(doctor_profile, data, user):
         }, status=500)
 
 
+
+
+# Medicine Management View
 def medicineMng(request):
     medicines = Medicine.objects.all().order_by('-created_at')
 
@@ -751,7 +752,6 @@ def medicineMng(request):
         'per_page_options': per_page_options,
     }
     return render(request, 'pages/management/medicine_management.html', context)
-
 
 def delete_medicine(request, medicine_uuid):
     try:
