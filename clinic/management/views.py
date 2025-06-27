@@ -770,6 +770,7 @@ def delete_medicine(request, medicine_uuid):
 
 # Prescription Management View
 def precpMng(request):
+    # If not POST, just display the prescriptions
     prescriptions = Prescription.objects.all().order_by('-created_at')
 
     # pull per_page from GET, default 10
@@ -791,10 +792,168 @@ def precpMng(request):
         'paginator': paginator,
         'per_page': per_page,
         'per_page_options': per_page_options,
+        'all_doctors': DoctorProfile.objects.all(),
+        'all_medicines': Medicine.objects.all(),
+        'all_patients': Profile.objects.filter(role='patient').order_by('user__first_name'),
     }
     return render(request, 'pages/management/prescription_management.html', context)
 
+def edit_prescription(request, prescription_uuid):
+    if request.method == 'POST':
+        try:
+            # Parse JSON data
+            prescription = Prescription.objects.get(uuid=prescription_uuid)
+            data = json.loads(request.body.decode('utf-8'))
 
+            # Update prescription details
+            prescription.start_date = data.get('start_date', prescription.start_date)
+            prescription.end_date = data.get('end_date', prescription.end_date)
+            prescription.update_dosage = data.get('update_dosage', prescription.update_dosage)
+            prescription.update_frequency = data.get('update_frequency', prescription.update_frequency)
+            prescription.notes = data.get('notes', prescription.notes)
+            prescription.status = data.get('status', prescription.status)
+
+            # Update prescription schedule if provided
+            if data.get('time_schedule_changed', False) and 'prescription_schedule' in data:
+                prescription_schedule = data['prescription_schedule']
+                if isinstance(prescription_schedule, list):
+                    # Track times from the JSON data
+                    json_times = {item.get('time') for item in prescription_schedule if item.get('time')}
+
+                    # Delete schedules in the database that are not in the JSON data
+                    prescription.timeschedule.exclude(time__in=json_times).delete()
+
+                    # Iterate through the provided schedule
+                    for item in prescription_schedule:
+                        time = item.get('time')
+                        if time:
+                            # Check if a schedule with the same time exists
+                            existing_schedule = prescription.timeschedule.filter(time=time).first()
+                            if existing_schedule:
+                                # Update the existing schedule if needed
+                                had_taken = item.get('had_taken', existing_schedule.had_taken)
+                                if existing_schedule.had_taken != had_taken:
+                                    existing_schedule.had_taken = had_taken
+                                    existing_schedule.save()
+                            else:
+                                # Create a new schedule if time does not match
+                                prescription.timeschedule.create(time=time, had_taken=item.get('had_taken', False))
+                else:
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'Invalid prescription schedule format.'
+                    }, status=400)
+
+            prescription.save()
+
+            messages.success(request, 'Prescription updated successfully.')
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Prescription updated successfully.'
+            })
+        except Prescription.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Prescription not found.'
+            }, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid JSON data provided.'
+            }, status=400)
+        except Exception as e:
+            print(f"Error updating prescription: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': f'An unexpected error occurred: {str(e)}'
+            }, status=500)
+
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request method.'
+    }, status=405)
+
+
+def add_prescription(request):
+    if request.method == 'POST':
+        # Get form data
+        patient_username = request.POST.get('patient_username')
+        doctor_username = request.POST.get('doctor_username')
+        medicine_uuid = request.POST.get('medicine_uuid')
+        dosage = request.POST.get('update_dosage')
+        frequency = request.POST.get('update_frequency')
+        notes = request.POST.get('notes', '')
+        status = request.POST.get('status', 'active')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        
+        # Get schedule times from the hidden input
+        schedule_times_json = request.POST.get('schedule_times', '[]')
+        try:
+            schedule_times = json.loads(schedule_times_json)
+        except json.JSONDecodeError:
+            schedule_times = []
+        
+        # Create prescription
+        try:
+            # Get profile by username
+            patient_profile = Profile.objects.get(user__username=patient_username)
+            
+            # Get doctor by username
+            doctor = DoctorProfile.objects.get(profile__user__username=doctor_username)
+            
+            # Get medicine by UUID
+            medicine = Medicine.objects.get(uuid=medicine_uuid)
+            
+            prescription = Prescription.objects.create(
+                profile=patient_profile,
+                prescribing_doctor=doctor,
+                medicine=medicine,
+                update_dosage=dosage,
+                update_frequency=frequency,
+                notes=notes,
+                status=status,
+                start_date=start_date,
+                end_date=end_date
+            )
+            
+            # Create schedule times
+            for time_str in schedule_times:
+                PrescriptionSchedule.objects.create(
+                    prescription=prescription,
+                    time=time_str,
+                    had_taken=False
+                )
+            
+            messages.success(request, 'Prescription created successfully!')
+            # Redirect to the prescription management page
+            return redirect('management:prescriptionsMng')
+        except Profile.DoesNotExist:
+            messages.error(request, 'Patient not found')
+        except DoctorProfile.DoesNotExist:
+            messages.error(request, 'Doctor not found')
+        except Medicine.DoesNotExist:
+            messages.error(request, 'Medicine not found')
+        except Exception as e:
+            # Handle errors
+            messages.error(request, f'Error creating prescription: {str(e)}')
+        
+        return redirect('management:prescriptionsMng')
+    
+    # If GET request, redirect to the prescription management page
+    return redirect('management:prescriptionsMng')
+
+def delete_prescription(request, prescription_uuid):
+    try:
+        prescription = Prescription.objects.get(uuid = prescription_uuid)
+        prescription.delete()
+        messages.success(request, 'Prescription Deleted')
+
+    except Prescription.DoesNotExist:
+        messages.error(request, 'Prescription with particulr ID not found')
+    
+    return redirect('management:prescriptionsMng')
 
 # Lab Report Management View
 def labRpMng(request):
@@ -819,7 +978,129 @@ def labRpMng(request):
         'paginator': paginator,
         'per_page': per_page,
         'per_page_options': per_page_options,
+
+        'all_doctors': DoctorProfile.objects.all(),
+        'all_patients': Profile.objects.filter(role='patient').order_by('user__first_name'),
+
     }
     return render(request, 'pages/management/lab_report_management.html', context)
 
+@require_POST
+def update_lab_report(request, labReport_uuid):
+    """API endpoint for updating a lab report"""
+    lab_report = get_object_or_404(LabReport, uuid=labReport_uuid)
+    
+    try:
+        # Parse request data
+        data = json.loads(request.body)
+        
+        # Update lab report fields
+        lab_report.report_type = data.get('report_type', lab_report.report_type)
+        lab_report.report_date = data.get('report_date', lab_report.report_date)
+        lab_report.status = data.get('status', lab_report.status)
+        lab_report.report_description = data.get('report_description', lab_report.report_description)
+        lab_report.save()
+        
+        # Handle parameters
+        if 'parameters' in data:
+            # Delete existing parameters
+            lab_report.parameters.all().delete()
+            
+            # Create new parameters
+            for param_data in data['parameters']:
+                LabReportParameter.objects.create(
+                    lab_report=lab_report,
+                    parameter_name=param_data['parameter_name'],
+                    result=param_data['result'],
+                    reference_range=param_data['reference_range'],
+                    status=param_data['status']
+                )
+        
+        # Prepare response data
+        response_data = {
+            'uuid': str(lab_report.uuid),
+            'report_type': lab_report.report_type,
+            'report_date': lab_report.report_date.isoformat() if hasattr(lab_report.report_date, 'isoformat') else str(lab_report.report_date),
+            'status': lab_report.status,
+            'doctor_name': lab_report.doctor.profile.user.first_name,
+            'doctor_username': lab_report.doctor.profile.user.username,
+            'patient_name': lab_report.patient_profile.user.first_name,
+            'patient_username': lab_report.patient_profile.user.username,
+            'report_description': lab_report.report_description,
+            'created_at': lab_report.created_at.isoformat(),
+            'updated_at': lab_report.updated_at.isoformat(),
+            'parameters': [
+                {
+                    'parameter_name': param.parameter_name,
+                    'result': param.result,
+                    'reference_range': param.reference_range,
+                    'status': param.status
+                }
+                for param in lab_report.parameters.all()
+            ]
+        }
+        
+        return JsonResponse(response_data)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+
+def create_lab_report(request):
+    """View for creating a new lab report"""
+    try:
+        # Get form data
+        patient_username = request.POST.get('patient_username')
+        doctor_username = request.POST.get('doctor_username')
+        report_type = request.POST.get('report_type')
+        report_date = request.POST.get('report_date')
+        status = request.POST.get('status')
+        report_description = request.POST.get('report_description')
+        
+        # Get parameters from the hidden input
+        parameters_json = request.POST.get('parameters', '[]')
+        try:
+            parameters = json.loads(parameters_json)
+        except json.JSONDecodeError:
+            parameters = []
+        
+        # Create lab report
+        patient_profile = Profile.objects.get(user__username=patient_username)
+        doctor = DoctorProfile.objects.get(profile__user__username=doctor_username)
+        
+        lab_report = LabReport.objects.create(
+            patient_profile=patient_profile,
+            doctor=doctor,
+            report_type=report_type,
+            report_date=report_date,
+            status=status,
+            report_description=report_description
+        )
+        
+        # Create parameters
+        for param_data in parameters:
+            LabReportParameter.objects.create(
+                lab_report=lab_report,
+                parameter_name=param_data['parameter_name'],
+                result=param_data['result'],
+                reference_range=param_data['reference_range'],
+                status=param_data['status']
+            )
+        messages.success(request, 'Lab report created successfully!')
+        return redirect('management:labreportMng')
+    
+    except Exception as e:
+        # Add an error message here if you're using Django messages framework
+        messages.error(request, f'Error creating lab report: {str(e)}')
+        return redirect('management:labreportMng')
+
+@login_required
+def delete_lab_report(request, uuid):
+    """View for deleting a lab report"""
+    lab_report = get_object_or_404(LabReport, uuid=uuid)
+    lab_report.delete()
+    # Add a success message here if you're using Django messages framework
+    messages.success(request, 'Lab report deleted successfully.')
+    return redirect('management:labreportMng')
 

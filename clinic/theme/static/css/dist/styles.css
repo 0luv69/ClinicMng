@@ -1981,11 +1981,6 @@ select {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.translate-y-full {
-  --tw-translate-y: 100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .rotate-12 {
   --tw-rotate: 12deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -4432,6 +4427,10 @@ select {
   opacity: 1;
 }
 
+.opacity-25 {
+  opacity: 0.25;
+}
+
 .opacity-30 {
   opacity: 0.3;
 }
@@ -4444,20 +4443,16 @@ select {
   opacity: 0.7;
 }
 
+.opacity-75 {
+  opacity: 0.75;
+}
+
 .opacity-80 {
   opacity: 0.8;
 }
 
 .opacity-90 {
   opacity: 0.9;
-}
-
-.opacity-25 {
-  opacity: 0.25;
-}
-
-.opacity-75 {
-  opacity: 0.75;
 }
 
 .shadow {

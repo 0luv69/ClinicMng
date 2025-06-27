@@ -25,8 +25,13 @@ urlpatterns = [
     path('medicine-mng/<uuid:medicine_uuid>/delete/', delete_medicine, name='deleteMedicine'),
 
     path('prescriptions-mng/', precpMng, name='prescriptionsMng'),
+    path('prescriptions/add/', add_prescription, name='add_prescription'),
+    path('prescriptions/delete/<uuid:prescription_uuid>/', delete_prescription, name='add_prescription'),
+    path('edit-pres-mng/<uuid:prescription_uuid>/', edit_prescription, name='EditPrescriptionsMng'),
 
     path('labreport-mng/', labRpMng, name='labreportMng'),
+    path('edit-labreport-mng/<uuid:labReport_uuid>/', update_lab_report, name='editlabreportMng'),
+    path('labreport-mng/create/', create_lab_report, name='create_lab_report'),
 
 
     # path('m/d-profile/create/', create_doctor_profile, name='doctor_profile_create'),
