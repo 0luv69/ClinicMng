@@ -110,7 +110,7 @@ class Medicine(models.Model):
 
 
 class Prescription(models.Model):
-
+    uuid = models.UUIDField(default=uuid.uuid4, editable=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="prescriptions")
     prescribing_doctor  = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name="prescriptions")
     medicine            = models.ForeignKey(
@@ -164,10 +164,7 @@ class Prescription(models.Model):
 
 
 class PrescriptionSchedule(models.Model):
-    """
-    If you prefer a relational schedule rather than JSON/ArrayField,
-    use this model instead of the above schedule field.
-    """
+  
     prescription = models.ForeignKey(
                        Prescription,
                        on_delete=models.CASCADE,
@@ -191,8 +188,6 @@ class PrescriptionSchedule(models.Model):
 
 
 class LabReport(models.Model):
-
-
     uuid = models.UUIDField(default=uuid.uuid4, editable=True)
 
     STATUS_CHOICES = [
@@ -209,6 +204,9 @@ class LabReport(models.Model):
     report_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     report_description = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     def __str__(self):
         return f"{self.report_type} - {self.report_date}"

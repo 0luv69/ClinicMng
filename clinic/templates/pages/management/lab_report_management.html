@@ -1,0 +1,35 @@
+{% extends "pages/management/M_base.html" %}
+{% load static %}
+
+{% block titles %} Lab Report Management || Nepal's Care {% endblock titles %}
+
+{% block styles %}
+
+{% endblock styles %}
+
+
+{% block pageof %} Lab Report View-Add-Edit {% endblock pageof %}
+{% block linkPageof %} {% url 'management:labreportMng' %} {% endblock linkPageof %}
+
+{% block content %}
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+
+<script>
+    dashboard_nav_all = document.querySelectorAll('.labReport-nav a');
+    console.log(dashboard_nav_all);
+    
+    dashboard_nav_all.forEach((nav) => {
+        nav_innertab =
+            nav.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50', 'rounded');
+    });
+</script>
+
+{% endblock scripts %}

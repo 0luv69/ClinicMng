@@ -56,7 +56,7 @@
                         </thead>
                         <tbody id="patientTableBody" class="divide-y divide-gray-200">
                             {% for each_P in patients %}
-                                <tr class="hover:bg-gray-50 transition-all duration-200"  id="{{ apot.uuid }}">
+                                <tr class="hover:bg-gray-50 transition-all duration-200" >
                                     <!-- Patient Info -->
                                     <td class="table-cell px-4 py-4 whitespace-nowrap doctor-details"
                                         title="View Profile" data-patient="{{ each_P.user.first_name }}" >
@@ -269,7 +269,6 @@
 
 
 
-{% load static %}
 <!-- Patient Information Modal -->
 <div id="patient-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="patient-modal-title" role="dialog" aria-modal="true">
   <!-- Backdrop with blur effect -->

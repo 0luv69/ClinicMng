@@ -10,6 +10,8 @@ urlpatterns = [
     path('management/', management_dashboard, name='management_dashboard'),
     path('', management_dashboard, name='management_dashboard'),
     path('view-appointments/', ViewAppointmnets, name='viewAppointment'),
+
+    
     path('view-patients/', ViewPatients, name='ViewPatients'),
     path('update-profile/<str:username>/', update_profile, name='update_profile'),
     path('update-medical-info/<str:username>/', update_medical_info, name='update_medical_info'),
@@ -18,10 +20,13 @@ urlpatterns = [
     path('view-doctors/', ViewDoctors, name='ViewDoctors'),
     path('edit-doc/', EditDoctorInfo, name='edit_doctor_info'),
 
+
     path('medicine-mng/', medicineMng, name='medicineMng'),
     path('medicine-mng/<uuid:medicine_uuid>/delete/', delete_medicine, name='deleteMedicine'),
 
+    path('prescriptions-mng/', precpMng, name='prescriptionsMng'),
 
+    path('labreport-mng/', labRpMng, name='labreportMng'),
 
 
     # path('m/d-profile/create/', create_doctor_profile, name='doctor_profile_create'),

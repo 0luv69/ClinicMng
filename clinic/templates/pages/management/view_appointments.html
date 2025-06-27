@@ -628,10 +628,6 @@
 </div>
 
 
-
-
-
-
 {% endblock content %}
 
 
@@ -640,136 +636,127 @@
 
 <script>
     // filter code:
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput   = document.getElementById('searchInput');
-  const typeFilter   = document.getElementById('appointmentType');
-  const statusFilter = document.getElementById('appointmentStatus');
-  const timeFilter   = document.getElementById('appointmentTimeRange');
-  const resetBtn     = document.getElementById('appointmentResetFilter');
-  const rows         = document.querySelectorAll('#view-list-table tbody tr');
+    document.addEventListener('DOMContentLoaded', () => {
+    const searchInput   = document.getElementById('searchInput');
+    const typeFilter   = document.getElementById('appointmentType');
+    const statusFilter = document.getElementById('appointmentStatus');
+    const timeFilter   = document.getElementById('appointmentTimeRange');
+    const resetBtn     = document.getElementById('appointmentResetFilter');
+    const rows         = document.querySelectorAll('#view-list-table tbody tr');
 
 
-  function filterRows() {
-    const searchText = searchInput.value.toLowerCase();
-    const typeVal   = typeFilter.value;
-    const statusVal = statusFilter.value;
-    const timeVal   = timeFilter.value;
-    const today     = new Date();
-    const firstOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const firstOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    function filterRows() {
+        const searchText = searchInput.value.toLowerCase();
+        const typeVal   = typeFilter.value;
+        const statusVal = statusFilter.value;
+        const timeVal   = timeFilter.value;
+        const today     = new Date();
+        const firstOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const firstOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
 
-    rows.forEach(row => {
-      let keep = true;
+        rows.forEach(row => {
+        let keep = true;
 
-    // search filter
-    if (searchText) {
-        const doctor_name = row.querySelector('[data-doctor]').dataset.doctor.toLowerCase();
-        const reason_of_book = row.querySelector('[data-reason]').dataset.reason.toLowerCase();
-        
-        if (!doctor_name.includes(searchText) && !reason_of_book.includes(searchText)) {
-          keep = false;
-        }
-    }
-
-
-
-      // —–– 1) filter by appointment type
-      if (typeVal !== '0') {
-        if (row.querySelector('[data-apotype]').dataset.apotype !== typeVal) {
-          keep = false;
-        }
-      }
-
-      // —–– 2) filter by status
-      if (keep && statusVal !== '0') {
-        const st = row.querySelector('[data-status]').dataset.status;
-        if (st !== statusVal) {
-          keep = false;
-        }
-      }
-
-      // —–– 3) filter by time range
-      if (keep && timeVal !== '0') {
-        // use ISO date for parsing
-        const iso = row.querySelector('[data-date]').dataset.date;       // e.g. "2025-04-19"
-        const rowDate = new Date(iso + 'T00:00:00');                            // midnight local
-        const diffDays = (today - rowDate) / (1000 * 60 * 60 * 24);             // fractional days
-
-        switch (timeVal) {
-          case '1': // Today
-            if (rowDate.toDateString() !== today.toDateString()) keep = false;
-            break;
-          case '2': // Last 7 Days
-            if (diffDays > 7 || diffDays < 0) keep = false;
-            break;
-          case '3': // Last 30 Days
-            if (diffDays > 30 || diffDays < 0) keep = false;
-            break;
-          case '4': // Last Calendar Month
-            if (rowDate < firstOfLastMonth || rowDate >= firstOfThisMonth) {
-              keep = false;
+        // search filter
+        if (searchText) {
+            const doctor_name = row.querySelector('[data-doctor]').dataset.doctor.toLowerCase();
+            const reason_of_book = row.querySelector('[data-reason]').dataset.reason.toLowerCase();
+            
+            if (!doctor_name.includes(searchText) && !reason_of_book.includes(searchText)) {
+            keep = false;
             }
-            break;
         }
-      }
 
-      row.style.display = keep ? '' : 'none';
+
+
+        // —–– 1) filter by appointment type
+        if (typeVal !== '0') {
+            if (row.querySelector('[data-apotype]').dataset.apotype !== typeVal) {
+            keep = false;
+            }
+        }
+
+        // —–– 2) filter by status
+        if (keep && statusVal !== '0') {
+            const st = row.querySelector('[data-status]').dataset.status;
+            if (st !== statusVal) {
+            keep = false;
+            }
+        }
+
+        // —–– 3) filter by time range
+        if (keep && timeVal !== '0') {
+            // use ISO date for parsing
+            const iso = row.querySelector('[data-date]').dataset.date;       // e.g. "2025-04-19"
+            const rowDate = new Date(iso + 'T00:00:00');                            // midnight local
+            const diffDays = (today - rowDate) / (1000 * 60 * 60 * 24);             // fractional days
+
+            switch (timeVal) {
+            case '1': // Today
+                if (rowDate.toDateString() !== today.toDateString()) keep = false;
+                break;
+            case '2': // Last 7 Days
+                if (diffDays > 7 || diffDays < 0) keep = false;
+                break;
+            case '3': // Last 30 Days
+                if (diffDays > 30 || diffDays < 0) keep = false;
+                break;
+            case '4': // Last Calendar Month
+                if (rowDate < firstOfLastMonth || rowDate >= firstOfThisMonth) {
+                keep = false;
+                }
+                break;
+            }
+        }
+
+        row.style.display = keep ? '' : 'none';
+        });
+    }
+
+    // wire up events
+    [ typeFilter, statusFilter, timeFilter, searchInput ].forEach(el => 
+        el.addEventListener('change', filterRows)
+    );
+
+    resetBtn.addEventListener('click', () => {
+        // reset selects
+        typeFilter.value = statusFilter.value = timeFilter.value = '0';
+        // show all rows again
+        rows.forEach(r => r.style.display = '');
     });
-  }
+    });
 
-  // wire up events
-  [ typeFilter, statusFilter, timeFilter, searchInput ].forEach(el => 
-    el.addEventListener('change', filterRows)
-  );
+    // Toggle custom reason field when clicking the Custom button
+    document.getElementById('btn_add_custom').addEventListener('click', function() {
+        var customField = document.getElementById('custom_reason_field');
+        customField.hidden = !customField.hidden;
+        if (!customField.hidden) {
+        document.getElementById('common_reason').value = 'other';
+        document.getElementById('reason').required = true;
+        }
+    });
 
-  resetBtn.addEventListener('click', () => {
-    // reset selects
-    typeFilter.value = statusFilter.value = timeFilter.value = '0';
-    // show all rows again
-    rows.forEach(r => r.style.display = '');
-  });
-});
+    // Populate or hide custom field based on select change
+    document.getElementById('common_reason').addEventListener('change', function(e) {
+        var customField = document.getElementById('custom_reason_field');
+        var customInput = document.getElementById('reason');
 
+        if (e.target.value === 'other') {
+        customField.hidden = false;
+        customInput.required = true;
+        customInput.value = '';
+        } else if (e.target.value === '') {
+        customField.hidden = true;
+        customInput.required = false;
+        customInput.value = '';
+        } else {
+        customField.hidden = true;
+        customInput.required = false;
+        // Store selected reason in a hidden input or use this value directly
+        customInput.value = e.target.options[e.target.selectedIndex].text;
+        }
+    });
 
-
-
-
-
-
-
-  // Toggle custom reason field when clicking the Custom button
-  document.getElementById('btn_add_custom').addEventListener('click', function() {
-    var customField = document.getElementById('custom_reason_field');
-    customField.hidden = !customField.hidden;
-    if (!customField.hidden) {
-      document.getElementById('common_reason').value = 'other';
-      document.getElementById('reason').required = true;
-    }
-  });
-
-  // Populate or hide custom field based on select change
-  document.getElementById('common_reason').addEventListener('change', function(e) {
-    var customField = document.getElementById('custom_reason_field');
-    var customInput = document.getElementById('reason');
-
-    if (e.target.value === 'other') {
-      customField.hidden = false;
-      customInput.required = true;
-      customInput.value = '';
-    } else if (e.target.value === '') {
-      customField.hidden = true;
-      customInput.required = false;
-      customInput.value = '';
-    } else {
-      customField.hidden = true;
-      customInput.required = false;
-      // Store selected reason in a hidden input or use this value directly
-      customInput.value = e.target.options[e.target.selectedIndex].text;
-    }
-  });
-</script>
-
-<script>
 
     // Helper to validate reason
         function isValidReasonSelected() {
@@ -847,8 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
-
 <script>
     // Add event listeners to cancel buttons
     document.querySelectorAll('.cancel-appointment').forEach(button => {
@@ -888,7 +873,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-
     dashboard_nav_all = document.querySelectorAll('.appointment-nav a');
     console.log(dashboard_nav_all);
     

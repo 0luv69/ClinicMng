@@ -60,7 +60,6 @@ def ViewAppointmnets(request):
 
 
 # Patient Management View
-
 def ViewPatients(request):
     patients = Profile.objects.filter(role='patient').order_by('-created_at')
     
@@ -765,3 +764,62 @@ def delete_medicine(request, medicine_uuid):
     except Exception as e:
         messages.error(request, 'An unexpected error occurred.')
     return redirect('management:medicineMng')
+
+
+
+
+# Prescription Management View
+def precpMng(request):
+    prescriptions = Prescription.objects.all().order_by('-created_at')
+
+    # pull per_page from GET, default 10
+    per_page = int(request.GET.get('per_page', 10))
+    paginator = Paginator(prescriptions, per_page)
+    page_num = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    # Define your entries-per-page options here
+    per_page_options = [10, 25, 50, 100]
+
+    context = {
+        'prescriptions': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
+        'per_page_options': per_page_options,
+    }
+    return render(request, 'pages/management/prescription_management.html', context)
+
+
+
+# Lab Report Management View
+def labRpMng(request):
+    lab_reports = LabReport.objects.all().order_by('-report_date')
+
+    # pull per_page from GET, default 10
+    per_page = int(request.GET.get('per_page', 10))
+    paginator = Paginator(lab_reports, per_page)
+    page_num = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    # Define your entries-per-page options here
+    per_page_options = [10, 25, 50, 100]
+
+    context = {
+        'lab_reports': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
+        'per_page_options': per_page_options,
+    }
+    return render(request, 'pages/management/lab_report_management.html', context)
+
+
