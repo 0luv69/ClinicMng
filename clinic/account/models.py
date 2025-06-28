@@ -42,8 +42,8 @@ class Profile(models.Model):
     reminders = models.BooleanField(default=True)
 
     # additional fields
-    reset_password_token = models.CharField(max_length=255, blank=True, null=True)
-    reset_password_token_expiry = models.DateTimeField(null=True, blank=True)
+    token = models.CharField(max_length=255, blank=True, null=True)
+    token_expiry = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
