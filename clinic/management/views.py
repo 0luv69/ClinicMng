@@ -21,6 +21,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 
+from django.utils import timezone
 
 # Create your views here.
 def management_dashboard(request):
@@ -211,6 +212,135 @@ def update_medical_info(request, username):
             'status': 'error',
             'message': f'Error updating medical information: {str(e)}'
         }, status=400)
+
+def create_patient(request):
+    """API endpoint for creating a new patient with profile and medical info"""
+    try:
+        # Check if the request has multipart form data
+        # Handle form data
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        password = request.POST.get('password')
+        
+        # Profile data
+        phone = request.POST.get('phone', '')
+        date_of_birth = request.POST.get('date_of_birth') or None
+        gender = request.POST.get('gender', '')
+        address = request.POST.get('address', '')
+        profile_pic = request.FILES.get('profile_pic')
+        
+        # Notification preferences
+        email_notification = request.POST.get('email_notification') == 'on'
+        sms_notification = request.POST.get('sms_notification') == 'on'
+        reminders = request.POST.get('reminders') == 'on'
+        
+        # Medical info
+        blood_group = request.POST.get('blood_group', '')
+        allergies = request.POST.get('allergies', '')
+        medical_conditions = request.POST.get('medical_conditions', '')
+        on_going_medications = request.POST.get('on_going_medications', '')
+        
+        # Emergency contact
+        emg_contact_name = request.POST.get('emg_contact_name', '')
+        emg_contact_number = request.POST.get('emg_contact_number', '')
+        emg_contact_relation = request.POST.get('emg_contact_relation', '')
+        emg_contact_address = request.POST.get('emg_contact_address', '')
+
+        # Validate required fields
+        if not all([ email, first_name, password]):
+            return JsonResponse({
+                'success': False,
+                'message': 'Missing required fields',
+                'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'current_user': request.user.username
+            }, status=400)
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({
+                'success': False,
+                'message': 'Email already exists',
+                'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'current_user': request.user.username
+            }, status=400)
+        # Create a new user; here username is set as the email for simplicity
+        current_time = datetime.now().strftime('%Y%m%d%H%M%S')  # Format: YYYYMMDDHHMMSS
+        counter = str(User.objects.count() + 1).zfill(8)  # Ensure at least 6 digits
+        username = f"NCMS-{current_time}-{counter}"
+        # Create user, profile, and medical info in a transaction
+        with transaction.atomic():
+            # Create the user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+            )
+            
+            # Create the profile
+            profile, created = Profile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'role': 'patient',
+                    'ph_number': phone,
+                    'date_of_birth': date_of_birth,
+                    'gender': gender,
+                    'address': address,
+                    'email_notification': email_notification,
+                    'sms_notification': sms_notification,
+                    'reminders': reminders,
+                    'is_verified': True,  # Auto-verify since created by staff
+                    'is_active': True,  # Auto-activate since created by staff
+                }
+            )
+
+            profile.is_verified = True
+            profile.save()
+            
+            # Set profile picture if provided
+            if profile_pic:
+                profile.profile_pic = profile_pic
+                profile.save()
+            
+            # Create medical info
+            medical_info = MedicalInfo.objects.create(
+                profile=profile,
+                blood_group=blood_group,
+                allergies=allergies,
+                medical_conditions=medical_conditions,
+                on_going_medications=on_going_medications,
+                emg_contact_name=emg_contact_name,
+                emg_contact_number=emg_contact_number,
+                emg_contact_relation=emg_contact_relation,
+                emg_contact_address=emg_contact_address
+            )
+        
+        # Prepare response data
+        response_data = {
+            'success': True,
+            'message': 'Patient registered successfully',
+            'patient': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'profile_id': profile.id,
+                'medical_info_id': medical_info.id
+            },
+            'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'current_user': request.user.username
+        }
+        
+        return JsonResponse(response_data, status=201)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Error registering patient: {str(e)}',
+            'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'current_user': request.user.username
+        }, status=500)
 
 
 

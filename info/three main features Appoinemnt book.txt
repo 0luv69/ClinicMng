@@ -1,0 +1,74 @@
+three main features: Appoinemnt book, video call & message, files document management. 
+
+
+- Patient can only create the new account on themself
+- the clinic management team will make for some one who are not capable
+
+
+- after login user must update profile and their informantions
+- add docmunet and they are good to go to book appoinemtn on them self.  
+
+
+
+
+ 
+- Recent activities
+
+	
+- profile
+	- Active Patient marking
+	- not giving permission to change
+
+
+
+
+
+
+
+
+things to do in simples dds computer
+
+1) clean up trash
+2) reinstall & download the Vs code
+3) same with python re install
+4) remove the one drive things
+ 
+
+git remote set-url origin https://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@github.com/Simpalkoirala/clinicMng
+
+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
+
+git remote set-url origin https://Simpalkoirala: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@github.com/Simpalkoirala/clinicMng.git
+
+
+
+
+
+
+
+
+
+
+fhgdhdhdthdh
+1) Home page content update (box size, content, doctor, feedback)
+2) manager goes to management's dashboard
+3) in view appointment action btn: join call (call section)  {join online meeting auto btn in view appointment page itself and dashboard}
+4) Notifications
+5) login auto to manager, doctor, patient
+
+
+
+
+
+
+
+
+Things to do:
+- cut up nails legs
+- wash penny clothes
+- rise
+- 
+-  
+
+
+

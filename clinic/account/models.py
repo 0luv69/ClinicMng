@@ -19,6 +19,7 @@ USER_ROLES = (
         ('doctor', 'Doctor'),
         ('patient', 'Patient'),
         ('admin', 'Admin'),
+        ('management', 'Management'),
     )
 
 class Profile(models.Model):
