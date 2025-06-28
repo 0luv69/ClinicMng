@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('view-doctors/', ViewDoctors, name='ViewDoctors'),
     path('edit-doc/', EditDoctorInfo, name='edit_doctor_info'),
+    path('create-doctors/', create_doctor, name='api_create_doctor'),
 
 
     path('medicine-mng/', medicineMng, name='medicineMng'),

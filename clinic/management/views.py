@@ -294,8 +294,20 @@ def create_patient(request):
                 }
             )
 
-            profile.is_verified = True
-            profile.save()
+            if not created:
+                # If profile already exists, update it
+                profile.role = 'patient'  # Ensure role is set to patient
+                profile.ph_number = phone
+                profile.date_of_birth = date_of_birth
+                profile.gender = gender
+                profile.address = address
+                profile.email_notification = email_notification
+                profile.sms_notification = sms_notification
+                profile.reminders = reminders
+                profile.is_verified = True  # Auto-verify since created by staff
+                profile.is_active = True  # Auto-activate since created by staff
+                profile.save()
+         
             
             # Set profile picture if provided
             if profile_pic:
@@ -369,6 +381,159 @@ def ViewDoctors(request):
         'per_page_options': per_page_options,
     }
     return render(request, 'pages/management/view_doctors.html', context)
+
+def create_doctor(request):
+    """API endpoint for creating a new doctor with profile and doctor profile"""
+    try:
+        # Handle form data
+        email = request.POST.get('email')
+        full_name = request.POST.get('full_name')
+        password = request.POST.get('password')
+        
+        # Profile data
+        phone = request.POST.get('phone', '')
+        date_of_birth = request.POST.get('date_of_birth') or None
+        gender = request.POST.get('gender', '')
+        address = request.POST.get('address', '')
+        profile_pic = request.FILES.get('profile_pic')
+        
+        # Notification preferences
+        email_notification = request.POST.get('email_notification') == 'on'
+        sms_notification = request.POST.get('sms_notification') == 'on'
+        reminders = request.POST.get('reminders') == 'on'
+        
+        # Doctor profile data
+        specialization = request.POST.get('specialization')
+        qualifications = request.POST.get('qualifications', '')
+        experience_years = request.POST.get('experience_years')
+        license_number = request.POST.get('license_number', '')
+        board_certified = request.POST.get('board_certified') == 'true'
+        languages_spoken_json = request.POST.get('languages_spoken', '["English"]')
+        fees = request.POST.get('fees')
+        accepts_new_patients = request.POST.get('accepts_new_patients') == 'true'
+        
+        # Parse languages spoken
+        try:
+            languages_spoken = json.loads(languages_spoken_json)
+        except json.JSONDecodeError:
+            languages_spoken = ["English"]
+        
+        # Validate required fields
+        if not all([email, full_name, password, specialization, experience_years, fees]):
+            return JsonResponse({
+                'success': False,
+                'message': 'Missing required fields',
+                'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'current_user': request.user.username
+            }, status=400)
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({
+                'success': False,
+                'message': 'Email already exists',
+                'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'current_user': request.user.username
+            }, status=400)
+        
+        # Generate a unique username based on name and random characters
+        current_time = datetime.now().strftime('%Y%m%d%H%M%S')  # Format: YYYYMMDDHHMMSS
+        counter = str(User.objects.count() + 1).zfill(8)  # Ensure at least 6 digits
+        username = f"NCMS-{current_time}-{counter}"
+        
+        # Create user, profile, and doctor profile in a transaction
+        with transaction.atomic():
+            # Create the user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=full_name  # Store full name in first_name field as per requirement
+            )
+            
+            # Create or update the profile
+            profile, created = Profile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'role': 'doctor',
+                    'ph_number': phone,
+                    'date_of_birth': date_of_birth,
+                    'gender': gender,
+                    'address': address,
+                    'email_notification': email_notification,
+                    'sms_notification': sms_notification,
+                    'reminders': reminders,
+                    'is_verified': True,  # Auto-verify since created by staff
+                    'is_active': True,  # Auto-activate since created by staff
+                }
+            )
+
+            if not created:
+                # If profile already exists, update it
+                profile.role = 'doctor'
+                profile.ph_number = phone
+                profile.date_of_birth = date_of_birth
+                profile.gender = gender
+                profile.address = address   
+                profile.email_notification = email_notification
+                profile.sms_notification = sms_notification
+                profile.reminders = reminders
+
+                profile.is_verified = True  # Auto-verify since created by staff
+                profile.is_active = True  # Auto-activate since created by staff
+                profile.save()
+                
+            
+            # Set profile picture if provided
+            if profile_pic:
+                profile.profile_pic = profile_pic
+                profile.save()
+            
+            # Create doctor profile
+            doctor_profile = DoctorProfile.objects.create(
+                profile=profile,
+                specialization=specialization,
+                qualifications=qualifications,
+                experience_years=int(experience_years),
+                license_number=license_number,
+                board_certified=board_certified,
+                languages_spoken=languages_spoken,
+                fees=float(fees),
+                accepts_new_patients=accepts_new_patients,
+                total_reviews=0
+            )
+            
+            # Generate slug (this will be handled in the model's save method)
+            doctor_profile.save()
+        
+        # Prepare response data
+        response_data = {
+            'success': True,
+            'message': 'Doctor registered successfully',
+            'doctor': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'full_name': user.first_name,
+                'profile_id': profile.id,
+                'doctor_profile_id': doctor_profile.id,
+                'specialization': doctor_profile.specialization,
+                'slug': doctor_profile.slug
+            },
+            'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'current_user': request.user.username
+        }
+        
+        return JsonResponse(response_data, status=201)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Error registering doctor: {str(e)}',
+            'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'current_user': request.user.username
+        }, status=500)
+
 
 def EditDoctorInfo(request):
     """
