@@ -1046,24 +1046,28 @@ def update_lab_report(request, labReport_uuid):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-
+@require_POST
 def create_lab_report(request):
-    """View for creating a new lab report"""
+    """View for creating a new lab report from JSON data"""
     try:
-        # Get form data
-        patient_username = request.POST.get('patient_username')
-        doctor_username = request.POST.get('doctor_username')
-        report_type = request.POST.get('report_type')
-        report_date = request.POST.get('report_date')
-        status = request.POST.get('status')
-        report_description = request.POST.get('report_description')
+        # Parse JSON data from request body
+        data = json.loads(request.body)
         
-        # Get parameters from the hidden input
-        parameters_json = request.POST.get('parameters', '[]')
-        try:
-            parameters = json.loads(parameters_json)
-        except json.JSONDecodeError:
-            parameters = []
+        # Get required data from the JSON
+        patient_username = data.get('patient_username')
+        doctor_username = data.get('doctor_username')
+        report_type = data.get('report_type')
+        report_date = data.get('report_date')
+        status = data.get('status')
+        report_description = data.get('report_description')
+        parameters = data.get('parameters', [])
+        
+        # Validate required fields
+        if not all([patient_username, doctor_username, report_type, report_date, status]):
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Missing required fields'
+            }, status=400)
         
         # Create lab report
         patient_profile = Profile.objects.get(user__username=patient_username)
@@ -1087,18 +1091,38 @@ def create_lab_report(request):
                 reference_range=param_data['reference_range'],
                 status=param_data['status']
             )
-        messages.success(request, 'Lab report created successfully!')
-        return redirect('management:labreportMng')
+        messages.success(request, 'Lab report created successfully.')
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Lab report created successfully',
+            'uuid': str(lab_report.uuid)
+        })
     
+    except Profile.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Patient not found'
+        }, status=404)
+    except DoctorProfile.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Doctor not found'
+        }, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Invalid JSON data'
+        }, status=400)
     except Exception as e:
-        # Add an error message here if you're using Django messages framework
-        messages.error(request, f'Error creating lab report: {str(e)}')
-        return redirect('management:labreportMng')
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Error creating lab report: {str(e)}'
+        }, status=500)
 
 @login_required
-def delete_lab_report(request, uuid):
+def delete_lab_report(request, labReport_uuid):
     """View for deleting a lab report"""
-    lab_report = get_object_or_404(LabReport, uuid=uuid)
+    lab_report = get_object_or_404(LabReport, uuid=labReport_uuid)
     lab_report.delete()
     # Add a success message here if you're using Django messages framework
     messages.success(request, 'Lab report deleted successfully.')

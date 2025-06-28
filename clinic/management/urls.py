@@ -32,6 +32,7 @@ urlpatterns = [
     path('labreport-mng/', labRpMng, name='labreportMng'),
     path('edit-labreport-mng/<uuid:labReport_uuid>/', update_lab_report, name='editlabreportMng'),
     path('labreport-mng/create/', create_lab_report, name='create_lab_report'),
+    path('labreport-mng/delete/<uuid:labReport_uuid>/', delete_lab_report, name='delete_lab_report'),
 
 
     # path('m/d-profile/create/', create_doctor_profile, name='doctor_profile_create'),

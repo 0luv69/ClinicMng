@@ -133,7 +133,7 @@
                                             <button class="bg-blue-500 text-white px-3 py-1 rounded labreport-modal-trigger" data-uuid="{{ each_report.uuid }}">
                                                 View/Edit
                                             </button>
-                                            <a href="/m/reports/delete/{{each_report.uuid}}/" class="bg-red-500 text-white px-3 py-1 rounded hidden">
+                                            <a href="/m/labreport-mng/delete/{{each_report.uuid}}/" class="bg-red-500 text-white px-3 py-1 rounded">
                                                 Delete
                                             </a>
                                         </div>
@@ -960,11 +960,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Close the modal
                     closeAddModal();
-                    
-                    // Reload the page to show the new report
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 200);
+
+                    location.reload(); // Uncomment to reload the page
+                  
                 })
                 .catch(error => {
                     // Show error notification
