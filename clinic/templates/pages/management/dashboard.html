@@ -50,60 +50,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Mar 1 - Mar 31, 2025
+                    Today, {{ today|date:"l, d M Y" }}
                 </button>
             </div>
-            <!-- <button class="flex items-center px-3 py-2 text-sm border rounded-md shadow-sm bg-white hover:bg-gray-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Export
-            </button> -->
         </div>
     </div>
-
-    <!-- Tabs -->
-    <!-- <div class="mb-4">
-        <div class="border-b border-gray-200">
-            <nav class="-mb-px flex space-x-8">
-                <button
-                    class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 border-primary text-primary font-medium text-sm"
-                    data-tab="overview">
-                    Overview
-                </button>
-                <button
-                    class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm"
-                    data-tab="appointments">
-                    Appointments
-                </button>
-                <button
-                    class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm"
-                    data-tab="analytics">
-                    Analytics
-                </button>
-            </nav>
-        </div>
-    </div> -->
 
     <!-- Overview Tab Content -->
     <div id="overview" class="tab-content active space-y-6">
         <!-- Metrics Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Total Revenue Card -->
-            <div class="card bg-white rounded-lg border shadow-sm hover:shadow p-6">
-                <div class="flex flex-row items-center justify-between pb-2">
-                    <h3 class="text-sm font-medium text-gray-500">Total Revenue</h3>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary opacity-70" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="text-2xl font-bold">$24,684.85</div>
-                <p class="text-xs text-gray-500 mt-1">+12.5% from last month</p>
-            </div>
 
             <!-- Appointments Card -->
             <div class="card bg-white rounded-lg border shadow-sm hover:shadow p-6">
@@ -115,8 +71,7 @@
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                 </div>
-                <div class="text-2xl font-bold">+235</div>
-                <p class="text-xs text-gray-500 mt-1">+8.2% from last month</p>
+                <div class="text-2xl font-bold">{{total_appointments}}</div>
             </div>
 
             <!-- New Patients Card -->
@@ -129,8 +84,7 @@
                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                 </div>
-                <div class="text-2xl font-bold">+124</div>
-                <p class="text-xs text-gray-500 mt-1">+4.3% from last month</p>
+                <div class="text-2xl font-bold">{{total_patients}}</div>
             </div>
 
             <!-- Active Doctors Card -->
@@ -143,8 +97,7 @@
                             d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                 </div>
-                <div class="text-2xl font-bold">42</div>
-                <p class="text-xs text-gray-500 mt-1">+2 new this month</p>
+                <div class="text-2xl font-bold">{{ total_doctors }}</div>
             </div>
         </div>
 
@@ -407,29 +360,20 @@
             </div>
         </div>
     </div>
-
-    <!-- Appointments Tab Content -->
-    <div id="appointments" class="tab-content space-y-6">
-        <div class="bg-white rounded-lg border shadow-sm p-6">
-            <h3 class="text-lg font-medium">All Appointments</h3>
-            <p class="text-sm text-gray-500 mb-4">Manage and view all upcoming and past appointments</p>
-            <p class="text-sm text-gray-500">This section will contain a detailed appointments table.</p>
-        </div>
-    </div>
-
-    <!-- Analytics Tab Content -->
-    <div id="analytics" class="tab-content space-y-6">
-        <div class="bg-white rounded-lg border shadow-sm p-6">
-            <h3 class="text-lg font-medium">Performance Analytics</h3>
-            <p class="text-sm text-gray-500 mb-4">Detailed insights into clinic operations and performance</p>
-            <p class="text-sm text-gray-500">This section will contain detailed analytics charts and metrics.</p>
-        </div>
-    </div>
 </div>
 
 
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const dailyAppointments = {{ daily_appointments|safe }};
+        const emergencyAppointments = {{ emergency_appointments|safe }};
+        const otherAppointments = {{ other_appointments|safe }};
+        const appointmentTypes = {{ appointment_types|safe }};
+        
+        initializeCharts(dailyAppointments, emergencyAppointments, otherAppointments, appointmentTypes);
+    });
     // Tab Switching Functionality
     document.addEventListener('DOMContentLoaded', function () {
         const tabButtons = document.querySelectorAll('.tab-btn');
@@ -450,36 +394,33 @@
                 document.getElementById(tabId).classList.add('active');
             });
         });
-
-        // Initialize Charts
-        initializeCharts();
     });
 
-    function initializeCharts() {
+    function initializeCharts(dailyAppointments, emergencyAppointments, otherAppointments, appointmentTypes) {
         // Bar Chart - Appointment Overview
         const barChartCtx = document.getElementById('appointmentOverviewChart').getContext('2d');
         const barChart = new Chart(barChartCtx, {
             type: 'bar',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: Array.from({ length: dailyAppointments.length }, (_, i) => i + 1),
                 datasets: [
                     {
-                        label: 'Regular Appointments',
-                        data: [45, 56, 62, 58, 64, 32, 28],
+                        label: 'Daily Appointments',
+                        data: dailyAppointments,
                         backgroundColor: 'rgba(79, 70, 229, 0.7)',
                         borderRadius: 4,
                         borderWidth: 0
                     },
                     {
                         label: 'Emergency Appointments',
-                        data: [12, 9, 14, 11, 18, 22, 15],
+                        data: emergencyAppointments,
                         backgroundColor: 'rgba(239, 68, 68, 0.7)',
                         borderRadius: 4,
                         borderWidth: 0
                     },
                     {
-                        label: 'Rujal Baniya',
-                        data: [12, 9, 14, 11, 18, 22, 15],
+                        label: 'Other Appointments',
+                        data: otherAppointments,
                         backgroundColor: 'rgba(29, 68, 68, 0.7)',
                         borderRadius: 4,
                         borderWidth: 0
@@ -538,22 +479,25 @@
                 }
             }
         });
-
+    
         // Pie Chart - Appointment Types
         const pieChartCtx = document.getElementById('appointmentTypesChart').getContext('2d');
         const pieChart = new Chart(pieChartCtx, {
             type: 'doughnut',
             data: {
-                labels: ['General Checkup', 'Specialist Consult', 'Laboratory Test', 'Vaccination', 'Physiotherapy', 'Other'],
+                labels: ['General Consultation', 'Follow-up Visit', 'Online Consultation', 'Offline Consultation'],
                 datasets: [{
-                    data: [35, 25, 15, 10, 8, 7],
+                    data: [
+                        appointmentTypes.general_consultation,
+                        appointmentTypes.follow_up_visit,
+                        appointmentTypes.online_consultation,
+                        appointmentTypes.offline_consultation
+                    ],
                     backgroundColor: [
                         'rgba(79, 70, 229, 0.9)',
                         'rgba(59, 130, 246, 0.9)',
                         'rgba(16, 185, 129, 0.9)',
-                        'rgba(245, 158, 11, 0.9)',
-                        'rgba(99, 102, 241, 0.9)',
-                        'rgba(139, 92, 246, 0.9)'
+                        'rgba(245, 158, 11, 0.9)'
                     ],
                     borderWidth: 1,
                     borderColor: '#ffffff'
@@ -600,7 +544,7 @@
                 }
             }
         });
-
+    
         // Make charts responsive
         window.addEventListener('resize', function () {
             barChart.resize();

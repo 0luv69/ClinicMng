@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.contrib import messages
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Count
 
 from datetime import datetime, date
 from decimal import Decimal, InvalidOperation
@@ -22,14 +22,62 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 
 from django.utils import timezone
+from django.utils.timezone import now
+from calendar import monthrange
 
 # Create your views here.
 def management_dashboard(request):
     profile = Profile.objects.get(user=request.user)
-    appointments = Appointment.objects.all().order_by('-created_at')[:5]
+    
+    # Get the current month and year
+    current_date = now()
+    current_month = current_date.month
+    current_year = current_date.year
+    
+    # Number of days in the current month
+    days_in_month = monthrange(current_year, current_month)[1]
+    
+    # Initialize daily appointment counts
+    daily_appointments = [0] * days_in_month
+    emergency_appointments = [0] * days_in_month
+    other_appointments = [0] * days_in_month
+    
+    # Retrieve appointments for the current month
+    appointments_this_month = Appointment.objects.filter(
+        appointment_date__month=current_month,
+        appointment_date__year=current_year
+    )
+    
+    # Populate daily appointment counts
+    for appointment in appointments_this_month:
+        day_index = appointment.appointment_date.day - 1
+        daily_appointments[day_index] += 1
+        if appointment.appointment_type == 'emergency':
+            emergency_appointments[day_index] += 1
+        else:
+            other_appointments[day_index] += 1
+
+    # Appointment type distribution
+    appointment_type_distribution = appointments_this_month.values('appointment_type').annotate(count=Count('appointment_type'))
+    appointment_types = {
+        'general_consultation': 0,
+        'follow_up_visit': 0,
+        'online_consultation': 0,
+        'offline_consultation': 0,
+    }
+    for item in appointment_type_distribution:
+        appointment_types[item['appointment_type']] = item['count']
+    
     context = {
         'profile': profile,
-        'appointments': appointments,
+        'appointments': appointments_this_month.order_by('-created_at')[:5],
+        'total_appointments': appointments_this_month.count(),
+        'total_patients': Profile.objects.filter(role='patient').count(),
+        'total_doctors': Profile.objects.filter(role='doctor').count(),
+        'daily_appointments': daily_appointments,
+        'emergency_appointments': emergency_appointments,
+        'other_appointments': other_appointments,
+        'appointment_types': appointment_types,
     }
     return render(request, 'pages/management/dashboard.html', context)
 
