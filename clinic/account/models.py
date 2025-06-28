@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -119,8 +120,6 @@ class Message(models.Model):
 
 
 
-
-
 class MedicalInfo(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name="medical_info")
     blood_group = models.CharField(max_length=3, blank=True)
@@ -172,3 +171,18 @@ class ActivityLog(models.Model):
         if self.target_content_type:
             return f"{self.target_content_type.model} - {self.target}"
         return "No target"
+    
+
+
+class Review(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="reviews")
+    doctor = models.ForeignKey('doctor.DoctorProfile', on_delete=models.CASCADE, related_name="doctor_reviews", null=True, blank=True)
+
+    rating = models.PositiveIntegerField(default=0)
+    comment = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Review by {self.profile.user.username} for {self.doctor.profile.user.username} - Rating: {self.rating}"

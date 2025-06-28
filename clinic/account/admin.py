@@ -55,3 +55,5 @@ class CallsAdmin(admin.ModelAdmin):
         return qs.select_related('caller', 'receiver')
 
 admin.site.register(Calls)
+
+admin.site.register(Review)

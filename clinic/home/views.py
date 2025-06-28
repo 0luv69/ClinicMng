@@ -3,7 +3,7 @@ from django.contrib import messages
 
 from django import forms
 from doctor.models import DoctorProfile
-from account.models import Profile
+from account.models import Profile, MedicalInfo, ActivityLog, Review
 from account.views import login_required_with_message
 
 # Create your views here.
@@ -11,12 +11,10 @@ from account.views import login_required_with_message
 
 def home_page(request):
     all_doc_profiles = DoctorProfile.objects.all()
+    all_reviews = Review.objects.all().order_by('-created_at')[:7]  # Get the latest 7 reviews
 
-
-
-    return render(request, 'pages/index.html', {'all_doc_profiles': all_doc_profiles})
-
-
+    return render(request, 'pages/index.html', {'all_doc_profiles': all_doc_profiles,
+                                                'all_reviews': all_reviews})
 
 
 
