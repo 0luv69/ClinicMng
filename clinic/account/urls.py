@@ -11,7 +11,9 @@ urlpatterns = [
     path('register/submit/', PostRegister, name='PostRegister'),
     path('login/submit/', Postlogin, name='Postlogin'),
 
-    path('forget-password/', Postlogin, name='forgetPassword'),
+    path('forget-password/', forget_password, name='forgetPassword'),
+    path('reset-password/<str:token>/', reset_password, name='ResetPassword'),
+    path('reset-password-submit/', PostResetPassword, name='PostResetPassword'),
 
     path('user-logout/', logout_page, name='logout'),
 

@@ -6,6 +6,10 @@ from functools import wraps
 from datetime import datetime
 from django.urls import reverse
 
+from home.send_email import send_custom_email
+from account.models import Profile
+import uuid
+from datetime import timedelta
 
 app_name = 'account'
 
@@ -96,8 +100,6 @@ def PostRegister(request):
     
     return redirect('account:register')
 
-
-
 def Postlogin(request):
     """Custom login view that uses email and password."""
     if request.method == 'POST':
@@ -136,7 +138,6 @@ def Postlogin(request):
     return redirect('account:login')
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
 def logout_page(request):
     """Custom logout view."""
     logout(request)
@@ -144,7 +145,6 @@ def logout_page(request):
     return redirect('account:login')
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
 def change_password(request):
     """Change password view."""
 
@@ -184,4 +184,88 @@ def change_password(request):
     return redirect(profile_path + '#security')
 
 
-    
+def forget_password(request):
+    """View for handling password reset requests."""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        if not email:
+            messages.error(request, "Email is required.")
+            return redirect('account:forget-password')
+
+        try:
+            user = User.objects.get(email=email)
+            profile: Profile = user.profile
+
+            # Generate a unique token and set its expiry time
+            token = uuid.uuid4().hex
+            expiry_time = datetime.now() + timedelta(hours=1)  # Token valid for 1 hour
+
+            profile.reset_password_token = token
+            profile.reset_password_token_expiry = expiry_time
+            profile.save()
+
+            send_custom_email(
+                subject="Password Reset Request",
+                message="Click the link below to reset your password:\n\n"
+                        f"http://localhost:8000/account/reset-password/{token}/",  # Replace with your actual reset URL
+                recipient_list=[email]
+            )
+
+
+            # Here you would typically send a password reset email
+            messages.success(request, "Password reset link has been sent to your email.")
+        except User.DoesNotExist:
+            messages.error(request, "No user found with this email.")
+
+        return redirect('account:login')
+
+    return render(request, 'pages/forget_password.html') 
+
+
+def reset_password(request, token):
+    """View for resetting the password using a token."""
+    try:
+        profile = Profile.objects.get(reset_password_token=token, reset_password_token_expiry__gt=datetime.now())
+    except Profile.DoesNotExist:
+        messages.error(request, "Invalid or expired password reset token.")
+        return redirect('account:login')
+
+    return render(request, 'pages/reset_password.html', {'token': token})
+
+
+def PostResetPassword(request):
+    """Handle the form submission for resetting the password."""
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        print("test", token, new_password, confirm_password, sep=' | ')
+
+        if not token or not new_password or not confirm_password:
+            messages.error(request, "All fields are required.")
+            return redirect(f'account:reset-password/{token}')
+
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect(f'account:reset-password/{token}')
+
+        try:
+            profile = Profile.objects.get(reset_password_token=token, reset_password_token_expiry__gt=datetime.now())
+            user = profile.user
+            user.set_password(new_password)
+            user.save()
+
+            # Clear the reset token and expiry
+            profile.reset_password_token = None
+            profile.reset_password_token_expiry = None
+            profile.save()
+
+            messages.success(request, "Password has been reset successfully. You can now log in.")
+            return redirect('account:login')
+
+        except Profile.DoesNotExist:
+            messages.error(request, "Invalid or expired password reset token.")
+            return redirect('account:login')
+
+    return redirect('account:login')
