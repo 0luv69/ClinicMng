@@ -12,7 +12,7 @@ app_name = 'account'
 
 
 
-def login_required_with_message(function=None, login_url=None, message=None):
+def login_required_with_message(function=None, login_url=None, message=None, only=None):
     """
     Custom decorator for views that checks if the user is logged in.
     Adds a message if the user is redirected to the login page.
@@ -21,10 +21,13 @@ def login_required_with_message(function=None, login_url=None, message=None):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
-                print("User is not authenticated.")
                 if message:
                     messages.warning(request, message)
                 return redirect(login_url or 'account:login')
+            
+            if only and request.user.profile.role not in only:
+                messages.error(request, "You do not have permission to access this page.")
+                return redirect(f'{request.user.profile.role}:dashboard')
             return view_func(request, *args, **kwargs)
         return _wrapped_view
 

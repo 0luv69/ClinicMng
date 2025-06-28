@@ -14,7 +14,7 @@ urlpatterns = [
 
 
 
-    path('', doctorDashboard, name='doctor_dashboard'),
+    path('', doctorDashboard, name='dashboard'),
     path('dashboard/', doctorDashboard, name='doctor_dashboard'),
 
 

@@ -25,7 +25,10 @@ from django.utils import timezone
 from django.utils.timezone import now
 from calendar import monthrange
 
+from account.views import login_required_with_message
+
 # Create your views here.
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.", only=['management'])
 def management_dashboard(request):
     profile = Profile.objects.get(user=request.user)
     
@@ -81,6 +84,7 @@ def management_dashboard(request):
     }
     return render(request, 'pages/management/dashboard.html', context)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Management Dashboard.", only=['management'])
 def ViewAppointmnets(request):
     qs = Appointment.objects.all().order_by('-created_at')
     # pull per_page from GET, default 10
@@ -109,6 +113,7 @@ def ViewAppointmnets(request):
 
 
 # Patient Management View
+@login_required_with_message(login_url='account:login', message="You need to log in to View Patients.", only=['management'])
 def ViewPatients(request):
     patients = Profile.objects.filter(role='patient').order_by('-created_at')
     
@@ -137,6 +142,7 @@ def ViewPatients(request):
     return render(request, 'pages/management/view_patients.html', context)
 
 @require_POST
+@login_required_with_message(login_url='account:login', message="You need to log in to update Patient Profile.", only=['management'])
 def update_profile(request, username):
     """
     View to update a patient's profile information
@@ -201,6 +207,7 @@ def update_profile(request, username):
         }, status=400)
 
 @require_POST
+@login_required_with_message(login_url='account:login', message="You need to log in to update Patient Medical Information.", only=['management'])
 def update_medical_info(request, username):
     """
     View to update a patient's medical information
@@ -261,6 +268,7 @@ def update_medical_info(request, username):
             'message': f'Error updating medical information: {str(e)}'
         }, status=400)
 
+@login_required_with_message
 def create_patient(request):
     """API endpoint for creating a new patient with profile and medical info"""
     try:
@@ -405,6 +413,7 @@ def create_patient(request):
 
 
 #  Doctor Management View
+@login_required_with_message(login_url='account:login', message="You need to log in to View Doctors.", only=['management'])
 def ViewDoctors(request):
     doctors = Profile.objects.filter(role='doctor').order_by('-created_at')
     # pull per_page from GET, default 10
@@ -430,6 +439,7 @@ def ViewDoctors(request):
     }
     return render(request, 'pages/management/view_doctors.html', context)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to View Doctors.", only=['management'])
 def create_doctor(request):
     """API endpoint for creating a new doctor with profile and doctor profile"""
     try:
@@ -582,7 +592,7 @@ def create_doctor(request):
             'current_user': request.user.username
         }, status=500)
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to update Doctor Information.", only=['management'])
 def EditDoctorInfo(request):
     """
     Handle doctor information updates based on request_type
@@ -1045,6 +1055,7 @@ def handle_fees_update(doctor_profile, data, user):
 
 
 # Medicine Management View
+@login_required_with_message(login_url='account:login', message="You need to log in to View Medicines.", only=['management'])
 def medicineMng(request):
     medicines = Medicine.objects.all().order_by('-created_at')
 
@@ -1085,6 +1096,7 @@ def medicineMng(request):
             instructions=instructions,
             side_effects=side_effects
         )
+        messages.success(request, 'Medicine added successfully.')
         return redirect('management:medicineMng')  # Avoid resubmitting form on reload
 
     context = {
@@ -1095,6 +1107,7 @@ def medicineMng(request):
     }
     return render(request, 'pages/management/medicine_management.html', context)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Edit Medicine.", only=['management'])
 def delete_medicine(request, medicine_uuid):
     try:
         medicine = Medicine.objects.get(uuid=medicine_uuid)
@@ -1112,6 +1125,7 @@ def delete_medicine(request, medicine_uuid):
 
 
 # Prescription Management View
+@login_required_with_message(login_url='account:login', message="You need to log in to View Prescriptions.", only=['management'])
 def precpMng(request):
     # If not POST, just display the prescriptions
     prescriptions = Prescription.objects.all().order_by('-created_at')
@@ -1141,6 +1155,7 @@ def precpMng(request):
     }
     return render(request, 'pages/management/prescription_management.html', context)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Edit Prescription.", only=['management'])
 def edit_prescription(request, prescription_uuid):
     if request.method == 'POST':
         try:
@@ -1217,7 +1232,7 @@ def edit_prescription(request, prescription_uuid):
         'message': 'Invalid request method.'
     }, status=405)
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to Add Prescription.", only=['management'])
 def add_prescription(request):
     if request.method == 'POST':
         # Get form data
@@ -1287,6 +1302,7 @@ def add_prescription(request):
     # If GET request, redirect to the prescription management page
     return redirect('management:prescriptionsMng')
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Delete Prescription.", only=['management'])
 def delete_prescription(request, prescription_uuid):
     try:
         prescription = Prescription.objects.get(uuid = prescription_uuid)
@@ -1298,7 +1314,12 @@ def delete_prescription(request, prescription_uuid):
     
     return redirect('management:prescriptionsMng')
 
+
+
+
+
 # Lab Report Management View
+@login_required_with_message(login_url='account:login', message="You need to log in to View Lab Reports.", only=['management'])
 def labRpMng(request):
     lab_reports = LabReport.objects.all().order_by('-report_date')
 
@@ -1329,6 +1350,7 @@ def labRpMng(request):
     return render(request, 'pages/management/lab_report_management.html', context)
 
 @require_POST
+@login_required_with_message(login_url='account:login', message="You need to log in to Update Lab Report.", only=['management'])
 def update_lab_report(request, labReport_uuid):
     """API endpoint for updating a lab report"""
     lab_report = get_object_or_404(LabReport, uuid=labReport_uuid)
@@ -1388,8 +1410,8 @@ def update_lab_report(request, labReport_uuid):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-
 @require_POST
+@login_required_with_message(login_url='account:login', message="You need to log in to Create Lab Report.", only=['management'])
 def create_lab_report(request):
     """View for creating a new lab report from JSON data"""
     try:
@@ -1462,7 +1484,7 @@ def create_lab_report(request):
             'message': f'Error creating lab report: {str(e)}'
         }, status=500)
 
-@login_required
+@login_required_with_message(login_url='account:login', message="You need to log in to Delete Lab Report.", only=['management'])
 def delete_lab_report(request, labReport_uuid):
     """View for deleting a lab report"""
     lab_report = get_object_or_404(LabReport, uuid=labReport_uuid)

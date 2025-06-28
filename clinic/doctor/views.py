@@ -20,7 +20,7 @@ import uuid
 from django.utils.translation import gettext as _
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.", only=['doctor'])
 def doctorDashboard(request):
     profile = request.user.profile
     doctor = DoctorProfile.objects.get(profile=profile)
@@ -96,7 +96,7 @@ def doctorDashboard(request):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Manage the session.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Manage the session.", only=['doctor'])
 def SessionMng(request):
     if request.method == 'GET':    
         profile: Profile = request.user.profile
@@ -146,7 +146,7 @@ def SessionMng(request):
         return redirect('doctor:SessionMng')
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Doctor Data.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Doctor Data.", only=['doctor'])
 def get_doctor_availability_json(request, app_uuid):
     """
     Returns available slots (not booked or unavailable) for the given doctor as JSON.
@@ -182,7 +182,7 @@ def get_doctor_availability_json(request, app_uuid):
 
 
  
-@login_required_with_message(login_url='account:login', message="You need to log in to Edit Date Schedules.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Edit Date Schedules.", only=['doctor'])
 def d_edit_schedules(request):
     profile: Profile = request.user.profile
     doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
@@ -194,6 +194,7 @@ def d_edit_schedules(request):
     }
     return render(request, 'pages/doctor/edit_schedules.html', context)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Edit Date Schedules.", only=['doctor'])
 def get_dateTime_slots(request, start_date=None):
     profile: Profile = request.user.profile
     doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
@@ -257,7 +258,7 @@ def get_dateTime_slots(request, start_date=None):
         "scheduleData": appointment_data
     }, safe=False)
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.", only=['doctor'])
 def submit_dateTime_slots(request):
     if request.method != 'POST':
         return JsonResponse({'success': False,
@@ -325,9 +326,7 @@ def submit_dateTime_slots(request):
 
 
 
-
-
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Patient Details .")
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Patient Details .", only=['doctor'])
 def ViewPatients(request):
     profile: Profile = request.user.profile
     doctor: DoctorProfile = DoctorProfile.objects.get(profile = profile)
@@ -370,11 +369,7 @@ def ViewPatients(request):
     return render(request, 'pages/doctor/view_patients.html', context)
 
 
-
-
-
-
-@login_required_with_message(login_url='account:login', message="You need to log in to Change the Status.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Change the Status.", only=['doctor'])
 def Action_Appointment(request):
     if request.method != 'POST':
         return JsonResponse({'success': False,
@@ -414,7 +409,7 @@ def Action_Appointment(request):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Profile.")
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Profile.", only=['doctor'])
 def d_profile(request):
     profile: Profile = request.user.profile
     context = {
@@ -423,7 +418,7 @@ def d_profile(request):
     return render(request, 'pages/doctor/profile.html', context)
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.", only=['doctor'])
 def message(request):
     profile : Profile = request.user.profile
 
@@ -485,7 +480,7 @@ def message(request):
 
 
 # video call views
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Video Calls.")
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Video Calls.", only=['doctor'])
 def view_v_call(request: HttpRequest):
     """Request a video call with a doctor."""
     if request.method != 'POST':
@@ -509,6 +504,7 @@ def view_v_call(request: HttpRequest):
 
     return render(request, 'pages/doctor/list-v-call.html',{ 'conv': convs,}  )
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Send Call Request.", only=['doctor'])
 def send_req_calls(request: HttpRequest, convo_uuid: uuid):
     """Send a request for a video call."""
     try:
@@ -537,6 +533,7 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
         messages.error(request, _("An error occurred while sending the video call request."))
         return redirect('patient:view_v_call')
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Join your Video Calls.", only=['doctor'])
 def join_v_call(request: HttpRequest, calls_uuid: uuid):
 
     profile: Profile = request.user.profile
@@ -558,6 +555,7 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
                                                                 'call_obj': calls,
                                                                 'is_caller': is_caller,})
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Enter Waiting Room.", only=['doctor'])
 def waiting_room(request: HttpRequest, calls_uuid: uuid):
     """Join a video call with a specific conversation ID."""
     profile: Profile = request.user.profile

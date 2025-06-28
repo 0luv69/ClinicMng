@@ -95,7 +95,6 @@ def get_report_status_type_color(status_type):
 
 @register.simple_tag
 def get_prescription_status_color(status_type):
-    print(status_type)
     """
     Returns the Tailwind class associated with a given prescription status type.
     Usage: {% get_prescription_status_color prescription.status %}

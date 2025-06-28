@@ -100,7 +100,7 @@ def redirect_to_role_dashboard(request: HttpRequest):
 
 # --------------------------------------- Rendering Pages ------------------------------------------------------------
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Access this Page.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Access this Page.", only=['patient'])
 def patientDashboard(request: HttpRequest):
     """Patient dashboard view."""
 
@@ -118,7 +118,7 @@ def patientDashboard(request: HttpRequest):
 
     return render(request, 'pages/patient/dashboard.html', context)
 
-@login_required_with_message(login_url='account:login', message="You need to log in to View Your Appointments.")
+@login_required_with_message(login_url='account:login', message="You need to log in to View Your Appointments.", only=['patient'])
 def viewAppointment(request: HttpRequest):
     profile = Profile.objects.get(user=request.user)
     qs = Appointment.objects.filter(profile=profile).order_by('-created_at')
@@ -403,7 +403,7 @@ def BookAppointment(request: HttpRequest):
 
     return redirect('patient:bookAppointment')
 
-@login_required_with_message(login_url='account:login', message="You need to log in to View Your Files/ Document.")
+@login_required_with_message(login_url='account:login', message="You need to log in to View Your Files/ Document.", only=['patient'])
 def ViewDocument(request: HttpRequest):
     path = reverse('patient:viewDocument')
     if request.method == 'POST':
@@ -486,7 +486,7 @@ def delete_document(request, doc_id):
     # If accessed via GET, redirect to same page (or show a confirm page optionally)
     return redirect('patient:viewDocument')
 
-
+@login_required_with_message(login_url='account:login', message="You need to log in to Manage Video Calls", only=['patient'])
 def view_v_call(request: HttpRequest):
     """Request a video call with a doctor."""
     if request.method != 'POST':
@@ -510,6 +510,7 @@ def view_v_call(request: HttpRequest):
 
     return render(request, 'pages/patient/list-v-call.html',{ 'conv': convs,}  )
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Send Calls Request", only=['patient'])
 def send_req_calls(request: HttpRequest, convo_uuid: uuid):
     """Send a request for a video call."""
     try:
@@ -538,6 +539,7 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
         messages.error(request, _("An error occurred while sending the video call request."))
         return redirect('patient:view_v_call')
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Join Video Calls", only=['patient'])
 def join_v_call(request: HttpRequest, calls_uuid: uuid):
 
     profile: Profile = request.user.profile
@@ -579,10 +581,7 @@ def waiting_room(request: HttpRequest, calls_uuid: uuid):
                                                                 'call_obj': calls,})
 
 
-
-
-
-@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.")
+@login_required_with_message(login_url='account:login', message="You need to log in to view your Messages.", only=['patient'])
 def message(request: HttpRequest):
     profile : Profile = request.user.profile
     
@@ -787,7 +786,7 @@ def post_msg(request: HttpRequest):
 
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access your Lab Reports.")
+@login_required_with_message(login_url='account:login', message="You need to log in to access your Lab Reports.", only=['patient'])
 def labReport(request: HttpRequest):
     profile: Profile = request.user.profile
     reports: LabReport = LabReport.objects.filter(patient_profile=profile)
@@ -832,7 +831,7 @@ def labReport(request: HttpRequest):
     
     return render(request, 'pages/patient/lab_report.html', context)
 
-@login_required_with_message(login_url='account:login', message="You need to log in to Download PDF.")
+@login_required_with_message(login_url='account:login', message="You need to log in to Download PDF.", only=['patient'])
 def lab_report_pdf(request, uuid):
     report = get_object_or_404(LabReport, uuid=uuid)
     html = render_to_string('pages/patient/lab_report_pdf.html', {
@@ -847,7 +846,7 @@ def lab_report_pdf(request, uuid):
     return response
 
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access your Prescription .")
+@login_required_with_message(login_url='account:login', message="You need to log in to access your Prescription .", only=['patient'])
 def prescriptions(request: HttpRequest):
     if request.method == 'GET':
         """Prescription page view."""
@@ -916,7 +915,7 @@ def prescriptions(request: HttpRequest):
         }
         return render(request, 'pages/patient/prescriptions.html', context)
 
-@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.")
+@login_required_with_message(login_url='account:login', message="You need to log in to access Profile page.", only=['patient'])
 def p_profile(request: HttpRequest):
     """Patient profile page view."""
 
@@ -985,8 +984,7 @@ def p_profile(request: HttpRequest):
         return redirect('patient:profile')
 
 
-
-@login_required_with_message(login_url='account:login', message="You need to log in to View your Activities.")
+@login_required_with_message(login_url='account:login', message="You need to log in to View your Activities.", only=['patient'])
 def p_activities(request: HttpRequest):
     """Patient activities page view."""
     profile: Profile = request.user.profile

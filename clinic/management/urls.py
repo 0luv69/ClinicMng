@@ -8,7 +8,7 @@ app_name = 'management'
 
 urlpatterns = [
     path('management/', management_dashboard, name='management_dashboard'),
-    path('', management_dashboard, name='management_dashboard'),
+    path('', management_dashboard, name='dashboard'),
     path('view-appointments/', ViewAppointmnets, name='viewAppointment'),
 
     
