@@ -82,7 +82,7 @@ class Conversation(models.Model):
 class Calls(models.Model):
     uuid = models.UUIDField(unique=True, editable=False, null=True, blank=True)
 
-    appointment = models.ForeignKey('patient.Appointment', on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
+    appointment = models.ForeignKey('patient.Appointment', on_delete=models.CASCADE, related_name='appointments_Calls', null=True, blank=True)
     connection = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='convosation_calls')
     caller = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='calls_made')
     receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='calls_received')

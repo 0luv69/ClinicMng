@@ -485,22 +485,15 @@ def view_v_call(request: HttpRequest):
     """Request a video call with a doctor."""
     if request.method != 'POST':
         profile: Profile = request.user.profile
-        room_name = ''
-
-        payload = {
-            'room_name': room_name,
-            'user_name': profile.user.get_full_name(),
-            'user_pic': profile.profile_pic.url,
-        }
-
-    convs =  Conversation.objects.filter(
-        participants=request.user.profile
-    )
-    for conversation in convs:
-        # Get the other participant (not the current user)
-        conversation.other_participant = conversation.participants.exclude(
-            id=profile.id
-        ).first()
+      
+        convs =  Conversation.objects.filter(
+            participants=request.user.profile
+        ).order_by('-created_at')
+        for conversation in convs:
+            # Get the other participant (not the current user)
+            conversation.other_participant = conversation.participants.exclude(
+                id=profile.id
+            ).first()
 
     return render(request, 'pages/doctor/list-v-call.html',{ 'conv': convs,}  )
 
@@ -538,6 +531,12 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
 
     profile: Profile = request.user.profile
     calls: Calls = get_object_or_404(Calls, uuid=calls_uuid)
+
+    # Ensure the call exists, completed or cancelled calls cannot be joined
+    if calls.status not in ['requested', 'active', 'ongoing']:
+        messages.error(request, _("The call cannot be joined as it is either completed or cancelled."))
+        return redirect('doctor:view_v_call')
+
     conversation: Conversation = calls.connection
 
     # Ensure the user is part of the conversation

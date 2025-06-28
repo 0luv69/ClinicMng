@@ -206,6 +206,7 @@ def export_appointments_excel(request):
     return response
 
 
+
 @login_required_with_message(login_url='account:login', message="You need to log in to Delete, Edit Appointments.")
 def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
     try:
@@ -403,6 +404,8 @@ def BookAppointment(request: HttpRequest):
 
     return redirect('patient:bookAppointment')
 
+
+# --------------------------------------- Document Management ------------------------------------------------------------
 @login_required_with_message(login_url='account:login', message="You need to log in to View Your Files/ Document.", only=['patient'])
 def ViewDocument(request: HttpRequest):
     path = reverse('patient:viewDocument')
@@ -486,27 +489,23 @@ def delete_document(request, doc_id):
     # If accessed via GET, redirect to same page (or show a confirm page optionally)
     return redirect('patient:viewDocument')
 
+
+
+# video calls 
 @login_required_with_message(login_url='account:login', message="You need to log in to Manage Video Calls", only=['patient'])
 def view_v_call(request: HttpRequest):
     """Request a video call with a doctor."""
     if request.method != 'POST':
         profile: Profile = request.user.profile
-        room_name = ''
 
-        payload = {
-            'room_name': room_name,
-            'user_name': profile.user.get_full_name(),
-            'user_pic': profile.profile_pic.url,
-        }
-
-    convs =  Conversation.objects.filter(
-        participants=request.user.profile
-    )
-    for conversation in convs:
-        # Get the other participant (not the current user)
-        conversation.other_participant = conversation.participants.exclude(
-            id=profile.id
-        ).first()
+        convs =  Conversation.objects.filter(
+            participants=request.user.profile
+        ).order_by('-created_at')
+        for conversation in convs:
+            # Get the other participant (not the current user)
+            conversation.other_participant = conversation.participants.exclude(
+                id=profile.id
+            ).first()
 
     return render(request, 'pages/patient/list-v-call.html',{ 'conv': convs,}  )
 
@@ -541,9 +540,14 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Join Video Calls", only=['patient'])
 def join_v_call(request: HttpRequest, calls_uuid: uuid):
-
     profile: Profile = request.user.profile
     calls: Calls = get_object_or_404(Calls, uuid=calls_uuid)
+    # Ensure the call exists, completed or cancelled calls cannot be joined
+    if calls.status not in ['requested', 'active', 'ongoing']:
+        messages.error(request, _("The call cannot be joined as it is either completed or cancelled."))
+        return redirect('patient:view_v_call')
+
+
     conversation: Conversation = calls.connection
 
     # Ensure the user is part of the conversation
