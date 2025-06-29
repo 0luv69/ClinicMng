@@ -13,11 +13,15 @@ from django.utils import timezone
 
 from django.core.serializers.json import DjangoJSONEncoder
 from account.views import login_required_with_message
-from django.db.models import Q, Max, Count, Case, When, BooleanField
 from django.http import HttpRequest, HttpResponse
 
 import uuid
 from django.utils.translation import gettext as _
+
+from home.send_email import send_custom_email
+import uuid
+from django.conf import settings
+DOMAIN_NAME = settings.DOMAIN_NAME
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.", only=['doctor'])
@@ -93,9 +97,6 @@ def doctorDashboard(request):
     
     return render(request, 'pages/doctor/dashboard.html', context)
 
-
-
-
 @login_required_with_message(login_url='account:login', message="You need to log in to Manage the session.", only=['doctor'])
 def SessionMng(request):
     if request.method == 'GET':    
@@ -142,6 +143,14 @@ def SessionMng(request):
         # Optionally, update new_slot status if needed
         new_slot.status = 'booked'
         new_slot.save()
+
+        # send email notification to patient
+        send_custom_email(
+            subject=f"Appointment Rescheduled: {appointment.appointment_type}",
+            message=f"Your appointment has been rescheduled to {appointment.appointment_date} at {time_str}.",
+            recipient_list=[appointment.profile.user.email]
+        )
+
         messages.success(request, "Appointment slot updated successfully.")
         return redirect('doctor:SessionMng')
 
@@ -176,8 +185,6 @@ def get_doctor_availability_json(request, app_uuid):
     
     
     return JsonResponse({'availability': date_json})
-
-
 
 
 
@@ -519,6 +526,27 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             receiver=conversation.participants.exclude(id=profile.id).first()
         )
 
+        Message.objects.create(
+            conversation=conversation,
+            sender=profile,
+            content=f"Call Request from {profile.user.first_name}",
+        )
+
+        if call.receiver.role == "patient":
+            #send Mail for patient
+            send_custom_email(
+                    subject=f"Call Request, From: DR. {call.caller.user.first_name}",
+                    message=f"Hi, The Call was Requested. \n\nFrom: Dr. {call.caller.user.first_name}  \nTo: {call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{call.uuid}/ ",
+                    recipient_list=[call.caller.user.email]
+            )
+        elif call.receiver.role == "doctor":
+            #send Mail for Doctor
+            send_custom_email(
+                    subject=f"Call Request, From: {call.caller.user.first_name} ",
+                    message=f"Hi, The Call was Requested. \n\nFrom: {call.caller.user.first_name}  \nTo: Dr.{call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{call.uuid}/ ",
+                    recipient_list=[call.caller.user.email]
+            )
+
         messages.success(request, _("Video call request sent successfully."))
         return redirect('patient:join_v_call', calls_uuid=call.uuid)
     except Exception as e:
@@ -549,6 +577,12 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
     ).first()
 
     is_caller = calls.caller == profile
+
+    send_custom_email(
+        subject=f"Call Request, From: {calls.caller.user.first_name}",
+        message=f"Hi, The Call was Requested. \n\nFrom: {calls.caller.user.first_name}  \nTo: Dr.{calls.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{calls.uuid}/ ",
+        recipient_list=[calls.receiver.user.email]
+    )
 
     return render(request, 'pages/doctor/join-v-call.html', {'conversation': conversation,
                                                                 'call_obj': calls,

@@ -273,12 +273,12 @@ def forget_password(request):
             profile.token_expiry = expiry_time
             profile.save()
 
-            send_custom_email(
-                subject="Password Reset Request",
-                message="Click the link below to reset your password:\n\n"
-                        f"{DOMAIN_NAME}/account/reset-password/{token}/",  # Replace with your actual reset URL
-                recipient_list=[email]
-            )
+            # send_custom_email(
+            #     subject="Password Reset Request",
+            #     message="Click the link below to reset your password:\n\n"
+            #             f"{DOMAIN_NAME}/account/reset-password/{token}/",  # Replace with your actual reset URL
+            #     recipient_list=[email]
+            # )
 
 
             # Here you would typically send a password reset email
@@ -294,12 +294,12 @@ def forget_password(request):
 def reset_password(request, token):
     """View for resetting the password using a token."""
     try:
-        profile = Profile.objects.get(token=token, token_expiry=datetime.now())
+        profile = Profile.objects.get(token=token,token_expiry__gt=datetime.now())
+        return render(request, 'pages/reset_password.html', {'token': token})
     except Profile.DoesNotExist:
         messages.error(request, "Invalid or expired password reset token.")
         return redirect('account:login')
 
-    return render(request, 'pages/reset_password.html', {'token': token})
 
 
 def PostResetPassword(request):
@@ -318,7 +318,7 @@ def PostResetPassword(request):
             return redirect(f'account:reset-password/{token}')
 
         try:
-            profile = Profile.objects.get(token=token, token_expiry=datetime.now())
+            profile = Profile.objects.get(token=token, token_expiry__gt=datetime.now())
             user = profile.user
             user.set_password(new_password)
             user.save()

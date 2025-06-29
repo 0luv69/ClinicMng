@@ -27,6 +27,12 @@ from calendar import monthrange
 
 from account.views import login_required_with_message
 
+
+from home.send_email import send_custom_email
+import uuid
+from django.conf import settings
+DOMAIN_NAME = settings.DOMAIN_NAME
+
 # Create your views here.
 @login_required_with_message(login_url='account:login', message="You need to log in to Access Doctor Dashboard.", only=['management'])
 def management_dashboard(request):
@@ -147,13 +153,6 @@ def update_profile(request, username):
     """
     View to update a patient's profile information
     """
-    # Check permissions (only the user themselves or staff can update)
-    if request.user.username != username and not request.user.is_staff:
-        return JsonResponse({
-            'status': 'error',
-            'message': 'You do not have permission to update this profile'
-        }, status=403)
-    
     # Get the profile to update
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
@@ -193,6 +192,13 @@ def update_profile(request, username):
         # Save the profile
         profile.save()
         
+        #Send email notification to the user
+        send_custom_email(
+            subject='Profile Updated',
+            message=f'Dear {user.first_name},\n\nYour profile has been updated successfully.\n\nThank you!',
+            recipient_list=[user.email],
+        )
+
         # Return success response with updated data
         return JsonResponse({
             'status': 'success',
@@ -201,6 +207,7 @@ def update_profile(request, username):
         })
         
     except Exception as e:
+        print(f"Error updating profile: {str(e)}")
         return JsonResponse({
             'status': 'error',
             'message': f'Error updating profile: {str(e)}'
@@ -256,6 +263,12 @@ def update_medical_info(request, username):
         # Save the medical info
         medical_info.save()
         
+        send_custom_email(
+            subject='Medical Information Updated',
+            message=f'Dear {user.first_name},\n\nYour medical information has been updated successfully.\n\nThank you!',
+            recipient_list=[user.email],
+        )   
+
         # Return success response
         return JsonResponse({
             'status': 'success',
@@ -773,6 +786,12 @@ def handle_personal_update(doctor_profile, data, user):
             # Save changes if any were made
             if changes_made:
                 profile.save()
+
+                send_custom_email(
+                    subject='Doctor Profile Updated',
+                    message=f'Dear {profile.user.first_name},\n\nYour profile has been updated successfully. Changes made: {", ".join(changes_made)}.\n\nBest regards,\nNCMS Team',
+                    recipient_list=[profile.user.email],
+                )
                 
                 return JsonResponse({
                     'success': True,
@@ -935,6 +954,12 @@ def handle_professional_update(doctor_profile, data, user):
             # Save changes if any were made
             if changes_made:
                 doctor_profile.save()
+
+                send_custom_email(
+                    subject='Doctor Profile Updated',
+                    message=f'Dear {doctor_profile.profile.user.first_name},\n\nYour professional information has been updated successfully.\n\nChanges made:\n- Specialization: {doctor_profile.get_specialization_display()}\n- Qualifications: {doctor_profile.qualifications}\n- Experience Years: {doctor_profile.experience_years}\n- License Number: {doctor_profile.license_number}\n- Board Certified: {"Yes" if doctor_profile.board_certified else "No"}\n- Languages Spoken: {", ".join(doctor_profile.languages_spoken)}\n\nThank you!',
+                    recipient_list=[doctor_profile.profile.user.email],
+                )
                 
                 return JsonResponse({
                     'success': True,
@@ -1024,6 +1049,12 @@ def handle_fees_update(doctor_profile, data, user):
             # Save changes if any were made
             if changes_made:
                 doctor_profile.save()
+
+                send_custom_email(
+                    subject='Doctor Profile Updated',   
+                    message=f'Dear {doctor_profile.profile.user.first_name},\n\nYour doctor profile has been updated successfully.\n\nChanges made:\n- Fees: {doctor_profile.fees}\n- Accepts New Patients: {"Yes" if doctor_profile.accepts_new_patients else "No"}\n\nThank you!',
+                    recipient_list=[doctor_profile.profile.user.email],
+                )
                 
                 return JsonResponse({
                     'success': True,
@@ -1204,6 +1235,12 @@ def edit_prescription(request, prescription_uuid):
 
             prescription.save()
 
+            send_custom_email(
+                subject='Prescription Updated',
+                message=f'Dear {prescription.profile.user.first_name},\n\nYour prescription has been updated successfully.\n\nDetails:\n- Medicine: {prescription.medicine.name}\n- Dosage: {prescription.update_dosage}\n- Frequency: {prescription.update_frequency}\n- Notes: {prescription.notes}\n- Status: {prescription.status}\n\nThank you!',
+                recipient_list=[prescription.profile.user.email],
+            )
+
             messages.success(request, 'Prescription updated successfully.')
             return JsonResponse({
                 'status': 'success',
@@ -1283,6 +1320,13 @@ def add_prescription(request):
                     time=time_str,
                     had_taken=False
                 )
+
+            # Send email notification
+            send_custom_email(
+                subject='New Prescription Created',
+                message=f'Dear {patient_profile.user.first_name},\n\nA new prescription has been created for you.\n\nDetails:\n- Medicine: {medicine.name}\n- Dosage: {dosage}\n- Frequency: {frequency}\n- Notes: {notes}\n- Status: {status}\n- Start Date: {start_date}\n- End Date: {end_date}\n\nThank you!',
+                recipient_list=[patient_profile.user.email],
+            )
             
             messages.success(request, 'Prescription created successfully!')
             # Redirect to the prescription management page
@@ -1366,6 +1410,12 @@ def update_lab_report(request, labReport_uuid):
         lab_report.report_description = data.get('report_description', lab_report.report_description)
         lab_report.save()
         
+        send_custom_email(
+            subject='Lab Report Updated',   
+            message=f'Dear {lab_report.patient_profile.user.first_name},\n\nYour lab report has been updated successfully.\n\nDetails:\n- Report Type: {lab_report.report_type}\n- Report Date: {lab_report.report_date}\n- Status: {lab_report.status}\n- Description: {lab_report.report_description}\n\nThank you!',
+            recipient_list=[lab_report.patient_profile.user.email],
+        )
+
         # Handle parameters
         if 'parameters' in data:
             # Delete existing parameters
@@ -1456,6 +1506,14 @@ def create_lab_report(request):
                 reference_range=param_data['reference_range'],
                 status=param_data['status']
             )
+
+        # Send email notification
+        send_custom_email(
+            subject='Lab Report Created',
+            message=f'Dear {patient_profile.user.first_name},\n\nA new lab report has been created for you.\n\nDetails:\n- Report Type: {report_type}\n- Report Date: {report_date}\n- Status: {status}\n- Description: {report_description}\n\nThank you!',
+            recipient_list=[patient_profile.user.email],
+        )
+
         messages.success(request, 'Lab report created successfully.')
         return JsonResponse({
             'status': 'success',

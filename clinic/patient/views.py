@@ -32,7 +32,10 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-
+from home.send_email import send_custom_email
+import uuid
+from django.conf import settings
+DOMAIN_NAME = settings.DOMAIN_NAME
 
 # Constants
 ALLOWED_FILE_TYPES_APPOINTMENT = [
@@ -232,6 +235,19 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
                     appointment.status = 'cancelled'
                     appointment.save()
 
+                    # send email notification to doctor
+                    send_custom_email(
+                        subject="Appointment Cancelled",
+                        message=(
+                            f"Dear {appointment.doctor.profile.user.get_full_name()},\n\n"
+                            f"Your appointment with {profile.user.get_full_name()} on {appointment.appointment_date} at {appointment.appointment_time_str} has been cancelled.\n"
+                            f"Reason: {appointment.cancel_reason}\n\n"
+                            f"Thank you for your understanding.\n\n"
+                            f"Best regards,\nNCMS Team"
+                        ),
+                        recipient_list=[appointment.doctor.profile.user.email]
+                    )
+
                     # Log the action
                     log_action(
                         profile=profile,
@@ -305,7 +321,7 @@ def BookAppointment(request: HttpRequest):
         return render(request, 'pages/patient/book_appointment.html', context)
 
     elif request.method == 'POST':
-        # try:
+        try:
             # Fetch the user's profile information
             profile: Profile = Profile.objects.get(user=request.user)
 
@@ -323,7 +339,7 @@ def BookAppointment(request: HttpRequest):
             doctor: DoctorProfile = get_object_or_404(DoctorProfile, id=doctor_id)
             time_slot_instance: AppointmentTimeSlot = get_object_or_404(AppointmentTimeSlot, id=appointment_time_slot_id)
 
-
+            # The user’s Profile will be created automatically via signals
 
             time_slot_instance.status = 'booked'
             time_slot_instance.save()   
@@ -381,6 +397,26 @@ def BookAppointment(request: HttpRequest):
                 appointment.file = appointment_file
                 appointment.save()
             
+            # Send Email with appointment details
+            send_custom_email(
+                subject="Appointment Booked!",
+                message=(
+                    f"Dear {profile.user.get_full_name()},\n\n"
+                    f"Your appointment has been booked successfully.\n\n"
+                    f"Appointment Details:\n"
+                    f"Booked By: {profile.user.get_full_name()} (Patient)\n"
+                    f"Doctor: Dr. {doctor.profile.user.get_full_name()}\n"
+                    f"Specialization: {doctor.get_specialization_display()}\n"
+                    f"Date: {appointment_date}\n"
+                    f"Time: {appointment_time}\n"
+                    f"Type: {appointment_type.replace('_', ' ').title()}\n"
+                    f"Reason: {appointment_reason or 'N/A'}\n\n"
+                    f"Thank you for using NCMS.\n\n"
+                    f"Best regards,\nNCMS Team"
+                ),
+                recipient_list=[profile.user.email, doctor.profile.user.email]
+            )
+
             # Log the action
             log_action(
                 profile=profile,
@@ -394,13 +430,14 @@ def BookAppointment(request: HttpRequest):
                 obj=appointment
             )
 
+                        #Send Email
+            
             messages.success(request, _("Appointment booked successfully."))
             return JsonResponse({'success': True, 'redirect_url': reverse('patient:viewAppointment')})
-        # except Exception as e:
-        #     messages.error(request, _("An error occurred while booking the appointment."))
-        #     error_msg = str(e)
-        #     print(f"Error: {error_msg}")
-        # return JsonResponse({'error': error_msg})
+        except Exception as e:
+            messages.error(request, _("An error occurred while booking the appointment."))
+            error_msg = str(e)
+            return JsonResponse({'error': error_msg})
 
     return redirect('patient:bookAppointment')
 
@@ -531,6 +568,27 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             receiver=conversation.participants.exclude(id=profile.id).first()
         )
 
+        Message.objects.create(
+            conversation=conversation,
+            sender=profile,
+            content=f"Call Request from {profile.user.first_name}",
+        )
+
+        if call.receiver.role == "patient":
+            #send Mail for patient
+            send_custom_email(
+                    subject=f"Call Request, From: DR. {call.caller.user.first_name}",
+                    message=f"Hi, The Call was Requested. \n\nFrom: Dr. {call.caller.user.first_name}  \nTo: {call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{call.uuid}/ ",
+                    recipient_list=[call.caller.user.email]
+            )
+        elif call.receiver.role == "doctor":
+            #send Mail for Doctor
+            send_custom_email(
+                    subject=f"Call Request, From: {call.caller.user.first_name} ",
+                    message=f"Hi, The Call was Requested. \n\nFrom: {call.caller.user.first_name}  \nTo: Dr.{call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{call.uuid}/ ",
+                    recipient_list=[call.caller.user.email]
+            )
+
         messages.success(request, _("Video call request sent successfully."))
         return redirect('patient:join_v_call', calls_uuid=call.uuid)
     except Exception as e:
@@ -560,6 +618,12 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
     ).first()
 
     is_caller = calls.caller == profile
+
+    send_custom_email(
+        subject=f"Call Request, From: {calls.caller.user.first_name}",
+        message=f"Hi, The Call was Requested. \n\nFrom: {calls.caller.user.first_name}  \nTo: {calls.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{calls.uuid}/ ",
+        recipient_list=[calls.receiver.user.email]
+    )
 
     return render(request, 'pages/patient/join-v-call.html', {'conversation': conversation,
                                                                 'call_obj': calls,

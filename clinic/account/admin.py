@@ -39,6 +39,9 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Personal Info', {
             'fields': ('profile_pic', 'profile_image_tag', 'ph_number', 'address', 'date_of_birth', 'gender')
         }),
+        ('Token Info', {
+            'fields': ('token', 'token_expiry', )
+        }),
         ('Notifications', {
             'fields': ('email_notification', 'sms_notification', 'reminders')
         }),
