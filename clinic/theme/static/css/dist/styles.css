@@ -1648,6 +1648,10 @@ select {
   max-height: 100vh;
 }
 
+.min-h-60 {
+  min-height: 15rem;
+}
+
 .min-h-\[80px\] {
   min-height: 80px;
 }
@@ -1658,6 +1662,10 @@ select {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-96 {
+  min-height: 24rem;
 }
 
 .w-0 {
@@ -3308,11 +3316,6 @@ select {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
-}
-
-.bg-yellow-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-10 {
@@ -5085,11 +5088,6 @@ select {
   background-color: rgb(254 249 195 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-yellow-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(161 98 7 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-yellow-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
@@ -5433,14 +5431,14 @@ select {
   --tw-ring-color: rgb(20 184 166 / var(--tw-ring-opacity, 1));
 }
 
-.focus\:ring-yellow-500:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(234 179 8 / var(--tw-ring-opacity, 1));
-}
-
 .focus\:ring-yellow-400:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(250 204 21 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-yellow-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(234 179 8 / var(--tw-ring-opacity, 1));
 }
 
 .focus\:ring-opacity-50:focus {

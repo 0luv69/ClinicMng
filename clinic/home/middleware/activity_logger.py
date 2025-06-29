@@ -25,20 +25,3 @@ class ActivityLoggerMiddleware:
                 pass  # Fail silently to avoid breaking request cycle
 
         return response
-
-
-
-
-from django.utils.deprecation import MiddlewareMixin
-
-class VerifyUserMiddleware(MiddlewareMixin):
-    def process_request(self, request):
-        if request.user.is_authenticated:
-            try:
-                profile: Profile = request.user.profile
-                if not profile.is_verified:
-                    return redirect('account/not-verified-user/')
-            except Profile.DoesNotExist:
-                print("Profile does not exist for the user.")  # Log the error for debugging
-                pass  # Fail silently to avoid breaking request cycle
-        pass

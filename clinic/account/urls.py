@@ -19,7 +19,7 @@ urlpatterns = [
     path('change-password/', change_password, name='changePassword'),
 
     path('verify-user/<str:token>/', verify_user, name='verifyUser'),
-    path('not-verified-user/', not_verified_user, name='verifyUser'),
+    path('not-verified-user/', not_verified_user, name='notVerifiedUser'),
     path('resend-verification/', resend_verification, name='resendVerification'),
 
 

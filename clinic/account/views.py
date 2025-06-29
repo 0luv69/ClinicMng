@@ -11,6 +11,9 @@ from account.models import Profile
 import uuid
 from datetime import timedelta
 
+from django.conf import settings
+DOMAIN_NAME = settings.DOMAIN_NAME
+
 app_name = 'account'
 
 
@@ -94,12 +97,11 @@ def PostRegister(request):
 
         send_custom_email(
             subject="Welcome to NCMS",
-            message=f"Hello {full_name},\n\nThank you for registering with NCMS. Your username is {username}.\n\n Please verify your email by clicking the link below:\n\n http://localhost:8000/account/verify-user/{token}/ \n\nIf you did not register, please ignore this email. \n\nBest regards,\nNCMS Team",
+            message=f"Hello {full_name},\n\nThank you for registering with NCMS. Your username is {username}.\n\n Please verify your email by clicking the link below:\n\n {DOMAIN_NAME}/account/verify-user/{token}/ \n\nIf you did not register, please ignore this email. \n\nBest regards,\nNCMS Team",
             recipient_list=[email]
         )
 
         messages.success(request, "Registration successful.")
-        
         
         # Automatically log the user in after registration
         login(request, user)
@@ -154,12 +156,12 @@ def verify_user(request, token):
         profile.token_expiry = None  # Clear the expiry time
         profile.save()
 
-        messages.success(request, "Email verified successfully. You can now log in.")
-        return redirect('account:login')
+        messages.success(request, "Email verified successfully. You can now Use Service.")
+        return redirect(f'{profile.role}:dashboard')
 
     except Profile.DoesNotExist:
         messages.error(request, "Invalid or expired verification token.")
-        return redirect('account:login')
+        return redirect('home')
     
 def resend_verification(request):
     """View to resend verification email."""
@@ -183,7 +185,7 @@ def resend_verification(request):
 
             send_custom_email(
                 subject="Resend Verification Email",
-                message=f"Click the link below to verify your email:\n\n http://localhost:8000/account/verify-user/{token}/",
+                message=f"Click the link below to verify your email:\n\n {DOMAIN_NAME}/account/verify-user/{token}/",
                 recipient_list=[email]
             )
 
@@ -191,7 +193,6 @@ def resend_verification(request):
         except User.DoesNotExist:
             messages.error(request, "No user found with this email.")
         return redirect(f'{profile.role}:dashboard')
-
 
 def not_verified_user(request):
     """View for users who are not verified."""
@@ -275,7 +276,7 @@ def forget_password(request):
             send_custom_email(
                 subject="Password Reset Request",
                 message="Click the link below to reset your password:\n\n"
-                        f"http://localhost:8000/account/reset-password/{token}/",  # Replace with your actual reset URL
+                        f"{DOMAIN_NAME}/account/reset-password/{token}/",  # Replace with your actual reset URL
                 recipient_list=[email]
             )
 

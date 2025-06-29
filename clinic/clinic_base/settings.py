@@ -17,6 +17,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+DOMAIN_NAME = 'http://localhost:8000'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # Custom middleware
-    # 'home.middleware.verify_user.VerifyUserMiddleware',
+    'home.middleware.verify_user.VerifyUserMiddleware',
     # 'home.middleware.activity_logger.ActivityLoggerMiddleware',
 ]
 
