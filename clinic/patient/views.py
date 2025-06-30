@@ -629,6 +629,14 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
 
     is_caller = calls.caller == profile
 
+    
+    Message.objects.create(
+        conversation=conversation,
+        sender=profile,
+        content=f"{profile.user.first_name} has joined the call.",
+        is_call=True  # Mark this message as a call-related message
+    )
+
     send_custom_email(
         subject=f"Call Request, From: {calls.caller.user.first_name}",
         message=f"Hi, The Call was Requested. \n\nFrom: {calls.caller.user.first_name}  \nTo: {calls.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{calls.uuid}/ ",
