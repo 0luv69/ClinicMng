@@ -105,11 +105,11 @@ def SessionMng(request):
     
     
         today = timezone.localdate()
-        all_appointment = Appointment.objects.filter(doctor=doctor, appointment_date__gte=today).order_by('-appointment_date')
+        all_appointment = Appointment.objects.filter(doctor=doctor, status='confirmed', appointment_date__gte=today).order_by('-appointment_date')
         context = {
             'all_appointment': all_appointment,
             'doctor': doctor,
-            'todays_appointments': all_appointment.filter(appointment_date=date.today()),
+            'todays_appointments': all_appointment.filter(appointment_date=date.today(), status='confirmed'),
         }
         return render(request, 'pages/doctor/session_mng.html', context)
     
