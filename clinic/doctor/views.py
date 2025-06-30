@@ -18,7 +18,7 @@ from django.http import HttpRequest, HttpResponse
 import uuid
 from django.utils.translation import gettext as _
 
-from home.send_email import send_custom_email
+from home.send_email import send_custom_email, send_custom_email_async
 import uuid
 from django.conf import settings
 DOMAIN_NAME = settings.DOMAIN_NAME
@@ -99,7 +99,7 @@ def doctorDashboard(request):
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Manage the session.", only=['doctor'])
 def SessionMng(request):
-    if request.method == 'GET':    
+    if request.method == 'GET':     
         profile: Profile = request.user.profile
         doctor: DoctorProfile = DoctorProfile.objects.get(profile=profile)
     
@@ -583,25 +583,25 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
 
         if call.receiver.role == "patient":
             #send Mail for patient
-            send_custom_email(
+            send_custom_email_async(
                     subject=f"Call Request, From: DR. {call.caller.user.first_name}",
                     message=f"Hi, The Call was Requested. \n\nFrom: Dr. {call.caller.user.first_name}  \nTo: {call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{call.uuid}/ ",
                     recipient_list=[call.caller.user.email]
             )
         elif call.receiver.role == "doctor":
             #send Mail for Doctor
-            send_custom_email(
+            send_custom_email_async(
                     subject=f"Call Request, From: {call.caller.user.first_name} ",
                     message=f"Hi, The Call was Requested. \n\nFrom: {call.caller.user.first_name}  \nTo: Dr.{call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{call.uuid}/ ",
                     recipient_list=[call.caller.user.email]
             )
 
         messages.success(request, _("Video call request sent successfully."))
-        return redirect('patient:join_v_call', calls_uuid=call.uuid)
+        return redirect('doctor:join_v_call', calls_uuid=call.uuid)
     except Exception as e:
         print(f"Error: {e}")
         messages.error(request, _("An error occurred while sending the video call request."))
-        return redirect('patient:view_v_call')
+        return redirect('doctor:view_v_call')
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Join your Video Calls.", only=['doctor'])
 def join_v_call(request: HttpRequest, calls_uuid: uuid):

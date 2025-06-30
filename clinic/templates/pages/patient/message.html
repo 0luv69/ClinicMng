@@ -988,6 +988,14 @@
     function sendRequest(user_name_, profileName) {
         console.log(`Sending request to ${profileName} (${user_name_})`);
 
+        showNotification({
+            color: "bg-yellow-500",
+            title: "Sending Request",
+            message: `Sending request to ${profileName}...`,
+            time: 5000
+        });
+        showLoadingOverlay();
+
         fetch(`/p/req-conv/`, {
             method: 'POST',
             headers: {
@@ -998,6 +1006,8 @@
         })
         .then(response => {
             if (response.ok) {
+                hideLoadingOverlay();
+
                 showNotification({
                     color: "bg-green-500",
                     title: "Request Sent Successfully",
@@ -1012,7 +1022,6 @@
                     button.classList.add('bg-gray-300', 'text-gray-700'); // Change button style
                 }
                  dialogOverlay.classList.add('hidden'); // Close the dialog after sending the request
-
             } else {
                 response.json().then(data => {
                     const error_message = data.error || 'Unknown error';

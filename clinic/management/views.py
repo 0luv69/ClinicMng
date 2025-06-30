@@ -192,7 +192,7 @@ def update_profile(request, username):
         # Save the profile
         profile.save()
         
-        #Send email notification to the user
+        #Send email notification to the user 
         send_custom_email(
             subject='Profile Updated',
             message=f'Dear {user.first_name},\n\nYour profile has been updated successfully.\n\nThank you!',

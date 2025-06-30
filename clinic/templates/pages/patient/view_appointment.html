@@ -836,6 +836,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 from_box: true,
                 onConfirm: () => {
                     diloagBox_form.submit();
+                    // Hide the dialog after confirmation
+                    document.getElementById('dialogBOX').classList.add('hidden');
+                    showNotification({
+                        color: "bg-yellow-500",
+                        title: "Sending Request",
+                        message: `Cancelling appointment with Dr.${doctor} on ${date}...`
+                    });
+                    showLoadingOverlay();
                 }
             });
         });

@@ -212,7 +212,7 @@ def export_appointments_excel(request):
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Delete, Edit Appointments.")
 def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
-    try:
+    try: 
         appointment = get_object_or_404(Appointment, uuid=apot_id)
         profile: Profile = Profile.objects.get(user=request.user)
 
@@ -383,6 +383,14 @@ def BookAppointment(request: HttpRequest):
                 )
                 conversation.participants.add(profile, doctor.profile)
                 conversation.save()
+
+                Message.objects.create(
+                    conversation=conversation,
+                    sender=profile,
+                    content=f"Appointment booked with Dr. {doctor.profile.user.get_full_name()} on {appointment_date} at {appointment_time}.",
+                    is_call=False  # This is a normal message, not a call request
+                )
+
                 existing_conversation = conversation
 
             if appointment.appointment_type == 'online_consultation':

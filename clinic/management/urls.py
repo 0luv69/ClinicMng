@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from doctor.views import * 
 from management.views import *
-
+ 
 app_name = 'management'
 
 

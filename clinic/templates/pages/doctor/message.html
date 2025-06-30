@@ -987,6 +987,14 @@
     // Function to handle sending a request
     function sendRequest(user_name_, profileName) {
         console.log(`Sending request to ${profileName} (${user_name_})`);
+        showNotification({
+            color: "bg-yellow-500",
+            title: "Sending Request",
+            message: `Sending request to ${profileName}...`,
+            time: 5000
+        });
+        showLoadingOverlay();
+
 
         fetch(`/p/req-conv/`, {
             method: 'POST',
@@ -998,6 +1006,8 @@
         })
         .then(response => {
             if (response.ok) {
+                hideLoadingOverlay();
+                
                 showNotification({
                     color: "bg-green-500",
                     title: "Request Sent Successfully",

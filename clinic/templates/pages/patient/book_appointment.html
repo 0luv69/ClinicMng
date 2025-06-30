@@ -299,6 +299,8 @@
         </div>
     </div>
 
+ 
+
     
 </div>
 
@@ -835,6 +837,19 @@
             formData.append('appointment_time_id', selectedTimeID);
             formData.append('appointment_reason', reason_text.value.trim());
             formData.append('appointment_file', fileInput.files[0]); // Append the file if selected    
+
+            // Show confirmation dialog
+            confirmationDialog.classList.add('hidden');
+            showLoadingOverlay();
+            showNotification({
+                color: "bg-yellow-500",
+                title: "Booking in Progress",
+                message: "Please wait while we process your appointment booking.",
+                time: 5000
+            });
+
+
+
 
             fetch("{% url 'patient:bookAppointment' %}", {
                 method: 'POST',

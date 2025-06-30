@@ -173,7 +173,6 @@
                 {% endfor %}
             </div>
         </main>
-        
     </div>
 </div>
 
@@ -314,7 +313,18 @@
 
 <script>
 
+    
+
+
     function cancelPatient(app_id) {
+        showNotification({
+            color: "bg-yellow-500",
+            title: "Cancelling Appointment",
+            message: "Sending cancellation request...",
+        });
+
+        showLoadingOverlay();
+
         fetch('/d/actions-appointment/', {
             method: 'POST',
             headers: {
@@ -325,6 +335,8 @@
         })
         .then(response => response.json())
         .then(data => {
+            hideLoadingOverlay();
+
             showNotification({
                 color: "bg-green-500",
                 title: "Success",
@@ -508,6 +520,15 @@
         slotInput.name = 'slotId';
         slotInput.value = slotId;
         form.appendChild(slotInput);
+
+
+        showNotification({
+            color: "bg-yellow-500",
+            title: "Rescheduling Appointment",
+            message: "Sending reschedule request...",
+        });
+
+        showLoadingOverlay();
 
 
         document.body.appendChild(form);

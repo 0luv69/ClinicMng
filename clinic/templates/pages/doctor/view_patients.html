@@ -230,11 +230,13 @@
         if (patient) {
             // Show a notification that the request is being sent
             showNotification({
-            color: "bg-yellow-500",
-            title: "Processing",
-            message: "Sending confirmation request...",
-            duration: 2000,
+                color: "bg-yellow-500",
+                title: "Processing",
+                message: "Sending confirmation request...",
+                time: 5000
             });
+
+            showLoadingOverlay();
             
             fetch('/d/actions-appointment/', {
             method: 'POST',
@@ -249,6 +251,8 @@
                 patient.status = 'confirmed';
                 renderPatients();
                 hideModal();
+
+                hideLoadingOverlay();
 
                 if (data.success) {
                     showNotification({
@@ -285,8 +289,10 @@
                 color: "bg-yellow-500",
                 title: "Processing",
                 message: "Sending Cancellation request...",
-                duration: 2000,
+                time: 5000
             });
+
+            showLoadingOverlay();
 
             fetch('/d/actions-appointment/', {
                 method: 'POST',
@@ -301,6 +307,7 @@
                 patient.status = 'cancelled';
                 renderPatients();
                 hideModal();
+                hideLoadingOverlay();
 
                 if (data.success) {
                     showNotification({
