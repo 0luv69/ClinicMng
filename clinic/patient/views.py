@@ -744,8 +744,6 @@ def req_conv(request: HttpRequest):
     if other_profile == profile:
         return JsonResponse({'error': 'You cannot start a conversation with yourself.'}, status=400)
 
-    print(f"Profile: {profile}, Other Profile: {other_profile}")
-
     # Check if a conversation already exists between the two users
     # Find if a conversation exists with exactly these two participants (no more, no less)
     conversation = (
@@ -755,24 +753,6 @@ def req_conv(request: HttpRequest):
         .distinct()
     )
 
-    Message.objects.create(
-        conversation=conversation.first() if conversation else None,
-        sender=profile,
-        content=f"Conversation started with {other_profile.user.get_full_name()}",
-    )
-
-    send_custom_email(
-        subject=f"New Conversation Request from {profile.user.get_full_name()}",
-        message=(
-            f"Hi {other_profile.user.get_full_name()},\n\n"
-            f"You have a new conversation request from {profile.user.get_full_name()}.\n"
-            f"Please check your messages to respond.\n\n"
-            f"Best regards,\nNCMS Team"
-        ),
-        recipient_list=[other_profile.user.email]
-    )
-
-
     # Check if any conversation has exactly these two participants (and no more)
     for conv in conversation:
         if conv.participants.count() == 2:
@@ -781,6 +761,25 @@ def req_conv(request: HttpRequest):
     else:
         conversation = Conversation.objects.create(status='requested')
         conversation.participants.add(profile, other_profile)
+        Message.objects.create(
+            conversation=conversation,
+            sender=profile,
+            content=f"Conversation started with {other_profile.user.get_full_name()}",
+            
+            )
+
+        send_custom_email(
+            subject=f"New Conversation Request from {profile.user.get_full_name()}",
+            message=(
+                f"Hi {other_profile.user.get_full_name()},\n\n"
+                f"You have a new conversation request from {profile.user.get_full_name()}.\n"
+                f"Please check your messages to respond.\n\n"
+                f"Best regards,\nNCMS Team"
+            ),
+            recipient_list=[other_profile.user.email]
+        )
+
+
 
     # Add both profiles to the conversation
     # conversation.participants.add(profile, other_profile)
