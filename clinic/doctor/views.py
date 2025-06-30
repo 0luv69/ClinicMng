@@ -415,7 +415,6 @@ def Action_Appointment(request):
     patient_name = appointment.profile.user.get_full_name()
     doctor_name = doctor.profile.user.get_full_name()
     status_display = appointment.status.capitalize()
-    action_by = doctor_name
 
     if action in ['confirm', 'confirmed']:
         subject = f"Appointment Confirmed"
@@ -574,11 +573,12 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             status='requested',
             receiver=conversation.participants.exclude(id=profile.id).first()
         )
-
+ 
         Message.objects.create(
             conversation=conversation,
             sender=profile,
             content=f"Call Request from {profile.user.first_name}",
+            is_call=True  # Mark this message as a call request
         )
 
         if call.receiver.role == "patient":
@@ -626,6 +626,13 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
     ).first()
 
     is_caller = calls.caller == profile
+
+    Message.objects.create(
+        conversation=conversation,
+        sender=profile,
+        content=f"{profile.user.first_name} has joined the call.",
+        is_call=True  # Mark this message as a call-related message
+    )
 
     send_custom_email(
         subject=f"Call Request, From: {calls.caller.user.first_name}",

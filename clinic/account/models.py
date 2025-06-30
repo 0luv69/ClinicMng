@@ -114,6 +114,7 @@ class Message(models.Model):
     file        = models.FileField(upload_to='conversation_files/', blank=True, null=True)  
     timestamp    = models.DateTimeField(auto_now_add=True)
     read         = models.BooleanField(default=False)
+    is_call = models.BooleanField(default=False)  # True if this message is a call request
 
     class Meta:
         ordering = ['timestamp']

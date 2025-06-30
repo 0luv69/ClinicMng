@@ -581,6 +581,7 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             conversation=conversation,
             sender=profile,
             content=f"Call Request from {profile.user.first_name}",
+            is_call=True  # Mark this message as a call request
         )
 
         if call.receiver.role == "patient":
@@ -745,6 +746,25 @@ def req_conv(request: HttpRequest):
         .filter(participants=other_profile)
         .distinct()
     )
+
+    Message.objects.create(
+        conversation=conversation.first() if conversation else None,
+        sender=profile,
+        content=f"Conversation started with {other_profile.user.get_full_name()}",
+    )
+
+    send_custom_email(
+        subject=f"New Conversation Request from {profile.user.get_full_name()}",
+        message=(
+            f"Hi {other_profile.user.get_full_name()},\n\n"
+            f"You have a new conversation request from {profile.user.get_full_name()}.\n"
+            f"Please check your messages to respond.\n\n"
+            f"Best regards,\nNCMS Team"
+        ),
+        recipient_list=[other_profile.user.email]
+    )
+
+
     # Check if any conversation has exactly these two participants (and no more)
     for conv in conversation:
         if conv.participants.count() == 2:
@@ -798,6 +818,7 @@ def get_msg_list(request: HttpRequest, conversation_id: int):
             'content': message.content,
             'timestamp': timestamp,
             'read': message.read,
+            'is_call': message.is_call, 
         })
 
     payload = {

@@ -228,22 +228,52 @@
     function confirmBTN(id) {
         const patient = patientData.find(p => p.id === id);
         if (patient) {
+            // Show a notification that the request is being sent
+            showNotification({
+            color: "bg-yellow-500",
+            title: "Processing",
+            message: "Sending confirmation request...",
+            duration: 2000,
+            });
+            
             fetch('/d/actions-appointment/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ app_id: patient.id, action: 'confirm' })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ app_id: patient.id, action: 'confirm' })
             })
             .then(response => response.json())
             .then(data => {
                 patient.status = 'confirmed';
                 renderPatients();
                 hideModal();
+
+                if (data.success) {
+                    showNotification({
+                        color: "bg-green-500",
+                        title: "Appointment Confirmed",
+                        message: data.message || "The appointment has been successfully confirmed",
+                        duration: 3000,
+                    });
+                } else {
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error",
+                        message: data.message || "Failed to confirm appointment",
+                        duration: 5000
+                    });
+                }
+
             })
             .catch(error => {
-                alert('Failed to confirm appointment.');
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Error",
+                    message: "Failed to confirm appointment| Please try again.",
+                    duration: 5000
+                });
             });
         }
     }
@@ -251,6 +281,13 @@
     function cancelPatient(id) {
         const patient = patientData.find(p => p.id === id);
         if (patient) {
+            showNotification({
+                color: "bg-yellow-500",
+                title: "Processing",
+                message: "Sending Cancellation request...",
+                duration: 2000,
+            });
+
             fetch('/d/actions-appointment/', {
                 method: 'POST',
                 headers: {
@@ -264,9 +301,31 @@
                 patient.status = 'cancelled';
                 renderPatients();
                 hideModal();
+
+                if (data.success) {
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Appointment Cancelled",
+                        message: data.message || "The appointment has been successfully cancelled",
+                        duration: 3000,
+                    });
+                } else {
+                    showNotification({
+                        color: "bg-red-500",
+                        title: "Error",
+                        message: data.message || "Failed to cancel appointment",
+                        duration: 5000
+                    });
+                }
+
             })
             .catch(error => {
-                alert('Failed to cancel appointment.');
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Error",
+                    message: "Failed to cancel appointment| Please try again.",
+                    duration: 5000
+                });
             });
         }
     }
