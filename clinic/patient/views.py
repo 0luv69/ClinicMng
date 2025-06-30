@@ -219,8 +219,6 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
         common_reason = request.POST.get('common_reason', '').strip()
         custom_reason = request.POST.get('custom_reason', '').strip()
 
-        print(f"Common reason: {common_reason}, Custom reason: {custom_reason}")
-
         if common_reason or custom_reason:
             appointment.cancel_reason = common_reason if common_reason != 'other' else f"Custom Reason: {custom_reason}"
             appointment.cancled_by = request.user.profile
@@ -245,7 +243,18 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
                             f"Thank you for your understanding.\n\n"
                             f"Best regards,\nNCMS Team"
                         ),
-                        recipient_list=[appointment.doctor.profile.user.email]
+                        recipient_list=[appointment.doctor.profile.user.email, ]
+                    )
+                    send_custom_email(
+                        subject="Appointment Cancelled",
+                        message=(
+                            f"Dear {appointment.profile.user.get_full_name()},\n\n"
+                            f"Your appointment with {appointment.doctor.profile.user.get_full_name()} on {appointment.appointment_date} at {appointment.appointment_time_str} has been cancelled.\n"
+                            f"Reason: {appointment.cancel_reason}\n\n"
+                            f"Thank you for your understanding.\n\n"
+                            f"Best regards,\nNCMS Team"
+                        ),
+                        recipient_list=[appointment.profile.user.email, ]
                     )
 
                     # Log the action

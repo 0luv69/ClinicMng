@@ -29,7 +29,7 @@ urlpatterns = [
     path('submit-dateTime-slots/', submit_dateTime_slots, name='submit_dateTime_slots'),
 
 
-    path('view-patients/', ViewPatients, name='ViewPatients_d'),
+    path('view-appoinment/', ViewPatients, name='ViewPatients_d'),
     # path('view-patients-records/<str:patient_id>/', ViewPatientsRecords, name='ViewPatientsRecords'),
  
     path('actions-appointment/', Action_Appointment, name='Action_Appointment_from_Doc'),

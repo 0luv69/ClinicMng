@@ -187,8 +187,6 @@ def get_doctor_availability_json(request, app_uuid):
     return JsonResponse({'availability': date_json})
 
 
-
- 
 @login_required_with_message(login_url='account:login', message="You need to log in to Edit Date Schedules.", only=['doctor'])
 def d_edit_schedules(request):
     profile: Profile = request.user.profile
@@ -411,7 +409,58 @@ def Action_Appointment(request):
         appointment.completed_by = doctor.profile
         appointment.save()
 
-    print(action, appointment.status)
+    # Prepare email details
+    appointment_date = appointment.appointment_date.strftime("%Y-%m-%d")
+    appointment_time = appointment.appointment_time_str
+    patient_name = appointment.profile.user.get_full_name()
+    doctor_name = doctor.profile.user.get_full_name()
+    status_display = appointment.status.capitalize()
+    action_by = doctor_name
+
+    if action in ['confirm', 'confirmed']:
+        subject = f"Appointment Confirmed"
+        message = (
+            f"Dear {patient_name},\n\n"
+            f"Your appointment has been confirmed by Dr. {doctor_name}.\n"
+            f"Date: {appointment_date}\n"
+            f"Time: {appointment_time}\n"
+            f"Type: {appointment.appointment_type}\n"
+            f"Status: {status_display}\n\n"
+            f"Thank you for choosing our clinic."
+        )
+    elif action in ['cancel', 'cancelled']:
+        subject = f"Appointment Cancelled"
+        message = (
+            f"Dear {patient_name},\n\n"
+            f"Your appointment scheduled on {appointment_date} at {appointment_time} has been cancelled by Dr. {doctor_name}.\n"
+            f"Reason: {getattr(appointment, 'cancel_reason', '')}\n"
+            f"Status: {status_display}\n\n"
+            f"If you have any questions, please contact us."
+        )
+    elif action in ['complete', 'completed']:
+        subject = f"Appointment Completed"
+        message = (
+            f"Dear {patient_name},\n\n"
+            f"Your appointment with Dr. {doctor_name} on {appointment_date} at {appointment_time} has been marked as completed.\n"
+            f"Status: {status_display}\n\n"
+            f"Thank you for visiting our clinic."
+        )
+    else:
+        subject = f"Appointment Status Updated"
+        message = (
+            f"Dear {patient_name},\n\n"
+            f"Your appointment status has been updated to {status_display} by Dr. {doctor_name}.\n"
+            f"Date: {appointment_date}\n"
+            f"Time: {appointment_time}\n"
+            f"Type: {appointment.appointment_type}\n\n"
+            f"Thank you."
+        )
+
+    send_custom_email(
+        subject=subject,
+        message=message,
+        recipient_list=[appointment.profile.user.email, doctor.profile.user.email]
+    )
     return JsonResponse({'success': True, 'message': f'Appointment {action}ed successfully'})
 
 
