@@ -54,6 +54,27 @@ class Profile(models.Model):
         return f"{self.user.username} -- {self.role} -- {self.user.first_name}" 
 
 
+class MedicalInfo(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name="medical_info")
+    blood_group = models.CharField(max_length=3, blank=True)
+    allergies = models.TextField(blank=True)
+    medical_conditions = models.TextField(blank=True)
+    on_going_medications = models.TextField(blank=True)
+
+
+    # emergency contact
+    emg_contact_name = models.CharField(max_length=255, blank=True)
+    emg_contact_number = models.CharField(max_length=16, blank=True)
+    emg_contact_relation = models.CharField(max_length=255, blank=True)
+    emg_contact_address = models.CharField(max_length=255, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+  
+    def __str__(self):
+        return f"{self.profile.user.username}'s Medical Info"
+    
+
 class Conversation(models.Model):
     participants = models.ManyToManyField(Profile, related_name='conversations')
     uuid = models.UUIDField(unique=True, editable=True, null=True, blank=True)
@@ -66,15 +87,8 @@ class Conversation(models.Model):
         ('archived', 'Archived'),
         ('deleted', 'Deleted'),
     )
-
-    conv_type_choices = (
-        ('audio', 'Audio'),
-        ('video', 'Video'),
-    )
     
     status = models.CharField(max_length=10, choices=status_choices, default='requested')
-    conv_type = models.CharField(max_length=10, choices=conv_type_choices, default='audio')
-
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -114,7 +128,14 @@ class Message(models.Model):
     file        = models.FileField(upload_to='conversation_files/', blank=True, null=True)  
     timestamp    = models.DateTimeField(auto_now_add=True)
     read         = models.BooleanField(default=False)
-    is_call = models.BooleanField(default=False)  # True if this message is a call request
+
+    
+    message_type_choices = (
+        ('call', 'Call'),
+        ('appoinment', 'Appoinment'),
+        ('text', 'Text'),
+    )
+    message_type = models.CharField(max_length=20, choices=message_type_choices, default='text')
 
     class Meta:
         ordering = ['timestamp']
@@ -124,26 +145,7 @@ class Message(models.Model):
 
 
 
-class MedicalInfo(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name="medical_info")
-    blood_group = models.CharField(max_length=3, blank=True)
-    allergies = models.TextField(blank=True)
-    medical_conditions = models.TextField(blank=True)
-    on_going_medications = models.TextField(blank=True)
 
-
-    # emergency contact
-    emg_contact_name = models.CharField(max_length=255, blank=True)
-    emg_contact_number = models.CharField(max_length=16, blank=True)
-    emg_contact_relation = models.CharField(max_length=255, blank=True)
-    emg_contact_address = models.CharField(max_length=255, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True)
-  
-    def __str__(self):
-        return f"{self.profile.user.username}'s Medical Info"
-    
 
 class ActivityLog(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="activity_logs")

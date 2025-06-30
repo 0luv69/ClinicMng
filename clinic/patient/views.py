@@ -833,7 +833,7 @@ def get_msg_list(request: HttpRequest, conversation_id: int):
             'content': message.content,
             'timestamp': timestamp,
             'read': message.read,
-            'is_call': message.is_call, 
+            'msg_type': message.message_type, 
         })
 
     payload = {
