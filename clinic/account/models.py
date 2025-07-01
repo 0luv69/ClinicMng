@@ -106,6 +106,10 @@ class Calls(models.Model):
 
     last_req = models.DateTimeField(null=True, blank=True)
 
+    lab_report_notes = models.TextField(blank=True, null=True)
+    prescription_notes = models.TextField(blank=True, null=True)    
+    quick_notes = models.TextField(blank=True, null=True)  # For quick notes during the call
+
     status_choices = (
         ('requested', 'Requested'),
         ('active', 'Active'),
@@ -135,6 +139,7 @@ class Message(models.Model):
         ('appoinment', 'Appoinment'),
         ('text', 'Text'),
         ('started', 'Started'),
+        ('notes', 'Notes'),
     )
     message_type = models.CharField(max_length=20, choices=message_type_choices, default='text')
 

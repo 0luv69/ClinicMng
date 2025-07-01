@@ -190,7 +190,7 @@
                                                 <img class="aspect-square h-full w-full" src="{{ message.sender.profile_pic.url }}" alt="{{ message.sender.user.first_name.0 }}">
                                             </div>
                                         <div class="bg-muted rounded-lg p-3 max-w-[100%]">
-                                            <p class="text-sm break-words overflow-wrap-anywhere">{{ message.content }}</p>
+                                            <p class="text-sm break-words overflow-wrap-anywhere" whitespace-pre-line>{{ message.content }}</p>
                                             <p class="text-xs mt-1 opacity-70 text-right">
                                                 {{ message.timestamp|date:"j M, g:i A" }}
                                             </p>
@@ -199,7 +199,7 @@
                                     {% else %}
                                     <div class="flex justify-end">
                                         <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
-                                            <p class="text-sm break-words overflow-wrap-anywhere">{{ message.content }}</p>
+                                            <p class="text-sm break-words overflow-wrap-anywhere" whitespace-pre-line>{{ message.content }}</p>
                                             <p class="text-xs mt-1 opacity-70 text-right">
                                                 {{ message.timestamp|date:"j M, g:i A" }}
                                                 <span class="ml-1 hidden">
@@ -340,23 +340,23 @@
 
 
     <!-- Dialog Overlay -->
-    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-40 hidden">
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
+    <div id="dialogOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white  rounded-2xl shadow-2xl w-full max-w-md mx-auto dialog-enter">
             
             <!-- Header -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 ">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="p-2 bg-blue-100  rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 14a4 4 0 10-8 0 4 4 0 008 0zM12 14v7m-6 0h12" />
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Start New Conversation</h2>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Request Someone to Chat</p>
+                        <h2 class="text-xl font-semibold text-gray-900 ">Start New Conversation</h2>
+                        <p class="text-sm text-gray-500 ">Request Someone to Chat</p>
                     </div>
                 </div>
-                <button id="closeDialog" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                <button id="closeDialog" class="p-2 hover:bg-gray-100  rounded-lg transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
                         <line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/>
@@ -365,7 +365,7 @@
             </div>
 
             <!-- Search -->
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="p-4 border-b border-gray-200 ">
                 <div class="relative">
                     <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="8"></circle>
@@ -375,7 +375,7 @@
                         type="text"
                         id="searchInput"
                         placeholder="Search users..."
-                        class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 dark:text-white placeholder-gray-500 outline-none"
+                        class="w-full pl-10 pr-4 py-3 bg-gray-50  border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900  placeholder-gray-500 outline-none"
                     />
                 </div>
             </div>
@@ -387,12 +387,12 @@
                                 <img
                                     src="{{each_profile.profile_pic.url}}"
                                     alt="{{each_profile.user.first_name}}"
-                                    class="w-10 h-10 rounded-full object-cover ring-2 ring-white/90 dark:ring-gray-800"
+                                    class="w-10 h-10 rounded-full object-cover ring-2 ring-white/90 "
                                 />
                             
                             <div class="flex-1 ml-4 min-w-0">
                                 <div class="flex items-center space-x-2">
-                                    <h3 class=" text-gray-900 dark:text-white truncate _name-user_">{{each_profile.user.first_name}}</h3>
+                                    <h3 class=" text-gray-900  truncate _name-user_">{{each_profile.user.first_name}}</h3>
 
                                     {% if each_profile.is_verified %}
                                         <div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
@@ -403,9 +403,9 @@
                                     {% endif %}
                                 </div>
                                 {% if each_profile.role == 'doctor'%}
-                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{each_profile.doctor_profile.specialization}}</p>
+                                <p class="text-sm text-gray-500  truncate">{{each_profile.doctor_profile.specialization}}</p>
                                 {% else %}
-                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Patient</p>
+                                <p class="text-sm text-gray-500  truncate">Patient</p>
                                 {% endif %}
                             </div>
             
@@ -422,17 +422,17 @@
                         </div>
                     {% endfor %}
                     <div id="noResults" class="p-8 text-center {% if not not_connected_usr %}{% else %} hidden{% endif %}">
-                        <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" fill="none" viewBox="0 0 48 48" stroke="currentColor">
+                        <svg class="w-12 h-12 text-gray-300  mx-auto mb-3" fill="none" viewBox="0 0 48 48" stroke="currentColor">
                             <circle cx="24" cy="18" r="8" stroke-width="2" />
                             <path stroke-width="2" d="M8 40c0-5.5 7.16-10 16-10s16 4.5 16 10" />
                         </svg>
-                        <p class="text-gray-500 dark:text-gray-400">No users found</p>
+                        <p class="text-gray-500 ">No users found</p>
                     </div>
             </div>
 
             <!-- Footer -->
-            <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
-                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <div class="p-4 border-t border-gray-200  bg-gray-50 rounded-b-2xl">
+                <div class="flex items-center gap-2 text-sm text-gray-500 ">
                     <span id="userCount" class="text-blue-600">{{ not_connected_usr|length }} </span> users Related
                 </div>
             </div>
@@ -729,7 +729,7 @@
                                     <svg class="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             ` : message.msg_type === "appoinment" ? `
@@ -737,16 +737,17 @@
                                     <svg class="h-5 w-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M8 7V3M16 7V3M3 11h18M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             `
                             : message.msg_type === "started" ? `
                                 <div class="bg-green-100 rounded-lg p-3 flex items-center gap-2 max-w-[100%]">
                                     <svg class="h-5 w-5 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             `
@@ -755,7 +756,7 @@
                                     <img class="aspect-square h-full w-full" src="${payload.other_participant_pic}" alt="${payload.other_participant_name}">
                                 </div>
                                 <div class="bg-muted rounded-lg p-3 max-w-[100%]">
-                                    <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
+                                    <p class="text-sm break-words overflow-wrap-anywhere whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs mt-1 opacity-70 text-right">
                                         ${formatMessageDate(message.timestamp)}
                                     </p>
@@ -769,16 +770,17 @@
                                     <svg class="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             ` 
                             : message.msg_type === "started" ? `
                                 <div class="bg-green-100 rounded-lg p-3 flex items-center gap-2 max-w-[100%]">
-                                    <svg class="h-5 w-5 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             `
@@ -788,12 +790,12 @@
                                     <svg class="h-5 w-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M8 7V3M16 7V3M3 11h18M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"></path>
                                     </svg>
-                                    <p class="text-sm">${message.content}</p>
+                                    <p class="text-sm whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs text-gray-500 ml-2">${formatMessageDate(message.timestamp)}</p>
                                 </div>
                             ` : `
                                 <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
-                                    <p class="text-sm break-words overflow-wrap-anywhere">${message.content}</p>
+                                    <p class="text-sm break-words overflow-wrap-anywhere whitespace-pre-line">${message.content}</p>
                                     <p class="text-xs mt-1 opacity-70 text-right">
                                         ${formatMessageDate(message.timestamp)}
                                         <span class="ml-1 hidden">
@@ -838,7 +840,7 @@
                             <img class="aspect-square h-full w-full" src="${message.sender_pic}" alt="${message.sender}">
                         </div>
                         <div class="bg-muted rounded-lg p-3 max-w-[100%]">
-                            <p class="text-sm break-words">${message.content}</p>
+                            <p class="text-sm break-words whitespace-pre-line">${message.content}</p>
                             <p class="text-xs mt-1 opacity-70 text-right">
                                 ${formatMessageDate(message.timestamp)}
                             </p>
@@ -852,7 +854,7 @@
                 <div class="max-w-xs lg:max-w-md">
                     <div class="flex justify-end">
                         <div class="bg-primary text-primary-foreground rounded-lg p-3 max-w-[100%]">
-                            <p class="text-sm break-words">${message.content}</p>
+                            <p class="text-sm break-words whitespace-pre-line">${message.content}</p>
                             <p class="text-xs mt-1 opacity-70 text-right">
                                 ${formatMessageDate(message.timestamp)}
                                 <span class="ml-1 hidden">

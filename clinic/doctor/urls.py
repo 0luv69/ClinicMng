@@ -43,6 +43,8 @@ urlpatterns = [
     path('waiting-room/<uuid:calls_uuid>/', waiting_room, name='waiting_room'),
     path('join-v-call/<uuid:calls_uuid>/', join_v_call, name='join_v_call'),
 
+    path('subbit-notes/', submit_notes, name='submit_notes'),
+
 
     path('profile/', d_profile, name='profile'),
 ]

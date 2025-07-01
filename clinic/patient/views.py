@@ -15,7 +15,7 @@ from openpyxl.styles import PatternFill, Font
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 
-
+ 
 from account.views import login_required_with_message
 from django.contrib import messages
 from datetime import datetime
@@ -663,17 +663,25 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
     is_caller = calls.caller == profile
 
     
+    # Check if the user is joining for the first time or rejoining
+    last_call_message = conversation.messages.filter(message_type="call").order_by('-timestamp').first()
+    if not last_call_message or (timezone.now() - last_call_message.timestamp).total_seconds() > 60000000:
+        # Send email notification if it's been more than 6 minutes since the last call-related message
+        send_custom_email(
+            subject=f"Call Request, From: {calls.caller.user.first_name}",
+            message=f"Hi, The Call was Requested. \n\nFrom: {calls.caller.user.first_name}  \nTo: Dr.{calls.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{calls.uuid}/ ",
+            recipient_list=[calls.receiver.user.email]
+        )
+        message_content = f"{profile.user.first_name} has joined the call."
+    else:
+        message_content = f"{profile.user.first_name} has rejoined the call."
+
+    # Create a message indicating the user has joined or rejoined
     Message.objects.create(
         conversation=conversation,
         sender=profile,
-        content=f"{profile.user.first_name} has joined the call.",
-        message_type = "call"
-    )
-
-    send_custom_email(
-        subject=f"Call Request, From: {calls.caller.user.first_name}",
-        message=f"Hi, The Call was Requested. \n\nFrom: {calls.caller.user.first_name}  \nTo: {calls.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{calls.uuid}/ ",
-        recipient_list=[calls.receiver.user.email]
+        content=message_content,
+        message_type="call"  # Mark this message as a call-related message
     )
 
     return render(request, 'pages/patient/join-v-call.html', {'conversation': conversation,
