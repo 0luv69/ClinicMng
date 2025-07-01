@@ -1826,10 +1826,6 @@ select {
   width: 1px;
 }
 
-.w-96 {
-  width: 24rem;
-}
-
 .min-w-0 {
   min-width: 0px;
 }
