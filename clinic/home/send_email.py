@@ -5,9 +5,12 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import format_html
 
 def send_custom_email(subject, message, recipient_list, fail_silently=False, image_path=None):
+    
     html_content = format_html(
         """
-        <p>{}</p>
+        <div style="white-space: pre-wrap; word-wrap: break-word;">
+        {}
+        </div>
         <img src="{}" alt="QR Code">
         """,
         message, image_path

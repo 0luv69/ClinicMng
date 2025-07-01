@@ -457,7 +457,7 @@ def BookAppointment(request: HttpRequest):
                     f"Type: {appointment_type.replace('_', ' ').title()}\n"
                     f"Reason: {appointment_reason or 'N/A'}\n\n"
                     f"Payment Details:\n"
-                    f"Amount Paid: ${doctor.fees}\n"
+                    f"Amount to Pay: Rs: {doctor.fees}\n"
                     f"Payment Status: Successful\n\n"
                     f"If you have any questions or need to reschedule, please contact us.\n\n"
                     f"Thank you for using NCMS.\n\n"
