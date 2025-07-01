@@ -35,6 +35,9 @@ from django.views.decorators.csrf import csrf_exempt
 from home.send_email import send_custom_email
 import uuid
 from django.conf import settings
+import qrcode
+from io import BytesIO
+from django.core.files.base import ContentFile
 DOMAIN_NAME = settings.DOMAIN_NAME
 
 # Constants
@@ -438,7 +441,7 @@ def BookAppointment(request: HttpRequest):
                     return JsonResponse({'error': error_msg})
                 appointment.file = appointment_file
                 appointment.save()
-            
+
             # Send Email with appointment details
             send_custom_email(
                 subject="Appointment Booked!",
@@ -453,10 +456,15 @@ def BookAppointment(request: HttpRequest):
                     f"Time: {appointment_time}\n"
                     f"Type: {appointment_type.replace('_', ' ').title()}\n"
                     f"Reason: {appointment_reason or 'N/A'}\n\n"
+                    f"Payment Details:\n"
+                    f"Amount Paid: ${doctor.fees}\n"
+                    f"Payment Status: Successful\n\n"
+                    f"If you have any questions or need to reschedule, please contact us.\n\n"
                     f"Thank you for using NCMS.\n\n"
                     f"Best regards,\nNCMS Team"
                 ),
-                recipient_list=[profile.user.email, doctor.profile.user.email]
+                recipient_list=[profile.user.email, doctor.profile.user.email],
+                image_path = f"https://i.postimg.cc/LXh8Pv4T/qr.jpg"
             )
 
             # Log the action
