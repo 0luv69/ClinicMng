@@ -134,6 +134,7 @@ class Message(models.Model):
         ('call', 'Call'),
         ('appoinment', 'Appoinment'),
         ('text', 'Text'),
+        ('started', 'Started'),
     )
     message_type = models.CharField(max_length=20, choices=message_type_choices, default='text')
 

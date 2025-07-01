@@ -18,7 +18,7 @@ from django.http import HttpRequest, HttpResponse
 import uuid
 from django.utils.translation import gettext as _
 
-from home.send_email import send_custom_email, send_custom_email_async
+from home.send_email import send_custom_email
 import uuid
 from django.conf import settings
 DOMAIN_NAME = settings.DOMAIN_NAME
@@ -143,6 +143,30 @@ def SessionMng(request):
         # Optionally, update new_slot status if needed
         new_slot.status = 'booked'
         new_slot.save()
+
+        # Check if a conversation already exists between the patient and doctor
+        existing_conversation: Conversation = Conversation.objects.filter(
+            participants=appointment.doctor.profile
+        ).filter(
+            participants=appointment.profile
+        ).distinct().first()
+        
+        # Only create new conversation if one doesn't exist
+        if not existing_conversation:
+            conversation = Conversation.objects.create(
+                uuid=uuid.uuid4(),
+                status='initiated',
+            )
+            conversation.participants.add(appointment.profile, appointment.doctor.profile)
+            conversation.save()
+            existing_conversation = conversation
+
+        Message.objects.create(
+            conversation=existing_conversation,
+            sender=appointment.profile,
+            content=f"Appointment with Dr. {appointment.doctor.profile.user.get_full_name()} has been rescheduled to {appointment.appointment_date} at {time_str}.",
+            message_type = "appoinment"  # This is a normal message, not a call request
+        )
 
         # send email notification to patient
         send_custom_email(
@@ -455,6 +479,32 @@ def Action_Appointment(request):
             f"Thank you."
         )
 
+
+    # Check if a conversation already exists between the patient and doctor
+    existing_conversation: Conversation = Conversation.objects.filter(
+        participants=appointment.doctor.profile
+    ).filter(
+        participants=appointment.profile
+    ).distinct().first()
+    
+    # Only create new conversation if one doesn't exist
+    if not existing_conversation:
+        conversation = Conversation.objects.create(
+            uuid=uuid.uuid4(),
+            status='initiated',
+        )
+        conversation.participants.add(appointment.profile, appointment.doctor.profile)
+        conversation.save()
+        existing_conversation = conversation
+
+    Message.objects.create(
+        conversation=existing_conversation,
+        sender=appointment.profile,
+        content=message,
+        message_type = "appoinment"  # This is a normal message, not a call request
+    )
+
+
     send_custom_email(
         subject=subject,
         message=message,
@@ -578,19 +628,19 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             conversation=conversation,
             sender=profile,
             content=f"Call Request from {profile.user.first_name}",
-            is_call=True  # Mark this message as a call request
+            message_type = "call"  # Mark this message as a call request
         )
 
         if call.receiver.role == "patient":
             #send Mail for patient
-            send_custom_email_async(
+            send_custom_email(
                     subject=f"Call Request, From: DR. {call.caller.user.first_name}",
                     message=f"Hi, The Call was Requested. \n\nFrom: Dr. {call.caller.user.first_name}  \nTo: {call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/p/join-v-call/{call.uuid}/ ",
                     recipient_list=[call.caller.user.email]
             )
         elif call.receiver.role == "doctor":
             #send Mail for Doctor
-            send_custom_email_async(
+            send_custom_email(
                     subject=f"Call Request, From: {call.caller.user.first_name} ",
                     message=f"Hi, The Call was Requested. \n\nFrom: {call.caller.user.first_name}  \nTo: Dr.{call.receiver.user.first_name} \n\nPlz Get Free And Join a Call      \n\n\n#{DOMAIN_NAME}/d/join-v-call/{call.uuid}/ ",
                     recipient_list=[call.caller.user.email]
@@ -631,7 +681,7 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
         conversation=conversation,
         sender=profile,
         content=f"{profile.user.first_name} has joined the call.",
-        is_call=True  # Mark this message as a call-related message
+        message_type = "call"  # Mark this message as a call-related message
     )
 
     send_custom_email(

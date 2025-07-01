@@ -848,9 +848,6 @@
                 time: 5000
             });
 
-
-
-
             fetch("{% url 'patient:bookAppointment' %}", {
                 method: 'POST',
                 body: formData,
@@ -871,6 +868,7 @@
                         redirect_url = data.redirect_url || "{% url 'patient:viewAppointment' %}";
                         window.location.href = redirect_url;
                     } else {
+                        hideLoadingOverlay();
                         showNotification({
                             color: "bg-red-500",
                             title: "Booking Failed !!",
@@ -879,6 +877,7 @@
                     }
                 })
                 .catch(error => {
+                    hideLoadingOverlay();
                     console.error('Error:', error);
                     showNotification({
                         color: "bg-red-500",

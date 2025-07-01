@@ -233,6 +233,31 @@ def appoinemtCancle_Edit(request: HttpRequest, apot_id: uuid, status: str):
                     appointment.status = 'cancelled'
                     appointment.save()
 
+                    # Check if a conversation already exists between the patient and doctor
+                    existing_conversation: Conversation = Conversation.objects.filter(
+                        participants=profile
+                    ).filter(
+                        participants=appointment.doctor.profile
+                    ).distinct().first()
+                    
+                    # Only create new conversation if one doesn't exist
+                    if not existing_conversation:
+                        conversation = Conversation.objects.create(
+                            uuid=uuid.uuid4(),
+                            status='initiated',
+                        )
+                        conversation.participants.add(profile, appointment.doctor.profile)
+                        conversation.save()
+                        existing_conversation = conversation
+
+                    Message.objects.create(
+                        conversation=existing_conversation,
+                        sender=profile,
+                        content=f"Appointment with Dr. {appointment.doctor.profile.user.get_full_name()} on {appointment.appointment_date} at {appointment.appointment_time_str} has been cancelled.",
+                        message_type= "appoinment"  # This is a normal message, not a call request
+                    )
+                        
+
                     # send email notification to doctor
                     send_custom_email(
                         subject="Appointment Cancelled",
@@ -383,15 +408,15 @@ def BookAppointment(request: HttpRequest):
                 )
                 conversation.participants.add(profile, doctor.profile)
                 conversation.save()
+                existing_conversation = conversation
 
-                Message.objects.create(
-                    conversation=conversation,
+            Message.objects.create(
+                    conversation=existing_conversation,
                     sender=profile,
                     content=f"Appointment booked with Dr. {doctor.profile.user.get_full_name()} on {appointment_date} at {appointment_time}.",
-                    is_call=False  # This is a normal message, not a call request
+                    message_type= "appoinment"  # This is a normal message, not a call request
                 )
 
-                existing_conversation = conversation
 
             if appointment.appointment_type == 'online_consultation':
                 # Create a new call record for the appointment
@@ -589,7 +614,7 @@ def send_req_calls(request: HttpRequest, convo_uuid: uuid):
             conversation=conversation,
             sender=profile,
             content=f"Call Request from {profile.user.first_name}",
-            is_call=True  # Mark this message as a call request
+            message_type = "call"
         )
 
         if call.receiver.role == "patient":
@@ -642,7 +667,7 @@ def join_v_call(request: HttpRequest, calls_uuid: uuid):
         conversation=conversation,
         sender=profile,
         content=f"{profile.user.first_name} has joined the call.",
-        is_call=True  # Mark this message as a call-related message
+        message_type = "call"
     )
 
     send_custom_email(
@@ -773,7 +798,7 @@ def req_conv(request: HttpRequest):
             conversation=conversation,
             sender=profile,
             content=f"Conversation started with {other_profile.user.get_full_name()}",
-            
+            message_type="started"  # This is a conversation request message
             )
 
         send_custom_email(
