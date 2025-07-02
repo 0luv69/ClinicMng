@@ -19,7 +19,8 @@ urlpatterns = [
 
 
 
-    path('session-mng/', SessionMng, name='SessionMng'),
+    path('schedule-mng/', SessionMng, name='SessionMng'),
+    path('reschedule-app/', reschedule_appointment, name='reschedule_appointment'),
     path('availability/<uuid:app_uuid>/', get_doctor_availability_json, name='doctor-availability-json'),
 
 

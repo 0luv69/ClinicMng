@@ -106,13 +106,12 @@ def SessionMng(request):
     
     
         today = timezone.localdate()
-        all_appointment = Appointment.objects.filter(doctor=doctor, status='confirmed', appointment_date__gte=today).order_by('-appointment_date')
+        all_appointment = Appointment.objects.filter(doctor=doctor).order_by('-appointment_date')
         context = {
-            'all_appointment': all_appointment,
             'doctor': doctor,
             'todays_appointments': all_appointment.filter(appointment_date=date.today(), status='confirmed'),
         }
-        return render(request, 'pages/doctor/session_mng.html', context)
+        return render(request, 'pages/doctor/schedule_mng.html', context)
     
     elif request.method == 'POST':
         app_id = request.POST.get('appoint_Id')
@@ -179,6 +178,53 @@ def SessionMng(request):
         messages.success(request, "Appointment slot updated successfully.")
         return redirect('doctor:SessionMng')
 
+
+def reschedule_appointment(request):
+    """
+    Reschedule an appointment to a new time slot.
+    """
+    try:
+        data = json.loads(request.body)
+        app_id = data.get('appoint_Id')
+        new_slot_id = data.get('new_slot_id')
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    print(f"Rescheduling appointment {app_id} to new slot {new_slot_id}")
+
+
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+    try:
+        appointment = Appointment.objects.get(uuid=app_id)
+    except Appointment.DoesNotExist:
+        return JsonResponse({'error': 'Appointment not found'}, status=404)
+
+    if not new_slot_id:
+        return JsonResponse({'error': 'New slot ID is required'}, status=400)
+
+    try:
+        new_slot = AppointmentTimeSlot.objects.get(unique_id=new_slot_id)
+    except AppointmentTimeSlot.DoesNotExist:
+        return JsonResponse({'error': 'New slot not found'}, status=404)
+
+    # Update the appointment with the new slot
+    appointment.time_slot = new_slot
+    appointment.appointment_date = new_slot.appointment_date_slot.date
+    time_str = f"{new_slot.from_time.strftime('%H:%M')} -- {new_slot.to_time.strftime('%H:%M')}"
+    appointment.appointment_time_str = time_str
+    appointment.appointment_type = new_slot.appointment_type[0] if new_slot.appointment_type else 'general_consultation'
+    appointment.status = 'pending'  # Reset status to pending or as needed
+    appointment.save()
+
+    # Optionally, update new_slot status if needed
+    new_slot.status = 'booked'
+    new_slot.save()
+
+    messages.success(request, "Appointment rescheduled successfully.")
+    
+    return JsonResponse({'success': True, 'message': 'Appointment rescheduled successfully.'})
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Doctor Data.", only=['doctor'])
 def get_doctor_availability_json(request, app_uuid):
@@ -396,7 +442,7 @@ def ViewPatients(request):
         "patientData": patientData
     }
 
-    return render(request, 'pages/doctor/view_patients.html', context)
+    return render(request, 'pages/doctor/view_appointments.html', context)
 
 
 @login_required_with_message(login_url='account:login', message="You need to log in to Change the Status.", only=['doctor'])
