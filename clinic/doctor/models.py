@@ -6,8 +6,6 @@ from multiselectfield import MultiSelectField
 
 class DoctorProfile(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='doctor_profile')
-    is_active = models.BooleanField(default=True) 
-
     SPECIALIZATIONS = [
         ('general_medicine', 'General Medicine'),
         ('cardiology', 'Cardiology'),
