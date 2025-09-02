@@ -25,13 +25,13 @@ def send_custom_email(subject, message, recipient_list, fail_silently=False, ima
             email.attach_alternative(html_content, "text/html")
             email.send(fail_silently=fail_silently)
         else:
-        send_mail(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            recipient_list,
-            fail_silently=fail_silently,
-        )
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                recipient_list,
+                fail_silently=fail_silently,
+            )
     except Exception as e:
         if not fail_silently:
             raise e
