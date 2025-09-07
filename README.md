@@ -10,6 +10,58 @@ A comprehensive clinic management platform for appointment booking, video consul
 
 ---
 
+## How to start 
+
+1: Clone the Repository
+
+Steps
+- 1: Open desired Terminal [Terminal (Linux/Mac) or Command Prompt/PowerShell (Windows)]
+- 2: Navigate to the directory where you want to keep the project:
+
+   `cd path/here/`
+- 3: Run the clone command:
+ 
+   `git clone https://github.com/0luv69/ClinicMng.git`
+- 4: Go into the cloned project folder:
+
+   `cd ClinicMng`
+
+
+2: Requirements install:
+Make sure you have Python 3 and pip installed. Then run:
+
+   `pip install -r requirements.txt`
+
+
+3: Configure Django Settings:
+
+   3.1: Navigate to: 
+   
+`cd clinic/clinic_base/`
+
+   & `open setting.py`
+2: Update the following:
+- Change Domain Name
+
+  `DOMAIN_NAME = "http://localhost:8000"`
+- Email Configuration
+
+  At the end of the file, replace:
+
+```
+EMAIL_HOST_USER = "your-email@example.com"
+EMAIL_HOST_PASSWORD = "your-app-password"
+```
+with your own email credentials (use Google App Password if using Gmail).
+
+- Time Zone:
+  Set your correct time zone:
+
+```TIME_ZONE = "Asia/Kathmandu"```
+
+
+---
+
 ## User Roles & Permissions
 
 **Admin**
