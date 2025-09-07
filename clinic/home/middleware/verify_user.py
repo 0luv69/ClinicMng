@@ -22,7 +22,7 @@ class VerifyUserMiddleware:
         if request.path in NO_VERIFICATION_PATHS or request.path.startswith(VERIFY_USER_PREFIX):
             return self.get_response(request)
 
-        if request.user.is_authenticated and request.path != '/':
+        if request.user.is_authenticated and request.path != '/' and request.path != '/account/user-logout/':
             try:
                 profile = request.user.profile
                 if not profile.is_verified:
