@@ -10,55 +10,70 @@ A comprehensive clinic management platform for appointment booking, video consul
 
 ---
 
-## How to start 
+## How to start
 
-1: Clone the Repository
+1: Clone the Repository Setps:
 
-Steps
-- 1: Open desired Terminal [Terminal (Linux/Mac) or Command Prompt/PowerShell (Windows)]
-- 2: Navigate to the directory where you want to keep the project:
+- A: Open desired Terminal [Terminal (Linux/Mac) or Command Prompt/PowerShell (Windows)]
+- B: Navigate to the directory where you want to keep the project:
 
-   `cd path/here/`
-- 3: Run the clone command:
- 
-   `git clone https://github.com/0luv69/ClinicMng.git`
-- 4: Go into the cloned project folder:
 
-   `cd ClinicMng`
+  ```bash
+  cd path/here/
+  ```
+- C: Run the clone command:
 
+  ```bash
+  git clone https://github.com/0luv69/ClinicMng.git
+  ```
+- D: Go into the cloned project folder:
+
+  ```bash
+  cd ClinicMng
+  ```
 
 2: Requirements install:
 Make sure you have Python 3 and pip installed. Then run:
 
-   `pip install -r requirements.txt`
-
+```python
+pip install -r requirements.txt
+```
 
 3: Configure Django Settings:
 
-   3.1: Navigate to: 
-   
-`cd clinic/clinic_base/`
+    3.1:**Navigate to**:
 
-   & `open setting.py`
-2: Update the following:
-- Change Domain Name
-
-  `DOMAIN_NAME = "http://localhost:8000"`
-- Email Configuration
-
-  At the end of the file, replace:
-
+```bash
+cd clinic/clinic_base/
 ```
+
+    &`open setting.py`
+
+    3.2:**Update the following**:
+
+* **Change Domain Name**
+
+```python
+DOMAIN_NAME = "http://localhost:8000"
+```
+
+*     **Email Configuration**
+
+    At the end of the file, replace:
+
+```python
 EMAIL_HOST_USER = "your-email@example.com"
 EMAIL_HOST_PASSWORD = "your-app-password"
 ```
-with your own email credentials (use Google App Password if using Gmail).
 
-- Time Zone:
-  Set your correct time zone:
+    with your own email credentials (use Google App Password if using Gmail).
 
-```TIME_ZONE = "Asia/Kathmandu"```
+*     **Time Zone**:
+  	   Set your correct time zone:
 
+```python
+TIME_ZONE = "Asia/Kathmandu"
+```
 
 ---
 
@@ -195,8 +210,6 @@ User (Django)
 ---
 
 **This overview reflects all current features, panels, and behaviors of Nepal's Care as described. Ready for further onboarding, handover, or feature expansion.**
-
-
 
 # Nepal's Care Clinic Management System – Technical & Operational Overview
 
