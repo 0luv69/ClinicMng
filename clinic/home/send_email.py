@@ -6,6 +6,7 @@ from django.utils.html import format_html
 
 def send_custom_email(subject, message, recipient_list, fail_silently=False, image_path=None):
     try:
+        print(message)
         if image_path:
             html_content = format_html(
                 """
@@ -38,6 +39,8 @@ def send_custom_email(subject, message, recipient_list, fail_silently=False, ima
 
 def send_custom_email_async(subject, message, recipient_list, fail_silently=False):
     """Dispatch email send() on a separate thread and return the thread object."""
+    print(message)
+
     thread = threading.Thread(
         target=send_custom_email,
         args=(subject, message, recipient_list, fail_silently),
