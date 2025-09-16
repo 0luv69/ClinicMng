@@ -330,9 +330,31 @@
 
                                             <!-- Actions Btns -->
                                             <td class="px-4 py-4 whitespace-nowrap">
-                                                {% if apot.status != 'completed' and apot.status != 'cancelled' %}
+                                                
                                                     <div class="flex space-x-2">
-                                                        
+                                                        <button class="text-blue-600 hover:text-blue-900 view-btn" id="view-btn-{{ apot.uuid }}" data-id="{{ apot.uuid }}" data-doctor="{{ apot.doctor.profile.user.first_name }}">View</button>
+
+                                                        <script>
+                                                            document.getElementById('view-btn-{{ apot.uuid }}').addEventListener('click', function() {
+                                                                let _p_id = "{{ apot.profile.user.username }}";
+                                                                let _p_name = "{{ apot.profile.user.first_name }}";
+                                                                let _p_img = "{{ apot.profile.profile_pic.url }}";
+                                                                let _p_age = "{{ apot.profile.date_of_birth }}";
+                                                                let _p_gender = "{{ apot.profile.gender }}";
+                                                                let _p_contact = "{{ apot.profile.ph_number }}";
+                                                                let _p_email = "{{ apot.profile.user.email }}";
+                                                                
+                                                                let _appointmentId = this.getAttribute('data-id');
+                                                                let _app_time = "{{ apot.appointment_date|date:"d M Y" }}; {{ apot.appointment_time_str }}";
+                                                                let _app_status = "{{ apot.status }}";
+                                                                let _app_type = "{{ apot.appointment_type }}";
+                                                                let _app_reason = "{{ apot.reason }}";
+
+
+                                                                showApp_Modal(_appointmentId,_p_id, _p_name, _p_img, _p_age, _p_gender, _p_contact, _p_email, _app_time, _app_status, _app_type, _app_reason);    
+                                                            });
+                                                        </script>
+                                                        {% if apot.status != 'completed' and apot.status != 'cancelled' %}
                                                         <!-- Cancel Button -->
                                                         <button title="Cancel" data-id="{{ apot.uuid }}" data-doctor="{{ apot.doctor.profile.user.first_name }}" data-date="{{ apot.appointment_date|date:"d M Y" }}  {{ apot.appointment_time_str }}"
                                                             class="cancel-appointment p-2 rounded-full text-gray-500 hover:bg-red-50 hover:text-red-600  transition-all duration-200"
@@ -364,41 +386,10 @@
                                                                 </g>
                                                             </svg>
                                                         </button>
-
-
-                                                        <!-- Join the Call Page -->
-                                                        {% if apot.appointment_date == today %}
-                                                            <button title="Join Call" data-id="{{ apot.uuid }}" data-doctor="{{ apot.doctor.profile.user.first_name }}" data-date="{{ apot.appointment_date|date:"d M Y" }}  {{ apot.appointment_time_str }}"
-                                                                class="join-call p-2 rounded-full text-gray-500 hover:bg-green-50 hover:text-green-600  transition-all duration-200"
-                                                                >
-                                                                <svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' class="h-8 w-8 hover:bg-green-100 rounded-lg p-1" fill='currentColor'>
-                                                                    <g transform="matrix(0.91 0 0 0.91 12 12)" >
-                                                                    <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -12)" d="M 3 5 C 1.9069372 5 1 5.9069372 1 7 L 1 17 C 1 18.093063 1.9069372 19 3 19 L 16 19 C 17.093063 19 18 18.093063 18 17 L 18 14.080078 L 23 18.080078 L 23 5.9199219 L 18 9.9199219 L 18 7 C 18 5.9069372 17.093063 5 16 5 L 3 5 z M 3 7 L 16 7 L 16 17 L 3 17 L 3 7 z M 21 10.082031 L 21 13.917969 L 18.601562 12 L 21 10.082031 z" stroke-linecap="round" />
-                                                                    </g>
-                                                                </svg>
-                                                             </button>
                                                         {% endif %}
 
-
-                                                        <!-- Edit Time Button -->
-                                                        <button title="Postpone Time" data-id="{{ apot.uuid }}" data-doctor="{{ apot.doctor.profile.user.first_name }}" data-date="{{ apot.appointment_date|date:"d M Y" }}  {{ apot.appointment_time_str }}"
-                                                            class="hidden edit-appointment p-2 rounded-full text-gray-500 hover:bg-blue-50 hover:text-blue-600  transition-all duration-200"
-                                                            >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88" class="h-5 w-5" fill='currentColor' ><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style>
-                                                                <g>
-                                                                    <path class="st0" d="M79.7,31.87c-0.7-0.65-1.5-1-2.4-0.95c-0.9,0-1.7,0.35-2.35,1.05l-5.29,5.49L84.49,51.8l5.34-5.59 c0.65-0.65,0.9-1.5,0.9-2.4c0-0.9-0.35-1.75-1-2.35L79.7,31.87L79.7,31.87L79.7,31.87z M12.51,0h97.85c3.44,0,6.57,1.41,8.84,3.67 c2.27,2.27,3.67,5.4,3.67,8.84v97.85c0,3.44-1.41,6.57-3.67,8.84c-2.27,2.27-5.4,3.67-8.84,3.67H12.51c-3.44,0-6.57-1.41-8.84-3.67 c-2.27-2.27-3.67-5.4-3.67-8.84V12.51c0-3.44,1.41-6.57,3.67-8.84C5.94,1.41,9.07,0,12.51,0L12.51,0z M110.37,5.39H12.51 c-1.96,0-3.74,0.8-5.03,2.1c-1.29,1.29-2.1,3.08-2.1,5.03v97.85c0,1.96,0.8,3.74,2.1,5.03c1.29,1.29,3.08,2.1,5.03,2.1h97.85 c1.96,0,3.74-0.8,5.03-2.1c1.29-1.29,2.1-3.08,2.1-5.03V12.51c0-1.96-0.8-3.74-2.1-5.03C114.1,6.19,112.32,5.39,110.37,5.39 L110.37,5.39z M51.93,85.61c-1.95,0.65-3.95,1.25-5.89,1.9c-1.95,0.65-3.9,1.3-5.89,1.95c-4.64,1.5-7.19,2.35-7.74,2.5 c-0.55,0.15-0.2-2,0.95-6.49l3.7-14.13l0.3-0.32L51.93,85.61L51.93,85.61L51.93,85.61L51.93,85.61z M42.74,65.41l22.9-23.78 l14.83,14.28L57.33,79.99L42.74,65.41L42.74,65.41z"/>
-                                                                </g>
-                                                            </svg>
-                                                        </button>
                                                     </div>
-                                                 {% else %}
-                                                    <div class="flex space-x-2">
-                                                        <!-- No action button For paticular status write here-->
-                                                             <p>
-                                                                <span class="text-gray-500 text-xs font-medium">No action available</span>
-                                                             </p>
-                                                    </div>
-                                                {% endif %}
+                                                 
                                             </td>
                                         </tr>
                                         {% empty %}
@@ -628,10 +619,184 @@
 </div>
 
 
+<!-- Appointment Modal -->
+<div id="appointmentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="modalContent" class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 relative">
+        <button onclick="document.getElementById('appointmentModal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div id="modalBody" class="overflow-y-auto max-h-[80vh]">
+            <!-- Dynamic content will be injected here -->
+        </div>
+    </div>  
+</div>
+
 {% endblock content %}
 
 
 {% block scripts %}
+
+
+<script>
+    function showApp_Modal(appointmentId,_p_id, p_name, p_img, p_age, p_gender, p_contact, p_email, app_time, app_status, app_type, app_reason) {
+        const modal = document.getElementById('appointmentModal'); 
+        const modalBody = document.getElementById('modalBody'); 
+        const modalContent = document.getElementById('modalContent'); 
+
+        modalBody.innerHTML = `
+            <div class="flex flex-col md:flex-row mb-6">
+                <div class="md:w-1/4 mb-4 md:mb-0">
+                    <div class="h-32 w-32 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500 mx-auto">
+                        <img src="${p_img}" alt="${p_name} Profile picture" class="h-32 w-32 rounded-full object-cover">
+                    </div>
+                </div>
+                <div class="md:w-3/4 md:pl-6">
+                    <h2 class="text-2xl font-bold text-gray-800">${p_name}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <p class="text-sm text-gray-500">Age</p>
+                            <p class="text-base text-gray-800">${p_age} years</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Gender</p>
+                            <p class="text-base text-gray-800">${p_gender}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Phone</p>
+                            <p class="text-base text-gray-800">${p_contact}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Email</p>
+                            <p class="text-base text-gray-800">${p_email}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-semibold mb-4">Appointment Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Date & Time</p>
+                        <p class="text-base text-gray-800">${app_time}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Status</p>
+                        <div>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                ${app_status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                                  app_status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                                  app_status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                                  'bg-red-100 text-red-800'}">
+                                ${app_status.charAt(0).toUpperCase() + app_status.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Type</p>
+                        <p class="text-base text-gray-800">${app_type}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4">Reason for Appointment</h3>
+                <p class="text-gray-700">${app_reason}</p>
+            </div>
+            <div class="border-t border-gray-200 pt-6 mt-6 flex flex-wrap gap-3">
+
+                ${app_status === 'pending' ? `
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 confirm-btn" data-id="${appointmentId}">Confirm Appointment</button>
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-red-700 transition-colors duration-200 cancel-btn" data-id="${appointmentId}">Cancel Appointment</button>
+                ` 
+                : app_status === 'confirmed' ? `
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-red-700 transition-colors duration-200 cancel-btn" data-id="${appointmentId}">Cancel Appointment</button>`
+                :''}
+                <a href="http://127.0.0.1:8000/view-patients-records/${_p_id}/" target="_blank" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition-colors duration-200">View Medical Records</a>
+            </div>
+        `;
+
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }, 10);
+
+        // Add event listeners for modal buttons
+        modalBody.querySelector('.cancel-btn').addEventListener('click', () => confirm_cancelBTN(appointmentId, 'cancel'));
+        modalBody.querySelector('.confirm-btn').addEventListener('click', () => confirm_cancelBTN(appointmentId, 'confirm'));
+
+    };
+
+
+    function confirm_cancelBTN(appointmentId, action) {
+        // Show a notification that the request is being sent
+        showNotification({
+            color: "bg-yellow-500",
+            title: "Processing",
+            message: "Sending confirmation request...",
+            time: 5000
+        });
+
+        showLoadingOverlay();
+        
+        fetch('/m/actions-appointment/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ app_id: appointmentId, action: action })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            hideLoadingOverlay();
+
+            console.log(data); // For debugging
+
+            if (data.success) {
+                let title = action === 'confirm' ? "Appointment Confirmed" : "Appointment Cancelled";
+                let defaultMessage = action === 'confirm' ? "The appointment has been successfully confirmed" : "The appointment has been successfully cancelled";
+                showNotification({
+                    color: "bg-green-500",
+                    title: title,
+                    message: data.message || defaultMessage,
+                    duration: 3000,
+                });
+                // Optionally reload the page or update the table
+                location.reload();
+            } else {
+                showNotification({
+                    color: "bg-red-500",
+                    title: "Error",
+                    message: data.message || "Failed to process appointment",
+                    duration: 5000
+                });
+            }
+        })
+        .catch(error => {
+            hideLoadingOverlay();
+            console.error('Fetch error:', error); // Log the error for debugging
+            showNotification({
+                color: "bg-red-500",
+                title: "Error",
+                message: "Failed to process appointment. Please check your connection or try again.",
+                duration: 5000
+            });
+        });
+    }
+
+    
+
+ 
+</script>
 
 
 <script>

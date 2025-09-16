@@ -423,6 +423,97 @@ def create_patient(request):
             'current_user': request.user.username
         }, status=500)
 
+@login_required_with_message(login_url='account:login', message="You need to log in to Change the Status.", only=['management'])
+def Action_Appointment(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False,
+                             'message': 'Only POST requests allowed'}, 
+                             status=405)
+    
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    
+    profile: Profile = request.user.profile
+
+    appointment_id = data.get('app_id')
+    action = data.get('action')
+
+    if not appointment_id or not action:
+        return JsonResponse({'success': False,
+                             'message': 'Missing appointment_id or action'}, 
+                             status=400)
+    
+    try:
+        appointment = Appointment.objects.get(uuid=appointment_id)
+    except Appointment.DoesNotExist:
+        return JsonResponse({'success': False,
+                             'message': 'Appointment not found'}, 
+                             status=404)
+    
+    if action == 'confirm':
+        if appointment.status != 'pending':
+            return JsonResponse({'success': False,
+                                 'message': 'Only pending appointments can be confirmed'}, 
+                                 status=400)
+        appointment.status = 'confirmed'
+        appointment.confirmed_by = profile
+        appointment.confirmed_at = now()
+        appointment.save()
+        message = 'Appointment confirmed successfully'
+    elif action == 'cancel':
+        if appointment.status in ['cancelled', 'completed']:
+            return JsonResponse({'success': False,
+                                 'message': 'Cannot cancel an already cancelled or completed appointment'}, 
+                                 status=400)
+        cancellation_reason = data.get('cancellation_reason', '')
+        appointment.status = 'cancelled'
+        appointment.cancellation_reason = cancellation_reason
+        appointment.cancelled_by = profile
+        appointment.cancelled_at = now()
+        appointment.save()
+        message = 'Appointment cancelled successfully'
+    else:
+        return JsonResponse({'success': False,
+                             'message': 'Invalid action'}, 
+                             status=400)
+    
+    # Log the action in the conversation
+    convo = Conversation.objects.filter(participants=appointment.profile).first()
+    if convo:
+        msg_text = f"Your appointment on {appointment.appointment_date.strftime('%Y-%m-%d %H:%M')} has been {appointment.status}. By Management Team: {profile.user.first_name}"
+        if action == 'cancel' and appointment.cancellation_reason:
+            msg_text += f" Reason: {appointment.cancellation_reason}"
+        Message.objects.create(
+            conversation=convo,
+            sender=profile,
+            content=msg_text,
+            message_type='appoinment'
+        )
+
+    # Send email notification based on action
+    if action == 'confirm':
+        send_custom_email(
+            subject='Appointment Confirmed',
+            message=f'Dear {appointment.profile.user.first_name},\n\nYour appointment has been confirmed.\n\nAppointment Details:\n- Date: {appointment.appointment_date}\n- Type: {appointment.appointment_type}\nBy Management Team: {profile.user.first_name}\n\nThank you!',
+            recipient_list=[appointment.profile.user.email],
+        )
+    elif action == 'cancel':
+        send_custom_email(
+            subject='Appointment Cancelled',
+            message=f'Dear {appointment.profile.user.first_name},\n\nYour appointment has been cancelled.\n\nReason: {cancellation_reason}\n\nAppointment Details:\n- Date: {appointment.appointment_date}\n- Type: {appointment.appointment_type}\n\nThank you!',
+            recipient_list=[appointment.profile.user.email],
+        )
+
+    messages.success(request, message)
+
+    return JsonResponse({'success': True,
+                         'message': message,
+                         'appointment_id': appointment.id,
+                         'current_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                         'current_user': request.user.username
+                     })
 
 
 #  Doctor Management View

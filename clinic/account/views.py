@@ -44,6 +44,15 @@ def login_required_with_message(function=None, login_url=None, message=None, onl
 
 
 def login_page(request):
+    if request.user.is_authenticated:
+        messages.info(request, "You are already logged in. Enjoy our service.")
+        role = request.user.profile.role
+        if role == 'management':
+            return redirect('home')
+        elif role == 'admin':
+            return redirect('admin:index')
+        else:
+            return redirect(f'{role}:profile')
     return render(request, 'pages/login.html')
 
 def register_page(request):
@@ -105,6 +114,10 @@ def PostRegister(request):
         
         # Automatically log the user in after registration
         login(request, user)
+
+        if profile.role == 'admin':
+            return redirect('admin:index')
+
         return redirect('patient:profile')
     
     return redirect('account:register')
@@ -135,12 +148,16 @@ def Postlogin(request):
           
             if role == 'management':
                 return redirect('home')
+            elif role == 'admin':
+                return redirect('admin:index')    
+        
             else:
                 return redirect(f'{role}:profile')
 
         else:
             messages.error(request, "Invalid email or password. Please try again.")
             return redirect('account:login')
+
 
     
     # If GET request, simply render the login template

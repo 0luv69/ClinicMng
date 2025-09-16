@@ -18,7 +18,7 @@ class ProfileAdmin(admin.ModelAdmin):
         'user_full_name',
         'role',
         'profile_image_tag',
-        'ph_number',
+        'user_email',
         'gender',
         'is_active',
         'is_verified',
@@ -28,7 +28,7 @@ class ProfileAdmin(admin.ModelAdmin):
     )
     list_filter = ('role', 'gender', 'is_active', 'is_verified', 'created_at')
     search_fields = (
-        'user__username', 'user__first_name', 'user__last_name', 'ph_number', 'address',
+        'user__username', 'user__first_name', 'user__last_name', 'user__email', 'address',
         'medical_info__blood_group', 'medical_info__allergies', 'medical_info__medical_conditions'
     )
     readonly_fields = ('created_at', 'updated_at', 'profile_image_tag')
@@ -37,7 +37,7 @@ class ProfileAdmin(admin.ModelAdmin):
             'fields': ('user', 'role')
         }),
         ('Personal Info', {
-            'fields': ('profile_pic', 'profile_image_tag', 'ph_number', 'address', 'date_of_birth', 'gender')
+            'fields': ('profile_pic', 'profile_image_tag', 'user_email', 'address', 'date_of_birth', 'gender')
         }),
         ('Token Info', {
             'fields': ('token', 'token_expiry', )
@@ -59,6 +59,11 @@ class ProfileAdmin(admin.ModelAdmin):
     def user_full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
     user_full_name.short_description = 'Full Name'
+
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = 'Email'
+    user_email.admin_order_field = 'user__email'
 
     def profile_image_tag(self, obj):
         if obj.profile_pic:

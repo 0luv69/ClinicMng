@@ -5,7 +5,7 @@ from .views import *
 
 urlpatterns = [
     path('', home_page, name='home'),
-    path('2/', home_page2, name='home2'),
+    path('2/', home_page2, name='home2'), # demo fornt page 2
 
 
     path('terms/', terms, name='terms'),

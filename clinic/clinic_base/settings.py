@@ -165,4 +165,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'geth4ppy0k@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'byma qkhx yzsc ilhh'  # See instructions below
+EMAIL_HOST_PASSWORD = 'xrip erzg klro dtqk'  # See instructions below
+
+
+# check123 12345678

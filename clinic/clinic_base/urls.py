@@ -14,7 +14,7 @@ admin.site.index_title = "Welcome to Clinic Management Admin Portal"
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin_pg'),
     path('', include('home.urls')),
  
     path('account/', include('account.urls')),

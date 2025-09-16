@@ -10,6 +10,9 @@ def role_to_url(role, destination):
     Usage: {% role_url user.profile.role 'dashboard' %}
     """
     try:
+        if role == "admin":
+            return reverse("admin:index")
+
         return reverse(f"{role}:{destination}")
     except NoReverseMatch:
         return "#"  # fallback URL if the view is not found
@@ -27,6 +30,11 @@ def role_to_wants(role, wants):
         elif role == "management":
             urls = reverse(f"{role}:management_dashboard")
             text = "Management Dashboard"
+
+        elif role == "admin":
+            urls = reverse("admin:index")
+            text = "Admin Dashboard"
+
         else:
             urls = reverse(f"patient:bookAppointment")
             text = "Start Appointment"

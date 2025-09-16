@@ -21,6 +21,8 @@ urlpatterns = [
     path('edit-doc/', EditDoctorInfo, name='edit_doctor_info'),
     path('create-doctors/', create_doctor, name='api_create_doctor'),
 
+    path('actions-appointment/', Action_Appointment, name='Action_Appointment_from_Mng'),
+
 
     path('medicine-mng/', medicineMng, name='medicineMng'),
     path('medicine-mng/<uuid:medicine_uuid>/delete/', delete_medicine, name='deleteMedicine'),
