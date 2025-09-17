@@ -6,7 +6,6 @@ from django.utils.html import format_html
 
 def send_custom_email(subject, message, recipient_list, fail_silently=False, image_path=None):
     try:
-        print(message)
         if image_path:
             html_content = format_html(
                 """

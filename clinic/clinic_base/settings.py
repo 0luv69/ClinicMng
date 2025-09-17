@@ -168,4 +168,4 @@ EMAIL_HOST_USER = 'geth4ppy0k@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'xrip erzg klro dtqk'  # See instructions below
 
 
-# check123 12345678
+PAYMENT_QR_PATH = "https://i.postimg.cc/BbYHpvcJ/payment-qr.png"# add public path of payment qr code image here

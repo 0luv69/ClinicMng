@@ -464,7 +464,7 @@ def BookAppointment(request: HttpRequest):
                     f"Best regards,\nNCMS Team"
                 ),
                 recipient_list=[profile.user.email, doctor.profile.user.email],
-                image_path = f"https://i.postimg.cc/LXh8Pv4T/qr.jpg"
+                image_path=settings.PAYMENT_QR_PATH
             )
 
             # Log the action
