@@ -168,4 +168,4 @@ EMAIL_HOST_USER = 'geth4ppy0k@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'xrip erzg klro dtqk'  # See instructions below
 
 
-PAYMENT_QR_PATH = "https://i.postimg.cc/BbYHpvcJ/payment-qr.png"# add public path of payment qr code image here
+PAYMENT_QR_PATH = "https://i.postimg.cc/GpdVTcKX/Whats-App-Image-2025-09-17-at-21-54-25-c901c1a2.jpg"# add public path of payment qr code image here
