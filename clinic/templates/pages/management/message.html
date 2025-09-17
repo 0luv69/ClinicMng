@@ -95,7 +95,7 @@
                                 <p class="text-sm font-medium truncate conversation-name">{{ conversation.other_participant.user.first_name }}</p>
                                 <span class="text-xs text-muted-foreground">{{ conversation.last_message.timestamp|date:"j M" }}</span>
                             </div>
-                            <p class="text-xs text-muted-foreground conversation-role">{{ conversation.other_participant.specialty|default:"Healthcare Provider" }}</p>
+                            <p class="text-xs text-muted-foreground conversation-role">{{ conversation.other_participant.role|default:"Healthcare Provider"|capfirst }}</p>
                             <p class="text-xs truncate mt-1 last-chat">{{ conversation.last_message.content|truncatechars:50 }}</p>
                         </div>
                     </button>
@@ -149,7 +149,7 @@
                             </div>
                             <div>
                                 <h2 class="text-sm font-medium">{{ active_conversation.other_participant.user.first_name }}</h2>
-                                <p class="text-xs text-muted-foreground">{{ active_conversation.other_participant.specialty|default:"Healthcare Provider" }}</p>
+                                <p class="text-xs text-muted-foreground">{{ active_conversation.other_participant.role|default:"Healthcare Provider"|capfirst }}</p>
                             </div>
                         </div>
 
