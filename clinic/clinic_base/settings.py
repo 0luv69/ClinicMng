@@ -164,8 +164,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'geth4ppy0k@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'xrip erzg klro dtqk'  # See instructions below
+EMAIL_HOST_USER = 'nepalscare@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'dpai mndx ejsx osrs'  # See instructions below
 
 
 PAYMENT_QR_PATH = "https://i.postimg.cc/GpdVTcKX/Whats-App-Image-2025-09-17-at-21-54-25-c901c1a2.jpg"# add public path of payment qr code image here

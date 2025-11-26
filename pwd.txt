@@ -1,0 +1,57 @@
+Admin:
+username: admin
+admin@admin.com
+12345678
+
+
+to do : Admin level edit to pages
+
+
+-------------x---------------x------------------
+Patient:
+username: NCMS-20250628081103-00000008
+koiralasimpal51@gmail.com
+12345678
+
+to do: see document, prescription, lab report file. Book new appointment & see previous appointment
+
+
+-------------x---------------x------------------
+
+Doctors:
+1: Emily Smith (Main one)
+	username: NCMS-20250419132347-00000002
+	email: simpalkoirala521@gmail.com
+	psd: 12345678
+
+2: Priya Patel
+	username:NCMS-20250419132530-00000003
+	email: priyapatel@doc2.com
+	pwd:12345678
+
+3: James Williams
+	username:NCMS-20250419132958-00000004
+	email: James@gmail.com
+	pwd:12345678
+
+4: Aenna backer
+	username: NCMS-20250420222435-00000005
+	email: aennabacker@doc4.com
+	pwd:12345678
+
+5: Suman Adhikari
+	username: NCMS-20250628135053-00000012
+	email: sumanadhikari@example.com
+	pwd:12345678
+
+
+-------------x---------------x------------------
+Management:
+
+	username: NCMS-20250628135053-00000012
+	email: simpaldon123@gmail.com
+	pwd:12345678
+
+-------------x---------------x------------------
+
+
