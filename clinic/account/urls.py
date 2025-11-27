@@ -7,6 +7,8 @@ urlpatterns = [
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
 
+    path('login-as/<str:role>/', login_as, name = "login_as"),
+
 
     path('register/submit/', PostRegister, name='PostRegister'),
     path('login/submit/', Postlogin, name='Postlogin'),

@@ -59,6 +59,34 @@ def register_page(request):
     return render(request, 'pages/register.html')
 
 
+def login_as(request, role):
+    """View to log in as a specific role for testing purposes. this makes direct login without password."""
+    print(role)
+    if role == 'management':
+        user = User.objects.get(email='simpaldon123@gmail.com')
+        login(request, user)
+        messages.success(request, "Login successful as management.")
+        return redirect('home')
+    
+    elif role == 'admin':
+        user = User.objects.get(email='admin@admin.com')
+        login(request, user)
+        messages.success(request, "Login successful as admin.")
+        return redirect('admin:index')    
+    
+    elif role == 'doctor':
+        user = User.objects.get(email='simpalkoirala521@gmail.com')
+        login(request, user)
+        messages.success(request, "Login successful as doctor.")
+        return redirect(f'doctor:profile')
+
+    elif role == 'patient':
+        user = User.objects.get(email='koiralasimpal51@gmail.com')
+        login(request, user)
+        messages.success(request, "Login successful as patient.")
+        return redirect('patient:profile')
+    ...
+
 def PostRegister(request):
     """Custom registration view that handles user sign-up."""
     if request.method == 'POST':
