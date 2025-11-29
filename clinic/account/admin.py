@@ -31,7 +31,8 @@ class ProfileAdmin(admin.ModelAdmin):
         'user__username', 'user__first_name', 'user__last_name', 'user__email', 'address',
         'medical_info__blood_group', 'medical_info__allergies', 'medical_info__medical_conditions'
     )
-    readonly_fields = ('created_at', 'updated_at', 'profile_image_tag')
+    # user_email is a method on the admin, not a model field, so mark it readonly
+    readonly_fields = ('created_at', 'updated_at', 'profile_image_tag', 'user_email')
     fieldsets = (
         ('User & Role', {
             'fields': ('user', 'role')
@@ -52,32 +53,37 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = [MedicalInfoInline]
 
     def user_username(self, obj):
-        return obj.user.username
+        return obj.user.username if obj and getattr(obj, 'user', None) else "-"
     user_username.short_description = 'Username'
     user_username.admin_order_field = 'user__username'
 
     def user_full_name(self, obj):
+        if not obj or not getattr(obj, 'user', None):
+            return "-"
         return f"{obj.user.first_name} {obj.user.last_name}"
     user_full_name.short_description = 'Full Name'
 
     def user_email(self, obj):
+        # obj will be None in the add view, so guard against that
+        if not obj or not getattr(obj, 'user', None):
+            return "-"
         return obj.user.email
     user_email.short_description = 'Email'
     user_email.admin_order_field = 'user__email'
 
     def profile_image_tag(self, obj):
-        if obj.profile_pic:
+        if obj and getattr(obj, 'profile_pic', None):
             return format_html('<img src="{}" style="height: 40px; width: 40px; border-radius: 5px;" />', obj.profile_pic.url)
         return "-"
     profile_image_tag.short_description = "Profile Picture"
 
     def blood_group_display(self, obj):
-        if hasattr(obj, 'medical_info') and obj.medical_info.blood_group:
-            return obj.medical_info.blood_group
+        # obj may be None in certain admin contexts; guard accordingly
+        medical_info = getattr(obj, 'medical_info', None) if obj else None
+        if medical_info and getattr(medical_info, 'blood_group', None):
+            return medical_info.blood_group
         return "-"
     blood_group_display.short_description = "Blood Group"
-
-
 
 # MedicalInfo separately as well (optional):
 @admin.register(MedicalInfo)

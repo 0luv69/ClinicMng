@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'home',
+    'management',
     'patient',
     'doctor',
 
@@ -168,4 +169,4 @@ EMAIL_HOST_USER = 'nepalscare@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'dpai mndx ejsx osrs'  # See instructions below
 
 
-PAYMENT_QR_PATH = "https://i.postimg.cc/GpdVTcKX/Whats-App-Image-2025-09-17-at-21-54-25-c901c1a2.jpg"# add public path of payment qr code image here
+PAYMENT_QR_PATH = "https://i.postimg.cc/qRH2XyL3/Screenshot-20251127-212304.jpg"# add public path of payment qr code image here
