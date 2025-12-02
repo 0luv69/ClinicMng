@@ -1,10 +1,8 @@
 import os
 from pathlib import Path
-import environ
+from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+load_dotenv() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -170,8 +168,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your Gmail address
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # See instructions below
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # Your Gmail address
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # See instructions below
 
 
-PAYMENT_QR_PATH = env('PAYMENT_QR_PATH') # add public path of payment qr code image here
+PAYMENT_QR_PATH = os.getenv('PAYMENT_QR_PATH') # add public path of payment qr code image here
