@@ -2,13 +2,14 @@
 
 A comprehensive Django-based clinic management platform designed for seamless healthcare operations, featuring appointment booking, video consultations, medical records management, and real-time communication.
 
-![System Overview](https://img.shields.io/badge/Django-5.2.1-green) ![Python](https://img.shields.io/badge/Python-3.12.2-blue) ![License](https://img.shields. io/badge/License-MIT-yellow)
+![System Overview](https://img.shields.io/badge/Django-5.2.1-green) ![Python](https://img.shields.io/badge/Python-3.12.2-blue)
 
 ---
 
 ## 📋 Table of Contents
 
 - [Features Overview](#features-overview)
+- [Demo Video](#demo-videos--nepals-care-clinic-management-system)
 - [System Architecture](#system-architecture)
 - [Getting Started](#getting-started)
 - [User Roles &amp; Permissions](#user-roles--permissions)
@@ -16,7 +17,6 @@ A comprehensive Django-based clinic management platform designed for seamless he
 - [Technical Stack](#technical-stack)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -47,6 +47,55 @@ A comprehensive Django-based clinic management platform designed for seamless he
 - **UUID-based IDs**: Privacy-focused non-sequential identifiers
 - **Activity Auditing**: Complete logging of sensitive operations
 - **Account Management**: Activation/deactivation controls
+
+---
+
+## Demo Videos — Nepal's Care Clinic Management System
+
+### Playlist (All Videos)
+[Watch Full Demo Playlist ▶](https://www.youtube.com/watch?v=8d5Au0odyA8&list=PLzn4xr6XCgQoB9sKQK7yoToP2ZJMYi9Vx)
+
+---
+
+## 1) Admin Demo
+Title: Nepal's Care Clinic Management System - Admin Panel Complete Demo | Healthcare Management Software
+
+Watch:
+[![Admin Demo](https://img.youtube.com/vi/8d5Au0odyA8/0.jpg)](https://www.youtube.com/watch?v=8d5Au0odyA8)
+
+Link: https://www.youtube.com/watch?v=8d5Au0odyA8
+
+---
+
+### 2) Management Demo
+Title: Nepal's Care Management Portal Demo - Complete Clinic Operations | Patient & Doctor Management
+
+Watch:
+[![Management Demo](https://img.youtube.com/vi/SWC4kdvBQYU/0.jpg)](https://www.youtube.com/watch?v=SWC4kdvBQYU)
+
+Link: https://www.youtube.com/watch?v=SWC4kdvBQYU
+
+---
+
+### 3) Doctor Demo
+Title: Nepal's Care Doctor Portal Demo - Schedule Management, Video Consultations & Patient Care
+
+Watch:
+[![Doctor Demo](https://img.youtube.com/vi/tEVJOvEJAts/0.jpg)](https://www.youtube.com/watch?v=tEVJOvEJAts)
+
+Link: https://www.youtube.com/watch?v=tEVJOvEJAts
+
+---
+
+### 4) Patient + System Workflow
+Title: Nepal's Care Patient Portal & Complete System Workflow - Book Appointments, Video Calls & Medical Records
+
+Watch:
+[![Patient + Workflow Demo](https://img.youtube.com/vi/zEjklq-dLkg/0.jpg)](https://www.youtube.com/watch?v=zEjklq-dLkg)
+
+Link: https://www.youtube.com/watch?v=zEjklq-dLkg
+
+
 
 ---
 
@@ -116,21 +165,44 @@ User (Django Authentication)
    ```bash
    pip install -r requirements.txt
    ```
-3. **Configure Settings**
-   Navigate to `clinic/clinic_base/settings.py` and update:
-
-   ```python
-   # Domain Configuration
-   DOMAIN_NAME = "http://localhost:8000"
-
-   # Email Configuration (Gmail recommended)
-   EMAIL_HOST_USER = "your-email@example. com"
-   EMAIL_HOST_PASSWORD = "your-app-password"  # Use App Password for Gmail
-
-   # Time Zone
-   TIME_ZONE = "Asia/Kathmandu"  # Adjust to your timezone
+3. **Environment Configuration**
+   Create a `.env` file in the root directory of the project:
+   ```bash
+   touch .env  # Linux/Mac
+   # or create . env file manually on Windows
    ```
-4. **Database Setup**
+
+   Add the following environment variables to your `.env` file:
+   ```env
+   # Email Configuration (Gmail recommended)
+   EMAIL_HOST_USER=your-email@example.com
+   EMAIL_HOST_PASSWORD=your-app-password
+
+   # Payment Configuration
+   PAYMENT_QR_PATH=path/to/your/qr/image.png
+
+   # Optional: Domain Configuration
+   DOMAIN_NAME=http://localhost:8000
+
+   # Optional: Time Zone
+   TIME_ZONE=Asia/Kathmandu
+   ```
+4.  **Email Setup Instructions**
+   
+   **For Gmail Users:**
+   - Enable 2-Factor Authentication on your Gmail account
+   - Generate an App Password:
+     1. Go to Google Account settings
+     2.  Select Security → 2-Step Verification → App passwords
+     3.  Generate a new app password for "Mail"
+     4. Use this 16-character password in `EMAIL_HOST_PASSWORD`
+   
+   **Example:**
+   ```env
+   EMAIL_HOST_USER=yourname@gmail.com
+   EMAIL_HOST_PASSWORD=abcd efgh ijkl mnop  # Your generated app password
+   ```
+5. **Database Setup**
 
 ```bash
    python manage.py makemigrations
@@ -138,12 +210,12 @@ User (Django Authentication)
    python manage.py createsuperuser
 ```
 
-5. **Run the Development Server**
+6. **Run the Development Server**
 
    ```bash
    python manage.py runserver
    ```
-6. **Access the Application**
+7. **Access the Application**
 
    - Main Application: `http://localhost:8000`
    - Admin Panel: `http://localhost:8000/admin`
@@ -451,20 +523,8 @@ We welcome contributions to improve Nepal's Care!  Here's how you can help:
 
 ### **Technical Support**
 
-- **Email**: support@nepalscare.com
-- **Documentation**: [Wiki Pages](https://github.com/0luv69/ClinicMng/wiki)
+- **Email**: nepalscare@gmail.com
 - **Issues**: [GitHub Issues](https://github.com/0luv69/ClinicMng/issues)
-
-### **Community**
-
-- **Discussions**: [GitHub Discussions](https://github.com/0luv69/ClinicMng/discussions)
-- **Contributors**: [Contributors Page](https://github.com/0luv69/ClinicMng/graphs/contributors)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -474,27 +534,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Tailwind CSS** for the utility-first styling approach
 - **WebRTC** community for real-time communication protocols
 - **Open Source Contributors** who inspire continuous improvement
-
----
-
-## 🗺️ Roadmap
-
-### **Version 2.0 (Planned)**
-
-- [ ] Mobile application (React Native/Flutter)
-- [ ] Advanced appointment scheduling algorithms
-- [ ] Integration with major payment gateways
-- [ ] Multi-clinic support
-- [ ] Advanced reporting and analytics
-- [ ] Telemedicine compliance features
-
-### **Version 1. 5 (In Progress)**
-
-- [ ] Docker containerization
-- [ ] Automated testing suite
-- [ ] Performance optimizations
-- [ ] Enhanced security features
-- [ ] Multi-language support
 
 ---
 
