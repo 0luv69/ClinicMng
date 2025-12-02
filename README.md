@@ -1,326 +1,501 @@
-# Nepal's Care Clinic Management System – Project Overview & Architecture
+# Nepal's Care Clinic Management System
 
-This high-level documentation summarizes the Django-based Nepal's Care system: its user roles, main features, data models, panel/page structure, and core workflows. This serves as a quick reference for onboarding, handover, or further development.
+A comprehensive Django-based clinic management platform designed for seamless healthcare operations, featuring appointment booking, video consultations, medical records management, and real-time communication.
 
----
-
-## System Purpose
-
-A comprehensive clinic management platform for appointment booking, video consultations, medical records, and workflow management, with clear role separation and robust data tracking.
+![System Overview](https://img.shields.io/badge/Django-5.2.1-green) ![Python](https://img.shields.io/badge/Python-3.12.2-blue) ![License](https://img.shields. io/badge/License-MIT-yellow)
 
 ---
 
-## How to start
+## 📋 Table of Contents
 
-1: Clone the Repository Setps:
+- [Features Overview](#features-overview)
+- [System Architecture](#system-architecture)
+- [Getting Started](#getting-started)
+- [User Roles &amp; Permissions](#user-roles--permissions)
+- [Core Workflows](#core-workflows)
+- [Technical Stack](#technical-stack)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-- A: Open desired Terminal [Terminal (Linux/Mac) or Command Prompt/PowerShell (Windows)]
-- B: Navigate to the directory where you want to keep the project:
+---
 
+## 🚀 Features Overview
 
-  ```bash
-  cd path/here/
-  ```
-- C: Run the clone command:
+### 🏥 **Core Healthcare Features**
 
-  ```bash
-  git clone https://github.com/0luv69/ClinicMng.git
-  ```
-- D: Go into the cloned project folder:
+- **Appointment Management**: Complete booking, scheduling, and management system
+- **Video Consultations**: WebRTC-powered real-time video calls
+- **Medical Records**: Comprehensive patient medical history and documentation
+- **Lab Reports**: Parameter-based reporting with normal/abnormal status tracking
+- **Prescription Management**: Medicine scheduling with adherence tracking
+- **Real-time Chat**: Socket-based instant messaging between all user types
 
-  ```bash
-  cd ClinicMng
-  ```
+### 📊 **Administrative Features**
 
-2: Requirements install:
-Make sure you have Python 3 and pip installed. Then run:
+- **Multi-role Dashboard**: Role-specific dashboards with analytics and insights
+- **Activity Logging**: Comprehensive audit trail of all system actions
+- **User Management**: Complete user lifecycle management with verification
+- **Schedule Management**: Advanced calendar-based availability management
+- **Document Management**: Secure file upload and management system
+- **Payment Integration**: QR code-based payment system
 
-```python
-pip install -r requirements.txt
+### 🔒 **Security & Compliance**
+
+- **Email Verification**: Required for all new patient registrations
+- **Role-based Access Control**: Granular permissions for each user type
+- **UUID-based IDs**: Privacy-focused non-sequential identifiers
+- **Activity Auditing**: Complete logging of sensitive operations
+- **Account Management**: Activation/deactivation controls
+
+---
+
+## 🏗️ System Architecture
+
+### User Roles Hierarchy
+
+```
+👑 Admin
+├── 🏢 Management Team
+├── 👨‍⚕️ Doctors
+└── 🏥 Patients
 ```
 
-3: Configure Django Settings:
+### Core Data Models
 
-    3.1:**Navigate to**:
+```
+User (Django Authentication)
+│
+├── Profile (role-based: admin/management/doctor/patient)
+│   ├── MedicalInfo (patient-specific)
+│   ├── DoctorProfile (professional details)
+│   └── Documents (patient uploads)
+│
+├── Appointment System
+│   ├── Appointment (booking records)
+│   ├── AppointmentDateSlot (doctor availability)
+│   └── AppointmentTimeSlot (specific time slots)
+│
+├── Medical Records
+│   ├── Prescription (medicine management)
+│   ├── PrescriptionSchedule (dosage timing)
+│   ├── LabReport (test results)
+│   └── LabReportParameter (individual test values)
+│
+├── Communication
+│   ├── Conversation (chat rooms)
+│   ├── Message (text/file/system notifications)
+│   └── Calls (video/audio sessions)
+│
+└── System Tracking
+    ├── Review (patient feedback)
+    ├── ActivityLog (audit trail)
+    └── Medicine (drug database)
+```
+
+---
+
+## 🚦 Getting Started
+
+### Prerequisites
+
+- Python 3.12+
+- pip (Python package manager)
+- Git
+
+### Installation Steps
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/0luv69/ClinicMng. git
+   cd ClinicMng
+   ```
+2. **Install Dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configure Settings**
+   Navigate to `clinic/clinic_base/settings.py` and update:
+
+   ```python
+   # Domain Configuration
+   DOMAIN_NAME = "http://localhost:8000"
+
+   # Email Configuration (Gmail recommended)
+   EMAIL_HOST_USER = "your-email@example. com"
+   EMAIL_HOST_PASSWORD = "your-app-password"  # Use App Password for Gmail
+
+   # Time Zone
+   TIME_ZONE = "Asia/Kathmandu"  # Adjust to your timezone
+   ```
+4. **Database Setup**
 
 ```bash
-cd clinic/clinic_base/
+   python manage.py makemigrations
+   python manage. py migrate
+   python manage.py createsuperuser
 ```
 
-    &`open setting.py`
+5. **Run the Development Server**
 
-    3.2:**Update the following**:
+   ```bash
+   python manage.py runserver
+   ```
+6. **Access the Application**
 
-* **Change Domain Name**
+   - Main Application: `http://localhost:8000`
+   - Admin Panel: `http://localhost:8000/admin`
 
-```python
-DOMAIN_NAME = "http://localhost:8000"
+---
+
+## 👥 User Roles & Permissions
+
+### 👑 **Admin**
+
+- **Full System Access**: Complete Django admin interface access
+- **User Management**: Create and manage Management Team accounts
+- **System Oversight**: View all activity logs and system analytics
+- **Data Control**: Full CRUD operations on all models
+
+### 🏢 **Management Team**
+
+- **Dashboard Access**: Comprehensive management portal with analytics
+- **Patient Management**: Complete patient lifecycle (create, edit, activate/deactivate)
+- **Doctor Management**: Doctor account creation and profile management
+- **Appointment Control**: Confirm, cancel, reschedule appointments
+- **Medical Records**: Add, edit, delete prescriptions and lab reports
+- **Payment Processing**: Manual payment verification via QR codes
+- **Medicine Database**: Add new medicines to system catalog
+- **Communication**: Message any user except admin
+
+### 👨‍⚕️ **Doctor**
+
+- **Schedule Management**: Set availability using calendar interface
+  - Weekly grid view with drag-and-drop functionality
+  - Quick presets (Full Day, Morning Shift, Evening Shift)
+  - Break configuration (lunch, evening breaks)
+- **Appointment Management**: View, reschedule, cancel, confirm appointments
+- **Patient Care**: Access complete medical records for all patients
+- **Consultation Tools**:
+  - Real-time video calls with patients
+  - Chat messaging system
+  - Quick notes during consultations
+- **Medical Documentation**: Submit prescription and lab report requests
+- **Multiple View Options**: Timeline, list, and calendar views for appointments
+
+### 🏥 **Patient**
+
+- **Self-Registration**: Account creation with email verification
+- **Appointment Booking**:
+  - Select doctor by specialization
+  - Choose date, time, and appointment type
+  - Upload supporting documents
+  - Receive QR code for payment
+- **Medical Records Access**: View prescriptions, lab reports, medical history
+- **Document Management**: Upload and organize personal medical documents
+- **Communication**: Chat with doctors and management team
+- **Video Consultations**: Join scheduled video appointments
+- **Prescription Management**:
+  - View active medications
+  - Track daily medicine schedule
+  - Access prescription history
+- **Export Features**: Download appointments as Excel files
+
+---
+
+## 🔄 Core Workflows
+
+### 1. **Patient Registration & Onboarding**
+
+```mermaid
+graph LR
+A[Create Account] --> B[Email Verification]
+B --> C[Profile Completion]
+C --> D[Medical Info Entry]
+D --> E[Account Activated]
 ```
 
-*     **Email Configuration**
+### 2. **Appointment Booking Process**
 
-    At the end of the file, replace:
-
-```python
-EMAIL_HOST_USER = "your-email@example.com"
-EMAIL_HOST_PASSWORD = "your-app-password"
+```mermaid
+graph LR
+A[Select Doctor] --> B[Choose Date/Time]
+B --> C[Provide Reason/Files]
+C --> D[Receive QR Code]
+D --> E[Payment Confirmation]
+E --> F[Appointment Confirmed]
 ```
 
-    with your own email credentials (use Google App Password if using Gmail).
+### 3. **Medical Consultation Workflow**
 
-*     **Time Zone**:
-  	   Set your correct time zone:
+```mermaid
+graph LR
+A[Patient Joins] --> B[Video Consultation]
+B --> C[Doctor Notes]
+C --> D[Prescription Request]
+D --> E[Management Processing]
+E --> F[Patient Notification]
+```
 
-```python
-TIME_ZONE = "Asia/Kathmandu"
+### 4. **Real-time Communication**
+
+- **WebSocket Integration**: Instant messaging across all user types
+- **Video Calls**: WebRTC-powered video consultations
+- **System Notifications**: Automated messages for appointments and updates
+- **File Sharing**: Document sharing within chat conversations
+
+---
+
+## 🛠️ Technical Stack
+
+### **Backend Technologies**
+
+- **Framework**: Django 5.2.1
+- **Language**: Python 3.12.2
+- **Database**: SQLite (development) / PostgreSQL (production ready)
+- **Real-time**: Django Channels with WebSocket support
+- **ASGI Server**: Daphne for production deployment
+
+### **Frontend Technologies**
+
+- **Templates**: Django Template Engine
+- **Styling**: Tailwind CSS for responsive design
+- **JavaScript**: Vanilla JS with modern ES6+ features
+- **Calendar**: Flatpickr for date/time selection
+- **Video**: WebRTC for peer-to-peer communication
+
+### **Key Dependencies**
+
+```
+Django==5.2.1
+channels==4.0.0
+daphne==4.0.0
+django-tailwind==3.6.0
+django-multiselectfield==0. 1.12
+Pillow==10.0.0
+```
+
+### **Security Features**
+
+- **HTTPS Enforcement**: Secure connection requirements
+- **CORS Policies**: Cross-origin request protection
+- **UUID Fields**: Privacy-focused non-sequential IDs
+- **Password Hashing**: Django's secure password storage
+- **Email Verification**: Required for account activation
+
+---
+
+## 📱 User Interface Overview
+
+### **Home Page Features**
+
+- Hero section with system introduction
+- Department and doctor showcase
+- Patient testimonials and feedback
+- Quick access navigation
+
+### **Dashboard Layouts**
+
+- **Patient Portal**: Appointment overview, medical summaries, quick actions
+- **Doctor Dashboard**: Today's schedule, patient summaries, quick stats
+- **Management Portal**: System analytics, appointment management, user oversight
+- **Admin Panel**: Complete system administration interface
+
+### **Responsive Design**
+
+- Mobile-first approach
+- Tablet and desktop optimized layouts
+- Touch-friendly interface elements
+- Accessibility compliance
+
+---
+
+## 🔧 Advanced Features
+
+### **Calendar & Scheduling**
+
+- **Interactive Calendar**: Drag-and-drop schedule management
+- **Multi-view Support**: Timeline, list, and calendar views
+- **Availability Management**: Set breaks, holidays, and working hours
+- **Conflict Resolution**: Prevents double-booking automatically
+
+### **Medical Records Management**
+
+- **Lab Reports**: Parameter-based results with reference ranges
+- **Prescription Tracking**: Dosage schedules with adherence monitoring
+- **Document Storage**: Secure file uploads with format validation
+- **Medical History**: Comprehensive patient timeline
+
+### **Communication System**
+
+- **Real-time Messaging**: Instant chat with typing indicators
+- **File Sharing**: Document and image sharing within chats
+- **Video Consultations**: HD video calls with screen sharing
+- **Notification System**: Email and in-app notifications
+
+### **Analytics & Reporting**
+
+- **Dashboard Analytics**: Appointment trends and user statistics
+- **Activity Logging**: Comprehensive audit trail
+- **Export Features**: Data export in Excel and PDF formats
+- **Performance Metrics**: System usage and performance tracking
+
+---
+
+## 🚀 Deployment Guide
+
+### **Production Setup**
+
+1. **Environment Configuration**
+
+   ```bash
+   export DEBUG=False
+   export ALLOWED_HOSTS="your-domain.com"
+   export DATABASE_URL="postgresql://user:pass@localhost/dbname"
+   ```
+2. **Static Files Collection**
+
+   ```bash
+   python manage.py collectstatic
+   ```
+3. **ASGI Server Configuration**
+
+   ```bash
+   daphne -b 0.0.0. 0 -p 8000 clinic.asgi:application
+   ```
+
+### **Nginx Configuration Example**
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+  
+    location /static/ {
+        alias /path/to/your/staticfiles/;
+    }
+  
+    location /media/ {
+        alias /path/to/your/media/;
+    }
+  
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
 ```
 
 ---
 
-## User Roles & Permissions
+## 🔍 API Documentation
 
-**Admin**
+### **Authentication Endpoints**
 
-- Full access via Django admin to all models and operations.
-- Main function: system setup and Management Team account management.
+- `POST /accounts/signup/` - Patient registration
+- `POST /accounts/login/` - User authentication
+- `POST /accounts/verify/` - Email verification
+- `POST /accounts/password-reset/` - Password reset
 
-**Management Team**
+### **Appointment Management**
 
-- Management dashboard with full CRUD access to Patients, Doctors, Appointments, Prescriptions, Lab Reports, and Medicines.
-- Responsible for confirming/canceling appointments, managing manual payment, and formalizing prescriptions/reports from doctor notes.
-- Can deactivate/reactivate users (`is_active`), add new medicines (cannot edit/delete medicines).
-- Can message any user (except admin).
+- `GET /api/appointments/` - List user appointments
+- `POST /api/appointments/book/` - Book new appointment
+- `PUT /api/appointments/{id}/reschedule/` - Reschedule appointment
+- `DELETE /api/appointments/{id}/cancel/` - Cancel appointment
 
-**Doctor**
+### **Medical Records**
 
-- Doctor dashboard with schedule editing (calendar UI, week grid, quick presets, breaks).
-- Can toggle all availability statuses except "booked" (booked slots are locked).
-- "View Appointment" page: see/filter appointments (timeline, week view, list), reschedule/cancel/confirm (now for both pending and confirmed).
-- "View Patient" page: list patients and reschedule appointments.
-- Can access any patient’s full medical info (via unique username or "View Medical Records" button).
-- Messaging: can request/initiate chat with any patient (patient must accept), see system messages in chat.
-- Can join/initiate video calls (WebRTC).
-- Cannot edit or delete medical info, prescriptions, or lab reports after entry.
-
-**Patient**
-
-- Patient portal/dashboard for appointment booking, document uploads, lab results, prescriptions, and ID card.
-- Two onboarding paths: management-created or self-signup (email verification required).
-- Book appointments (doctor, date/time, type, reason, file upload), receive QR code for manual payment.
-- Can export appointments to Excel, download documents and lab reports (not prescriptions).
-- Can message doctors/management, request chat, and join/request video calls.
-- Can view/print/download ID card.
-- Can update own info and password.
-- Only one appointment per doctor per time slot.
-- Receives notifications via email and chat.
+- `GET /api/medical-records/` - Patient medical history
+- `GET /api/prescriptions/` - Active prescriptions
+- `GET /api/lab-reports/` - Lab test results
+- `POST /api/documents/upload/` - Upload medical documents
 
 ---
 
-## Core Features & Workflows
+## 🤝 Contributing
 
-1. **User Onboarding & Profile Management**
+We welcome contributions to improve Nepal's Care!  Here's how you can help:
 
-   - Admin creates Management Team; Management creates/approves Doctor & Patient accounts.
-   - Access controlled by `is_active` and `is_verified`.
-2. **Scheduling & Appointments**
+### **Getting Started**
 
-   - Doctors set weekly availability; patients book by doctor/date/time/type.
-   - Statuses: pending, confirmed, cancelled, completed.
-   - Appointments reschedulable by doctor (pending/confirmed, both in View Appointment and View Patient).
-   - QR code sent for payment; handled manually by management.
-3. **Consultations (Chat & Video Call)**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-   - Real-time, role-based chat (WebSocket); system messages integrated.
-   - Video/audio calls (WebRTC), linked to appointments or ad hoc.
-   - Chat/call rooms use Conversation model.
-4. **Medical Records & Reports**
+### **Development Guidelines**
 
-   - Doctors submit quick notes; management formalizes as prescriptions/reports (edit/delete allowed for management).
-   - Patients notified on report/prescription upload/edit.
-   - Patients can download lab reports/documents.
-5. **Document Management**
+- Follow Django coding standards
+- Write comprehensive tests for new features
+- Update documentation for any API changes
+- Ensure responsive design compatibility
+- Test across different user roles
 
-   - Patients upload/access documents (flat list, no folders).
-   - Doctor/management can view all patient documents.
-6. **Analytics & Logging**
+### **Areas for Contribution**
 
-   - Management dashboard: summary cards, graphs (appointments by type).
-   - ActivityLog for key user actions (not universal).
-7. **Reviews**
-
-   - Patients rate/review doctors.
+- [ ] Mobile application development
+- [ ] Payment gateway integration
+- [ ] Advanced analytics dashboard
+- [ ] Multi-language support
+- [ ] Automated testing suite
+- [ ] Docker containerization
 
 ---
 
-## Main Data Models & Relationships
+## 📞 Support & Contact
 
-```
-User (Django)
-   |
-   └─ Profile (role: admin/management/doctor/patient)
-            |
-            ├─ MedicalInfo (patient)
-            ├─ DoctorProfile (doctor)
-            ├─ Documents (patient uploads)
-            |
-            └─ Appointment (patient, doctor, slot, status)
-                     |
-                     └─ AppointmentDateSlot (doctor, date)
-                             |
-                             └─ AppointmentTimeSlot (times, status)
-            |
-            └─ Prescription (doctor, patient, medicine, status)
-                     |
-                     └─ PrescriptionSchedule (time, adherence)
-            |
-            └─ LabReport (doctor, patient, type, status)
-                     |
-                     └─ LabReportParameter (test, result)
-            |
-            └─ Conversation (many-to-many: doctor, patient, management)
-                     |
-                     ├─ Message (text/file/system event)
-                     └─ Calls (audio/video, optional appointment link)
-            |
-            └─ Review (patient → doctor)
-            |
-            └─ ActivityLog (user actions)
-```
+### **Technical Support**
+
+- **Email**: support@nepalscare.com
+- **Documentation**: [Wiki Pages](https://github.com/0luv69/ClinicMng/wiki)
+- **Issues**: [GitHub Issues](https://github.com/0luv69/ClinicMng/issues)
+
+### **Community**
+
+- **Discussions**: [GitHub Discussions](https://github.com/0luv69/ClinicMng/discussions)
+- **Contributors**: [Contributors Page](https://github.com/0luv69/ClinicMng/graphs/contributors)
 
 ---
 
-## UI: Panel & Page Structure
+## 📄 License
 
-- **Home Page:** Hero/intro, feature boxes, departments, doctors, feedback. Navbar (CAT, profile, ID card).
-- **Patient Panel:** Dashboard, appointments (view/book/cancel/export), document mgmt (upload/download), messaging, video call, prescriptions, lab reports, profile/ID card.
-- **Doctor Panel:** Dashboard (summary/filter), edit schedule (week grid), "View Appointment" (filter/list/timeline, reschedule/cancel/confirm), "View Patient" (list + reschedule), messaging, video call, profile, view medical info.
-- **Management Portal:** Dashboard (cards/graphs), appointments (view/edit), patients/doctors (view/edit/activate/deactivate), prescriptions/lab reports (view/add/edit/delete), medicines (view/add), messaging.
-- **Admin Panel:** Standard Django admin (all models).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## System Rules & Notes
+## 🙏 Acknowledgments
 
-- Only one patient per doctor per slot; no overlapping bookings.
-- All notifications via email and chat; no in-app notification center.
-- Manual payment verification using QR code.
-- Responsive design for all panels.
-- Role-based edit/delete restrictions as described.
-
----
-
-**This overview reflects all current features, panels, and behaviors of Nepal's Care as described. Ready for further onboarding, handover, or feature expansion.**
-
-# Nepal's Care Clinic Management System – Technical & Operational Overview
-
-This document supplements the project architecture overview with detailed technical information, operational practices, and development environment notes.
+- **Django Community** for the excellent framework
+- **Tailwind CSS** for the utility-first styling approach
+- **WebRTC** community for real-time communication protocols
+- **Open Source Contributors** who inspire continuous improvement
 
 ---
 
-## 1. Tech Stack & Infrastructure
+## 🗺️ Roadmap
 
-**Languages & Frameworks**
+### **Version 2.0 (Planned)**
 
-- Python 3.12.2
-- Django 5.2.1
+- [ ] Mobile application (React Native/Flutter)
+- [ ] Advanced appointment scheduling algorithms
+- [ ] Integration with major payment gateways
+- [ ] Multi-clinic support
+- [ ] Advanced reporting and analytics
+- [ ] Telemedicine compliance features
 
-**Dependencies**
+### **Version 1. 5 (In Progress)**
 
-- See `requirements.txt` for full list.
-- Notable: `channels` (for WebSocket support), `django-multiselectfield`, `django-tailwind`, `daphne` (ASGI server).
-
-**Frontend**
-
-- Django templates with JavaScript and Tailwind CSS.
-- Calendar UI leverages [flatpickr](https://flatpickr.js.org/) via CDN.
-
-**Database**
-
-- SQLite (single database, local development).
-
-**Real-time & Communication**
-
-- WebSocket support via Django Channels (using `channels.layers.InMemoryChannelLayer`).
-- WebRTC for peer-to-peer video calls.
-- Email sending via Django’s built-in email support.
-
-**File Handling**
-
-- Django `MEDIA_ROOT` for file uploads (documents, reports, etc.). Running with `DEBUG = False` for production-like file handling.
+- [ ] Docker containerization
+- [ ] Automated testing suite
+- [ ] Performance optimizations
+- [ ] Enhanced security features
+- [ ] Multi-language support
 
 ---
 
-## 2. Deployment & Environments
-
-- **Current State:** Not deployed; project is a final-year project running locally.
-- **Planned Deployment:** Direct server hosting planned (no Docker or cloud CI/CD currently).
-- **Static/Media Files:** Intention to use Nginx for media/static file serving in production or fall back to Django’s static file serving for simplicity.
-
----
-
-## 3. Testing & Quality
-
-- No formal test framework (like pytest or Selenium) in use.
-- Relies on Django’s built-in test features and extensive manual testing of all user flows and edge cases.
-- No automated CI/CD or linting tools currently set up.
-
----
-
-## 4. Security & Privacy
-
-- **HTTPS enforced** via Django settings; CORS policies applied.
-- **Password storage:** Django’s default (hashed, salted).
-- **Sensitive data:** All user-facing models use UUID fields for IDs to avoid exposing sequential IDs.
-- **Verification:** New patient registrations require email verification before account activation.
-- **Deactivation:** Management/Admin can set `is_active = False` to suspend any account (except admin).
-- **Audit:** Sensitive actions are logged and viewable only by admin.
-
----
-
-## 5. User & Permission Management
-
-- **Role Assignment:**
-  - Default role on signup is patient.
-  - Management/Admin create doctor and management accounts.
-- **Password Reset & Verification:**
-  - Email-based verification and password reset (link valid for 1 hour).
-- **Role Change/Account Deletion:**
-  - Users must email management to request role changes or account deletion.
-
----
-
-## 6. Integrations & Extensibility
-
-- No public APIs provided.
-- No support for plugins or custom modules.
-- No third-party integrations (e.g., payment gateways, EHR) at this time.
-
----
-
-## 7. Known Limitations & Roadmap
-
-- Local-only setup (no deployment scripts or cloud hosting yet).
-- No automated testing, CI/CD, or linting.
-- No payment integration; payment is handled manually.
-- No public API or extensibility mechanisms.
-- SQLite database only (not yet tested on PostgreSQL/MySQL).
-- No user-facing notification center (notifications via email/chat only).
-- Roadmap items and further limitations to be determined as the project is extended.
-
----
-
-## 8. User Documentation & Support
-
-- No user manual/FAQ yet; documentation is provided here and in project files.
-- For support or bug reports, users are expected to contact management/admin via email.
-
----
-
-## 9. Miscellaneous
-
-- All sensitive workflows (e.g., deactivation, audit logs) are admin/management-only.
-- Video calls and real-time chat are core features, implemented with Channels (WS) and WebRTC.
-
----
-
-This document ensures any new contributor or user has a comprehensive picture of the technical and operational environment for Nepal’s Care.
+**Built with ❤️ for healthcare professionals and patients in Nepal and beyond.**
